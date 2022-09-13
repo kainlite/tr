@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tr-deployment
+  namespace: tr
+  labels:
+    name: tr
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: tr
+  template:
+    metadata:
+      labels:
+        name: tr
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+      containers:
+      - name: tr
+        image: arm64v8/elixir:latest
+        command: ["sleep"]
+        args: ["36000"]
+        ports:
+        - containerPort: 8080
+        securityContext:
+          allowPrivilegeEscalation: false

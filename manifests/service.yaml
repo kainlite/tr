@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tr
+  namespace: tr
+spec:
+  selector:
+    name: tr
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
