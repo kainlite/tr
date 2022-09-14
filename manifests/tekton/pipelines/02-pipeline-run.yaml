@@ -2,6 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
   name: clone-build-push-run
+  namespace: tekton-pipelines
 spec:
   pipelineRef:
     name: clone-build-push
