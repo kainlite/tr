@@ -1,4 +1,4 @@
-# Tr
+# TR
 
 To start your Phoenix server:
 
