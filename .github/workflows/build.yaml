@@ -1,8 +1,13 @@
 ---
 name: 'build images'
 
+# Kind of disabling this action since QEMU is not playing nice 
+# with arm64
+
 on:
   push:
+    branches:
+      - none
 
 jobs:
   docker:

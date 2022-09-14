@@ -32,3 +32,4 @@ tr-*.tar
 npm-debug.log
 /assets/node_modules/
 
+/manifests/postgres/pg-secret.yaml

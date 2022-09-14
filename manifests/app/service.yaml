@@ -8,5 +8,5 @@ spec:
     name: tr
   ports:
     - protocol: TCP
-      port: 8080
-      targetPort: 8080
+      port: 4000
+      targetPort: 4000

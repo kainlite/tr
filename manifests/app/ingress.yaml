@@ -28,4 +28,4 @@ spec:
           service:
             name: tr
             port:
-              number: 8080
+              number: 4000

@@ -20,10 +20,11 @@ spec:
         runAsGroup: 1000
       containers:
       - name: tr
-        image: arm64v8/elixir:latest
-        command: ["sleep"]
-        args: ["36000"]
+        image: kainlite/tr:latest
+        envFrom:
+        - secretRef:
+            name: tr-postgres-config
         ports:
-        - containerPort: 8080
+        - containerPort: 4000
         securityContext:
           allowPrivilegeEscalation: false
