@@ -1,7 +1,7 @@
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerBinding
 metadata:
-  name: github-pr-binding
+  name: clone-build-push-binding
   namespace: tekton-pipelines
 spec:
   params:

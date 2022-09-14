@@ -1,7 +1,7 @@
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerTemplate
 metadata:
-  name: github-pr-pipeline-template
+  name: clone-build-push-template
   namespace: tekton-pipelines
 spec:
   params:
@@ -17,7 +17,7 @@ spec:
         generateName: clone-build-push-run-
       spec:
         pipelineRef:
-          name: clone-build-push-run
+          name: clone-build-push
         resources:
           - name: source
             resourceSpec:

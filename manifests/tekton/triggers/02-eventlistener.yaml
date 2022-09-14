@@ -1,7 +1,7 @@
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: EventListener
 metadata:
-  name: github-pr
+  name: clone-build-push
   namespace: tekton-pipelines
 spec:
   serviceAccountName: tekton-triggers-sa
@@ -20,6 +20,6 @@ spec:
         - ref:
             name: "cel"
       bindings:
-        - ref: github-pr-binding
+        - ref: clone-build-push-binding
       template:
-        ref: github-pr-pipeline-template
+        ref: clone-build-push-template

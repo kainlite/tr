@@ -23,6 +23,6 @@ spec:
             pathType: Exact
             backend:
               service:
-                name: el-github-pr
+                name: el-clone-build-push
                 port:
                   number: 8080
