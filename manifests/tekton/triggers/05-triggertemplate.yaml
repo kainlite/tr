@@ -14,10 +14,10 @@ spec:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
       metadata:
-        generateName: github-pr-pipeline-run-
+        generateName: clone-build-push-run-
       spec:
         pipelineRef:
-          name: github-pr-pipeline
+          name: clone-build-push-run
         resources:
           - name: source
             resourceSpec:
