@@ -20,7 +20,7 @@ spec:
         runAsGroup: 1000
       containers:
       - name: tr
-        image: kainlite/tr:latest
+        image: kainlite/tr:master
         envFrom:
         - secretRef:
             name: tr-postgres-config

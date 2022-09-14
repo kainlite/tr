@@ -10,6 +10,7 @@ After configuring `kubectl` locally and `tkn`:
 ```
 tkn -n tekton-pipelines hub install task git-clone
 tkn -n tekton-pipelines hub install task kaniko
+tkn -n tekton-pipelines hub install task kubernetes-actions
 ```
 
 Useful links:

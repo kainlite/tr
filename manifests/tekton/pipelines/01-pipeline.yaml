@@ -37,4 +37,16 @@ spec:
     params:
     - name: IMAGE
       value: $(params.image-reference)
-
+  - name: restart-deployment
+    runAfter: ["build-push"]
+    taskRef:
+      name: kubernetes-actions
+    workspaces:
+    - name: source
+      workspace: shared-data
+    - name: dockerconfig
+      workspace: docker-credentials
+    params:
+    - name: script
+      value: |
+        kubectl -n tr rollout restart deployment/tr-deployment
