@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+   db:
+      image: postgres:14.5
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: tr_dev 
+        PGDATA: /var/lib/postgresql/data/pgdata
+      restart: always
+      volumes:
+        - pgdata:/var/lib/postgresql/data
+      ports:
+        - 5432:5432
+volumes:
+   pgdata:

@@ -33,3 +33,5 @@ npm-debug.log
 /assets/node_modules/
 
 /manifests/postgres/pg-secret.yaml
+
+/manifests/tekton/triggers/03-secret.yaml

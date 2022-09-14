@@ -1,0 +1,25 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: github-pr
+  namespace: tekton-pipelines
+spec:
+  serviceAccountName: tekton-triggers-sa
+  triggers:
+    - name: github-listener
+      interceptors:
+        - ref:
+            name: "github"
+          params:
+            - name: "secretRef"
+              value:
+                secretName: github-interceptor-secret
+                secretKey: secretToken
+            - name: "eventTypes"
+              value: ["push"]
+        - ref:
+            name: "cel"
+      bindings:
+        - ref: github-pr-binding
+      template:
+        ref: github-pr-pipeline-template
