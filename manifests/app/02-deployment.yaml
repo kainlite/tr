@@ -28,3 +28,4 @@ spec:
         - containerPort: 4000
         securityContext:
           allowPrivilegeEscalation: false
+        imagePullPolicy: Always
