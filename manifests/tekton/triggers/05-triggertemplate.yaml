@@ -12,18 +12,30 @@ spec:
       description: The git repository url ("https://github.com/foo/bar.git")
   resourcetemplates:
     - apiVersion: tekton.dev/v1beta1
-      kind: PipelineRun
       metadata:
-        generateName: clone-build-push-run-
+        namespace: tekton-pipelines
+        generateName: clone-build-push-
       spec:
         pipelineRef:
           name: clone-build-push
-        resources:
-          - name: source
-            resourceSpec:
-              type: git
-              params:
-                - name: revision
-                  value: $(tt.params.gitrevision)
-                - name: url
-                  value: $(tt.params.gitrepositoryurl)
+        podTemplate:
+          securityContext:
+            fsGroup: 65532
+        workspaces:
+        - name: shared-data
+          volumeClaimTemplate:
+            spec:
+              accessModes:
+              - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 1Gi
+        - name: docker-credentials
+          secret:
+            secretName: docker-credentials
+        params:
+        - name: repo-url
+          value: https://github.com/kainlite/tr.git
+        - name: image-reference
+          value: kainlite/tr:latest
+      kind: PipelineRun
