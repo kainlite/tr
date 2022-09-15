@@ -41,11 +41,6 @@ spec:
     runAfter: ["build-push"]
     taskRef:
       name: kubernetes-actions
-    workspaces:
-    - name: source
-      workspace: shared-data
-    - name: dockerconfig
-      workspace: docker-credentials
     params:
     - name: script
       value: |
