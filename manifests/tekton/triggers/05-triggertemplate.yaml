@@ -30,6 +30,9 @@ spec:
               resources:
                 requests:
                   storage: 1Gi
+        - name: kubeconfig-dir
+          configMap:
+            name: kubeconfig
         - name: docker-credentials
           secret:
             secretName: docker-credentials

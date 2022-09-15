@@ -17,3 +17,7 @@ Useful links:
 https://github.com/tektoncd/triggers/blob/main/docs/getting-started/README.md
 https://tekton.dev/docs/how-to-guides/kaniko-build-push/#full-code-samples
 https://www.arthurkoziel.com/tutorial-tekton-triggers-with-github-integration/
+
+There are some issues running on ARM, on other architectures it just works, see more:
+https://github.com/tektoncd/pipeline/issues/5233
+https://github.com/tektoncd/pipeline/issues/4247
