@@ -57,7 +57,8 @@ defmodule Tr.MixProject do
       {:makeup_erlang, ">= 0.0.0"},
       {:makeup_eex, ">= 0.0.0"},
       {:makeup_html, ">= 0.0.0"},
-      {:makeup_diff, ">= 0.0.0"}
+      {:makeup_diff, ">= 0.0.0"},
+      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev}
     ]
   end
 
@@ -73,7 +74,7 @@ defmodule Tr.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.deploy": ["esbuild default --minify", "phx.digest"]
+      "assets.deploy": ["tailwind default --minify","esbuild default --minify", "phx.digest"]
     ]
   end
 end
