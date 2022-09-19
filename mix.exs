@@ -48,7 +48,16 @@ defmodule Tr.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      {:earmark, "~> 1.4.20"},
+      {:yamerl, "~> 0.9.0"},
+      {:html_sanitize_ex, "~> 1.4.2"},
+      {:nimble_publisher, "~> 0.1.1"},
+      {:makeup_elixir, ">= 0.0.0"},
+      {:makeup_erlang, ">= 0.0.0"},
+      {:makeup_eex, ">= 0.0.0"},
+      {:makeup_html, ">= 0.0.0"},
+      {:makeup_diff, ">= 0.0.0"}
     ]
   end
 

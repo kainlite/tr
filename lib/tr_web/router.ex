@@ -18,7 +18,15 @@ defmodule TrWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    
   end
+
+scope "/blog", TrWeb do
+  pipe_through :browser
+
+  get "/", BlogController, :index
+  get "/:id", BlogController, :show
+end
 
   # Other scopes may use custom stacks.
   # scope "/api", TrWeb do

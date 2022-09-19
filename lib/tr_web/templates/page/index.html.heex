@@ -1,40 +1,43 @@
 <section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
-  <p>Peace of mind from prototype to production</p>
+  <h1>Welcome to the laboratory</h1>
+  <p>Be brave, explore the unknown...</p>
 </section>
+<p>
+This blog was created to document and learn about the infamous Web3 world with a dynamic self-hosted blog using
+elixir, phoenix, postgres, docker, kubernetes (yes, really... k3s you know on ARM64), and many other things, but if
+that catch your eye, you can follow me on twitter to encourage me to keep writting, so I hope you enjoy your stay and
+see you on the other side...
+</p>
 
 <section class="row">
+  <article class="column">
+    <h2>Latest articles</h2>
+
+    <ul>
+      <%= for post <- @posts do %>
+        <div>
+          <li>
+            <%= link post.title, to: Routes.blog_path(@conn, :show, post)%>
+          </li>
+        </div>
+      <% end %>
+    </ul>
+  </article>
+
   <article class="column">
     <h2>Resources</h2>
     <ul>
       <li>
-        <a href="https://hexdocs.pm/phoenix/overview.html">Guides &amp; Docs</a>
+        <a href="https://techsquad.rocks">Main blog</a>
       </li>
       <li>
-        <a href="https://github.com/phoenixframework/phoenix">Source</a>
+        <a href="https://tr.techsquad.rocks/blog">This blog</a>
       </li>
       <li>
-        <a href="https://github.com/phoenixframework/phoenix/blob/v1.6/CHANGELOG.md">v1.6 Changelog</a>
-      </li>
-    </ul>
-  </article>
-  <article class="column">
-    <h2>Help</h2>
-    <ul>
-      <li>
-        <a href="https://elixirforum.com/c/phoenix-forum">Forum</a>
+        <a href="https://github.com/kainlite/tr">Github repository</a>
       </li>
       <li>
-        <a href="https://web.libera.chat/#elixir">#elixir on Libera Chat (IRC)</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/elixirphoenix">Twitter @elixirphoenix</a>
-      </li>
-      <li>
-        <a href="https://elixir-slackin.herokuapp.com/">Elixir on Slack</a>
-      </li>
-      <li>
-        <a href="https://discord.gg/elixir">Elixir on Discord</a>
+        <a href="https://twitter.com/kainlite">Twitter @kainlite</a>
       </li>
     </ul>
   </article>
