@@ -62,7 +62,7 @@ config :tr, TrWeb.Endpoint,
       ~r"priv/gettext/.*(po)$",
       ~r"lib/tr_web/(live|views)/.*(ex)$",
       ~r"lib/tr_web/templates/.*(eex)$",
-          ~r"posts/*/.*(md)$"
+      ~r"posts/*/.*(md)$"
     ]
   ]
 
