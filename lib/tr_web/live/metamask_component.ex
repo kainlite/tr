@@ -1,50 +1,35 @@
-defmodule TrWeb.MetamaskLive do
-  use TrWeb, :live_view
-
-  @impl true
-  def mount(params, _session, socket) do
-    IO.inspect(params)
-
-    if id = Map.get(params, :id) do
-      {:ok,
-       socket
-       |> assign_new(:connected, fn -> false end)
-       |> assign_new(:current_wallet_address, fn -> nil end)
-       |> assign_new(:signed, fn -> false end)
-       |> assign_new(:verify_signature, fn -> false end)}
-    end
-
-  end
+defmodule TrWeb.MetamaskComponent do
+  use Phoenix.LiveComponent
+  import TrWeb.Gettext
 
   @impl true
   def render(assigns) do
-    ~L"""
+    ~H"""
     <span title="Metamask" id="metamask-button" phx-hook="Metamask">
       <%= cond do %>
-        <% @connected  == "metamask-connect" -> %>
-          <.button
+        <% @connected == true -> %>
+          <button
             icon
             disabled
             color="success"
             variant="outline"
-            class="w-full inline-flex justify-center py-2 px-4"
+            class="inline-flex justify-center w200px float-right"
           >
-            <.icon icon="metamask" size="lg" />
-            <%= gettext("Metamask Connected!") %>
-          </.button>
-        <% not @connected == "metamask-connect" -> %>
-          <.button
+            <icon icon="metamask" size="lg" />
+            <%= gettext("Connected") %>
+          </button>
+        <% @connected == false -> %>
+          <button
             icon
             color="white"
             variant="outline"
-            class="w-full inline-flex justify-center py-2 px-4 !border-gray-300 !text-gray-500 hover:bg-gray-50"
+            class="inline-flex justify-center hover:bg-lblue-50 w200px float-right"
             id={@id}
             phx-click="connect-metamask"
           >
-            <.icon icon="metamask" size="lg" />
-            <%= @text %>
-          </.button>
-        <% true -> %>
+            <icon icon="metamask" size="lg" />
+            <%= gettext("Connect") %>
+          </button>
       <% end %>
     </span>
     """
@@ -76,7 +61,7 @@ defmodule TrWeb.MetamaskLive do
 
   @impl true
   def handle_event("connect-metamask", _params, socket) do
-    # {:noreply, push_event(socket, "connect-metamask", %{id: socket.assigns.id})}
+    {:noreply, push_event(socket, "connected", %{connected: true})}
   end
 
   @impl true

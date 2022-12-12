@@ -1,7 +1,7 @@
 <main class="container">
   <%= if live_flash(@flash, :error)  do %>
     <p class="alert alert-info" role="alert" phx-click="lv:clear-flash" phx-value-key="info" phx-no-format>
-      <%#= live_flash(@flash, :info) %>
+      <%= live_flash(@flash, :info) %>
     </p>
 
     <p class="alert alert-danger" role="alert" phx-click="lv:clear-flash" phx-value-key="error" phx-no-format>
@@ -9,5 +9,6 @@
     </p>
   <% end %>
 
+
   <%= @inner_content %>
-</main>
+</main> 
