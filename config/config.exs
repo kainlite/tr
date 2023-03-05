@@ -13,9 +13,12 @@ config :tr,
 # Configures the endpoint
 config :tr, TrWeb.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: TrWeb.ErrorView, accepts: ~w(html json), layout: false],
+  render_errors: [
+    formats: [html: TrWeb.ErrorHTML, json: TrWeb.ErrorJSON],
+    layout: false
+  ],
   pubsub_server: Tr.PubSub,
-  live_view: [signing_salt: "1cYDPJ1+"]
+  live_view: [signing_salt: "XF0oI1yw"]
 
 # Configures the mailer
 #
@@ -26,12 +29,9 @@ config :tr, TrWeb.Endpoint,
 # at the `config/runtime.exs`.
 config :tr, Tr.Mailer, adapter: Swoosh.Adapters.Local
 
-# Swoosh API client is needed for adapters other than SMTP.
-config :swoosh, :api_client, false
-
 # Configure esbuild (the version is required)
 config :esbuild,
-  version: "0.14.29",
+  version: "0.14.41",
   default: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
@@ -39,14 +39,15 @@ config :esbuild,
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 
+# Configure tailwind (the version is required)
 config :tailwind,
-  version: "3.1.8",
+  version: "3.2.4",
   default: [
     args: ~w(
-    --config=tailwind.config.js
-    --input=css/app.css
-    --output=../priv/static/assets/app.css
-  ),
+      --config=tailwind.config.js
+      --input=css/app.css
+      --output=../priv/static/assets/app.css
+    ),
     cd: Path.expand("../assets", __DIR__)
   ]
 

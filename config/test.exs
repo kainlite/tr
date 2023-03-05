@@ -17,14 +17,17 @@ config :tr, Tr.Repo,
 # you can enable the server option below.
 config :tr, TrWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "G3uRNRxyRQIFuLfc5Xgi6+yEJgnyBK12bTR0lhI1XsE4CQf0yO9wjonq1KNrZXO2",
+  secret_key_base: "JnCErsnzXelkHZyMNrvHSomPSngAlkX/PrXXfI3LB9TKsIAwsw1tgkoS5U5N0ovQ",
   server: false
 
 # In test we don't send emails.
 config :tr, Tr.Mailer, adapter: Swoosh.Adapters.Test
 
+# Disable swoosh api client as it is only required for production adapters.
+config :swoosh, :api_client, false
+
 # Print only warnings and errors during test
-config :logger, level: :warn
+config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime

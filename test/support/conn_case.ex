@@ -19,15 +19,15 @@ defmodule TrWeb.ConnCase do
 
   using do
     quote do
+      # The default endpoint for testing
+      @endpoint TrWeb.Endpoint
+
+      use TrWeb, :verified_routes
+
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
       import TrWeb.ConnCase
-
-      alias TrWeb.Router.Helpers, as: Routes
-
-      # The default endpoint for testing
-      @endpoint TrWeb.Endpoint
     end
   end
 

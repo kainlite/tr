@@ -1,0 +1,19 @@
+<header>
+  <section class="container">
+    <nav>
+      <ul >
+        <li class="flex">
+          <.link navigate={"/blog"} class="phx-logo">
+            <img src={~p"/images/techsquad.png"} alt="Techsquad lab logo" />
+          </.link>
+        </li>
+        </ul>
+    </nav>
+  </section>
+</header>
+<main class="sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-screen-2xl">
+    <.flash_group flash={@flash} />
+    <%= @inner_content %>
+  </div>
+</main>

@@ -7,7 +7,8 @@ defmodule TrWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_tr_key",
-    signing_salt: "DTesxfFt"
+    signing_salt: "GAR9Iql2",
+    same_site: "Lax"
   ]
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
@@ -20,7 +21,7 @@ defmodule TrWeb.Endpoint do
     at: "/",
     from: :tr,
     gzip: false,
-    only: ~w(assets fonts images favicon.ico robots.txt)
+    only: TrWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
