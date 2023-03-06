@@ -16,7 +16,7 @@ Before going into this, be sure to check the release page for additional informa
 etc, [Phoenix 1.7.0 release notes](https://phoenixframework.org/blog/phoenix-1.7-final-released), then you can dig
 through here for the [upgrade notes](https://gist.github.com/chrismccord/00a6ea2a96bc57df0cce526bd20af8a7).
 
-[Git commit with all the changes!](https://github.com/kainlite/tr/commit/d187cf5806afe5866cdba25d5ba335428375dad6), hope
+[Git commit with all the changes!](https://github.com/kainlite/tr/commit/5cfde253f6ac82dcd41434fcbf9cf503d6848148), hope
 this helps figure out everything that you need to do in order to get on the new folder structure.
 
 ##### **Upgrading packages**
