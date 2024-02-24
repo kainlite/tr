@@ -77,6 +77,25 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 ```
 
+Then in your `02-deployment.yaml` file:
+```
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+```
+This is to set the right environment variables for the application to use and to be able to connect to the other
+`nodes`.
+
+To verify if this is working you can start and `iex` session and call:
+```
+Node.list()
+```
 
 Some useful links:
 https://hexdocs.pm/libcluster/readme.html
