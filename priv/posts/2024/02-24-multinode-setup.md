@@ -48,6 +48,36 @@ config :libcluster,
   ]
 ```
 
+That's enough for elixir to try to find the other pods and attempt to connect to the nodes, however we need to allow
+that communication and let the pods read the information from the kubernetes API, next up add these permissions to your
+deployment `05-role.yaml`:
+
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: tr
+  name: pod-reader
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "watch", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-pods
+  namespace: tr
+subjects:
+- kind: ServiceAccount
+  name: tr
+roleRef:
+  kind: Role
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
+```
+
+
 Some useful links:
 https://hexdocs.pm/libcluster/readme.html
 

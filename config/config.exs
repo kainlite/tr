@@ -70,14 +70,13 @@ config :libcluster,
       config: [
         mode: :ip,
         kubernetes_node_basename: "tr",
-        kubernetes_selector: "app=tr",
+        kubernetes_selector: "name=tr",
         kubernetes_namespace: namespace,
         kubernetes_ip_lookup_mode: :pods,
         polling_interval: 10_000
       ]
     ]
   ]
-
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
