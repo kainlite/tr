@@ -68,11 +68,11 @@ config :libcluster,
     default: [
       strategy: Elixir.Cluster.Strategy.Kubernetes,
       config: [
-        mode: :ip,
+        mode: :dns,
         kubernetes_node_basename: "tr",
         kubernetes_selector: "name=tr",
         kubernetes_namespace: namespace,
-        kubernetes_ip_lookup_mode: :pods,
+        # kubernetes_ip_lookup_mode: :pods,
         polling_interval: 10_000
       ]
     ]
