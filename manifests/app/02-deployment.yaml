@@ -5,6 +5,7 @@ metadata:
   namespace: tr
   labels:
     name: tr
+    app: tr
 spec:
   replicas: 3
   selector:
@@ -14,6 +15,7 @@ spec:
     metadata:
       labels:
         name: tr
+        app: tr
     spec:
       securityContext:
         runAsUser: 1000
@@ -40,3 +42,12 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
         imagePullPolicy: Always
+        command: ["elixir"]
+        args: [
+          "--name", 
+          "tr@$(MY_POD_IP)", 
+          "--cookie","$(ERLANG_COOKIE)", 
+          "--no-halt", 
+          "-S","mix",
+          "phx.server"
+        ]

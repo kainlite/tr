@@ -69,7 +69,7 @@ config :libcluster,
       strategy: Elixir.Cluster.Strategy.Kubernetes.DNS,
       config: [
         service: "tr-cluster-svc",
-        application_name: "tr-cluster",
+        application_name: "tr",
       ]
     ]
   ]
