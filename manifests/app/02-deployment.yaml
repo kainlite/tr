@@ -42,12 +42,3 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
         imagePullPolicy: Always
-        command: ["elixir"]
-        args: [
-          "--name", 
-          "tr@$(MY_POD_IP)", 
-          "--cookie","$(ERLANG_COOKIE)", 
-          "--no-halt", 
-          "-S","mix",
-          "phx.server"
-        ]
