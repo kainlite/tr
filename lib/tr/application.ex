@@ -7,7 +7,11 @@ defmodule Tr.Application do
 
   @impl true
   def start(_type, _args) do
+    topologies = Application.get_env(:libcluster, :topologies, [])
+
     children = [
+      # Start the Cluster supervisor for libcluster
+      {Cluster.Supervisor, [topologies, [name: Tr.ClusterSupervisor]]},
       # Start the Telemetry supervisor
       TrWeb.Telemetry,
       # Start the Ecto repository
