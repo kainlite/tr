@@ -66,14 +66,10 @@ namespace =
 config :libcluster,
   topologies: [
     default: [
-      strategy: Elixir.Cluster.Strategy.Kubernetes,
+      strategy: Elixir.Cluster.Strategy.Kubernetes.DNS,
       config: [
-        mode: :dns,
-        kubernetes_node_basename: "tr",
-        kubernetes_selector: "name=tr",
-        kubernetes_namespace: namespace,
-        # kubernetes_ip_lookup_mode: :pods,
-        polling_interval: 10_000
+        service: "tr-cluster-svc",
+        application_name: "tr-cluster",
       ]
     ]
   ]

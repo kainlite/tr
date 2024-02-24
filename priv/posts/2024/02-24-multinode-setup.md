@@ -99,6 +99,7 @@ Node.list()
 
 Some useful links:
 https://hexdocs.pm/libcluster/readme.html
+https://brain.d.foundation/Engineering/Backend/libcluster+in+elixir
 
 and last but not least good luck!
 
