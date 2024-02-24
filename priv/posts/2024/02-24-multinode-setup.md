@@ -35,14 +35,10 @@ namespace =
 config :libcluster,
   topologies: [
     default: [
-      strategy: Elixir.Cluster.Strategy.Kubernetes,
+      strategy: Elixir.Cluster.Strategy.Kubernetes.DNS,
       config: [
-        mode: :ip,
-        kubernetes_node_basename: "tr",
-        kubernetes_selector: "app=tr",
-        kubernetes_namespace: namespace,
-        kubernetes_ip_lookup_mode: :pods,
-        polling_interval: 10_000
+        service: "tr-cluster-svc",
+        application_name: "tr-cluster",
       ]
     ]
   ]
@@ -60,7 +56,7 @@ metadata:
   name: pod-reader
 rules:
   - apiGroups: [""]
-    resources: ["pods"]
+    resources: ["endpoints"]
     verbs: ["get", "watch", "list"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -89,6 +85,22 @@ Then in your `02-deployment.yaml` file:
             fieldRef:
               fieldPath: metadata.namespace
 ```
+
+And a service to make things easier `03-service.yaml` (epmd port):
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: tr-cluster-svc
+spec:
+  clusterIP: None
+  selector:
+    app: tr-cluster-svc
+  ports:
+  - name: epmd
+    port: 4369
+```
+
 This is to set the right environment variables for the application to use and to be able to connect to the other
 `nodes`.
 
