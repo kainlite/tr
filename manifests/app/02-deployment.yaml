@@ -30,17 +30,24 @@ spec:
         - name: POD_IP
           valueFrom:
             fieldRef:
+              apiVersion: v1
               fieldPath: status.podIP
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
         - name: NAMESPACE
           valueFrom:
             fieldRef:
+              apiVersion: v1
               fieldPath: metadata.namespace
         - name: RELEASE_COOKIE
-          value: "notreallyasecret"
+          value: notreallyasecret
         - name: RELEASE_DISTRIBUTION
           value: name
         - name: RELEASE_NODE
-          value: tr@$(POD_IP)
+          value: $(POD_NAME)@$(POD_IP)
         ports:
         - containerPort: 4000
         securityContext:
