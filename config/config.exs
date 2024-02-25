@@ -69,7 +69,7 @@ config :libcluster,
       mode: :dns,
       strategy: Elixir.Cluster.Strategy.Kubernetes,
       config: [
-        kubernetes_node_basename: "tr",
+        kubernetes_node_basename: "tr-deployment",
         kubernetes_selector: "name=tr",
         kubernetes_namespace: namespace,
         polling_interval: 10_000

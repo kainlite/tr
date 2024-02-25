@@ -50,6 +50,7 @@ spec:
         #   value: $(POD_NAME)@$(POD_IP)
         ports:
         - containerPort: 4000
+        - containerPort: 4369
         securityContext:
           allowPrivilegeEscalation: false
         imagePullPolicy: Always
