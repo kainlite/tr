@@ -66,7 +66,7 @@ namespace =
 config :libcluster,
   topologies: [
     default: [
-      mode: :ip,
+      mode: :dns,
       strategy: Elixir.Cluster.Strategy.Kubernetes,
       config: [
         kubernetes_node_basename: "tr",

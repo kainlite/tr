@@ -44,10 +44,10 @@ spec:
               fieldPath: metadata.namespace
         - name: RELEASE_COOKIE
           value: notreallyasecret
-        - name: RELEASE_DISTRIBUTION
-          value: name
-        - name: RELEASE_NODE
-          value: $(POD_NAME)@$(POD_IP)
+        # - name: RELEASE_DISTRIBUTION
+        #   value: name
+        # - name: RELEASE_NODE
+        #   value: $(POD_NAME)@$(POD_IP)
         ports:
         - containerPort: 4000
         securityContext:
