@@ -32,18 +32,6 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: status.podIP
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.name
-        - name: NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
-        - name: NODE_COOKIE
-          value: notreallyasecret
         ports:
         - containerPort: 4000
         - containerPort: 4369

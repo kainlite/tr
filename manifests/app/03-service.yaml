@@ -23,6 +23,3 @@ spec:
   clusterIP: None
   selector:
     name: tr
-  ports:
-  - name: epmd
-    port: 4369

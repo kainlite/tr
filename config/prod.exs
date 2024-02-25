@@ -19,3 +19,16 @@ config :logger, level: :info
 
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.
+
+config :libcluster,
+  topologies: [
+    erlang_nodes_in_k8s: [
+      strategy: Elixir.Cluster.Strategy.Kubernetes.DNS,
+      config: [
+        service: "tr-cluster-svc",
+        application_name: "tr",
+        kubernetes_namespace: "tr",
+        polling_interval: 10_000
+      ]
+    ]
+  ]

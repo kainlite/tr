@@ -59,25 +59,6 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-# Libcluster configuration
-namespace =
-  System.get_env("NAMESPACE") || "tr"
-
-config :libcluster,
-  topologies: [
-    default: [
-      mode: :dns,
-      strategy: Elixir.Cluster.Strategy.Kubernetes.DNSSRV,
-      config: [
-        service: "tr-cluster-svc",
-        application_name: "tr",
-        kubernetes_namespace: namespace,
-        namespace: namespace,
-        polling_interval: 10_000
-      ]
-    ]
-  ]
-
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
