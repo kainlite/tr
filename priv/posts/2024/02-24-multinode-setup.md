@@ -26,23 +26,37 @@ Update your `lib/tr/application.ex` file to start libcluster
       ...
 ```
 
-Then we need to update our `config/config.exs` file to tell libcluster what to look for in the cluster:
+Then we need to update our `config/prod.exs` file to tell libcluster what to look for in the cluster:
 ```
 # Libcluster configuration
-namespace =
-  System.get_env("NAMESPACE") || "tr"
-
 config :libcluster,
   topologies: [
-    default: [
+    erlang_nodes_in_k8s: [
       strategy: Elixir.Cluster.Strategy.Kubernetes.DNS,
       config: [
         service: "tr-cluster-svc",
-        application_name: "tr-cluster",
+        application_name: "tr",
+        kubernetes_namespace: "tr",
+        polling_interval: 10_000
       ]
     ]
   ]
 ```
+
+Dev config `config/dev.exs`:
+```
+config :libcluster,
+  topologies: [
+    example: [
+      strategy: Cluster.Strategy.Epmd,
+      config: [hosts: [:"a@127.0.0.1", :"b@127.0.0.1"]],
+      connect: {:net_kernel, :connect_node, []},
+      disconnect: {:erlang, :disconnect_node, []},
+      list_nodes: {:erlang, :nodes, [:connected]}
+    ]
+  ]
+```
+
 
 That's enough for elixir to try to find the other pods and attempt to connect to the nodes, however we need to allow
 that communication and let the pods read the information from the kubernetes API, next up add these permissions to your
@@ -80,10 +94,6 @@ Then in your `02-deployment.yaml` file:
           valueFrom:
             fieldRef:
               fieldPath: status.podIP
-        - name: NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
 ```
 
 And a service to make things easier `03-service.yaml` (epmd port):
@@ -97,21 +107,41 @@ spec:
   clusterIP: None
   selector:
     name: tr
-  ports:
-  - name: epmd
-    port: 4369
 ```
 
 This is to set the right environment variables for the application to use and to be able to connect to the other
 `nodes`.
 
-To verify if this is working you can start and `iex` session and call:
+Before moving on, make sure you generate the release files:
 ```
-Node.list()
+mix release.init
+```
+
+And now update your `rel/env.sh.eex` file so it looks like this:
+```
+export RELEASE_DISTRIBUTION=name
+export RELEASE_NODE=<%= @release.name %>@${POD_IP}
+```
+
+
+If everything went well, you should see something like this in the logs:
+```
+tr-deployment-6cf5c65b56-ndrgm tr 04:13:13.411 [info] [libcluster:erlang_nodes_in_k8s] connected to :"tr@10.42.1.217"
+tr-deployment-6cf5c65b56-ndrgm tr 04:13:13.416 [info] [libcluster:erlang_nodes_in_k8s] connected to :"tr@10.42.3.185"
+```
+
+If you want to validate it locally, use this command instead from `iex`:
+```
+❯ iex --name a@127.0.0.1 --cookie secret -S mix
+
+❯ iex --name b@127.0.0.1 --cookie secret -S mix
+
+iex(b@127.0.0.1)> Node.list()
 ```
 
 Some useful links:
 https://hexdocs.pm/libcluster/readme.html
+https://hexdocs.pm/libcluster/Cluster.Strategy.Kubernetes.DNS.html
 https://brain.d.foundation/Engineering/Backend/libcluster+in+elixir
 
 and last but not least good luck!
