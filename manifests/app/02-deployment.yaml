@@ -42,12 +42,8 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.namespace
-        - name: RELEASE_COOKIE
+        - name: NODE_COOKIE
           value: notreallyasecret
-        # - name: RELEASE_DISTRIBUTION
-        #   value: name
-        # - name: RELEASE_NODE
-        #   value: $(POD_NAME)@$(POD_IP)
         ports:
         - containerPort: 4000
         - containerPort: 4369
