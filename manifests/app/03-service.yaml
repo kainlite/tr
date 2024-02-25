@@ -16,6 +16,9 @@ kind: Service
 metadata:
   name: tr-cluster-svc
   namespace: tr
+  labels:
+    name: tr
+    app: tr
 spec:
   clusterIP: None
   selector:
