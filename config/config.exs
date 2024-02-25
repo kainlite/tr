@@ -72,6 +72,7 @@ config :libcluster,
         service: "tr-cluster-svc",
         application_name: "tr",
         kubernetes_namespace: namespace,
+        namespace: namespace,
         polling_interval: 10_000
       ]
     ]
