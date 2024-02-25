@@ -67,10 +67,10 @@ config :libcluster,
   topologies: [
     default: [
       mode: :dns,
-      strategy: Elixir.Cluster.Strategy.Kubernetes,
+      strategy: Elixir.Cluster.Strategy.Kubernetes.DNSSRV,
       config: [
-        kubernetes_node_basename: "tr-deployment",
-        kubernetes_selector: "name=tr",
+        service: "tr-cluster-svc",
+        application_name: "tr",
         kubernetes_namespace: namespace,
         polling_interval: 10_000
       ]
