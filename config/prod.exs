@@ -17,7 +17,7 @@ config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: Tr.Finch
 # Do not print debug messages in production
 # config :logger, level: :info
 
-config :logger, :info,
+config :logger, :console,
   format: "[$level] $metadata $message\n"
 
 # Runtime production configuration, including reading
