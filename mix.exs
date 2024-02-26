@@ -62,6 +62,9 @@ defmodule Tr.MixProject do
       {:makeup_diff, ">= 0.0.0"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:libcluster, "~> 3.3"},
+      {:remote_ip, "~> 1.1"},
+      {:logfmt, "~> 3.3"},
+      {:poison, "~> 5.0"},
     ]
   end
 
