@@ -149,8 +149,6 @@ and last but not least good luck!
 ##### **Closing notes**
 Let me know if there is anything that you would like to see implemented or tested, explored and what not in here...
 
-This was based from the steps described in the [official upgrade notes]().
-
 ##### **Errata**
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
