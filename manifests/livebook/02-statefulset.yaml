@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: livebook
+  name: livebook
+  namespace: livebook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: livebook
+  serviceName: "livebook"
+  template:
+    metadata:
+      labels:
+        app: livebook
+    spec:
+      containers:
+      - name: livebook
+        image: ghcr.io/livebook-dev/livebook:0.12.1
+        env:
+        - name: LIVEBOOK_PORT
+          value: "8080"
+        - name: LIVEBOOK_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: livebook-password
+              key: password
+        - name: LIVEBOOK_ROOT_PATH
+          value: /var/lib/livebook
+        volumeMounts:
+        - name: livebook-data-vol
+          mountPath: /var/lib/livebook
+      volumes:
+      - name: livebook-data-vol
+        persistentVolumeClaim:
+          claimName: livebook-data-pvc
