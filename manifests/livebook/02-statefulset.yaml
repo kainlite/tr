@@ -10,6 +10,7 @@ spec:
   selector:
     matchLabels:
       app: livebook
+  serviceName: "livebook"
   template:
     metadata:
       labels:
