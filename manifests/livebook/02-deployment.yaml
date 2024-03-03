@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: livebook
-        image: livebook/livebook:0.12.1
+        image: ghcr.io/livebook/livebook:0.12.1
         env:
         - name: LIVEBOOK_PORT
           value: "8080"
