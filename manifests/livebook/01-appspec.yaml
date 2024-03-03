@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: livebook
+  namespace: livebook
+spec:
+  destination:
+    namespace: livebook
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: manifests/livebook
+    repoURL: https://github.com/kainlite/tr
+    targetRevision: master
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
