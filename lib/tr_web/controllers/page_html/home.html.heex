@@ -9,6 +9,10 @@
   and see you on the other side...
 </p>
 
+<%= unless @current_user do %>
+  subscribe input
+<% end %>
+
 <section class="row">
   <article class="column">
     <h2>Latest articles</h2>

@@ -3,7 +3,7 @@ defmodule Tr.Repo.Migrations.AddFieldsToUsers do
 
   def change do
     alter table(:users) do
-      add :accept_emails, :boolean, default: false
+      add :accept_emails, :boolean, default: true
     end
   end
 end
