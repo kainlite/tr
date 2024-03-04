@@ -6,7 +6,9 @@ defmodule TrWeb.BlogLive do
   def mount(_params, _session, socket) do
     {:ok,
      socket
-     |> assign(:posts, Blog.all_posts())}
+     |> assign(:posts, Blog.all_posts())
+     |> assign(:current_user, nil)
+    }
   end
 
   @impl true

@@ -4,7 +4,13 @@ defmodule TrWeb.PostLive do
 
   @impl true
   def mount(params, _session, socket) do
-    {:ok, assign(socket, params: params, post: Blog.get_post_by_id!(Map.get(params, "id")))}
+    {
+      :ok,
+        socket
+        |> assign(:params, params)
+        |> assign(:post, Blog.get_post_by_id!(Map.get(params, "id")))
+        |> assign(:current_user, nil)
+    }
   end
 
   @impl true
