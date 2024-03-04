@@ -1,16 +1,18 @@
 <header>
   <section class="container">
-    <nav>
-      <ul >
-        <li class="flex">
-          <.link navigate={"/blog"} class="phx-logo">
+    <nav class="flex flex-row">
+      <ul class="float-left">
+        <li class="">
+          <.link navigate={"/"} class="phx-logo">
             <img src={~p"/images/techsquad.png"} alt="Techsquad lab logo" />
           </.link>
         </li>
-        </ul>
+      </ul>
+    
     </nav>
   </section>
 </header>
+
 <main class="sm:px-6 lg:px-8">
   <div class="mx-auto max-w-screen-2xl">
     <.flash_group flash={@flash} />
