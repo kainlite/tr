@@ -13,10 +13,10 @@ defmodule Tr.Blog do
     Phoenix.PubSub.subscribe(Blog, @topic)
   end
 
-  defp broadcast_change({:ok, result}, event) do
-    Phoenix.PubSub.broadcast(Blog, @topic, {__MODULE__, event, result})
-    {:ok, result}
-  end
+  # defp broadcast_change({:ok, result}, event) do
+  #   Phoenix.PubSub.broadcast(Blog, @topic, {__MODULE__, event, result})
+  #   {:ok, result}
+  # end
 
   # The @posts variable is first defined by NimblePublisher.
   # Let's further modify it by sorting all posts by descending date.

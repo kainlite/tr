@@ -3,11 +3,15 @@
   <p>Be brave, explore the unknown...</p>
 </section>
 <p>
-  This blog was created to document and learn about the infamous Web3 world with a dynamic self-hosted blog using
-  elixir, phoenix, postgres, docker, kubernetes (yes, really... k3s you know on ARM64), and many other things, but if
-  that catch your eye, you can follow me on twitter to encourage me to keep writting, so I hope you enjoy your stay and
-  see you on the other side...
+  This blog was created to document and learn about the infamous Web3 world among other things with a dynamic self-hosted 
+  blog using elixir, phoenix, postgres, docker, kubernetes (yes, really... k3s you know on ARM64), and many other things, 
+  but if that catch your eye, you can follow me on twitter to encourage me to keep writting, so I hope you enjoy your stay 
+  and see you on the other side...
 </p>
+
+<%= unless @current_user do %>
+  subscribe input
+<% end %>
 
 <section class="row">
   <article class="column">
