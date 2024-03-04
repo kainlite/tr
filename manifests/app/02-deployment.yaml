@@ -34,6 +34,10 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: status.podIP
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "/app/bin/tr eval \"Tr.Release.migrate()\""]
         ports:
         - containerPort: 4000
         - containerPort: 4369
