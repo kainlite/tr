@@ -45,3 +45,11 @@ spec:
     - name: script
       value: |
         kubectl -n tr rollout restart deployment/tr-deployment
+  - name: run-migrations
+    runAfter: ["restart-deployment"]
+    taskRef: 
+      name: mix-migration
+    params:
+    - name: script
+      value: |
+        /app/bin/tr eval "Tr.Release.migrate()"
