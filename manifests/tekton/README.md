@@ -13,6 +13,11 @@ tkn -n tekton-pipelines hub install task kaniko
 tkn -n tekton-pipelines hub install task kubernetes-actions
 ```
 
+To run migrations manually, jump into any app pod and run:
+```
+/app/bin/tr eval "Tr.Release.migrate()"
+```
+
 Useful links:
 https://github.com/tektoncd/triggers/blob/main/docs/getting-started/README.md
 https://tekton.dev/docs/how-to-guides/kaniko-build-push/#full-code-samples
