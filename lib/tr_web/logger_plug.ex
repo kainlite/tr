@@ -17,7 +17,7 @@ defmodule TrWeb.LoggerPlug do
     |> Conn.register_before_send(fn conn ->
       Logger.log level, fn ->
         stop = System.monotonic_time()
-        diff = System.convert_time_unit(stop - start, :native, :microseconds)
+        diff = System.convert_time_unit(stop - start, :native, :microsecond)
         Logfmt.encode [
           level: level,
           time: Poison.encode!(DateTime.utc_now),
