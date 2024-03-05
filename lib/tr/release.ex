@@ -21,6 +21,7 @@ defmodule Tr.Release do
   def start_tracker() do
     start_app()
     track_posts()
+
     if length(Tr.Tracker.get_unannounced_posts()) > 0 do
       announce_posts()
     end
@@ -88,7 +89,7 @@ defmodule Tr.Release do
 
       Enum.each(notifiable_users, fn user ->
         # Fire in the hole
-        Task.Supervisor.async_nolink(
+        Task.Supervisor.start_child(
           Tr.TaskSupervisor,
           fn ->
             Tr.PostTracker.Notifier.deliver_new_post_notification(
@@ -111,7 +112,7 @@ defmodule Tr.Release do
       Tr.Tracker.update_post_status(unannounced_post, %{announced: true})
 
       # Fire in the hole
-      Task.Supervisor.async_nolink(
+      Task.Supervisor.start_child(
         Tr.TaskSupervisor,
         fn ->
           Tr.PostTracker.Notifier.deliver_new_post_notification(
@@ -123,5 +124,7 @@ defmodule Tr.Release do
         end
       )
     end
+
+    IO.inspect(Task.Supervisor.children(Tr.TaskSupervisor))
   end
 end
