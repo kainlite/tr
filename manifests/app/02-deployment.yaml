@@ -20,6 +20,8 @@ spec:
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
+      imagePullSecrets:
+      - name: regcred
       containers:
       - name: tr
         image: kainlite/tr:master
