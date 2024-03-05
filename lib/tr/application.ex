@@ -20,8 +20,10 @@ defmodule Tr.Application do
       {Phoenix.PubSub, name: Tr.PubSub},
       # Start Finch
       {Finch, name: Tr.Finch},
+      # Start the Presence app 
+      TrWeb.Presence,
       # Start the Endpoint (http/https)
-      TrWeb.Endpoint
+      TrWeb.Endpoint,
       # Start a worker by calling: Tr.Worker.start_link(arg)
       # {Tr.Worker, arg}
     ]

@@ -10,6 +10,25 @@
 </p>
 
 <%= unless @current_user do %>
+<div class="flex">
+  <div class="m-auto">
+    <.link
+      href={~p"/users/register"}
+      class="text-[1.25rem] button"
+    >
+      Subscribe
+    </.link>
+  </div>
+</div>
+<div class="flex">
+  <div class="m-auto">
+    <p class="text-[1.2rem] justify-center">
+      Feel free to register (subscribe) to receive a monthly newsletter related to the topics on this blog and a 
+      notification on new articles (you can unsubscribe at any time from the settings page), in the future I expect to 
+      develop more features that rely on authentication, so the earlier is set the easiest will be later on.
+    </p>
+  </div>
+</div>
 <% end %>
 
 <section class="row">
@@ -47,4 +66,3 @@
     </ul>
   </article>
 </section>
-

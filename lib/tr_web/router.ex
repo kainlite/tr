@@ -26,8 +26,6 @@ defmodule TrWeb.Router do
   scope "/blog", TrWeb do
     pipe_through :browser
 
-    live "/newsletter", NewsletterLive, :index
-
     live "/", BlogLive, :index
     live "/:id", PostLive, :show
   end

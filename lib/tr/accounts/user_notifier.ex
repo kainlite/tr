@@ -8,7 +8,7 @@ defmodule Tr.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"TechSquad", "noreply@tr.techsquad.rocks"})
+      |> from({"TechSquad Blog", "noreply@tr.techsquad.rocks"})
       |> subject(subject)
       |> text_body(body)
 
