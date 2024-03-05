@@ -20,18 +20,19 @@ defmodule Tr.PostTracker.Notifier do
   @doc """
   Deliver instructions to update a user email.
   """
-  def deliver_new_post_notification(email, subject, body, url) do
-    deliver(email, subject, """
+  def deliver_new_post_notification(user, subject, body, url) do
+    deliver(user.email, subject, """
 
     ==============================
 
-    Hi #{email},
+    Hi #{user.email},
 
     A new article was just added:
 
-    > #{body}
+    #{body}
 
-    To read the full post go to: #{url}
+    To read the full post go to: 
+    #{url}
 
     You can disable this notification at any time from your settings page.
 

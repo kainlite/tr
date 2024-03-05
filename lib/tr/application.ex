@@ -20,6 +20,8 @@ defmodule Tr.Application do
       {Phoenix.PubSub, name: Tr.PubSub},
       # Start Finch
       {Finch, name: Tr.Finch},
+      # Task supervisor
+      {Task.Supervisor, name: Tr.TaskSupervisor},
       # Start the Presence app 
       TrWeb.Presence,
       # Start the Endpoint (http/https)

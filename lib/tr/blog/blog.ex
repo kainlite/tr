@@ -8,8 +8,14 @@ defmodule Tr.Blog do
     from: Application.app_dir(:tr, "priv/posts/**/*.md"),
     as: :posts,
     highlighters: [
-      :makeup_elixir, :makeup_erlang, :makeup_http, :makeup_diff, :makeup_eex, :makeup_monokai, :makeup_native
-      ]
+      :makeup_elixir,
+      :makeup_erlang,
+      :makeup_http,
+      :makeup_diff,
+      :makeup_eex,
+      :makeup_monokai,
+      :makeup_native
+    ]
 
   def subscribe do
     Phoenix.PubSub.subscribe(Blog, @topic)
@@ -42,6 +48,10 @@ defmodule Tr.Blog do
   def get_post_by_id!(id) do
     Enum.find(all_posts(), &(&1.id == id)) ||
       raise NotFoundError, "post with id=#{id} not found"
+  end
+
+  def get_post_by_slug(slug) do
+    Enum.find(all_posts(), &(&1.id == slug)) || nil
   end
 
   def get_posts_by_tag!(tag) do
