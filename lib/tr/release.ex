@@ -19,6 +19,7 @@ defmodule Tr.Release do
   end
 
   def start_tracker() do
+    load_app()
     track_posts()
     announce_posts()
   end
@@ -48,7 +49,9 @@ defmodule Tr.Release do
 
   defp announce_posts() do
     unanounced_posts = Tr.Tracker.get_unannounced_posts()
+    notifiable_users = Tr.Accounts.get_all_notifiable_users()
 
     IO.inspect(unanounced_posts)
+    IO.inspect(notifiable_users)
   end
 end

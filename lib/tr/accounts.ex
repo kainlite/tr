@@ -60,6 +60,20 @@ defmodule Tr.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  @doc """
+  Get all users that can be notified of new posts
+  
+  ## Examples
+
+      iex> get_all_notifiable_users()
+      [%User{}, %User{}]
+  """
+  def get_all_notifiable_users do
+    query = from(Tr.Accounts.User, where: [accept_emails: true])
+
+    Repo.all(query)
+  end
+
   ## User registration
 
   @doc """
