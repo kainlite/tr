@@ -19,7 +19,7 @@ defmodule Tr.Release do
   end
 
   def start_tracker() do
-    load_app()
+    start_app()
     track_posts()
     announce_posts()
   end
@@ -30,6 +30,11 @@ defmodule Tr.Release do
 
   defp load_app do
     Application.load(@app)
+  end
+
+  defp start_app do
+    load_app()
+    Application.ensure_all_started(@app)
   end
 
   defp track_posts do
