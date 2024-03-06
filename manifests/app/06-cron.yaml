@@ -6,7 +6,8 @@ metadata:
   labels:
     name: tr
 spec:
-  schedule: "00 21 * * *"
+  concurrencyPolicy: Forbid
+  schedule: "00 18 * * *"
   jobTemplate:
     spec:
       template:
@@ -19,7 +20,10 @@ spec:
           containers:
           - name: tr
             image: kainlite/tr:master
-            command: ["/bin/sh", "-c", "/app/bin/tr", "eval(\"Tr.Release.start_tracker()\")"]
+            command:
+              - /app/bin/tr
+              - eval
+              - Tr.Release.start_tracker
             envFrom:
             - secretRef:
                 name: tr-postgres-config
