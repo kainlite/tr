@@ -2,12 +2,14 @@ defmodule TrWeb.BlogLive do
   use TrWeb, :live_view
   alias Tr.Blog
 
+  on_mount {TrWeb.UserAuth, :mount_current_user}
+
   @impl true
   def mount(_params, _session, socket) do
-    {:ok,
-     socket
-     |> assign(:posts, Blog.all_posts())
-     |> assign(:current_user, nil)
+    {
+      :ok,
+        socket
+        |> assign(:posts, Blog.all_posts())
     }
   end
 

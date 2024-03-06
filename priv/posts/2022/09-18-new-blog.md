@@ -19,7 +19,7 @@ but sooner or late it will be here, but first let's take a look how all this is 
 ##### **Generating the app**
 We need to install hex locally, then the Phoenix generator, and then our app, we also generated a Dockerfile for our
 production deployment.
-```shell
+```elixir
 mix local.hex
 mix archive.install hex phx_new
 # Create the app
@@ -29,7 +29,7 @@ mix phx.gen.release --docker
 ``` 
 
 Don't forget about Ecto and the DB:
-```
+```elixir
 mix ecto.create
 mix ecto.migrate
 ```

@@ -36,7 +36,7 @@ Then look for the right binary for your architecture, in this case ARM64:
 * https://github.com/k3s-io/k3s/releases/download/v1.29.1%2Bk3s2/k3s-arm64
 
 Jump into the node, go to `/usr/local/bin`, and then:
-```shell
+```elixir
 mv k3s k3s.backup
 wget https://github.com/k3s-io/k3s/releases/download/v1.29.1%2Bk3s2/k3s-arm64
 mv k3s-arm64 k3s
@@ -51,12 +51,12 @@ sudo systemctl restart k3s-agent
 
 ##### **How does it work?**
 First you need to install it, I won't delve into much detail but I went with the classic kubectl command:
-```shell
+```elixir
 kubectl apply -f https://raw.githubusercontent.com/rancher/system-upgrade-controller/master/manifests/system-upgrade-controller.yaml
 ``` 
 
 After that we need to label the nodes that you want to upgrade
-```
+```elixir
 kubectl label node inst-759va-k3s-workers k3s-upgrade=true
 kubectl label node inst-0uk8y-k3s-servers k3s-upgrade=true
 kubectl label node inst-sd4tu-k3s-workers k3s-upgrade=true
@@ -64,7 +64,7 @@ kubectl label node inst-ziim5-k3s-servers k3s-upgrade=true
 ```
 
 Then the final bit, the plan for the controller, save this as `upgrade.yaml` and apply it with kubectl:
-```yaml
+```elixir
 apiVersion: upgrade.cattle.io/v1
 kind: Plan
 metadata:
@@ -87,7 +87,7 @@ Once that's applied the upgrade will start node by node, once it's complete you 
 new version as expected, there are some things that can block the progress on some nodes so pay attention to that as
 mentioned at the beggining of the article, but if everything goes well you should see something like this:
 
-```
+```elixir
 ❯ kubectl get pods -A | grep upgrade
 system-upgrade     system-upgrade-controller-5b5c68955d-dq7rm           1/1     Running     5 (66m ago)    19h
 

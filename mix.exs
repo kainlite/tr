@@ -56,16 +56,14 @@ defmodule Tr.MixProject do
       {:yamerl, "~> 0.10.0"},
       {:html_sanitize_ex, "~> 1.4.2"},
       {:nimble_publisher, "~> 0.1.3"},
+      {:makeup, ">= 0.0.0"},
       {:makeup_elixir, ">= 0.0.0"},
       {:makeup_erlang, ">= 0.0.0"},
-      {:makeup_eex, ">= 0.0.0"},
-      {:makeup_html, ">= 0.0.0"},
-      {:makeup_diff, ">= 0.0.0"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:libcluster, "~> 3.3"},
       {:remote_ip, "~> 1.1"},
       {:logfmt, "~> 3.3"},
-      {:poison, "~> 5.0"},
+      {:poison, "~> 5.0"}
     ]
   end
 

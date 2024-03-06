@@ -7,15 +7,7 @@ defmodule Tr.Blog do
     build: Post,
     from: Application.app_dir(:tr, "priv/posts/**/*.md"),
     as: :posts,
-    highlighters: [
-      :makeup_elixir,
-      :makeup_erlang,
-      :makeup_http,
-      :makeup_diff,
-      :makeup_eex,
-      :makeup_monokai,
-      :makeup_native
-    ]
+ 	 highlighters: [:makeup_elixir, :makeup_erlang]
 
   def subscribe do
     Phoenix.PubSub.subscribe(Blog, @topic)

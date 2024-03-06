@@ -12,12 +12,12 @@ libcluster with some basic configuration.
 
 ##### **Upgrading packages**
 For that to work you need to add in `mix.exs`:
-```shell
+```elixir
     {:libcluster, "~> 3.3"},
 ``` 
 
 Update your `lib/tr/application.ex` file to start libcluster
-```
+```elixir
     topologies = Application.get_env(:libcluster, :topologies, [])
 
     children = [
@@ -27,7 +27,7 @@ Update your `lib/tr/application.ex` file to start libcluster
 ```
 
 Then we need to update our `config/prod.exs` file to tell libcluster what to look for in the cluster:
-```
+```elixir
 # Libcluster configuration
 config :libcluster,
   topologies: [
@@ -44,7 +44,7 @@ config :libcluster,
 ```
 
 Dev config `config/dev.exs`:
-```
+```elixir
 config :libcluster,
   topologies: [
     example: [
@@ -62,7 +62,7 @@ That's enough for elixir to try to find the other pods and attempt to connect to
 that communication and let the pods read the information from the kubernetes API, next up add these permissions to your
 deployment `05-role.yaml`:
 
-```
+```elixir
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -88,7 +88,7 @@ roleRef:
 ```
 
 Then in your `02-deployment.yaml` file:
-```
+```elixir
         env:
         - name: POD_IP
           valueFrom:
@@ -97,7 +97,7 @@ Then in your `02-deployment.yaml` file:
 ```
 
 And a service to make things easier `03-service.yaml` (epmd port):
-```
+```elixir
 apiVersion: v1
 kind: Service
 metadata:
@@ -113,25 +113,25 @@ This is to set the right environment variables for the application to use and to
 `nodes`.
 
 Before moving on, make sure you generate the release files:
-```
+```elixir
 mix release.init
 ```
 
 And now update your `rel/env.sh.eex` file so it looks like this:
-```
+```elixir
 export RELEASE_DISTRIBUTION=name
 export RELEASE_NODE=<%= @release.name %>@${POD_IP}
 ```
 
 
 If everything went well, you should see something like this in the logs:
-```
+```elixir
 tr-deployment-6cf5c65b56-ndrgm tr 04:13:13.411 [info] [libcluster:erlang_nodes_in_k8s] connected to :"tr@10.42.1.217"
 tr-deployment-6cf5c65b56-ndrgm tr 04:13:13.416 [info] [libcluster:erlang_nodes_in_k8s] connected to :"tr@10.42.3.185"
 ```
 
 If you want to validate it locally, use this command instead from `iex`:
-```
+```elixir
 ❯ iex --name a@127.0.0.1 --cookie secret -S mix
 
 ❯ iex --name b@127.0.0.1 --cookie secret -S mix

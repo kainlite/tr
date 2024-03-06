@@ -21,7 +21,7 @@ this helps figure out everything that you need to do in order to get on the new 
 
 ##### **Upgrading packages**
 Upgrade packages manually in `mix.exs`:
-```shell
+```elixir
     {:phoenix, "~> 1.7.1"},
     {:phoenix_live_view, "~> 0.18.3"},
     {:phoenix_live_dashboard, "~> 0.7.2"},
@@ -29,7 +29,7 @@ Upgrade packages manually in `mix.exs`:
 If you have `phoenix` and `gettext` from your `:compilers` line in `mix.exs` remove it.
 
 Update your `.formatter.exs`
-```
+```elixir
 [
   import_deps: [:ecto, :phoenix],
   subdirectories: ["priv/*/migrations"],
@@ -42,7 +42,7 @@ Some things that can get a bit tricky, so these have been copied directly from t
 > Phoenix.LiveView.Helpers has been soft deprecated and all relevant functionality has been migrated. You must import Phoenix.Component where you previously imported Phoenix.LiveView.Helpers when upgrading (such as in your lib/app_web.ex). You may also need to import Phoenix.Component where you also imported Phoenix.LiveView and some of its functions have been moved to Phoenix.Component.
 
 > live_title_tag has also been renamed to live_title as a function component. Update your root.html.heex layout to use the new component:
-```
+```elixir
 -   <%= live_title_tag assigns[:page_title] || "Onesixfifteen", suffix: " · Phoenix Framework" %>
 +   <.live_title suffix=" · Phoenix Framework">
 +     <%= assigns[:page_title] || "MyApp" %>
