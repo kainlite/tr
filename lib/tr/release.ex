@@ -78,7 +78,7 @@ defmodule Tr.Release do
       body =
         Enum.join(
           Enum.map(List.zip([titles, descriptions]), fn p ->
-            elem(p, 0) <> "\n\n" <> elem(p, 1) <> "\n" <> url <> elem(p, 0) <> "\n\n\n\n"
+            elem(p, 0) <> "\n" <> elem(p, 1) <> "\n" <> url <> elem(p, 0) <> "\n\n"
           end)
         )
 
@@ -93,7 +93,7 @@ defmodule Tr.Release do
       post = Tr.Blog.get_post_by_slug(unannounced_post.slug)
       url = TrWeb.Endpoint.url() <> "/blog/" <> post.id
       subject = post.title
-      body = post.title <> "\n\n" <> post.description <> "\n\n" <> url
+      body = post.title <> "\n" <> post.description <> "\n" <> url
 
       # Mark post as already announced
       Tr.Tracker.update_post_status(unannounced_post, %{announced: true})

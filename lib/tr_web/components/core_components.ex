@@ -160,7 +160,7 @@ defmodule TrWeb.CoreComponents do
         <.icon :if={@kind == :error} name="hero-exclamation-circle-mini" class="w-4 h-4" />
         <%= @title %>
       </p>
-      <p class="mt-2 text-[0.8125rem] leading-5"><%= msg %></p>
+      <p class="mt-2 text-[1.25rem] leading-5"><%= msg %></p>
       <button
         :if={@close}
         type="button"
