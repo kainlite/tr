@@ -87,7 +87,27 @@ defmodule Tr.Release do
         Tr.Tracker.update_post_status(post, %{announced: true})
       end)
 
-      tasks = Enum.map(notifiable_users, fn user ->
+      notify_users(notifiable_users, subject, body, url)
+    else
+      unannounced_post = hd(unanounced_posts)
+      post = Tr.Blog.get_post_by_slug(unannounced_post.slug)
+      url = TrWeb.Endpoint.url() <> "/blog/" <> post.id
+      subject = post.title
+      body = post.title <> "\n\n" <> post.description <> "\n\n" <> url
+
+      # Mark post as already announced
+      Tr.Tracker.update_post_status(unannounced_post, %{announced: true})
+
+      # Fire in the hole
+      notify_users(notifiable_users, subject, body, url)
+    end
+
+    IO.inspect(Task.Supervisor.children(Tr.TaskSupervisor))
+  end
+
+  defp notify_users(users, subject, body, url) do
+    tasks =
+      Enum.map(users, fn user ->
         # Fire in the hole
         Task.Supervisor.async_nolink(
           Tr.TaskSupervisor,
@@ -102,32 +122,7 @@ defmodule Tr.Release do
         )
       end)
 
-      tasks 
-        |> Enum.map(&Task.await/1)
-    else
-      unannounced_post = hd(unanounced_posts)
-      post = Tr.Blog.get_post_by_slug(unannounced_post.slug)
-      url = TrWeb.Endpoint.url() <> "/blog/" <> post.id
-      subject = post.title
-      body = post.title <> "\n\n" <> post.description <> "\n\n" <> url
-
-      # Mark post as already announced
-      Tr.Tracker.update_post_status(unannounced_post, %{announced: true})
-
-      # Fire in the hole
-      Task.Supervisor.async_nolink(
-        Tr.TaskSupervisor,
-        fn ->
-          Tr.PostTracker.Notifier.deliver_new_post_notification(
-            hd(notifiable_users),
-            subject,
-            body,
-            url
-          )
-        end
-      )
-    end
-
-    IO.inspect(Task.Supervisor.children(Tr.TaskSupervisor))
+    tasks
+    |> Enum.map(&Task.await/1)
   end
 end
