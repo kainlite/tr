@@ -34,3 +34,4 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
             imagePullPolicy: Always
+          restartPolicy: Never
