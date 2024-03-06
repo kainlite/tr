@@ -87,9 +87,9 @@ defmodule Tr.Release do
         Tr.Tracker.update_post_status(post, %{announced: true})
       end)
 
-      Enum.each(notifiable_users, fn user ->
+      tasks = Enum.map(notifiable_users, fn user ->
         # Fire in the hole
-        Task.Supervisor.start_child(
+        Task.Supervisor.async_nolink(
           Tr.TaskSupervisor,
           fn ->
             Tr.PostTracker.Notifier.deliver_new_post_notification(
@@ -101,6 +101,9 @@ defmodule Tr.Release do
           end
         )
       end)
+
+      tasks 
+        |> Enum.map(&Task.await/1)
     else
       unannounced_post = hd(unanounced_posts)
       post = Tr.Blog.get_post_by_slug(unannounced_post.slug)
@@ -112,7 +115,7 @@ defmodule Tr.Release do
       Tr.Tracker.update_post_status(unannounced_post, %{announced: true})
 
       # Fire in the hole
-      Task.Supervisor.start_child(
+      Task.Supervisor.async_nolink(
         Tr.TaskSupervisor,
         fn ->
           Tr.PostTracker.Notifier.deliver_new_post_notification(
