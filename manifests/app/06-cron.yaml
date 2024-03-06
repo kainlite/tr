@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: tr-notifier
+  namespace: tr
+  labels:
+    name: tr
+spec:
+  schedule: "00 21 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+          imagePullSecrets:
+          - name: regcred
+          containers:
+          - name: tr
+            image: kainlite/tr:master
+            command: ["/bin/sh", "-c", "/app/bin/tr", "eval(\"Tr.Release.start_tracker()\")"]
+            envFrom:
+            - secretRef:
+                name: tr-postgres-config
+            - secretRef:
+                name: tr-mailer-config
+            env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+            securityContext:
+              allowPrivilegeEscalation: false
+            imagePullPolicy: Always
