@@ -2,6 +2,8 @@ defmodule TrWeb.DonationLive do
   use TrWeb, :live_view
   alias Tr.Donation
 
+  on_mount {TrWeb.UserAuth, :mount_current_user}
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
@@ -12,7 +14,7 @@ defmodule TrWeb.DonationLive do
   @impl true
   def render(assigns) do
     ~H"""
-      Donation lala
+    Donation lala
     """
   end
 end

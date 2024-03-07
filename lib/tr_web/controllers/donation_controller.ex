@@ -3,6 +3,7 @@ defmodule TrWeb.DonationController do
 
   alias Tr.Donation
 
+
   def index(conn, _params) do
     render(conn, :index, posts: Donation.all())
   end
