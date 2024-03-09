@@ -79,8 +79,7 @@ config :phoenix, :plug_init_mode, :runtime
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
 
-config :tr, Tr.Mailer,
-  adapter: Swoosh.Adapters.Local
+config :tr, Tr.Mailer, adapter: Swoosh.Adapters.Local
 
 config :libcluster,
   topologies: [

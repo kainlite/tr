@@ -155,19 +155,23 @@ defmodule TrWeb.CoreComponents do
       ]}
       {@rest}
     >
-      <p :if={@title} class="flex items-center gap-1.5 text-[0.8125rem] font-semibold leading-6">
+      <p :if={@title} class="flex items-center gap-1.5 text-[1rem] font-semibold leading-6">
         <.icon :if={@kind == :info} name="hero-information-circle-mini" class="w-4 h-4" />
         <.icon :if={@kind == :error} name="hero-exclamation-circle-mini" class="w-4 h-4" />
         <%= @title %>
       </p>
-      <p class="mt-2 text-[1.25rem] leading-5"><%= msg %></p>
+      <p class="mt-2 text-[1.25rem] mb-[0.5rem]"><%= msg %></p>
       <button
         :if={@close}
         type="button"
-        class="group absolute top-2 right-1 p-2"
+        class="group absolute top-2 right-1 p-[0.9rem] h-[2.3rem] "
         aria-label={gettext("close")}
       >
-        <.icon name="hero-x-mark-solid" class="w-5 h-5 opacity-40 group-hover:opacity-70" />
+        <.icon
+          name="hero-x-mark-solid"
+          class="group absolute w-5 h-5 top-2 right-1 opacity-[0.7] group-hover:text-white group-hover:opacity-90
+          text-black"
+        />
       </button>
     </div>
     """
@@ -323,7 +327,7 @@ defmodule TrWeb.CoreComponents do
           name={@name}
           value="true"
           checked={@checked}
-          class="rounded border-zinc-300 text-zinc-900 focus:ring-zinc-900"
+          class="rounded border-zinc-300 text-zinc-900 focus:ring-zinc-900 mb-[3px]"
           {@rest}
         />
         <%= @label %>

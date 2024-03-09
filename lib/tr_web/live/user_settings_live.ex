@@ -75,8 +75,12 @@ defmodule TrWeb.UserSettingsLive do
           phx-submit="update_accept_emails"
           phx-trigger-action={@trigger_submit}
         >
-          <.input field={@accept_emails_form[:accept_emails_toggle]} type="checkbox" label="Accept Emails"
-          checked={@current_user.accept_emails} />
+          <.input
+            field={@accept_emails_form[:accept_emails_toggle]}
+            type="checkbox"
+            label="Accept Emails"
+            checked={@current_user.accept_emails}
+          />
           <:actions>
             <.button phx-disable-with="Changing...">Change Accept Emails</.button>
           </:actions>
@@ -180,12 +184,12 @@ defmodule TrWeb.UserSettingsLive do
     end
   end
 
-  def handle_event("update_accept_emails", %{ "user" => params }, socket) do
+  def handle_event("update_accept_emails", %{"user" => params}, socket) do
     %{"accept_emails_toggle" => accept_emails} = params
 
     user = socket.assigns.current_user
 
-    case Accounts.update_user_accept_emails(user, %{ "accept_emails" => accept_emails}) do
+    case Accounts.update_user_accept_emails(user, %{"accept_emails" => accept_emails}) do
       {:ok, user} ->
         accept_emails_form =
           user
