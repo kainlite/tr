@@ -3,6 +3,7 @@
   author: "Gabriel Garrido",
   description: "Upgrading phoenix from 1.6 to 1.7...",
   tags: ~w(elixir phoenix),
+  published: true,
 }
 ---
 

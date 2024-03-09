@@ -7,7 +7,7 @@ defmodule Tr.Blog do
     build: Post,
     from: Application.app_dir(:tr, "priv/posts/**/*.md"),
     as: :posts,
- 	 highlighters: [:makeup_elixir, :makeup_erlang]
+    highlighters: [:makeup_elixir, :makeup_erlang]
 
   def subscribe do
     Phoenix.PubSub.subscribe(Blog, @topic)
@@ -21,9 +21,12 @@ defmodule Tr.Blog do
   # The @posts variable is first defined by NimblePublisher.
   # Let's further modify it by sorting all posts by descending date.
   @posts Enum.sort_by(@posts, & &1.date, {:desc, Date})
+         |> Enum.filter(&(Date.before?(&1.date, Date.utc_today()) && &1.published == true))
 
   # Group all the ids or URL slugs
-  @slugs @posts |> Enum.map(& &1.id) |> Enum.sort()
+  @slugs @posts
+         |> Enum.map(& &1.id)
+         |> Enum.sort()
 
   # Let's also get all tags
   @tags @posts |> Enum.flat_map(& &1.tags) |> Enum.uniq() |> Enum.sort()
