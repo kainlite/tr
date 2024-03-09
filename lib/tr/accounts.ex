@@ -62,14 +62,17 @@ defmodule Tr.Accounts do
 
   @doc """
   Get all users that can be notified of new posts
-  
+
   ## Examples
 
       iex> get_all_notifiable_users()
       [%User{}, %User{}]
   """
   def get_all_notifiable_users do
-    query = from(Tr.Accounts.User, where: [accept_emails: true])
+    query =
+      from(t in Tr.Accounts.User,
+        where: t.accept_emails == true and not is_nil(t.confirmed_at)
+      )
 
     Repo.all(query)
   end
@@ -243,16 +246,17 @@ defmodule Tr.Accounts do
   end
 
   def update_user_accept_emails(user, accept_emails) do
-    changeset = user
+    changeset =
+      user
       |> User.accept_emails_changeset(accept_emails)
       |> User.confirm_changeset()
 
     Ecto.Multi.new()
-      |> Ecto.Multi.update(:user, changeset)
-      |> Repo.transaction()
-      |> case do
-        {:ok, %{user: user}} -> {:ok, user}
-        {:error, :user, changeset, _} -> {:error, changeset}
+    |> Ecto.Multi.update(:user, changeset)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{user: user}} -> {:ok, user}
+      {:error, :user, changeset, _} -> {:error, changeset}
     end
   end
 

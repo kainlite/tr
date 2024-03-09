@@ -3,23 +3,29 @@
   <p>Be brave, explore the unknown...</p>
 </section>
 <p>
-  This blog was created to document and learn about the infamous Web3 world among other things with a dynamic self-hosted 
-  blog using elixir, phoenix, postgres, docker, kubernetes (yes, really... k3s you know on ARM64), and many other things, 
-  but if that catch your eye, you can follow me on twitter to encourage me to keep writting, so I hope you enjoy your stay 
-  and see you on the other side...
+  This blog was created to document and learn about different technologies, among other things it has been deployed to a
+  k3s cluster running in OCI, using elixir and the phoenix framework, postgres, docker, kubernetes on ARM64, and many other things, 
+  if that sounds interesting, you can follow me on twitter or create an account here to receive new posts notifications
+  and later on a newsletter, so I hope you enjoy your stay and see you on the other side...
 </p>
 
-<%= unless @current_user do %>
 <div class="flex">
-  <div class="m-auto">
-    <.link
-      href={~p"/users/register"}
-      class="text-[1.25rem] button"
-    >
-      Subscribe
-    </.link>
-    Or 
-    <.link href={~p"/donations"} class="text-[1.25rem] button">Donate</.link>
+  <div class="m-auto pb-[10px]">
+    <%= unless @current_user do %>
+      <.link
+        href={~p"/users/register"}
+        class="text-[1.25rem] button h-auto w-[217px]"
+      >
+        Subscribe
+      </.link>
+    <% end %>
+    <a href="https://www.buymeacoffee.com/NDx5OFh" target="_blank" class="">
+      <img
+        src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+        alt="Buy Me A Coffee"
+        style="height: 60px !important;width: 217px !important;"
+      />
+    </a>
   </div>
 </div>
 <div class="flex">
@@ -28,27 +34,10 @@
       Feel free to register (subscribe) to receive a monthly newsletter related to the topics on this blog and a 
       notification on new articles (you can unsubscribe at any time from the settings page), in the future I expect to 
       develop more features that rely on authentication, so the earlier is set the easiest will be later on.
-
     </p>
-    <p class="text-[1.2rem] justify-center">
-      Donations are experimental and mostly for the sake of learning...
-    </p>
+    <br>
   </div>
 </div>
-<% else %>
-<div class="flex">
-  <div class="m-auto">
-    <.link href={~p"/donations"} class="text-[1.25rem] button">Donate</.link>
-  </div>
-</div>
-<div class="flex">
-  <div class="m-auto">
-    <p class="text-[1.2rem] justify-center">
-      Donations are experimental and mostly for the sake of learning...
-    </p>
-  </div>
-</div>
-<% end %>
 
 <section class="row">
   <article class="column">

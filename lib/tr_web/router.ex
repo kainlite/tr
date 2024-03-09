@@ -30,12 +30,6 @@ defmodule TrWeb.Router do
     live "/:id", PostLive, :show
   end
 
-  scope "/donations", TrWeb do
-    pipe_through :browser 
-
-    live "/", DonationLive, :index 
-  end
-
   # Other scopes may use custom stacks.
   # scope "/api", TrWeb do
   #   pipe_through :api

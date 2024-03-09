@@ -80,7 +80,6 @@ defmodule TrWeb.UserSettingsLive do
             type="checkbox"
             label="Accept Emails"
             checked={@current_user.accept_emails}
-            classes="mb-0"
           />
           <:actions>
             <.button phx-disable-with="Changing...">Change Accept Emails</.button>

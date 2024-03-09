@@ -29,9 +29,9 @@ defmodule Tr.PostTracker.Notifier do
 
     A new article was just added:
 
-    #{body}
+    #{Earmark.as_html!(body)}
 
-    To read the full post go to: 
+    To read the full post or the blog go to: 
     #{url}
 
     You can disable this notification at any time from your settings page.
