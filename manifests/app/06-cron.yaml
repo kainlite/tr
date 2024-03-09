@@ -7,7 +7,7 @@ metadata:
     name: tr
 spec:
   concurrencyPolicy: Forbid
-  schedule: "00 18 * * *"
+  schedule: "00 00 * * *"
   jobTemplate:
     spec:
       template:
