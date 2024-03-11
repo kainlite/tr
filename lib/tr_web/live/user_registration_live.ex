@@ -31,6 +31,13 @@ defmodule TrWeb.UserRegistrationLive do
           Oops, something went wrong! Please check the errors below.
         </.error>
 
+        <.input
+          field={@form[:display_name]}
+          type="text"
+          label="Superhero name (Used for comments)"
+          value={@display_name}
+          required
+        />
         <.input field={@form[:email]} type="email" label="Email" required />
         <.input field={@form[:password]} type="password" label="Password" required />
 
@@ -48,6 +55,7 @@ defmodule TrWeb.UserRegistrationLive do
     socket =
       socket
       |> assign(trigger_submit: false, check_errors: false)
+      |> assign_new(:display_name, fn -> get_display_name() end)
       |> assign_form(changeset)
 
     {:ok, socket, temporary_assigns: [form: nil]}
@@ -83,5 +91,11 @@ defmodule TrWeb.UserRegistrationLive do
     else
       assign(socket, form: form)
     end
+  end
+
+  defp get_display_name() do
+    faker = Faker.Superhero
+
+    faker.prefix() <> " " <> faker.name() <> " " <> faker.suffix()
   end
 end

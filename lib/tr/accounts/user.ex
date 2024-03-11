@@ -8,8 +8,11 @@ defmodule Tr.Accounts.User do
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
     field :accept_emails, :boolean
+    field :display_name, :string
 
     timestamps()
+
+    has_many(:comments, Tr.Post.Comment)
   end
 
   @doc """
@@ -37,7 +40,7 @@ defmodule Tr.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:display_name, :email, :password])
     |> validate_email(opts)
     |> validate_password(opts)
   end
@@ -109,6 +112,12 @@ defmodule Tr.Accounts.User do
     end
   end
 
+  def display_name_changeset(user, attrs, _opts \\ []) do
+    user
+    |> cast(attrs, [:display_name])
+    |> validate_length(:display_name, max: 64)
+  end
+
   @doc """
   A user changeset for changing the password.
 
@@ -176,4 +185,9 @@ defmodule Tr.Accounts.User do
       %{} = changeset -> changeset
     end
   end
+
+  @doc """
+  Returns true if the user has confirmed their account, false otherwise
+  """
+  def is_confirmed?(user), do: user.confirmed_at != nil
 end

@@ -12,6 +12,20 @@ defmodule TrWeb.UserSettingsLive do
 
     <div class="space-y-12 divide-y">
       <div>
+        <.simple_form for={@display_name_form} id="display_name_form" phx-submit="update_display_name">
+          <.input
+            field={@email_form[:display_name]}
+            type="text"
+            label="Display Name"
+            value={@current_user.display_name}
+            required
+          />
+          <:actions>
+            <.button phx-disable-with="Changing...">Change display name</.button>
+          </:actions>
+        </.simple_form>
+      </div>
+      <div>
         <.simple_form
           for={@email_form}
           id="email_form"
@@ -108,6 +122,7 @@ defmodule TrWeb.UserSettingsLive do
     email_changeset = Accounts.change_user_email(user)
     password_changeset = Accounts.change_user_password(user)
     accept_emails_changeset = Accounts.change_user_accept_emails(user)
+    display_name_changeset = Accounts.change_user_display_name(user)
 
     socket =
       socket
@@ -117,6 +132,7 @@ defmodule TrWeb.UserSettingsLive do
       |> assign(:email_form, to_form(email_changeset))
       |> assign(:password_form, to_form(password_changeset))
       |> assign(:accept_emails_form, to_form(accept_emails_changeset))
+      |> assign(:display_name_form, to_form(display_name_changeset))
       |> assign(:trigger_submit, false)
 
     {:ok, socket}
@@ -132,6 +148,31 @@ defmodule TrWeb.UserSettingsLive do
       |> to_form()
 
     {:noreply, assign(socket, email_form: email_form, email_form_current_password: password)}
+  end
+
+  def handle_event("update_display_name", params, socket) do
+    %{"user" => user_params} = params
+    user = socket.assigns.current_user
+
+    case Accounts.apply_user_display_name(user, user_params) do
+      {:ok, applied_user} ->
+        display_name_form =
+          applied_user
+          |> Accounts.change_user_display_name(params)
+          |> to_form()
+
+        info = "Display name changed successfully."
+
+        {:noreply,
+         socket
+         |> assign(display_name_form: display_name_form)
+         |> assign(current_user: applied_user)
+         |> put_flash(:info, info)}
+
+      {:error, changeset} ->
+        {:noreply,
+         assign(socket, :display_name_form, to_form(Map.put(changeset, :action, :insert)))}
+    end
   end
 
   def handle_event("update_email", params, socket) do
