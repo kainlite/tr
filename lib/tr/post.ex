@@ -8,6 +8,16 @@ defmodule Tr.Post do
 
   alias Tr.Post.Comment
 
+  def subscribe(slug) do
+    channel = "post-" <> slug
+    Phoenix.PubSub.subscribe(Tr.PubSub, channel)
+  end
+
+  def broadcast(slug, message) do
+    channel = "post-" <> slug
+    Phoenix.PubSub.broadcast(Tr.PubSub, channel, message)
+  end
+
   @doc """
   Returns the list of comments for a post
 
@@ -136,9 +146,14 @@ defmodule Tr.Post do
 
   """
   def create_comment(attrs \\ %{}) do
-    %Comment{}
-    |> Comment.changeset(attrs)
-    |> Repo.insert()
+    {:ok, comment} =
+      %Comment{}
+      |> Comment.changeset(attrs)
+      |> Repo.insert()
+
+    broadcast(comment.slug, {:comment_created, comment})
+
+    {:ok, comment}
   end
 
   @doc """

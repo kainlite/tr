@@ -1,21 +1,27 @@
 defmodule TrWeb.PostLive do
   use TrWeb, :live_view
   alias Tr.Blog
+  alias Tr.Post
 
   on_mount {TrWeb.UserAuth, :mount_current_user}
 
   @impl true
   def mount(params, _session, socket) do
     changeset = Tr.Post.change_comment(%Tr.Post.Comment{})
+    post_id = Map.get(params, "id")
+
+    if connected?(socket) do
+      Post.subscribe(post_id)
+    end
 
     socket =
       socket
       |> assign(:params, params)
-      |> assign(:post, Blog.get_post_by_id!(Map.get(params, "id")))
+      |> assign(:post, Blog.get_post_by_id!(post_id))
       |> assign(trigger_submit: false, check_errors: false)
       |> assign_form(changeset)
-      |> assign(:comments, Tr.Post.get_parent_comments_for_post(Map.get(params, "id")))
-      |> assign(:children, Tr.Post.get_children_comments_for_post(Map.get(params, "id")))
+      |> assign(:comments, Tr.Post.get_parent_comments_for_post(post_id))
+      |> assign(:children, Tr.Post.get_children_comments_for_post(post_id))
       |> assign(:parent_comment_id, nil)
 
     {:ok, socket, temporary_assigns: [form: nil]}
@@ -160,7 +166,9 @@ defmodule TrWeb.PostLive do
           </:actions>
         </.simple_form>
       <% else %>
-        <p>Please complete your account verification to be able to write comments</p>
+        <p class="text-sm font-bold text-center">
+          Please complete your account verification to be able to write comments
+        </p>
       <% end %>
     </div>
     """
@@ -180,36 +188,10 @@ defmodule TrWeb.PostLive do
 
     if current_user && !is_nil(current_user.confirmed_at) do
       case Tr.Post.create_comment(params) do
-        {:ok, comment} ->
-          comments =
-            if is_nil(comment.parent_comment_id) do
-              socket.assigns.comments ++ [comment]
-            else
-              socket.assigns.comments
-            end
-
-          children =
-            if is_nil(comment.parent_comment_id) do
-              socket.assigns.children
-            else
-              # %{
-              #   socket.assigns.children
-              #   | comment.parent_comment_id =>
-              #       socket.assigns.children[comment.parent_comment_id] ++ [comment]
-              # }
-
-              Map.put(
-                socket.assigns.children,
-                comment.parent_comment_id,
-                Map.get(socket.assigns.children, comment.parent_comment_id, []) ++ [comment]
-              )
-            end
-
+        {:ok, _comment} ->
           {:noreply,
            socket
            |> assign(trigger_submit: true)
-           |> assign(:comments, comments)
-           |> assign(:children, children)
            |> put_flash(:info, "Comment saved successfully.")}
 
         {:error, %Ecto.Changeset{} = changeset} ->
@@ -240,6 +222,38 @@ defmodule TrWeb.PostLive do
         socket
       ) do
     {:noreply, assign(socket, :parent_comment_id, nil)}
+  end
+
+  @impl true
+  def handle_info({:comment_created, comment}, socket) do
+    comments =
+      if is_nil(comment.parent_comment_id) do
+        socket.assigns.comments ++ [comment]
+      else
+        socket.assigns.comments
+      end
+
+    children =
+      if is_nil(comment.parent_comment_id) do
+        socket.assigns.children
+      else
+        # %{
+        #   socket.assigns.children
+        #   | comment.parent_comment_id =>
+        #       socket.assigns.children[comment.parent_comment_id] ++ [comment]
+        # }
+
+        Map.put(
+          socket.assigns.children,
+          comment.parent_comment_id,
+          Map.get(socket.assigns.children, comment.parent_comment_id, []) ++ [comment]
+        )
+      end
+
+    {:noreply,
+     socket
+     |> assign(:comments, comments)
+     |> assign(:children, children)}
   end
 
   defp assign_form(socket, %Ecto.Changeset{} = changeset) do
