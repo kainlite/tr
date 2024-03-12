@@ -62,6 +62,8 @@ defmodule TrWeb.UserRegistrationLive do
   end
 
   def handle_event("save", %{"user" => user_params}, socket) do
+    user_params = Map.put(user_params, "avatar_url", Faker.Avatar.image_url())
+
     case Accounts.register_user(user_params) do
       {:ok, user} ->
         {:ok, _} =

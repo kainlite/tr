@@ -25,8 +25,8 @@ import topbar from "../vendor/topbar";
 let Hooks = {};
 Hooks.Scroll = {
   mounted() {
-    this.el.addEventListener("click", (e) => {
-      document.getElementById("comment_form").scrollIntoView();
+    this.el.addEventListener("comment_form_clicked", (e) => {
+      $("#comment_form").scrollIntoView();
     });
   },
 };

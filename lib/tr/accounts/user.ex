@@ -9,6 +9,7 @@ defmodule Tr.Accounts.User do
     field :confirmed_at, :naive_datetime
     field :accept_emails, :boolean
     field :display_name, :string
+    field :avatar_url, :string
 
     timestamps()
 
@@ -40,7 +41,7 @@ defmodule Tr.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:display_name, :email, :password])
+    |> cast(attrs, [:avatar_url, :display_name, :email, :password])
     |> validate_email(opts)
     |> validate_password(opts)
   end

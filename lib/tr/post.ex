@@ -9,7 +9,7 @@ defmodule Tr.Post do
   alias Tr.Post.Comment
 
   @doc """
-  Returns the list of posts for a post
+  Returns the list of comments for a post
 
   ## Examples
 
@@ -20,6 +20,60 @@ defmodule Tr.Post do
     query = from(Tr.Post.Comment, where: [slug: ^slug])
     comments = Repo.all(query)
     Repo.preload(comments, :user)
+  end
+
+  @doc """
+  Returns the list of parent comments for a post
+
+  ## Examples
+
+      iex> get_parent_comments_for_post(1)
+      [%Comment{}, ...]
+  """
+  def get_parent_comments_for_post(slug) do
+    query =
+      from p in Tr.Post.Comment,
+        where: is_nil(p.parent_comment_id) and p.slug == ^slug
+
+    comments = Repo.all(query)
+    Repo.preload(comments, :user)
+  end
+
+  @doc """
+  Returns the list of children comments for a comment
+
+  ## Examples
+
+      iex> get_children_comments_for_comment(1)
+      [%Comment{}, ...]
+  """
+  def get_children_comments_for_comment(comment_id) do
+    query =
+      from p in Tr.Post.Comment,
+        where: p.parent_comment_id == ^comment_id
+
+    comments = Repo.all(query)
+    Repo.preload(comments, :user)
+  end
+
+  @doc """
+  Returns the list of children comments for a post
+
+  ## Examples
+
+      iex> get_children_comments_for_post(1)
+      %{15 => [%Comment{}, ...]}
+  """
+  def get_children_comments_for_post(slug) do
+    query =
+      from p in Tr.Post.Comment,
+        where: p.slug == ^slug and not is_nil(p.parent_comment_id)
+
+    comments = Repo.all(query)
+    Repo.preload(comments, :user)
+
+    comments
+    |> Enum.group_by(& &1.parent_comment_id)
   end
 
   @doc """
@@ -34,6 +88,21 @@ defmodule Tr.Post do
   def list_comments do
     comments = Repo.all(Comment)
     Repo.preload(comments, :user)
+  end
+
+  @doc """
+  Gets a single comment.
+
+  ## Examples
+
+      iex> get_comment(123)
+      %Comment{}
+
+      iex> get_comment(456)
+
+  """
+  def get_comment(id) do
+    Repo.get(Comment, id)
   end
 
   @doc """
