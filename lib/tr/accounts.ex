@@ -41,7 +41,12 @@ defmodule Tr.Accounts do
   def get_user_by_email_and_password(email, password)
       when is_binary(email) and is_binary(password) do
     user = Repo.get_by(User, email: email)
-    if User.valid_password?(user, password), do: user
+
+    cond do
+      !User.valid_password?(user, password) -> {:error, :bad_username_or_password}
+      !User.is_confirmed?(user) -> {:error, :not_confirmed}
+      true -> {:ok, user}
+    end
   end
 
   @doc """
@@ -145,6 +150,21 @@ defmodule Tr.Accounts do
     |> Ecto.Changeset.apply_action(:update)
   end
 
+  def apply_user_display_name(user, attrs) do
+    changeset =
+      user
+      |> User.display_name_changeset(attrs)
+      |> User.confirm_changeset()
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:user, changeset)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{user: user}} -> {:ok, user}
+      {:error, :user, changeset, _} -> {:error, changeset}
+    end
+  end
+
   @doc """
   Updates the user email using the given token.
 
@@ -243,6 +263,10 @@ defmodule Tr.Accounts do
   """
   def change_user_accept_emails(user, attrs \\ %{}) do
     User.accept_emails_changeset(user, attrs)
+  end
+
+  def change_user_display_name(user, attrs \\ %{}) do
+    User.display_name_changeset(user, attrs)
   end
 
   def update_user_accept_emails(user, accept_emails) do

@@ -3,6 +3,7 @@
   author: "Gabriel Garrido",
   description: "Running a phoenix app in a multinode fashion in kubernetes",
   tags: ~w(elixir phoenix kubernetes),
+  published: true,
 }
 ---
 

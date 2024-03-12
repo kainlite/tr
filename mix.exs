@@ -63,7 +63,8 @@ defmodule Tr.MixProject do
       {:libcluster, "~> 3.3"},
       {:remote_ip, "~> 1.1"},
       {:logfmt, "~> 3.3"},
-      {:poison, "~> 5.0"}
+      {:poison, "~> 5.0"},
+      {:faker, "~> 0.18"}
     ]
   end
 
