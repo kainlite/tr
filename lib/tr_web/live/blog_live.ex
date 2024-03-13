@@ -8,8 +8,8 @@ defmodule TrWeb.BlogLive do
   def mount(_params, _session, socket) do
     {
       :ok,
-        socket
-        |> assign(:posts, Blog.all_posts())
+      socket
+      |> assign(:posts, Blog.all_posts())
     }
   end
 

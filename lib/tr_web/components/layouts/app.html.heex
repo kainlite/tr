@@ -1,49 +1,49 @@
 <header>
   <section class="container">
     <nav class="flex flex-row">
-    <ul class="relative z-10 flex flex-row-reverse items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
-      <%= if @current_user do %>
-        <li>
+      <ul class="relative z-10 flex flex-row-reverse items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
+        <%= if @current_user do %>
+          <li>
+            <.link
+              href={~p"/users/settings"}
+              class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            >
+              <%= @current_user.email %>
+            </.link>
+          </li>
+          <li class="text-[1.25rem] leading-6 text-zinc-900">
           <.link
-            href={~p"/users/settings"}
-            class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+          href={~p"/users/log_out"}
+          method="delete"
+          class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
           >
-          <%= @current_user.email %>
+          Log out
           </.link>
-        </li>
-        <li class="text-[1.25rem] leading-6 text-zinc-900">
-          <.link
-            href={~p"/users/log_out"}
-            method="delete"
-            class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-          >
-            Log out
-          </.link>
-        </li>
-      <% else %>
-        <li>
-          <.link
-            href={~p"/users/log_in"}
-            class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-          >
-            Log in
-          </.link>
-        </li>
-        <li>
-          <.link
-            href={~p"/users/register"}
-            class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-          >
-            Register
-          </.link>
-        </li>
-      <% end %>
-    </ul>
+          </li>
+        <% else %>
+          <li>
+            <.link
+              href={~p"/users/log_in"}
+              class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            >
+              Log in
+            </.link>
+          </li>
+          <li>
+            <.link
+              href={~p"/users/register"}
+              class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            >
+              Register
+            </.link>
+          </li>
+        <% end %>
+      </ul>
     </nav>
     <nav class="flex flex-row">
       <ul class="float-left">
         <li class="">
-          <.link navigate={"/"} class="phx-logo">
+          <.link navigate="/" class="phx-logo">
             <img src={~p"/images/techsquad.png"} alt="Techsquad lab logo" />
           </.link>
         </li>

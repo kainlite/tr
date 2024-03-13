@@ -2,6 +2,9 @@ defmodule TrWeb.PostLive do
   use TrWeb, :live_view
   alias Tr.Blog
   alias Tr.Post
+  alias TrWeb.Presence
+
+  @topic "users:connected"
 
   on_mount {TrWeb.UserAuth, :mount_current_user}
 
@@ -11,8 +14,18 @@ defmodule TrWeb.PostLive do
     post_id = Map.get(params, "id")
 
     if connected?(socket) do
+      # Comments PubSub
       Post.subscribe(post_id)
+
+      # Presence PubSub
+      Phoenix.PubSub.subscribe(Tr.PubSub, post_id)
+
+      # Track browser session
+      {:ok, _} =
+        Presence.track(self(), post_id, @topic, %{})
     end
+
+    connected_users = calculate_connected_users(post_id)
 
     socket =
       socket
@@ -23,6 +36,8 @@ defmodule TrWeb.PostLive do
       |> assign(:comments, Tr.Post.get_parent_comments_for_post(post_id))
       |> assign(:children, Tr.Post.get_children_comments_for_post(post_id))
       |> assign(:parent_comment_id, nil)
+      |> assign(:connected_users, connected_users)
+      |> assign(:diff, nil)
 
     {:ok, socket, temporary_assigns: [form: nil]}
   end
@@ -64,6 +79,12 @@ defmodule TrWeb.PostLive do
       <div class="mx-auto py-8">
         <h1 class="text-3xl font-bold mb-6">Comments</h1>
         <ul class="space-y-4 list-none">
+          <li class="px-1">
+            <p class="text-sm float-right mb-0 font-bold ">
+              Online: <%= @connected_users %>
+            </p>
+            <span class="flex w-3 h-3 me-3 bg-green-500 rounded-full float-right mr-[5px]"></span>
+          </li>
           <%= for comment <- @comments do %>
             <% user = Tr.Repo.preload(comment, :user).user %>
             <% link_id = "comment-#{comment.id}-#{:rand.uniform(100_000)}" %>
@@ -237,12 +258,6 @@ defmodule TrWeb.PostLive do
       if is_nil(comment.parent_comment_id) do
         socket.assigns.children
       else
-        # %{
-        #   socket.assigns.children
-        #   | comment.parent_comment_id =>
-        #       socket.assigns.children[comment.parent_comment_id] ++ [comment]
-        # }
-
         Map.put(
           socket.assigns.children,
           comment.parent_comment_id,
@@ -254,6 +269,24 @@ defmodule TrWeb.PostLive do
      socket
      |> assign(:comments, comments)
      |> assign(:children, children)}
+  end
+
+  @impl true
+  def handle_info(
+        %{
+          topic: topic,
+          event: "presence_diff",
+          payload: %{joins: _joins, leaves: _leaves}
+        },
+        socket
+      ) do
+    { :noreply, socket |> assign(:connected_users, calculate_connected_users(topic))}
+  end
+
+  defp calculate_connected_users(post_id) do
+    connected_users = Map.get(Presence.list(post_id), @topic, %{})
+    metas = Map.get(connected_users, :metas, [])
+    Enum.count(metas)
   end
 
   defp assign_form(socket, %Ecto.Changeset{} = changeset) do
