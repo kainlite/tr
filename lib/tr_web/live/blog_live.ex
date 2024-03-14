@@ -5,18 +5,27 @@ defmodule TrWeb.BlogLive do
   on_mount {TrWeb.UserAuth, :mount_current_user}
 
   @impl true
+  def mount(%{"tag" => tag} = _params, _session, socket) do
+    {
+      :ok,
+      socket
+      |> assign(:posts, Blog.by_tag(tag))
+    }
+  end
+
+  @impl true
   def mount(_params, _session, socket) do
     {
       :ok,
       socket
-      |> assign(:posts, Blog.all_posts())
+      |> assign(:posts, Blog.posts())
     }
   end
 
   @impl true
   def render(assigns) do
     ~H"""
-    <%= for post <- Blog.all_posts() do %>
+    <%= for post <- @posts do %>
       <div id={post.id} style="margin-bottom: 3rem;">
         <h2>
           <.link navigate={~p"/blog/#{post.id}"}>
@@ -27,12 +36,23 @@ defmodule TrWeb.BlogLive do
         <p>
           <time><%= post.date %></time> by <%= post.author %>
         </p>
-
-        <p>
-          Tagged as <%= Enum.join(post.tags, ", ") %>
-        </p>
-
         <%= raw(post.description) %>
+
+        <p class="clear-both"></p>
+        <div class="mx-auto">
+          <ul class="space-y-4 list-none">
+            <li class="px-1">
+            </li>
+            <%= for tag <- post.tags do %>
+              <li class="bg-white shadow-md p-4 rounded-lg border-l-solid border-l-[5px] border-l-gray-700 float-left">
+                <.link navigate={~p"/blog?tag=#{tag}"}>
+                  <%= tag %>
+                </.link>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+        <p class="clear-both"></p>
       </div>
     <% end %>
     """

@@ -45,18 +45,37 @@ defmodule TrWeb.PostLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <.link navigate={~p"/blog"}>
-      ← All posts
-    </.link>
+    <div class="float-left">
+      <h2><%= @post.title %></h2>
+    </div>
+    <div class="float-right">
+      <h5>
+        <.link navigate={~p"/blog"}>
+          ← All posts
+        </.link>
+        <p class="clear-both"></p>
+      </h5>
+    </div>
 
-    <h2><%= @post.title %></h2>
-    <h5>
-      <time><%= @post.date %></time> by <%= @post.author %>
-    </h5>
+    <p class="clear-both"></p>
 
-    <p>
-      Tagged as <%= Enum.join(@post.tags, ", ") %>
-    </p>
+    <div class="mx-auto">
+      <ul class="space-y-4 list-none">
+        <li class="px-1">
+          <h5 class="font-bold py-0">Tags</h5>
+        </li>
+        <%= for tag <- @post.tags do %>
+          <li class="bg-white shadow-md p-4 rounded-lg border-l-solid border-l-[5px] border-l-gray-700 float-left">
+            <.link navigate={~p"/blog?tag=#{tag}"}>
+              <%= tag %>
+            </.link>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <p class="clear-both"></p>
+
     <%= raw(@post.body) %>
 
     <div class="mx-auto max-w-4xl">
@@ -76,14 +95,15 @@ defmodule TrWeb.PostLive do
         </.header>
       <% end %>
 
-      <div class="mx-auto py-8">
-        <h1 class="text-3xl font-bold mb-6">Comments</h1>
-        <ul class="space-y-4 list-none">
-          <li class="px-1">
-            <p class="text-sm float-right mb-0 font-bold ">
+      <div class="mx-auto">
+        <ul class="list-none mb-0">
+          <li class="px-1 mb-0">
+            <h4 class="font-bold  float-left">Comments</h4>
+            <p class="text-sm float-right mb-0 p-0 font-bold ">
               Online: <%= @connected_users %>
+              <span class="flex w-3 h-3 me-3 bg-green-500 rounded-full float-right mr-[5px]"></span>
+              <p class="clear-both my-0 mb-0 p-0"></p>
             </p>
-            <span class="flex w-3 h-3 me-3 bg-green-500 rounded-full float-right mr-[5px]"></span>
           </li>
           <%= for comment <- @comments do %>
             <% user = Tr.Repo.preload(comment, :user).user %>
@@ -191,6 +211,10 @@ defmodule TrWeb.PostLive do
           Please complete your account verification to be able to write comments
         </p>
       <% end %>
+
+      <div class="text-center">
+        <time><%= @post.date %></time> by <%= @post.author %>
+      </div>
     </div>
     """
   end
@@ -280,7 +304,7 @@ defmodule TrWeb.PostLive do
         },
         socket
       ) do
-    { :noreply, socket |> assign(:connected_users, calculate_connected_users(topic))}
+    {:noreply, socket |> assign(:connected_users, calculate_connected_users(topic))}
   end
 
   defp calculate_connected_users(post_id) do
