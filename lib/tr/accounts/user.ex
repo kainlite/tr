@@ -1,4 +1,7 @@
 defmodule Tr.Accounts.User do
+  @moduledoc """
+    This schema handles the representation of a user
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -190,5 +193,5 @@ defmodule Tr.Accounts.User do
   @doc """
   Returns true if the user has confirmed their account, false otherwise
   """
-  def is_confirmed?(user), do: user.confirmed_at != nil
+  def confirmed?(user), do: user.confirmed_at != nil
 end

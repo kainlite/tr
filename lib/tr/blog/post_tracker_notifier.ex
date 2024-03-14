@@ -1,4 +1,7 @@
 defmodule Tr.PostTracker.Notifier do
+  @moduledoc """
+    Email notifier for posts and comments
+  """
   import Swoosh.Email
 
   alias Tr.Mailer

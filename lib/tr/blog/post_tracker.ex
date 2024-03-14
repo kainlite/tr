@@ -1,4 +1,7 @@
 defmodule Tr.PostTracker do
+@moduledoc """
+  This is the representation of the posts that have been tracked
+"""
   use Ecto.Schema
   import Ecto.Changeset
 

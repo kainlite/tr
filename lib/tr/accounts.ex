@@ -44,7 +44,7 @@ defmodule Tr.Accounts do
 
     cond do
       !User.valid_password?(user, password) -> {:error, :bad_username_or_password}
-      !User.is_confirmed?(user) -> {:error, :not_confirmed}
+      !User.confirmed?(user) -> {:error, :not_confirmed}
       true -> {:ok, user}
     end
   end

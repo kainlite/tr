@@ -1,4 +1,8 @@
 defmodule TrWeb.UserAuth do
+  @moduledoc """
+  This module manages User authentication
+  """
+
   use TrWeb, :verified_routes
 
   import Plug.Conn

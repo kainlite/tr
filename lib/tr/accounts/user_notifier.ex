@@ -1,4 +1,8 @@
 defmodule Tr.Accounts.UserNotifier do
+  @moduledoc """
+    This module is responsible for sending account related emails to users.
+  """
+
   import Swoosh.Email
 
   alias Tr.Mailer

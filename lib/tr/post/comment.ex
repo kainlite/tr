@@ -1,4 +1,7 @@
 defmodule Tr.Post.Comment do
+  @moduledoc """
+    This schema handles the representation of a comment
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

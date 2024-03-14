@@ -1,4 +1,7 @@
 defmodule Tr.Blog do
+  @moduledoc """
+    This module is responsible for managing the blog posts
+  """
   alias Tr.Blog.Post
 
   use NimblePublisher,
