@@ -1,7 +1,7 @@
 defmodule Tr.Blog.Post do
-@moduledoc """
-  Transforms markdown into nice HTML blog posts
-"""
+  @moduledoc """
+    Transforms markdown into nice HTML blog posts
+  """
   @enforce_keys [:id, :author, :title, :body, :description, :tags, :date, :published]
   defstruct [:id, :author, :title, :body, :description, :tags, :date, :published]
 

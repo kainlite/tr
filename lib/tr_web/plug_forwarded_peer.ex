@@ -1,4 +1,4 @@
-  # credo:disable-for-this-file
+# credo:disable-for-this-file
 defmodule PlugForwardedPeer do
   import Plug.Conn
   def init(_), do: []
