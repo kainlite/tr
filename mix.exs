@@ -9,7 +9,14 @@ defmodule Tr.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
     ]
   end
 
@@ -64,7 +71,8 @@ defmodule Tr.MixProject do
       {:remote_ip, "~> 1.1"},
       {:logfmt, "~> 3.3"},
       {:poison, "~> 5.0"},
-      {:faker, "~> 0.18"}
+      {:faker, "~> 0.18"},
+      {:excoveralls, "~> 0.18", only: :test}
     ]
   end
 

@@ -1,0 +1,54 @@
+name: Elixir CI
+
+on: 
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-22.04
+
+    env:
+      MIX_ENV: test
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: "26.2.2"
+          elixir-version: "1.15.1-otp-26"
+
+      - name: Restore dependencies cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-
+
+      - name: Install dependencies
+        run: mix deps.get
+
+      - name: Compilation
+        run: mix compile --warnings-as-errors
+
+      - name: Check formatting
+        run: mix format --check-formatted
+
+      - name: Credo
+        run: mix credo
+
+      - name: Run tests
+        run: mix coveralls.json
+
+      - name: Download codecov uploader
+        run: curl -Os https://uploader.codecov.io/latest/linux/codecov && chmod +x codecov
+
+      - name: Upload test coverage
+        run: ./codecov
