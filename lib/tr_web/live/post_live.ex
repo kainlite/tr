@@ -239,12 +239,12 @@ defmodule TrWeb.PostLive do
            |> assign(trigger_submit: true)
            |> put_flash(:info, "Comment saved successfully.")}
 
-        # {:error, %Ecto.Changeset{} = changeset} ->
-        #   {:noreply,
-        #    socket
-        #    |> assign(check_errors: true)
-        #    |> assign_form(changeset)
-        #    |> put_flash(:error, "There is been an error saving your comment.")}
+          # {:error, %Ecto.Changeset{} = changeset} ->
+          #   {:noreply,
+          #    socket
+          #    |> assign(check_errors: true)
+          #    |> assign_form(changeset)
+          #    |> put_flash(:error, "There is been an error saving your comment.")}
       end
     else
       {:noreply, socket |> put_flash(:error, "You need to validate your account")}
