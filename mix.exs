@@ -72,7 +72,8 @@ defmodule Tr.MixProject do
       {:logfmt, "~> 3.3"},
       {:poison, "~> 5.0"},
       {:faker, "~> 0.18"},
-      {:excoveralls, "~> 0.18", only: :test}
+      {:excoveralls, "~> 0.18", only: :test},
+      {:git_hooks, "~> 0.7.0", only: [:dev], runtime: false}
     ]
   end
 
