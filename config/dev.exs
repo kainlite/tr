@@ -106,7 +106,6 @@ config :git_hooks,
       ]
     ],
     pre_push: [
-      verbose: false,
       tasks: [
         {:cmd, "mix dialyzer"},
         {:cmd, "mix test --color"},
