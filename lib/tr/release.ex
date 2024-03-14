@@ -68,7 +68,6 @@ defmodule Tr.Release do
       posts =
         Enum.map(unanounced_posts, fn p -> Tr.Blog.get_post_by_slug(p.slug) end)
 
-      # IO.inspect(posts)
       descriptions =
         Enum.map(posts, fn p ->
           Map.get(p, :description)
@@ -101,8 +100,6 @@ defmodule Tr.Release do
       # Fire in the hole
       notify_users(notifiable_users, subject, body, url)
     end
-
-    IO.inspect(Task.Supervisor.children(Tr.TaskSupervisor))
   end
 
   defp notify_users(users, subject, body, url) do
