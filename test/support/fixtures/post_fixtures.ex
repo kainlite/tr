@@ -12,9 +12,9 @@ defmodule Tr.PostFixtures do
       attrs
       |> Enum.into(%{
         body: "some body",
-        parent_comment_id: "some parent_comment_id",
-        slug: "some slug",
-        source_ip: "some source_ip",
+        parent_comment_id: 1,
+        slug: "some-slug",
+        source_ip: "1.1.1.1",
         user_id: 42
       })
       |> Tr.Post.create_comment()
