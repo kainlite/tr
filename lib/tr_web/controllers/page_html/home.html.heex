@@ -4,7 +4,7 @@
 </section>
 <p>
   This blog was created to document and learn about different technologies, among other things it has been deployed to a
-  k3s cluster running in OCI, using elixir and the phoenix framework, postgres, docker, kubernetes on ARM64, and many other things, 
+  k3s cluster running in OCI, using elixir and the phoenix framework, postgres, docker, kubernetes on ARM64, and many other things,
   if that sounds interesting, you can follow me on twitter or create an account here to receive new posts notifications
   and later on a newsletter, so I hope you enjoy your stay and see you on the other side...
 </p>
@@ -12,10 +12,7 @@
 <div class="flex">
   <div class="m-auto pb-[10px]">
     <%= unless @current_user do %>
-      <.link
-        href={~p"/users/register"}
-        class="text-[1.25rem] button h-auto w-[217px]"
-      >
+      <.link href={~p"/users/register"} class="text-[1.25rem] button h-auto w-[217px]">
         Subscribe
       </.link>
     <% end %>
@@ -31,11 +28,11 @@
 <div class="flex">
   <div class="m-auto">
     <p class="text-[1.2rem] justify-center">
-      Feel free to register (subscribe) to receive a monthly newsletter related to the topics on this blog and a 
-      notification on new articles (you can unsubscribe at any time from the settings page), in the future I expect to 
+      Feel free to register (subscribe) to receive a monthly newsletter related to the topics on this blog and a
+      notification on new articles (you can unsubscribe at any time from the settings page), in the future I expect to
       develop more features that rely on authentication, so the earlier is set the easiest will be later on.
     </p>
-    <br>
+    <br />
   </div>
 </div>
 

@@ -7,7 +7,6 @@ defmodule Tr.Repo.Migrations.CreatePostTracker do
       add :announced, :boolean, default: false, null: false
 
       timestamps()
-
     end
 
     create unique_index(:post_tracker, [:slug])

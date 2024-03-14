@@ -27,15 +27,13 @@ defmodule TrWeb.UserSessionController do
         |> put_flash(:info, info)
         |> UserAuth.log_in_user(user, user_params)
 
-        {:error, :bad_username_or_password} ->
-
+      {:error, :bad_username_or_password} ->
         conn
         |> put_flash(:error, "Invalid email or password")
         |> put_flash(:email, String.slice(email, 0, 160))
         |> redirect(to: ~p"/users/log_in")
 
-        {:error, :not_confirmed} -> 
-
+      {:error, :not_confirmed} ->
         conn
         |> put_flash(:error, "Please verify your account")
         |> redirect(to: ~p"/users/log_in")

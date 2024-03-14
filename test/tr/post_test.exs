@@ -21,7 +21,13 @@ defmodule Tr.PostTest do
     end
 
     test "create_comment/1 with valid data creates a comment" do
-      valid_attrs = %{body: "some body", slug: "some slug", user_id: 42, source_ip: "some source_ip", parent_comment_id: "some parent_comment_id"}
+      valid_attrs = %{
+        body: "some body",
+        slug: "some slug",
+        user_id: 42,
+        source_ip: "some source_ip",
+        parent_comment_id: "some parent_comment_id"
+      }
 
       assert {:ok, %Comment{} = comment} = Post.create_comment(valid_attrs)
       assert comment.body == "some body"
@@ -37,7 +43,14 @@ defmodule Tr.PostTest do
 
     test "update_comment/2 with valid data updates the comment" do
       comment = comment_fixture()
-      update_attrs = %{body: "some updated body", slug: "some updated slug", user_id: 43, source_ip: "some updated source_ip", parent_comment_id: "some updated parent_comment_id"}
+
+      update_attrs = %{
+        body: "some updated body",
+        slug: "some updated slug",
+        user_id: 43,
+        source_ip: "some updated source_ip",
+        parent_comment_id: "some updated parent_comment_id"
+      }
 
       assert {:ok, %Comment{} = comment} = Post.update_comment(comment, update_attrs)
       assert comment.body == "some updated body"

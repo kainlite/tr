@@ -25,7 +25,7 @@ defmodule Tr.Blog do
   def all_posts, do: @posts
   def all_slugs, do: @slugs
   def all_tags, do: @tags
-  def by_tag(tag), do: get_posts_by_tag!(tag) 
+  def by_tag(tag), do: get_posts_by_tag!(tag)
   def recent_posts(num \\ 5), do: Enum.take(posts(), num)
 
   defmodule NotFoundError, do: defexception([:message, plug_status: 404])

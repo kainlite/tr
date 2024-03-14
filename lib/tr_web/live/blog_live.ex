@@ -41,8 +41,7 @@ defmodule TrWeb.BlogLive do
         <p class="clear-both"></p>
         <div class="mx-auto">
           <ul class="space-y-4 list-none">
-            <li class="px-1">
-            </li>
+            <li class="px-1"></li>
             <%= for tag <- post.tags do %>
               <li class="bg-white shadow-md p-4 rounded-lg border-l-solid border-l-[5px] border-l-gray-700 float-left">
                 <.link navigate={~p"/blog?tag=#{tag}"}>
