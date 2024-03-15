@@ -6,7 +6,7 @@ defmodule Tr.PostFixtures do
   import Tr.AccountsFixtures
 
   @doc """
-  Generate a comment.
+  Generate a post.
   """
   def post_fixture(attrs \\ %{}) do
     post =
