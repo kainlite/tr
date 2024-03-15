@@ -8,6 +8,26 @@ defmodule Tr.PostFixtures do
   @doc """
   Generate a comment.
   """
+  def post_fixture(attrs \\ %{}) do
+    post =
+      attrs
+      |> Enum.into(%{
+        id: "some-slug",
+        title: "some title",
+        body: "some body",
+        tags: ["elixir", "phoenix"],
+        published: true,
+        author: "some author",
+        description: "some description",
+        date: ~D[2020-01-01]
+      })
+
+    post
+  end
+
+  @doc """
+  Generate a comment.
+  """
   def comment_fixture(attrs \\ %{}) do
     user = confirmed_user_fixture()
 
