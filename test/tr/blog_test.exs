@@ -46,7 +46,7 @@ defmodule Tr.BlogTest do
 
     test "raises NotFoundError when post by id is not found" do
       assert_raise Blog.NotFoundError, "post with id=0 not found", fn ->
-      Blog.get_post_by_id!(0)
+        Blog.get_post_by_id!(0)
       end
     end
   end
