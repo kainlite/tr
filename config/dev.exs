@@ -103,6 +103,7 @@ config :git_hooks,
     pre_commit: [
       tasks: [
         {:cmd, "mix format"},
+        {:cmd, "mix compile"},
         {:cmd, "mix format --check-formatted"},
         {:cmd, "mix credo"},
         {:cmd, "mix dialyzer"},

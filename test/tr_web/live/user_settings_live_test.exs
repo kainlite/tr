@@ -105,7 +105,7 @@ defmodule TrWeb.UserSettingsLiveTest do
         })
 
       render_submit(form)
-      new_password_conn = follow_trigger_action(form, conn)
+      _ = follow_trigger_action(form, conn)
 
       assert Accounts.get_user_by_email_and_password(user.email, new_password)
     end

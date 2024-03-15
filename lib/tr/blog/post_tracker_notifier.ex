@@ -67,10 +67,14 @@ defmodule Tr.PostTracker.Notifier do
     deliver(user.email, subject, """
     ==============================
     Hi #{user.email},
+
     A new reply was just added to a comment you are following:
+
     #{Earmark.as_html!(body)}
+
     To read the full post or the blog go to: 
     #{url}
+
     You can disable this notification at any time from your settings page.
     ==============================
     """)
