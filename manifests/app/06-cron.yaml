@@ -23,7 +23,7 @@ spec:
             command:
               - /app/bin/tr
               - eval
-              - Tr.Release.start_tracker
+              - Tr.Tracker.start_tracker
             envFrom:
             - secretRef:
                 name: tr-postgres-config

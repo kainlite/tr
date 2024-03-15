@@ -74,7 +74,8 @@ defmodule Tr.MixProject do
       {:faker, "~> 0.18"},
       {:excoveralls, "~> 0.18", only: :test},
       {:git_hooks, "~> 0.7.0", only: [:dev], runtime: false},
-      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
   end
 

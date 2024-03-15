@@ -15,8 +15,6 @@ defmodule TrWeb.Endpoint do
 
   # Remote ip parser
   plug RemoteIp
-  plug PlugForwardedPeer
-  plug TrWeb.LoggerPlug
 
   # Serve at "/" the static files from "priv/static" directory.
   #
