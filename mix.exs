@@ -62,7 +62,7 @@ defmodule Tr.MixProject do
       {:earmark, "~> 1.4.27"},
       {:yamerl, "~> 0.10.0"},
       {:html_sanitize_ex, "~> 1.4.2"},
-      {:nimble_publisher, "~> 0.1.3"},
+      {:nimble_publisher, "~> 1.1.0"},
       {:makeup, ">= 0.0.0"},
       {:makeup_elixir, ">= 0.0.0"},
       {:makeup_erlang, ">= 0.0.0"},
