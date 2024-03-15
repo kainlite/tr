@@ -234,8 +234,6 @@ defmodule TrWeb.PostLive do
     if current_user && !is_nil(current_user.confirmed_at) do
       case Tr.Post.create_comment(params) do
         {:ok, comment} ->
-          IO.inspect(comment)
-
           {:noreply,
            socket
            |> assign(trigger_submit: true)
