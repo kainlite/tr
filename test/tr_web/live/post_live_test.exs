@@ -30,7 +30,6 @@ defmodule TrWeb.PostLiveTest do
       #     "comment[slug]" => "upgrading-k3s-with-system-upgrade-controller"
       #   })
 
-
       # render_submit(form)
       # follow_trigger_action(form, conn)
 
