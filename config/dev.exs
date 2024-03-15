@@ -107,7 +107,7 @@ config :git_hooks,
         {:cmd, "mix credo"},
         {:cmd, "mix dialyzer"},
         {:cmd, "mix test --color"},
-{:cmd, "echo 'success!'"}
+        {:cmd, "echo 'success!'"}
       ]
     ],
     pre_push: [
