@@ -10,10 +10,10 @@ defmodule Tr.PostTest do
 
     @invalid_attrs %{body: nil, slug: nil, user_id: nil, parent_comment_id: nil}
 
-    # test "list_comments/0 returns all comments" do
-    #   comment = comment_fixture()
-    #   assert Post.list_comments() == [comment]
-    # end
+    test "list_comments/0 returns all comments" do
+      comment = Tr.Repo.preload(comment_fixture(), :user)
+      assert Post.list_comments() == [comment]
+    end
 
     test "get_comment!/1 returns the comment with given id" do
       comment = comment_fixture()
@@ -35,9 +35,9 @@ defmodule Tr.PostTest do
       assert comment.parent_comment_id == nil
     end
 
-    # test "create_comment/1 with invalid data returns error changeset" do
-    #   assert {:error, %Ecto.Changeset{}} = Post.create_comment(@invalid_attrs)
-    # end
+    test "create_comment/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Post.create_comment(@invalid_attrs)
+    end
 
     test "update_comment/2 with valid data updates the comment" do
       comment = comment_fixture()

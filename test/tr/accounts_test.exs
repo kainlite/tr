@@ -30,12 +30,14 @@ defmodule Tr.AccountsTest do
                Accounts.get_user_by_email_and_password(user.email, "invalid")
     end
 
-    # test "returns the user if the email and password are valid" do
-    #   %{id: id} = user = user_fixture()
+    test "returns the user if the email and password are valid and the account was verified" do
+      %{id: id} = user = confirmed_user_fixture()
 
-    #   assert %User{id: ^id} =
-    #            Accounts.get_user_by_email_and_password(user.email, valid_user_password())
-    # end
+      {:ok, user} =
+        Accounts.get_user_by_email_and_password(user.email, valid_user_password())
+
+      assert %User{id: ^id} = user
+    end
   end
 
   describe "get_user!/1" do

@@ -4,85 +4,86 @@ defmodule TrWeb.UserSessionControllerTest do
   import Tr.AccountsFixtures
 
   setup do
-    %{user: user_fixture()}
+    %{unconfirmed_user: user_fixture()}
+    %{user: confirmed_user_fixture()}
   end
 
   describe "POST /users/log_in" do
-    # test "logs the user in", %{conn: conn, user: user} do
-    # conn =
-    #   post(conn, ~p"/users/log_in", %{
-    #     "user" => %{"email" => user.email, "password" => valid_user_password()}
-    #   })
+    test "logs the user in", %{conn: conn, user: user} do
+      conn =
+        post(conn, ~p"/users/log_in", %{
+          "user" => %{"email" => user.email, "password" => valid_user_password()}
+        })
 
-    # assert get_session(conn, :user_token)
-    # assert redirected_to(conn) == ~p"/"
+      assert get_session(conn, :user_token)
+      assert redirected_to(conn) == ~p"/"
 
-    # Now do a logged in request and assert on the menu
-    # conn = get(conn, ~p"/")
-    # response = html_response(conn, 200)
-    # assert response =~ user.email
-    # assert response =~ ~p"/users/settings"
-    # assert response =~ ~p"/users/log_out"
-    # end
+      # Now do a logged in request and assert on the menu
+      conn = get(conn, ~p"/")
+      response = html_response(conn, 200)
+      assert response =~ user.email
+      assert response =~ ~p"/users/settings"
+      assert response =~ ~p"/users/log_out"
+    end
 
-    # test "logs the user in with remember me", %{conn: conn, user: user} do
-    #   conn =
-    #     post(conn, ~p"/users/log_in", %{
-    #       "user" => %{
-    #         "email" => user.email,
-    #         "password" => valid_user_password(),
-    #         "remember_me" => "true"
-    #       }
-    #     })
+    test "logs the user in with remember me", %{conn: conn, user: user} do
+      conn =
+        post(conn, ~p"/users/log_in", %{
+          "user" => %{
+            "email" => user.email,
+            "password" => valid_user_password(),
+            "remember_me" => "true"
+          }
+        })
 
-    #   assert conn.resp_cookies["_tr_web_user_remember_me"]
-    #   assert redirected_to(conn) == ~p"/"
-    # end
+      assert conn.resp_cookies["_tr_web_user_remember_me"]
+      assert redirected_to(conn) == ~p"/"
+    end
 
-    # test "logs the user in with return to", %{conn: conn, user: user} do
-    # conn =
-    #   conn
-    #   |> init_test_session(user_return_to: "/blog")
-    #   |> post(~p"/users/log_in", %{
-    #     "user" => %{
-    #       "email" => user.email,
-    #       "password" => valid_user_password()
-    #     }
-    #   })
+    test "logs the user in with return to", %{conn: conn, user: user} do
+      conn =
+        conn
+        |> init_test_session(user_return_to: "/blog")
+        |> post(~p"/users/log_in", %{
+          "user" => %{
+            "email" => user.email,
+            "password" => valid_user_password()
+          }
+        })
 
-    # assert redirected_to(conn) == "/blog"
-    # assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "Welcome back!"
-    # end
+      assert redirected_to(conn) == "/blog"
+      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "Welcome back!"
+    end
 
-    # test "login following registration", %{conn: conn, user: user} do
-    # conn =
-    #   conn
-    #   |> post(~p"/users/log_in", %{
-    #     "_action" => "registered",
-    #     "user" => %{
-    #       "email" => user.email,
-    #       "password" => valid_user_password()
-    #     }
-    #   })
+    test "login following registration", %{conn: conn, user: unconfirmed_user} do
+      conn =
+        conn
+        |> post(~p"/users/log_in", %{
+          "_action" => "registered",
+          "user" => %{
+            "email" => unconfirmed_user.email,
+            "password" => valid_user_password()
+          }
+        })
 
-    # assert redirected_to(conn) == ~p"/"
-    # assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "Account created successfully"
-    # end
+      assert redirected_to(conn) == ~p"/"
+      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "Account created successfully"
+    end
 
-    # test "login following password update", %{conn: conn, user: user} do
-    # conn =
-    #   conn
-    #   |> post(~p"/users/log_in", %{
-    #     "_action" => "password_updated",
-    #     "user" => %{
-    #       "email" => user.email,
-    #       "password" => valid_user_password()
-    #     }
-    #   })
+    test "login following password update", %{conn: conn, user: user} do
+      conn =
+        conn
+        |> post(~p"/users/log_in", %{
+          "_action" => "password_updated",
+          "user" => %{
+            "email" => user.email,
+            "password" => valid_user_password()
+          }
+        })
 
-    # assert redirected_to(conn) == ~p"/users/settings"
-    # assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "Password updated successfully"
-    # end
+      assert redirected_to(conn) == ~p"/users/settings"
+      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "Password updated successfully"
+    end
 
     test "redirects to login page with invalid credentials", %{conn: conn} do
       conn =

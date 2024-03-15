@@ -233,18 +233,20 @@ defmodule TrWeb.PostLive do
 
     if current_user && !is_nil(current_user.confirmed_at) do
       case Tr.Post.create_comment(params) do
-        {:ok, _comment} ->
+        {:ok, comment} ->
+          IO.inspect(comment)
+
           {:noreply,
            socket
            |> assign(trigger_submit: true)
            |> put_flash(:info, "Comment saved successfully.")}
 
-          # {:error, %Ecto.Changeset{} = changeset} ->
-          #   {:noreply,
-          #    socket
-          #    |> assign(check_errors: true)
-          #    |> assign_form(changeset)
-          #    |> put_flash(:error, "There is been an error saving your comment.")}
+        {:error, %Ecto.Changeset{} = changeset} ->
+          {:noreply,
+           socket
+           |> assign(check_errors: true)
+           |> assign_form(changeset)
+           |> put_flash(:error, "There is been an error saving your comment.")}
       end
     else
       {:noreply, socket |> put_flash(:error, "You need to validate your account")}

@@ -13,10 +13,14 @@ defmodule Tr.Post do
     Phoenix.PubSub.subscribe(Tr.PubSub, channel)
   end
 
-  def broadcast(slug, message) do
-    channel = "post-" <> slug
-    Phoenix.PubSub.broadcast(Tr.PubSub, channel, message)
+  def broadcast({:ok, message}, tag) do
+    channel = "post-" <> message.slug
+    Phoenix.PubSub.broadcast(Tr.PubSub, channel, {tag, message})
+
+    {:ok, message}
   end
+
+  def broadcast({:error, _changeset} = error, _), do: error
 
   @doc """
   Returns the list of comments for a post
@@ -146,14 +150,10 @@ defmodule Tr.Post do
 
   """
   def create_comment(attrs \\ %{}) do
-    {:ok, comment} =
-      %Comment{}
-      |> Comment.changeset(attrs)
-      |> Repo.insert()
-
-    broadcast(comment.slug, {:comment_created, comment})
-
-    {:ok, comment}
+    %Comment{}
+    |> Comment.changeset(attrs)
+    |> Repo.insert()
+    |> broadcast(:comment_created)
   end
 
   @doc """
