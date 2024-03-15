@@ -20,7 +20,7 @@ defmodule TrWeb.PostLiveTest do
     end
 
     test "sends a comment", %{conn: conn} do
-      {:ok, lv, html} =
+      {:ok, _lv, html} =
         conn
         |> live(~p"/blog/upgrading-k3s-with-system-upgrade-controller")
 
