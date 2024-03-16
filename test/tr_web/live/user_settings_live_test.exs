@@ -1,5 +1,5 @@
 defmodule TrWeb.UserSettingsLiveTest do
-  use TrWeb.ConnCase, async: true
+  use TrWeb.ConnCase, async: false
 
   alias Tr.Accounts
   import Phoenix.LiveViewTest

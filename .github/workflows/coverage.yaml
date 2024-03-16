@@ -35,6 +35,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: nanasess/setup-chromedriver@v2
+      - run: |
+          export DISPLAY=:99
+          chromedriver --url-base=/wd/hub &
+          sudo Xvfb -ac :99 -screen 0 1920x1080x24 > /dev/null 2>&1 & # optional
+
       - name: Set up Elixir
         uses: erlef/setup-beam@v1
         with:

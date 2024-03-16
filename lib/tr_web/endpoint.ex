@@ -1,6 +1,10 @@
 defmodule TrWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :tr
 
+  if Application.compile_env(:tr, :sql_sandbox) do
+    plug Phoenix.Ecto.SQL.Sandbox
+  end
+
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
@@ -11,7 +15,8 @@ defmodule TrWeb.Endpoint do
     same_site: "Lax"
   ]
 
-  socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
+  socket "/live", Phoenix.LiveView.Socket,
+    websocket: [connect_info: [:user_agent, session: @session_options]]
 
   # Remote ip parser
   plug RemoteIp

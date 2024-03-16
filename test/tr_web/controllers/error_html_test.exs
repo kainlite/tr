@@ -1,5 +1,5 @@
 defmodule TrWeb.ErrorHTMLTest do
-  use TrWeb.ConnCase, async: true
+  use TrWeb.ConnCase, async: false
 
   # Bring render_to_string/4 for testing custom views
   import Phoenix.Template

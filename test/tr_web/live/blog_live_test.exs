@@ -1,5 +1,5 @@
 defmodule TrWeb.BlogLiveTest do
-  use TrWeb.ConnCase, async: true
+  use TrWeb.ConnCase, async: false
 
   import Phoenix.LiveViewTest
 

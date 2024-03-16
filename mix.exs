@@ -75,7 +75,8 @@ defmodule Tr.MixProject do
       {:excoveralls, "~> 0.18", only: :test},
       {:git_hooks, "~> 0.7.0", only: [:dev], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false}
+      {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false},
+      {:wallaby, "~> 0.30", runtime: false, only: :test}
     ]
   end
 
@@ -90,10 +91,10 @@ defmodule Tr.MixProject do
       setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.build": ["tailwind default", "esbuild default"],
-      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
+      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"],
+      test: ["esbuild default", "ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
 end
