@@ -21,7 +21,7 @@ config :tr, Tr.Repo,
 config :tr, TrWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "JnCErsnzXelkHZyMNrvHSomPSngAlkX/PrXXfI3LB9TKsIAwsw1tgkoS5U5N0ovQ",
-  server: false
+  server: true
 
 # In test we don't send emails.
 config :tr, Tr.Mailer, adapter: Swoosh.Adapters.Test
@@ -34,3 +34,9 @@ config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :wallaby,
+  screenshot_on_failure: false,
+  opt_app: :tr,
+  driver: Wallaby.Chrome,
+  chromedriver: [headless: false, binary: "/usr/bin/google-chrome-stable"]
