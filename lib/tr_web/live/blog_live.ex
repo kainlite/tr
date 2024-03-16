@@ -2,8 +2,6 @@ defmodule TrWeb.BlogLive do
   use TrWeb, :live_view
   alias Tr.Blog
 
-  on_mount {TrWeb.UserAuth, :mount_current_user}
-
   @impl true
   def mount(%{"tag" => tag} = _params, _session, socket) do
     {

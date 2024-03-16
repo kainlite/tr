@@ -1,13 +1,12 @@
 defmodule TrWeb.Integration.PostIntegrationTest do
-  use TrWeb.FeatureCase, async: true
+  use TrWeb.FeatureCase, async: false
   use Wallaby.Feature
   use Phoenix.VerifiedRoutes, router: TrWeb.Router, endpoint: TrWeb.Endpoint
 
-  import Wallaby.Query, only: [text_field: 1, button: 1, css: 2]
+  import Wallaby.Query
 
   import TrWeb.TestHelpers
 
-  @message_field text_field("comment_body")
   @send_button button("Send")
 
   describe "Blog articles" do
@@ -17,6 +16,13 @@ defmodule TrWeb.Integration.PostIntegrationTest do
       |> find(css("section", count: 3))
       |> Enum.at(1)
       |> assert_has(css("h1", text: "Welcome to the laboratory"))
+    end
+
+    test "has some articles", %{session: session} do
+      session
+      |> visit("/blog")
+      |> find(css("div #upgrading-k3s-with-system-upgrade-controller", count: 1))
+      |> assert_has(css("h2", text: "Upgrading K3S with system-upgrade-controller"))
     end
 
     def message(msg), do: css("li", text: msg)
@@ -54,9 +60,11 @@ defmodule TrWeb.Integration.PostIntegrationTest do
 
       user1
       |> assert_has(message("Hello user1!"))
+      |> assert_has(css("p", text: "Online: 2"))
 
       user2
       |> assert_has(message("Hello user2!"))
+      |> assert_has(css("p", text: "Online: 2"))
     end
   end
 end

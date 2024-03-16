@@ -23,15 +23,6 @@ defmodule TrWeb.Router do
     get "/", PageController, :index
   end
 
-  scope "/blog", TrWeb do
-    pipe_through :browser
-
-    live_session :default, on_mount: TrWeb.Hooks.AllowEctoSandbox do
-      live "/", BlogLive, :index
-      live "/:id", PostLive, :show
-    end
-  end
-
   # Other scopes may use custom stacks.
   # scope "/api", TrWeb do
   #   pipe_through :api
@@ -54,15 +45,23 @@ defmodule TrWeb.Router do
     end
   end
 
-  ## Authentication routes
+  live_session :default, on_mount: TrWeb.Hooks.AllowEctoSandbox do
+    scope "/blog", TrWeb do
+      pipe_through :browser
 
+      live "/", BlogLive, :index
+      live "/:id", PostLive, :show
+    end
+  end
+
+  ## Authentication routes
   scope "/", TrWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
     live_session :redirect_if_user_is_authenticated,
       on_mount: [
         {TrWeb.UserAuth, :redirect_if_user_is_authenticated},
-        {TrWeb.Hooks.AllowEctoSandbox, :on_mount}
+        {TrWeb.Hooks.AllowEctoSandbox, :default}
       ] do
       live "/users/register", UserRegistrationLive, :new
       live "/users/log_in", UserLoginLive, :new
@@ -79,7 +78,7 @@ defmodule TrWeb.Router do
     live_session :require_authenticated_user,
       on_mount: [
         {TrWeb.UserAuth, :ensure_authenticated},
-        {TrWeb.Hooks.AllowEctoSandbox, :on_mount}
+        {TrWeb.Hooks.AllowEctoSandbox, :default}
       ] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
@@ -92,7 +91,7 @@ defmodule TrWeb.Router do
     delete "/users/log_out", UserSessionController, :delete
 
     live_session :current_user,
-      on_mount: [{TrWeb.UserAuth, :mount_current_user}, {TrWeb.Hooks.AllowEctoSandbox, :on_mount}] do
+      on_mount: [{TrWeb.UserAuth, :mount_current_user}, {TrWeb.Hooks.AllowEctoSandbox, :default}] do
       live "/users/confirm/:token", UserConfirmationLive, :edit
       live "/users/confirm", UserConfirmationInstructionsLive, :new
     end

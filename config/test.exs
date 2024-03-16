@@ -32,6 +32,8 @@ config :swoosh, :api_client, false
 # Print only warnings and errors during test
 config :logger, level: :warning
 
+config :tr, sql_sandbox: true
+
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
 
@@ -39,4 +41,4 @@ config :wallaby,
   screenshot_on_failure: false,
   opt_app: :tr,
   driver: Wallaby.Chrome,
-  chromedriver: [headless: false, binary: "/usr/bin/google-chrome-stable"]
+  chromedriver: [headless: true, binary: "/usr/bin/google-chrome-stable"]

@@ -1,5 +1,5 @@
 defmodule TrWeb.ErrorJSONTest do
-  use TrWeb.ConnCase, async: true
+  use TrWeb.ConnCase, async: false
 
   test "renders 404" do
     assert TrWeb.ErrorJSON.render("404.json", %{}) == %{errors: %{detail: "Not Found"}}

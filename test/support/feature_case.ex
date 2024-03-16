@@ -18,6 +18,7 @@ defmodule TrWeb.FeatureCase do
     metadata = Phoenix.Ecto.SQL.Sandbox.metadata_for(Tr.Repo, self())
 
     {:ok, session} = Wallaby.start_session(metadata: metadata)
+
     {:ok, session: session}
   end
 end

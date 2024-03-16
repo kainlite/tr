@@ -1,5 +1,5 @@
 defmodule TrWeb.UserResetPasswordLiveTest do
-  use TrWeb.ConnCase, async: true
+  use TrWeb.ConnCase, async: false
 
   import Phoenix.LiveViewTest
   import Tr.AccountsFixtures
