@@ -12,8 +12,11 @@ defmodule Tr.Blog do
 
   # The @posts variable is first defined by NimblePublisher.
   # Let's further modify it by sorting all posts by descending date.
+  # We add 1 day so the comparison returns true on the given release date
   @posts Enum.sort_by(@posts, & &1.date, {:desc, Date})
-         |> Enum.filter(&(Date.before?(&1.date, Date.utc_today()) && &1.published == true))
+         |> Enum.filter(
+           &(Date.before?(&1.date, Date.add(Date.utc_today(), 1)) && &1.published == true)
+         )
 
   # Group all the ids or URL slugs
   @slugs @posts
