@@ -73,6 +73,9 @@ config :wallaby,
  socket "/live", Phoenix.LiveView.Socket,
     websocket: [connect_info: [:user_agent, session: @session_options]]
 ```
+The `user_agent` setting within the socket configuration ensures Wallaby can correctly associate each test browser session with the appropriate database interactions.
+
+**Router**
 
 The next step is to setup the router, basically we need to setup the `on_mount` hook in live_session, there are two ways
 to do it, and we will see both because this application uses the phoenix generated authentication.
@@ -89,9 +92,8 @@ The first block makes sure that all the default LiveView sessions uses the hook.
     end
   end
 ```
-The `user_agent` setting within the socket configuration ensures Wallaby can correctly associate each test browser session with the appropriate database interactions.
 
-**Router:** The second block adds the same hook for all the remaining LiveViews, specifying it in the `on_mount`.
+The second block adds the same hook for all the remaining LiveViews, specifying it in the `on_mount`.
 ```elixir
   ## Authentication routes
   scope "/", TrWeb do
