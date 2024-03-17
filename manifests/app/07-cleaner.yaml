@@ -44,7 +44,7 @@ spec:
           serviceAccount: cleaner
           containers:
             - name: kubectl
-              image: ghcr.io/ctron/kubectl:latest
+              image: bitnami/kubectl:latest
               env:
               - name: NUM_TO_KEEP
                 value: "3"
@@ -52,5 +52,5 @@ spec:
               - /bin/bash
               - -c
               - |
-                  TO_DELETE="$(kubectl get -n tekton-pipelines pipelinerun -o jsonpath='{range .items[?(@.status.completionTime)]}{.status.completionTime}{" "}{.metadata.name}{"\n"}{end}' | sort | head -n -${NUM_TO_KEEP} | awk '{ print $2}')"
-                  test -n "$TO_DELETE" && kubectl -n tekton-pipelines  pipelinerun ${TO_DELETE} || true
+                  TO_DELETE="$(kubectl -n tekton-pipelines get pipelinerun -o jsonpath='{range .items[?(@.status.completionTime)]}{.status.completionTime}{" "}{.metadata.name}{"\n"}{end}' | sort | head -n -${NUM_TO_KEEP} | awk '{ print $2}')"
+                  test -n "$TO_DELETE" && kubectl -n tekton-pipelines pipelinerun ${TO_DELETE} || true
