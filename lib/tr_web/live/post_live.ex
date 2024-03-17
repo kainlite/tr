@@ -111,14 +111,14 @@ defmodule TrWeb.PostLive do
             <% link_id = "comment-#{comment.id}-#{:rand.uniform(100_000)}" %>
             <% parent_classes =
               "bg-white shadow-md p-4 rounded-lg border-l-solid border-l-[5px] border-l-gray-700" %>
-            <CommentComponent.render
+            <CommentComponent.render_comment
               avatar_url={user.avatar_url}
               display_name={get_display_name(user)}
               comment={comment}
               link_id={link_id}
               classes={parent_classes}
             >
-            </CommentComponent.render>
+            </CommentComponent.render_comment>
 
             <%= for child <- Map.get(@children, comment.id, []) do %>
               <% user = Tr.Repo.preload(child, :user).user %>
@@ -126,52 +126,28 @@ defmodule TrWeb.PostLive do
               <% child_classes =
                 "bg-white shadow-md p-4 rounded-lg ml-[40px] border-l-solid border-l-[5px] border-l-teal-300" %>
 
-              <CommentComponent.render
+              <CommentComponent.render_comment
                 avatar_url={user.avatar_url}
                 display_name={get_display_name(user)}
                 comment={child}
                 link_id={link_id}
                 classes={child_classes}
               >
-              </CommentComponent.render>
+              </CommentComponent.render_comment>
             <% end %>
           <% end %>
         </ul>
       </div>
 
       <%= if @current_user && @current_user.confirmed_at do %>
-        <%= unless is_nil(@parent_comment_id) do %>
-          <% user =
-            Tr.Repo.preload(
-              Tr.Post.get_comment(@parent_comment_id),
-              :user
-            ).user %>
-          <.link class="font-semibold text-sm float-right mb-0" phx-click="clear_comment_form">
-            clear
-          </.link>
-          <br />
-          <p class="text-sm float-right mb-0">
-            Replying to <%= get_display_name(user) %> on #<%= @parent_comment_id %>
-          </p>
-        <% end %>
-        <.simple_form for={@form} id="comment_form" phx-submit="save">
-          <.error :if={@check_errors}>
-            Oops, something went wrong! Please check the errors below.
-          </.error>
-
-          <.input field={@form[:body]} type="textarea" label="Message" required />
-          <.input
-            field={@form[:parent_comment_id]}
-            type="hidden"
-            id="hidden_parent_comment_id"
-            value={@parent_comment_id}
-          />
-          <.input field={@form[:slug]} type="hidden" id="hidden_post_slug" value={@post.id} />
-
-          <:actions>
-            <.button phx-disable-with="Saving..." class="w-full">Send</.button>
-          </:actions>
-        </.simple_form>
+        <CommentComponent.render_comment_input
+          form={@form}
+          parent_comment_id={@parent_comment_id}
+          display_name={get_display_name(@current_user)}
+          post={@post}
+          check_errors={@check_errors}
+        >
+        </CommentComponent.render_comment_input>
       <% else %>
         <p class="text-sm font-bold text-center">
           Please complete your account verification to be able to write comments

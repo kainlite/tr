@@ -4,7 +4,7 @@ defmodule TrWeb.CommentComponent do
   """
   use TrWeb, :html
 
-  def render(assigns) do
+  def render_comment(assigns) do
     ~H"""
     <li class={@classes}>
       <div class="flex items-start">
@@ -34,6 +34,38 @@ defmodule TrWeb.CommentComponent do
         </div>
       </div>
     </li>
+    """
+  end
+
+  def render_comment_input(assigns) do
+    ~H"""
+    <%= unless is_nil(@parent_comment_id) do %>
+      <.link class="font-semibold text-sm float-right mb-0" phx-click="clear_comment_form">
+        clear
+      </.link>
+      <br />
+      <p class="text-sm float-right mb-0">
+        Replying to <%= @display_name %> on #<%= @parent_comment_id %>
+      </p>
+    <% end %>
+    <.simple_form for={@form} id="comment_form" phx-submit="save">
+      <.error :if={@check_errors}>
+        Oops, something went wrong! Please check the errors below.
+      </.error>
+
+      <.input field={@form[:body]} type="textarea" label="Message" required />
+      <.input
+        field={@form[:parent_comment_id]}
+        type="hidden"
+        id="hidden_parent_comment_id"
+        value={@parent_comment_id}
+      />
+      <.input field={@form[:slug]} type="hidden" id="hidden_post_slug" value={@post.id} />
+
+      <:actions>
+        <.button phx-disable-with="Saving..." class="w-full">Send</.button>
+      </:actions>
+    </.simple_form>
     """
   end
 end
