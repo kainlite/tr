@@ -2,6 +2,7 @@ defmodule TrWeb.PostLive do
   use TrWeb, :live_view
   alias Tr.Blog
   alias Tr.Post
+  alias TrWeb.CommentComponent
   alias TrWeb.Presence
 
   @topic "users:connected"
@@ -108,66 +109,31 @@ defmodule TrWeb.PostLive do
           <%= for comment <- @comments do %>
             <% user = Tr.Repo.preload(comment, :user).user %>
             <% link_id = "comment-#{comment.id}-#{:rand.uniform(100_000)}" %>
-            <li class="bg-white shadow-md p-4 rounded-lg border-l-solid border-l-[5px] border-l-gray-700">
-              <div class="flex items-start">
-                <img class="w-12 h-12 rounded-full mr-4" src={user.avatar_url} alt="User Avatar" />
-                <div class="flex-1 max-w-3xl">
-                  <div class="flex justify-between items-center">
-                    <h2 class="text-lg font-semibold">
-                      <%= get_display_name(user) %>
-                    </h2>
-                    <span class="text-gray-500 text-sm">
-                      #<%= comment.id %> On <%= comment.updated_at %>
-                    </span>
-                  </div>
-                  <p class="text-gray-800 mt-2 comment-text text-clip md:text-clip break-words line-clamp-1 max-w-3xl">
-                    <%= comment.body %>
-                  </p>
-                  <.link
-                    id={link_id}
-                    phx-hook="Scroll"
-                    class="font-semibold text-sm float-right mr-[-20px]"
-                    phx-click="prepare_comment_form"
-                    phx-value-slug={comment.slug}
-                    phx-value-comment-id={comment.id}
-                  >
-                    Reply
-                  </.link>
-                </div>
-              </div>
-            </li>
+            <% parent_classes =
+              "bg-white shadow-md p-4 rounded-lg border-l-solid border-l-[5px] border-l-gray-700" %>
+            <CommentComponent.render
+              avatar_url={user.avatar_url}
+              display_name={get_display_name(user)}
+              comment={comment}
+              link_id={link_id}
+              classes={parent_classes}
+            >
+            </CommentComponent.render>
 
             <%= for child <- Map.get(@children, comment.id, []) do %>
               <% user = Tr.Repo.preload(child, :user).user %>
               <% link_id = "child-comment-#{comment.id}-#{:rand.uniform(100_000)}" %>
-              <li class="bg-white shadow-md p-4 rounded-lg ml-[40px] border-l-solid border-l-[5px] border-l-teal-300">
-                <div class="flex items-start">
-                  <img class="w-12 h-12 rounded-full mr-4" src={user.avatar_url} alt="User Avatar" />
-                  <div class="flex-1 max-w-3xl">
-                    <div class="flex justify-between items-center">
-                      <h2 class="text-lg font-semibold">
-                        <%= get_display_name(user) %>
-                      </h2>
-                      <span class="text-gray-500 text-sm">
-                        #<%= child.id %> On <%= child.updated_at %>
-                      </span>
-                    </div>
-                    <p class="text-gray-800 mt-2 comment-text text-clip md:text-clip break-words line-clamp-1 max-w-3xl">
-                      <%= child.body %>
-                    </p>
-                    <.link
-                      id={link_id}
-                      phx-hook="Scroll"
-                      class="font-semibold text-sm float-right"
-                      phx-click="prepare_comment_form"
-                      phx-value-slug={comment.slug}
-                      phx-value-comment-id={comment.id}
-                    >
-                      Reply
-                    </.link>
-                  </div>
-                </div>
-              </li>
+              <% child_classes =
+                "bg-white shadow-md p-4 rounded-lg ml-[40px] border-l-solid border-l-[5px] border-l-teal-300" %>
+
+              <CommentComponent.render
+                avatar_url={user.avatar_url}
+                display_name={get_display_name(user)}
+                comment={child}
+                link_id={link_id}
+                classes={child_classes}
+              >
+              </CommentComponent.render>
             <% end %>
           <% end %>
         </ul>
