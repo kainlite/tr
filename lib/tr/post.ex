@@ -54,23 +54,6 @@ defmodule Tr.Post do
   end
 
   @doc """
-  Returns the list of children comments for a comment
-
-  ## Examples
-
-      iex> get_children_comments_for_comment(1)
-      [%Comment{}, ...]
-  """
-  def get_children_comments_for_comment(comment_id) do
-    query =
-      from p in Tr.Post.Comment,
-        where: p.parent_comment_id == ^comment_id
-
-    comments = Repo.all(query)
-    Repo.preload(comments, :user)
-  end
-
-  @doc """
   Returns the list of children comments for a post
 
   ## Examples
