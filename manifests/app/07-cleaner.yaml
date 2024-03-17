@@ -53,4 +53,4 @@ spec:
               - -c
               - |
                   TO_DELETE="$(kubectl -n tekton-pipelines get pipelinerun -o jsonpath='{range .items[?(@.status.completionTime)]}{.status.completionTime}{" "}{.metadata.name}{"\n"}{end}' | sort | head -n -${NUM_TO_KEEP} | awk '{ print $2}')"
-                  test -n "$TO_DELETE" && kubectl -n tekton-pipelines pipelinerun ${TO_DELETE} || true
+                  test -n "$TO_DELETE" && kubectl -n tekton-pipelines delete pipelinerun ${TO_DELETE} || true
