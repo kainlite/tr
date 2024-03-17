@@ -20,6 +20,16 @@ defmodule Tr.PostTest do
       assert Post.get_comment!(comment.id) == comment
     end
 
+    test "get_comments_for_post/1" do
+      comment = comment_fixture()
+      assert length(Post.get_comments_for_post(comment.slug)) == length([comment])
+    end
+
+    test "get_parent_comments_for_post/1" do
+      comment = comment_fixture(%{parent_comment_id: nil})
+      assert length(Post.get_parent_comments_for_post(comment.slug)) == length([comment])
+    end
+
     test "create_comment/1 with valid data creates a comment" do
       valid_attrs = %{
         body: "some body",
