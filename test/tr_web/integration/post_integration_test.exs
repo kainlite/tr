@@ -27,8 +27,8 @@ defmodule TrWeb.Integration.PostIntegrationTest do
 
     def message(msg), do: css("li", text: msg)
 
-    @sessions 2
-    feature "That users can send messages to each other", %{sessions: [user1, user2]} do
+    @sessions 3
+    feature "That users can send messages to each other", %{sessions: [user1, user2, user3]} do
       page = ~p"/blog/upgrading-k3s-with-system-upgrade-controller"
 
       user1
@@ -58,13 +58,24 @@ defmodule TrWeb.Integration.PostIntegrationTest do
       user2
       |> click(@send_button)
 
+      user3
+      |> visit(page)
+
       user1
       |> assert_has(message("Hello user1!"))
-      |> assert_has(css("p", text: "Online: 2"))
+      |> assert_has(css("p", text: "Online: 3"))
 
       user2
       |> assert_has(message("Hello user2!"))
-      |> assert_has(css("p", text: "Online: 2"))
+      |> assert_has(css("p", text: "Online: 3"))
+
+      user3
+      |> assert_has(message("Hello user1!"))
+      |> assert_has(message("Hello user2!"))
+      |> assert_has(
+        css("p", text: "Please complete your account verification to be able to write comments")
+      )
+      |> assert_has(css("p", text: "Online: 3"))
     end
   end
 end
