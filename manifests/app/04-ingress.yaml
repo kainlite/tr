@@ -16,10 +16,20 @@ spec:
   tls:
   - hosts:
       - tr.techsquad.rocks
+      - blog.techsquad.rocks
     secretName: tr-prod-tls
-  # ingressClassName: nginx
   rules:
   - host: tr.techsquad.rocks
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: tr
+            port:
+              number: 4000
+  - host: blog.techsquad.rocks
     http:
       paths:
       - pathType: Prefix
