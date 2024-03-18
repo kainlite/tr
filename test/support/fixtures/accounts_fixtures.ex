@@ -23,6 +23,14 @@ defmodule Tr.AccountsFixtures do
     })
   end
 
+  def valid_admin_user_attributes(attrs \\ %{}) do
+    Enum.into(attrs, %{
+      email: unique_user_email(),
+      password: valid_user_password(),
+      admin: true
+    })
+  end
+
   def user_fixture(attrs \\ %{}) do
     {:ok, user} =
       attrs
@@ -34,6 +42,17 @@ defmodule Tr.AccountsFixtures do
 
   def confirmed_user_fixture(attrs \\ %{}) do
     {:ok, user} = attrs |> valid_confirmed_user_attributes() |> Tr.Accounts.register_user()
+
+    extract_user_token(fn url ->
+      Accounts.deliver_user_confirmation_instructions(user, url)
+    end)
+    |> Tr.Accounts.confirm_user()
+
+    user
+  end
+
+  def admin_user_fixture(attrs \\ %{}) do
+    {:ok, user} = attrs |> valid_admin_user_attributes() |> Tr.Accounts.register_user()
 
     extract_user_token(fn url ->
       Accounts.deliver_user_confirmation_instructions(user, url)

@@ -7,8 +7,6 @@ defmodule TrWeb.PostLive do
 
   @topic "users:connected"
 
-  on_mount {TrWeb.UserAuth, :mount_current_user}
-
   @impl true
   def mount(params, _session, socket) do
     changeset = Tr.Post.change_comment(%Tr.Post.Comment{})

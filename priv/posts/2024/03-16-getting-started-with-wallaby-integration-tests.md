@@ -9,7 +9,7 @@
 }
 ---
 
-![Wallaby](/images/wallaby.png)
+![Wallaby](/images/wallaby.png){:class="mx-auto"}
 
 ##### **Introduction**
 

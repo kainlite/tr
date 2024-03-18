@@ -4,6 +4,6 @@ defmodule TrWeb.PageController do
   alias Tr.Blog
 
   def index(conn, _params) do
-    render(conn, :home, posts: Blog.all_posts())
+    render(conn, :home, posts: Blog.recent_posts())
   end
 end

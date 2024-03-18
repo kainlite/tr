@@ -31,8 +31,7 @@ defmodule TrWeb.Integration.PostIntegrationTest do
     feature "That users can send messages to each other", %{sessions: [user1, user2, user3]} do
       page = ~p"/blog/upgrading-k3s-with-system-upgrade-controller"
 
-      user1
-      |> log_in()
+      log_in({:normal, user1})
 
       user1
       |> visit(page)
@@ -43,8 +42,7 @@ defmodule TrWeb.Integration.PostIntegrationTest do
       user1
       |> click(@send_button)
 
-      user2
-      |> log_in()
+      log_in({:normal, user2})
 
       user2
       |> visit(page)
