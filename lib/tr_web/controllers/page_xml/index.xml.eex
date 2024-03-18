@@ -18,11 +18,10 @@
     <%= for post <- @posts do %>
       <item>
         <title><%= post.title %></title>
-        <link><%= ~p"/blog/#{post.id}" %></link>
-        <guid><%= ~p"/blog/#{post.id}" %></guid>
+        <link><%= url(~p"/blog/#{post.id}") %></link>
+        <guid><%= url(~p"/blog/#{post.id}") %></guid>
         <description><![CDATA[ <%= post.description %> ]]></description>
         <pubDate><%= post.date |> format_date %></pubDate>
-        <source url="<%= ~p"/blog" %>">Blog Title</source>
       </item>
     <% end %>
   </channel>

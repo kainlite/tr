@@ -11,7 +11,11 @@ defmodule TrWeb.PageControllerTest do
       conn = get(conn, "/sitemap.xml")
 
       assert response_content_type(conn, :xml)
-      assert response(conn, 200) =~ "<link>/blog/from_zero_to_hero_with_kops_and_aws</link>"
+
+      assert String.match?(
+               response(conn, 200),
+               ~r/<link>.*\/blog\/new-blog<\/link>/
+             )
     end
   end
 end
