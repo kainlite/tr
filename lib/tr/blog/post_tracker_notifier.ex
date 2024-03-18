@@ -11,7 +11,7 @@ defmodule Tr.PostTracker.Notifier do
     email =
       new()
       |> to(recipient)
-      |> from({"TechSquad Blog", "noreply@tr.techsquad.rocks"})
+      |> from({"TechSquad Blog", "noreply@techsquad.rocks"})
       |> subject(subject)
       |> text_body(body)
 

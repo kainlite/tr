@@ -21,7 +21,7 @@ as well in the long run.
 
 ##### **Sources**
 
-* [tr](https://github.com/kainlite/tr), go ahead and check it out, my new blog runs there: https://tr.techsquad.rocks
+* [tr](https://github.com/kainlite/tr), go ahead and check it out, my new blog runs there: https://techsquad.rocks
   you can check the manifests used here in the `manifests` folder.
 
 The source code and/or documentation of the projects that we will be testing are listed here:
