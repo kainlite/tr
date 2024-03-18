@@ -17,10 +17,22 @@ defmodule TrWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :xml do
+    plug :accepts, ["xml"]
+  end
+
   scope "/", TrWeb do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/privacy", PageController, :privacy
+  end
+
+  scope "/", TrWeb do
+    pipe_through :xml
+
+    get "/index.xml", PageController, :sitemap
+    get "/sitemap.xml", PageController, :sitemap
   end
 
   # Other scopes may use custom stacks.

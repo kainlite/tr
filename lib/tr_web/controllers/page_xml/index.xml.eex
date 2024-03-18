@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Techsquad Rocks</title>
+    <link><%= ~p"/blog" %></link>
+    <atom:link href="<%= ~p"/index.xml" %>" rel="self" type="application/rss+xml" />
+    <description>This blog was created to document and learn about different technologies, among other things it has
+    been deployed to a k3s cluster running in OCI, using elixir and the phoenix framework, postgres, docker, kubernetes
+    on ARM64, and many other things, if that sounds interesting, you can follow me on twitter or create an account here
+    to receive new posts notifications and later on a newsletter, so I hope you enjoy your stay and see you on the other
+    side...</description>
+    <language>en</language>
+    <copyright>Copyright <%= DateTime.utc_now.year %> TechSquad Rocks </copyright>
+    <lastBuildDate><%= DateTime.utc_now |> format_date() %></lastBuildDate>
+    <category>IT/Internet/Web development</category>
+    <ttl>60</ttl>
+
+    <%= for post <- @posts do %>
+      <item>
+        <title><%= post.title %></title>
+        <link><%= ~p"/blog/#{post.id}" %></link>
+        <guid><%= ~p"/blog/#{post.id}" %></guid>
+        <description><![CDATA[ <%= post.description %> ]]></description>
+        <pubDate><%= post.date |> format_date %></pubDate>
+        <source url="<%= ~p"/blog" %>">Blog Title</source>
+      </item>
+    <% end %>
+  </channel>
+</rss>
