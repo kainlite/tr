@@ -28,7 +28,6 @@ defmodule TrWeb.Integration.AdminIntegrationTest do
 
     session
     |> visit("/admin/dashboard")
-
-    # |> assert_has(css("h2", text: "Admin Dashboard"))
+    |> assert_has(css("h2", text: "Admin Dashboard"))
   end
 end

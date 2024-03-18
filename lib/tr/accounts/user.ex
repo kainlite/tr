@@ -43,6 +43,13 @@ defmodule Tr.Accounts.User do
       submitting the form), this option can be set to `false`.
       Defaults to `true`.
   """
+  def admin_registration_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:avatar_url, :display_name, :email, :password, :admin])
+    |> validate_email(opts)
+    |> validate_password(opts)
+  end
+
   def registration_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:avatar_url, :display_name, :email, :password])

@@ -52,7 +52,7 @@ defmodule Tr.AccountsFixtures do
   end
 
   def admin_user_fixture(attrs \\ %{}) do
-    {:ok, user} = attrs |> valid_admin_user_attributes() |> Tr.Accounts.register_user()
+    {:ok, user} = attrs |> valid_admin_user_attributes() |> Tr.Accounts.register_admin()
 
     extract_user_token(fn url ->
       Accounts.deliver_user_confirmation_instructions(user, url)
