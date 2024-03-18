@@ -88,6 +88,24 @@ defmodule Tr.Post do
   end
 
   @doc """
+  Returns the list of unapproved comments.
+
+  ## Examples
+
+      iex> get_unapproved_comments()
+      [%Comment{}, ...]
+
+  """
+  def get_unapproved_comments do
+    query =
+      from p in Tr.Post.Comment,
+        where: not p.approved
+
+    comments = Repo.all(query)
+    Repo.preload(comments, :user)
+  end
+
+  @doc """
   Gets a single comment.
 
   ## Examples
@@ -171,6 +189,22 @@ defmodule Tr.Post do
   """
   def delete_comment(%Comment{} = comment) do
     Repo.delete(comment)
+  end
+
+  @doc """
+  Approve a comment.
+
+  ## Examples
+
+      iex> approve_comment(comment)
+      {:ok, %Comment{}}
+
+      iex> approve_comment(comment)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def approve_comment(%Comment{} = comment) do
+    update_comment(comment, %{approved: true})
   end
 
   @doc """

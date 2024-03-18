@@ -20,6 +20,16 @@
               Log out
             </.link>
           </li>
+          <%= if @current_user.admin do %>
+            <li>
+              <.link
+                href={~p"/admin/dashboard"}
+                class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+              >
+                Dashboard
+              </.link>
+            </li>
+          <% end %>
         <% else %>
           <li>
             <.link

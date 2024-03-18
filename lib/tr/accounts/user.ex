@@ -13,6 +13,7 @@ defmodule Tr.Accounts.User do
     field :accept_emails, :boolean
     field :display_name, :string
     field :avatar_url, :string
+    field :admin, :boolean, default: false
 
     timestamps()
 
