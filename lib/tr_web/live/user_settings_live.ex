@@ -237,7 +237,10 @@ defmodule TrWeb.UserSettingsLive do
           |> Accounts.change_user_accept_emails(params)
           |> to_form()
 
-        {:noreply, assign(socket, trigger_submit: true, accept_emails_form: accept_emails_form)}
+        {:noreply,
+         socket
+         |> assign(trigger_submit: true, accept_emails_form: accept_emails_form)
+         |> put_flash(:info, "Accept emails changed successfully.")}
 
       {:error, changeset} ->
         {:noreply, assign(socket, accept_emails_form: to_form(changeset))}

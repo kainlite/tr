@@ -25,6 +25,48 @@ defmodule TrWeb.UserSettingsLiveTest do
     end
   end
 
+  describe "update display name form" do
+    setup %{conn: conn} do
+      password = valid_user_password()
+      user = user_fixture(%{password: password})
+      %{conn: log_in_user(conn, user), user: user, password: password}
+    end
+
+    test "updates the user display name", %{conn: conn} do
+      {:ok, lv, _html} = live(conn, ~p"/users/settings")
+
+      result =
+        lv
+        |> form("#display_name_form", %{
+          "user[display_name]" => "Random name"
+        })
+        |> render_submit()
+
+      assert result =~ "Display name changed successfully."
+    end
+  end
+
+  describe "update accept email form" do
+    setup %{conn: conn} do
+      password = valid_user_password()
+      user = user_fixture(%{password: password})
+      %{conn: log_in_user(conn, user), user: user, password: password}
+    end
+
+    test "updates the accept email toggle", %{conn: conn} do
+      {:ok, lv, _html} = live(conn, ~p"/users/settings")
+
+      result =
+        lv
+        |> form("#accept_emails_form", %{
+          "user[accept_emails_toggle]" => true
+        })
+        |> render_submit()
+
+      assert result =~ "Accept emails changed successfully."
+    end
+  end
+
   describe "update email form" do
     setup %{conn: conn} do
       password = valid_user_password()
