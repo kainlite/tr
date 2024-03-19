@@ -22,12 +22,47 @@ defmodule Tr.TrackerTest do
     end
 
     test "gets unannounced posts" do
-      unannounced_post = post_tracker_fixture(%{slug: "some-unannounced-post", announced: false})
+      unannounced_post =
+        post_tracker_fixture(%{
+          slug: "upgrading-k3s-with-system-upgrade-controller",
+          announced: false
+        })
+
       Tracker.insert_post(unannounced_post)
 
       posts = Tracker.get_unannounced_posts()
 
       assert length(posts) == 1
+
+      Tracker.start()
+
+      posts = Tracker.get_unannounced_posts()
+      assert posts == []
+    end
+
+    test "gets unannounceds posts" do
+      unannounced_post1 =
+        post_tracker_fixture(%{
+          slug: "upgrading-k3s-with-system-upgrade-controller",
+          announced: false
+        })
+
+      unannounced_post2 =
+        post_tracker_fixture(%{
+          slug: "getting-started-with-wallaby-integration-tests",
+          announced: false
+        })
+
+      Tracker.insert_post(unannounced_post1)
+      Tracker.insert_post(unannounced_post2)
+
+      posts = Tracker.get_unannounced_posts()
+      assert Enum.all?(posts, fn post -> post.announced == false end)
+      assert length(posts) == 2
+
+      Tracker.start()
+      posts = Tracker.get_unannounced_posts()
+      assert posts == []
     end
 
     test "tracks a post" do
