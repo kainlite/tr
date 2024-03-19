@@ -18,10 +18,8 @@ spec:
         app.kubernetes.io/instance: ollama
     spec:
       imagePullSecrets:
-        - docker-credentials
+      - name: regcred
       serviceAccountName: ollama
-      securityContext:
-        {}
       containers:
         - name: ollama
           securityContext:
