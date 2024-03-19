@@ -63,7 +63,7 @@ defmodule TrWeb.CommentComponent do
       <.input field={@form[:slug]} type="hidden" id="hidden_post_slug" value={@post.id} />
 
       <:actions>
-        <.button phx-disable-with="Saving..." class="w-full">Send</.button>
+        <.button id="comment_submit" phx-disable-with="Saving..." class="w-full">Send</.button>
       </:actions>
     </.simple_form>
     """

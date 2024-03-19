@@ -66,7 +66,7 @@ defmodule TrWeb.DashboardLive do
     comment = Tr.Post.get_comment(comment_id)
 
     broadcast(Tr.Post.approve_comment(comment))
-    {:noreply, socket}
+    {:noreply, socket |> put_flash(:info, "Comment approved successfully.")}
   end
 
   @impl true
@@ -75,7 +75,7 @@ defmodule TrWeb.DashboardLive do
     comment = Tr.Post.get_comment(comment_id)
     broadcast(Tr.Post.delete_comment(comment))
 
-    {:noreply, socket}
+    {:noreply, socket |> put_flash(:info, "Comment deleted successfully.")}
   end
 
   @impl true

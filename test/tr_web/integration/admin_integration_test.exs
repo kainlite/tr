@@ -3,6 +3,8 @@ defmodule TrWeb.Integration.AdminIntegrationTest do
   use Wallaby.Feature
   use Phoenix.VerifiedRoutes, router: TrWeb.Router, endpoint: TrWeb.Endpoint
 
+  import Tr.PostFixtures
+
   import Wallaby.Query
 
   import TrWeb.TestHelpers
@@ -29,5 +31,36 @@ defmodule TrWeb.Integration.AdminIntegrationTest do
     session
     |> visit("/admin/dashboard")
     |> assert_has(css("h2", text: "Admin Dashboard"))
+    |> assert_has(css("table"))
+    |> assert_has(css("th", text: "Email"))
+    |> assert_has(css("th", text: "Post"))
+    |> assert_has(css("th", text: "Body"))
+    |> assert_has(css("th", text: "Actions"))
+  end
+
+  test "an admin user can approve a comment", %{session: session} do
+    comment_fixture()
+
+    log_in({:admin, session})
+
+    session
+    |> visit("/admin/dashboard")
+    |> assert_has(css("h2", text: "Admin Dashboard"))
+    |> assert_has(css("table"))
+    |> click(css("a", text: "✔️"))
+    |> assert_has(css("div #flash", text: "Comment approved successfully."))
+  end
+
+  test "an admin user can delete a comment", %{session: session} do
+    comment_fixture()
+
+    log_in({:admin, session})
+
+    session
+    |> visit("/admin/dashboard")
+    |> assert_has(css("h2", text: "Admin Dashboard"))
+    |> assert_has(css("table"))
+    |> click(css("a", text: "❌"))
+    |> assert_has(css("div #flash", text: "Comment deleted successfully."))
   end
 end
