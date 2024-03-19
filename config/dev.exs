@@ -60,7 +60,8 @@ config :tr, TrWeb.Endpoint,
       ~r"priv/gettext/.*(po)$",
       ~r"lib/tr_web/(controllers|live|components)/.*(ex|heex)$",
       ~r"posts/*/.*(md)$"
-    ]
+    ],
+    web_console_logger: true
   ]
 
 # Enable dev routes for dashboard and mailbox
