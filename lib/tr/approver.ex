@@ -17,10 +17,11 @@ defmodule Tr.Approver do
   If afinn and the llama agree upon the sentiment then the comment can be automatically approved
   """
   def check_comment_sentiment(comment) do
-    afinn_sentiment = Tr.Sentiment.analyze(comment.body)
-    ollama_sentiment = Tr.Ollama.send(comment.body) && afinn_sentiment
+    # afinn_sentiment = Tr.Sentiment.analyze(comment.body)
+    ollama_sentiment = Tr.Ollama.send(comment.body)
 
-    afinn_sentiment && ollama_sentiment
+    # afinn_sentiment && ollama_sentiment
+    ollama_sentiment
   end
 
   def start do
