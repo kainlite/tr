@@ -39,3 +39,45 @@ spec:
               allowPrivilegeEscalation: false
             imagePullPolicy: Always
           restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: tr-approver
+  namespace: tr
+  labels:
+    name: tr
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "00 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+          imagePullSecrets:
+          - name: regcred
+          containers:
+          - name: tr
+            image: kainlite/tr:master
+            command:
+              - /app/bin/tr
+              - eval
+              - Tr.Approver.start
+            envFrom:
+            - secretRef:
+                name: tr-postgres-config
+            - secretRef:
+                name: tr-mailer-config
+            env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+            securityContext:
+              allowPrivilegeEscalation: false
+            imagePullPolicy: Always
+          restartPolicy: Never

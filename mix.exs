@@ -46,9 +46,9 @@ defmodule Tr.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 3.3"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 0.18.16"},
+      {:phoenix_live_view, "~> 0.20.14"},
       {:phoenix_view, "~> 2.0"},
-      {:phoenix_live_dashboard, "~> 0.7.2"},
+      {:phoenix_live_dashboard, "~> 0.8.3"},
       {:floki, ">= 0.30.0", only: :test},
       {:esbuild, "~> 0.6", runtime: Mix.env() == :dev},
       {:tailwind, "~> 0.2.2", runtime: Mix.env() == :dev},
@@ -77,7 +77,8 @@ defmodule Tr.MixProject do
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false},
       {:wallaby, "~> 0.30", runtime: false, only: :test},
-      {:ollamex, "0.2.0"}
+      {:ollamex, "0.2.0"},
+      {:afinn, "~> 0.2.1"}
     ]
   end
 
