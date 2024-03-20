@@ -75,7 +75,7 @@ defmodule TrWeb.Integration.PostIntegrationTest do
       |> assert_has(css("p", text: "Online: 3"))
 
       user3
-|> visit(page)
+      |> visit(page)
       |> assert_has(message("Hello user1!"))
       |> assert_has(message("Hello user2!"))
       |> assert_has(
