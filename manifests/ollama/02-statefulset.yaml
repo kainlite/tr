@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: ollama
   labels:
@@ -11,6 +11,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: ollama
       app.kubernetes.io/instance: ollama
+  serviceName: "ollama"
   template:
     metadata:
       labels:
@@ -41,8 +42,8 @@ spec:
               cpu: 4000m
               memory: 8192Mi
             requests:
-              cpu: 800m
-              memory: 2096Mi
+              cpu: 200m
+              memory: 1024Mi
           volumeMounts:
             - name: ollama-data
               mountPath: /root/.ollama
