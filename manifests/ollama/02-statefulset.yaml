@@ -23,13 +23,13 @@ spec:
       serviceAccountName: ollama
       containers:
         - name: ollama
-          securityContext:
-            capabilities:
-              drop:
-              - ALL
-            readOnlyRootFilesystem: false
-            runAsNonRoot: true
-            runAsUser: 1000
+          # securityContext:
+          #   capabilities:
+          #     drop:
+          #     - ALL
+          #   readOnlyRootFilesystem: false
+          #   runAsNonRoot: true
+          #   runAsUser: 1000
           image: "ollama/ollama:0.1.29"
           imagePullPolicy: IfNotPresent
           ports:

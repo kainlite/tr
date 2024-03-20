@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Techsquad Rocks</title>
-    <link><%= ~p"/blog" %></link>
+    <link><%= url(~p"/blog") %></link>
     <atom:link href="<%= ~p"/index.xml" %>" rel="self" type="application/rss+xml" />
     <description>This blog was created to document and learn about different technologies, among other things it has
     been deployed to a k3s cluster running in OCI, using elixir and the phoenix framework, postgres, docker, kubernetes
