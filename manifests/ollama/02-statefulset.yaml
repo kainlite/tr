@@ -30,7 +30,7 @@ spec:
           #   readOnlyRootFilesystem: false
           #   runAsNonRoot: true
           #   runAsUser: 1000
-          image: "ollama/ollama:0.1.29"
+          image: "ollama/ollama:latest"
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -46,7 +46,7 @@ spec:
               memory: 1024Mi
           volumeMounts:
             - name: ollama-data
-              mountPath: /root/.ollama
+              mountPath: /.ollama
           livenessProbe:
             httpGet:
               path: /
@@ -68,7 +68,7 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: [ "/bin/sh", "-c", "echo llama2 mistral | xargs -n1 /bin/ollama pull " ]
+                command: [ "/bin/sh", "-c", "echo llama2 | xargs -n1 /bin/ollama pull " ]
       volumes:
         - name: ollama-data
           persistentVolumeClaim:
