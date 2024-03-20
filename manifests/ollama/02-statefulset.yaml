@@ -65,10 +65,10 @@ spec:
             timeoutSeconds: 3
             successThreshold: 1
             failureThreshold: 6
-          lifecycle:
-            postStart:
-              exec:
-                command: [ "/bin/sh", "-c", "echo llama2 | xargs -n1 /bin/ollama pull " ]
+          # lifecycle:
+          #   postStart:
+          #     exec:
+          #       command: [ "/bin/sh", "-c", "echo llama2 | xargs -n1 /bin/ollama pull " ]
       volumes:
         - name: ollama-data
           persistentVolumeClaim:
