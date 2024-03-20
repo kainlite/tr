@@ -6,6 +6,7 @@ defmodule TrWeb.CommentComponent do
 
   def render_comment(assigns) do
     ~H"""
+    <% body = if @comment.approved, do: @comment.body, else: "Comment hidden, awaiting moderation..." %>
     <li class={@classes}>
       <div class="flex items-start">
         <img class="w-12 h-12 rounded-full mr-4" src={@avatar_url} alt="User Avatar" />
@@ -19,7 +20,7 @@ defmodule TrWeb.CommentComponent do
             </span>
           </div>
           <p class="text-gray-800 mt-2 comment-text text-clip md:text-clip break-words line-clamp-1 max-w-3xl">
-            <%= @comment.body %>
+            <%= body %>
           </p>
           <.link
             id={@link_id}

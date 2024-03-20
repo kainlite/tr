@@ -115,6 +115,7 @@ defmodule TrWeb.PostLive do
               comment={comment}
               link_id={link_id}
               classes={parent_classes}
+              approved={comment.approved}
             >
             </CommentComponent.render_comment>
 
@@ -130,6 +131,7 @@ defmodule TrWeb.PostLive do
                 comment={child}
                 link_id={link_id}
                 classes={child_classes}
+                approved={child.approved}
               >
               </CommentComponent.render_comment>
             <% end %>

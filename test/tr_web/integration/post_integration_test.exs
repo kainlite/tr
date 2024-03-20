@@ -60,14 +60,22 @@ defmodule TrWeb.Integration.PostIntegrationTest do
       |> visit(page)
 
       user1
-      |> assert_has(message("Hello user1!"))
+      |> assert_has(Query.css("li", text: "Comment hidden, awaiting moderation...", count: 2))
       |> assert_has(css("p", text: "Online: 3"))
 
+      comments = Tr.Post.get_unapproved_comments()
+
+      for coment <- comments do
+        Tr.Post.approve_comment(coment)
+      end
+
       user2
+      |> visit(page)
       |> assert_has(message("Hello user2!"))
       |> assert_has(css("p", text: "Online: 3"))
 
       user3
+|> visit(page)
       |> assert_has(message("Hello user1!"))
       |> assert_has(message("Hello user2!"))
       |> assert_has(

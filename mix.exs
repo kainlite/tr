@@ -76,7 +76,8 @@ defmodule Tr.MixProject do
       {:git_hooks, "~> 0.7.0", only: [:dev], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false},
-      {:wallaby, "~> 0.30", runtime: false, only: :test}
+      {:wallaby, "~> 0.30", runtime: false, only: :test},
+      {:ollamex, "0.2.0"}
     ]
   end
 

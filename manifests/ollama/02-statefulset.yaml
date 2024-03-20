@@ -46,7 +46,7 @@ spec:
               memory: 1024Mi
           volumeMounts:
             - name: ollama-data
-              mountPath: /.ollama
+              mountPath: /root/.ollama
           livenessProbe:
             httpGet:
               path: /
