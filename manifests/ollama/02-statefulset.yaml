@@ -27,7 +27,7 @@ spec:
             capabilities:
               drop:
               - ALL
-            readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: false
             runAsNonRoot: true
             runAsUser: 1000
           image: "ollama/ollama:0.1.29"
