@@ -37,7 +37,7 @@ spec:
               apiVersion: v1
               fieldPath: status.podIP
         - name: OLLAMA_ENDPOINT
-          value: "ollama.ollama.svc.cluster.local"
+          value: "http://ollama.ollama.svc.cluster.local:11434"
         lifecycle:
           postStart:
             exec:
