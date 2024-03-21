@@ -6,7 +6,16 @@ defmodule TrWeb.DashboardLive do
   use TrWeb, :live_view
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(%{"comments" => "all"}, _session, socket) do
+    if connected?(socket) do
+      Phoenix.PubSub.subscribe(Tr.PubSub, "#admin-dashboard")
+    end
+
+    {:ok, assign(socket, :comments, Tr.Post.list_comments())}
+  end
+
+  @impl true
+  def mount(_, _session, socket) do
     if connected?(socket) do
       Phoenix.PubSub.subscribe(Tr.PubSub, "#admin-dashboard")
     end
@@ -19,7 +28,19 @@ defmodule TrWeb.DashboardLive do
     ~H"""
     <div class="mx-auto">
       <h2>Admin Dashboard</h2>
-
+      <.link
+        href={~p"/admin/dashboard?comments=all"}
+        class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+      >
+        All comments
+      </.link>
+      |
+      <.link
+        href={~p"/admin/dashboard?comments=unapproved"}
+        class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+      >
+        Unapproved comments
+      </.link>
       <table>
         <tr>
           <th>Email</th>
