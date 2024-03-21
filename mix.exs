@@ -26,7 +26,7 @@ defmodule Tr.MixProject do
   def application do
     [
       mod: {Tr.Application, []},
-      extra_applications: [:logger, :runtime_tools, :os_mon, :mimic]
+      extra_applications: [:logger, :runtime_tools, :os_mon]
     ]
   end
 
