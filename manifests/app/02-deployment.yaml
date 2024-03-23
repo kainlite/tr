@@ -30,6 +30,8 @@ spec:
             name: tr-postgres-config
         - secretRef:
             name: tr-mailer-config
+        - secretRef:
+            name: tr-secret-key-config
         env:
         - name: POD_IP
           valueFrom:
