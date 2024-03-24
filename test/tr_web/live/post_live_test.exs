@@ -97,10 +97,10 @@ defmodule TrWeb.PostLiveTest do
 
       assert html =~ "Online: 1"
 
-
       {:ok, _lv, html} =
         conn
         |> live(~p"/blog/upgrading-k3s-with-system-upgrade-controller")
+
       assert html =~ "Online: 2"
     end
   end
