@@ -200,6 +200,7 @@ defmodule TrWeb.PostLive do
         socket
       ) do
     comment = Tr.Post.get_comment(parent_comment_id)
+
     parent_comment_id =
       if comment.parent_comment_id, do: comment.parent_comment_id, else: comment.id
 
