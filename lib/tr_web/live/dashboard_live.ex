@@ -11,7 +11,9 @@ defmodule TrWeb.DashboardLive do
       Phoenix.PubSub.subscribe(Tr.PubSub, "#admin-dashboard")
     end
 
-    {:ok, assign(socket, :comments, Tr.Post.list_comments())}
+    {:ok,
+     socket
+     |> assign(:comments, Tr.Post.list_comments())}
   end
 
   @impl true
@@ -20,7 +22,7 @@ defmodule TrWeb.DashboardLive do
       Phoenix.PubSub.subscribe(Tr.PubSub, "#admin-dashboard")
     end
 
-    {:ok, assign(socket, :comments, Tr.Post.get_unapproved_comments())}
+    {:ok, socket |> assign(:comments, Tr.Post.get_unapproved_comments())}
   end
 
   @impl true
@@ -41,42 +43,33 @@ defmodule TrWeb.DashboardLive do
       >
         Unapproved comments
       </.link>
-      <table>
-        <tr>
-          <th>Email</th>
-          <th>Post</th>
-          <th>Body</th>
-          <th>Actions</th>
-        </tr>
-        <%= for {record, index} <- Enum.with_index(@comments) do %>
-          <tr>
-            <td><%= index %></td>
-            <td><%= record.user.email %></td>
-            <td><%= record.slug %></td>
-            <td><%= record.body %></td>
-            <td>
-              <.link
-                class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-                phx-click="approve_comment"
-                phx-value-slug={record.slug}
-                phx-value-comment-id={record.id}
-                data-confirm="Are you sure?"
-              >
-                ✔️
-              </.link>
-              <.link
-                class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-                phx-click="delete_comment"
-                phx-value-slug={record.slug}
-                phx-value-comment-id={record.id}
-                data-confirm="Are you sure?"
-              >
-                ❌
-              </.link>
-            </td>
-          </tr>
-        <% end %>
-      </table>
+
+      <.table id="comments" rows={@comments}>
+        <:col :let={comment} label="id"><%= comment.id %></:col>
+        <:col :let={comment} label="slug"><%= comment.slug %></:col>
+        <:col :let={comment} label="email"><%= comment.user.email %></:col>
+        <:col :let={comment} label="body"><%= comment.body %></:col>
+        <:col :let={comment} label="actions">
+          <.link
+            class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            phx-click="approve_comment"
+            phx-value-slug={comment.slug}
+            phx-value-comment-id={comment.id}
+            data-confirm="Are you sure?"
+          >
+            ✔️
+          </.link>
+          <.link
+            class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            phx-click="delete_comment"
+            phx-value-slug={comment.slug}
+            phx-value-comment-id={comment.id}
+            data-confirm="Are you sure?"
+          >
+            ❌
+          </.link>
+        </:col>
+      </.table>
     </div>
     """
   end

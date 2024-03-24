@@ -32,10 +32,11 @@ defmodule TrWeb.Integration.AdminIntegrationTest do
     |> visit("/admin/dashboard")
     |> assert_has(css("h2", text: "Admin Dashboard"))
     |> assert_has(css("table"))
-    |> assert_has(css("th", text: "Email"))
-    |> assert_has(css("th", text: "Post"))
-    |> assert_has(css("th", text: "Body"))
-    |> assert_has(css("th", text: "Actions"))
+    |> assert_has(css("th", text: "id"))
+    |> assert_has(css("th", text: "email"))
+    |> assert_has(css("th", text: "slug"))
+    |> assert_has(css("th", text: "body"))
+    |> assert_has(css("th", text: "actions"))
   end
 
   test "an admin user can approve a comment", %{session: session} do

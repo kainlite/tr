@@ -42,3 +42,5 @@ config :wallaby,
   opt_app: :tr,
   driver: Wallaby.Chrome,
   chromedriver: [headless: true, binary: "/usr/bin/google-chrome-stable"]
+
+config :floki, :encode_raw_html, false

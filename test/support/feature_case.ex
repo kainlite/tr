@@ -10,10 +10,12 @@ defmodule TrWeb.FeatureCase do
     end
   end
 
-  setup do
+  setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Tr.Repo)
 
-    Ecto.Adapters.SQL.Sandbox.mode(Tr.Repo, {:shared, self()})
+    unless tags[:async] do
+      Ecto.Adapters.SQL.Sandbox.mode(Tr.Repo, {:shared, self()})
+    end
 
     metadata = Phoenix.Ecto.SQL.Sandbox.metadata_for(Tr.Repo, self())
 

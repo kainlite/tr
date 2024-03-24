@@ -33,6 +33,11 @@ defmodule TrWeb.ConnCase do
 
   setup tags do
     Tr.DataCase.setup_sandbox(tags)
+
+    unless tags[:async] do
+      Ecto.Adapters.SQL.Sandbox.mode(Tr.Repo, {:shared, self()})
+    end
+
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 
