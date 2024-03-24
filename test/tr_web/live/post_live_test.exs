@@ -57,10 +57,12 @@ defmodule TrWeb.PostLiveTest do
       render_submit(result)
       _ = follow_trigger_action(result, conn)
 
+      # 1st reply
       comments = Tr.Post.get_comments_for_post(slug)
       comment = hd(comments)
 
-      assign(conn, :parent_comment_id, comment.id)
+      conn = assign(conn, :parent_comment_id, comment.id)
+      IO.inspect(conn, pretty: true)
 
       resultreply =
         form(lv, "#comment_form", %{
@@ -70,14 +72,43 @@ defmodule TrWeb.PostLiveTest do
           }
         })
 
-      render_submit(resultreply)
+      render_submit(resultreply, %{parent_comment_id: comment.id})
       _ = follow_trigger_action(resultreply, conn)
 
       comments = Tr.Post.get_comments_for_post(slug)
       reply = Enum.at(comments, 1)
 
+      IO.inspect(reply, pretty: true)
+
       assert Enum.count(comments) == 2
+      assert reply.parent_comment_id == comment.id
       assert reply.body =~ "some random reply"
+
+      # 2nd reply
+      first_reply = Enum.at(comment, 1)
+      conn = assign(conn, :parent_comment_id, first_reply.id)
+
+      IO.inspect(conn, pretty: true)
+
+      resultreply2 =
+        form(lv, "#comment_form", %{
+          "comment" => %{
+            "body" => "some random reply 2",
+            "slug" => slug
+          }
+        })
+
+      render_submit(resultreply2, %{parent_comment_id: reply.id})
+      _ = follow_trigger_action(resultreply2, conn)
+
+      comments = Tr.Post.get_comments_for_post(slug)
+      reply2 = Enum.at(comments, 2)
+
+      IO.inspect(reply2, pretty: true)
+
+      assert Enum.count(comments) == 3
+      assert reply2.parent_comment_id == comment.id
+      assert reply2.body =~ "some random reply 2"
     end
   end
 
