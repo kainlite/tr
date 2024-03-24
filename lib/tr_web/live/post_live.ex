@@ -146,6 +146,7 @@ defmodule TrWeb.PostLive do
           display_name={get_display_name(@current_user)}
           post={@post}
           check_errors={@check_errors}
+          trigger_submit={@trigger_submit}
         >
         </CommentComponent.render_comment_input>
       <% else %>
