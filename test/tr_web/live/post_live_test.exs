@@ -22,27 +22,62 @@ defmodule TrWeb.PostLiveTest do
     test "sends a comment", %{conn: conn} do
       {:ok, lv, _html} = live(conn, ~p"/blog/upgrading-k3s-with-system-upgrade-controller")
 
-      form =
+      slug = "upgrading-k3s-with-system-upgrade-controller"
+
+      result =
         form(lv, "#comment_form", %{
           "comment" => %{
-            "body" => "some random comment",
-            "slug" => "upgrading-k3s-with-system-upgrade-controller"
+            "body" => "some random comment33",
+            "slug" => slug
           }
         })
 
-      render_submit(form)
-      # _ = follow_trigger_action(form, conn)
+      render_submit(result)
+      _ = follow_trigger_action(result, conn)
 
-      # assert html =~ "Online: 1"
-      # assert result =~ "Reply"
+      comments = Tr.Post.get_comments_for_post(slug)
+
+      assert Enum.count(comments) == 1
+      assert hd(comments).body =~ "some random comment"
     end
 
     test "replies to a comment", %{conn: conn} do
-      {:ok, _lv, html} =
-        conn
-        |> live(~p"/blog/upgrading-k3s-with-system-upgrade-controller")
+      {:ok, lv, _html} = live(conn, ~p"/blog/upgrading-k3s-with-system-upgrade-controller")
 
-      assert html =~ "Upgrading K3S with system-upgrade-controller"
+      slug = "upgrading-k3s-with-system-upgrade-controller"
+
+      result =
+        form(lv, "#comment_form", %{
+          "comment" => %{
+            "body" => "some random comment33",
+            "slug" => slug
+          }
+        })
+
+      render_submit(result)
+      _ = follow_trigger_action(result, conn)
+
+      comments = Tr.Post.get_comments_for_post(slug)
+      comment = hd(comments)
+
+      assign(conn, :parent_comment_id, comment.id)
+
+      resultreply =
+        form(lv, "#comment_form", %{
+          "comment" => %{
+            "body" => "some random reply",
+            "slug" => slug
+          }
+        })
+
+      render_submit(resultreply)
+      _ = follow_trigger_action(resultreply, conn)
+
+      comments = Tr.Post.get_comments_for_post(slug)
+      reply = Enum.at(comments, 1)
+
+      assert Enum.count(comments) == 2
+      assert reply.body =~ "some random reply"
     end
   end
 
@@ -60,7 +95,13 @@ defmodule TrWeb.PostLiveTest do
         conn
         |> live(~p"/blog/upgrading-k3s-with-system-upgrade-controller")
 
-      assert html =~ "Upgrading K3S with system-upgrade-controller"
+      assert html =~ "Online: 1"
+
+
+      {:ok, _lv, html} =
+        conn
+        |> live(~p"/blog/upgrading-k3s-with-system-upgrade-controller")
+      assert html =~ "Online: 2"
     end
   end
 end

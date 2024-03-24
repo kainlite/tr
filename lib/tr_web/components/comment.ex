@@ -49,7 +49,7 @@ defmodule TrWeb.CommentComponent do
         Replying to <%= @display_name %> on #<%= @parent_comment_id %>
       </p>
     <% end %>
-    <.simple_form for={@form} id="comment_form" phx-submit="save">
+    <.simple_form for={@form} id="comment_form" phx-submit="save" phx-trigger-action={@trigger_submit}>
       <.error :if={@check_errors}>
         Oops, something went wrong! Please check the errors below.
       </.error>
