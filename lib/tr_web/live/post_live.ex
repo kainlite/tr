@@ -30,7 +30,7 @@ defmodule TrWeb.PostLive do
       socket
       |> assign(:params, params)
       |> assign(:post, Blog.get_post_by_id!(post_id))
-      |> assign(trigger_submit: false, check_errors: false)
+      |> assign(check_errors: false)
       |> assign_form(changeset)
       |> assign(:comments, Tr.Post.get_parent_comments_for_post(post_id))
       |> assign(:children, Tr.Post.get_children_comments_for_post(post_id))
@@ -146,7 +146,6 @@ defmodule TrWeb.PostLive do
           display_name={get_display_name(@current_user)}
           post={@post}
           check_errors={@check_errors}
-          trigger_submit={@trigger_submit}
         >
         </CommentComponent.render_comment_input>
       <% else %>
@@ -179,7 +178,6 @@ defmodule TrWeb.PostLive do
         {:ok, _} ->
           {:noreply,
            socket
-           |> assign(trigger_submit: true)
            |> put_flash(:info, "Comment saved successfully.")}
 
         {:error, %Ecto.Changeset{} = changeset} ->

@@ -7,8 +7,6 @@ defmodule TrWeb.CommentComponent do
   def render_comment(assigns) do
     ~H"""
     <% body = if @comment.approved, do: @comment.body, else: "Comment hidden, awaiting moderation..." %>
-    <% parent_comment_id =
-      if @comment.parent_comment_id, do: @comment.parent_comment_id, else: @comment.id %>
     <li class={@classes}>
       <div class="flex items-start">
         <img class="w-12 h-12 rounded-full mr-4" src={@avatar_url} alt="User Avatar" />
@@ -30,7 +28,7 @@ defmodule TrWeb.CommentComponent do
             class="font-semibold text-sm float-right"
             phx-click="prepare_comment_form"
             phx-value-slug={@comment.slug}
-            phx-value-comment-id={parent_comment_id}
+            phx-value-comment-id={@comment.id}
           >
             Reply
           </.link>
@@ -51,7 +49,7 @@ defmodule TrWeb.CommentComponent do
         Replying in thread #<%= @parent_comment_id %> with <%= @display_name %>
       </p>
     <% end %>
-    <.simple_form for={@form} id="comment_form" phx-submit="save" phx-trigger-action={@trigger_submit}>
+    <.simple_form for={@form} id="comment_form" phx-submit="save">
       <.error :if={@check_errors}>
         Oops, something went wrong! Please check the errors below.
       </.error>
