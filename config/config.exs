@@ -12,6 +12,7 @@ config :tr,
 
 # Configures the endpoint
 config :tr, TrWeb.Endpoint,
+  adapter: Bandit.PhoenixAdapter,
   url: [host: "localhost"],
   render_errors: [
     formats: [html: TrWeb.ErrorHTML, json: TrWeb.ErrorJSON],

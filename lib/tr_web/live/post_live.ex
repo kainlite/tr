@@ -199,6 +199,10 @@ defmodule TrWeb.PostLive do
         %{"slug" => _, "comment-id" => parent_comment_id},
         socket
       ) do
+    comment = Tr.Post.get_comment(parent_comment_id)
+    parent_comment_id =
+      if comment.parent_comment_id, do: comment.parent_comment_id, else: comment.id
+
     {:noreply, assign(socket, :parent_comment_id, parent_comment_id)}
   end
 

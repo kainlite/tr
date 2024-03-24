@@ -78,7 +78,8 @@ defmodule Tr.MixProject do
       {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false},
       {:wallaby, "~> 0.30", runtime: false, only: :test},
       {:ollamex, "0.2.0"},
-      {:mimic, "~> 1.7", only: :test}
+      {:mimic, "~> 1.7", only: :test},
+      {:bandit, "~> 1.0"}
     ]
   end
 
