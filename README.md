@@ -6,7 +6,7 @@
 Powering up my new blog or laboratory, you can see it live [here](https://techsquad.rocks/blog), I will cover how
 this is deployed to production in my [usual blog](https://techsquad.rocks) since there are many interesting things being
 used here (k3s on ARM64, argocd, tekton, etc), so you will also learn how to easily build and run your project in
-kubernetes, I also plan to explore some Web3 topics here...
+kubernetes...
 
 # Development
 
