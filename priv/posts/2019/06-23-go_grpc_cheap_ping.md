@@ -7,7 +7,7 @@
 }
 ---
 
-![golang](/images/golang-grpc.jpg){:class="mx-auto"}
+![golang](/images/golang-grpc.png){:class="mx-auto"}
 
 ##### **Introduction**
 In this article we will explore gRPC with a cheap ping application, basically we will do a ping and measure the time it takes for the message to go to the server and back before reporting it to the terminal. You can find the source code [here](https://github.com/kainlite/grpc-ping).

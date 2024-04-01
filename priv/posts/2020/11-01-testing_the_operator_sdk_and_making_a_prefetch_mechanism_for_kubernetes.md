@@ -7,7 +7,7 @@
 }
 ---
 
-![operator](/images/operator-sdk.jpg){:class="mx-auto"}
+![operator](/images/operator-sdk.png){:class="mx-auto"}
 
 #### **Introduction**
 In this article we will explore how to create an operator that can prefetch our images (from our deployments to all nodes) using the Operator SDK, you might be wondering why would you want to do this? the main idea is to get the images in advance so you don't have to pull them when the pod actually needs to start running in a given node, this can speed up things a bit and it's also an interesting exercise.

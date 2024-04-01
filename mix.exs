@@ -79,7 +79,8 @@ defmodule Tr.MixProject do
       {:wallaby, "~> 0.30", runtime: false, only: :test},
       {:ollamex, "0.2.0"},
       {:mimic, "~> 1.7", only: :test},
-      {:bandit, "~> 1.0"}
+      {:bandit, "~> 1.0"},
+      {:haystack, "~> 0.1.0"}
     ]
   end
 

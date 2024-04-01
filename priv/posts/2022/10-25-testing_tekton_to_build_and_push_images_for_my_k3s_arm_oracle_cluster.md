@@ -7,7 +7,7 @@
 }
 ---
 
-![tekton](/images/tekton-logo.jpg){:class="mx-auto"}
+![tekton](/images/tekton-logo.png){:class="mx-auto"}
 
 #### **Introduction**
 In this article we will explore how to deploy and configure tekton to build and push images to your registry to be

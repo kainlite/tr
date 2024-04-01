@@ -8,7 +8,7 @@
 }
 ---
 
-![reviewdog](/images/reviewdog.jpg){:class="mx-auto"}
+![reviewdog](/images/reviewdog.png){:class="mx-auto"}
 
 ##### **Introduction**
 In this article we will test how to lint and get automatic checks in our github pull requests for our terraform code using [reviewdog](https://github.com/reviewdog/reviewdog) and the [tflint github action](https://github.com/reviewdog/action-tflint), this is particularly useful to prevent unwanted changes or buggy commits to be merged into your principal branch whatever that is. In order for this to work you just need to configure a Github action in your repo and that's it, you don't need to generate any token or do any extra step.

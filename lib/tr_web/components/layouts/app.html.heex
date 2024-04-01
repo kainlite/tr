@@ -2,6 +2,9 @@
   <section class="container">
     <nav class="flex flex-row">
       <ul class="relative z-10 flex flex-row-reverse items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
+        <.link navigate={~p"/blog/search"}>
+          <.icon name="hero-magnifying-glass" class="w-10 h-10" />
+        </.link>
         <%= if Map.get(assigns, :current_user) do %>
           <li>
             <.link

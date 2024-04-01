@@ -7,7 +7,7 @@
 }
 ---
 
-![serverless](/images/serverless-cognito.jpg){:class="mx-auto"}
+![serverless](/images/serverless-cognito.png){:class="mx-auto"}
 
 ##### **Introduction**
 In this article we will see how to use Terraform and Go to create a serverless API using API Gateway, Lambda, and Go, and we will also handle authentication with AWS Cognito, the repo with the files can be found [here](https://github.com/kainlite/serverless-cognito).

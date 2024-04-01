@@ -52,4 +52,10 @@ defmodule Tr.Blog do
       posts -> posts
     end
   end
+
+  def take(ids) do
+    Enum.map(ids, fn id ->
+      Enum.find(posts(), &(&1.id == id))
+    end)
+  end
 end
