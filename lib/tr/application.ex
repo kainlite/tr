@@ -24,11 +24,12 @@ defmodule Tr.Application do
       {Task.Supervisor, name: Tr.TaskSupervisor},
       # Start the Presence app 
       TrWeb.Presence,
+      # Start haystack
+      {Haystack.Storage.ETS, storage: Tr.Search.storage()},
       # Start the Endpoint (http/https)
       TrWeb.Endpoint,
       # Start a worker by calling: Tr.Worker.start_link(arg)
       # {Tr.Worker, arg}
-      {Haystack.Storage.ETS, storage: Tr.Search.storage()}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
