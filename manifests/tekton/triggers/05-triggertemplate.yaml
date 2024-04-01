@@ -29,7 +29,7 @@ spec:
               - ReadWriteOnce
               resources:
                 requests:
-                  storage: 1Gi
+                  storage: 256Mi
         - name: kubeconfig-dir
           configMap:
             name: kubeconfig
