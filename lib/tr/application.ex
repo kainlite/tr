@@ -27,7 +27,7 @@ defmodule Tr.Application do
       # Start haystack
       {Haystack.Storage.ETS, storage: Tr.Search.storage()},
       # Start the Endpoint (http/https)
-      TrWeb.Endpoint,
+      TrWeb.Endpoint
       # Start a worker by calling: Tr.Worker.start_link(arg)
       # {Tr.Worker, arg}
     ]
