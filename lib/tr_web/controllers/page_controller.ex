@@ -12,4 +12,8 @@ defmodule TrWeb.PageController do
     |> put_resp_content_type("text/xml")
     |> render("index.xml", posts: posts)
   end
+
+  def privacy(conn, _params) do
+    render(conn, :privacy)
+  end
 end

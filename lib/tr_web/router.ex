@@ -21,6 +21,12 @@ defmodule TrWeb.Router do
     plug :accepts, ["xml"]
   end
 
+   scope "/", TrWeb do
+    pipe_through :browser
+
+    get "/privacy", PageController, :privacy
+  end
+
   scope "/", TrWeb do
     pipe_through :xml
 
@@ -56,7 +62,6 @@ defmodule TrWeb.Router do
       pipe_through :browser
 
       live "/", HomeLive, :index
-      live "/privacy", HomeLive, :privacy
 
       live "/blog/search", SearchLive, :index
 
