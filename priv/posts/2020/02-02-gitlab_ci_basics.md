@@ -15,7 +15,7 @@ In this article we will continue where we left off the [forward](https://github.
 
 Gitlab offers a pretty complete solution, but we will only sync our repo from github and set a basic pipeline to test, build and push our docker image to the registry, note that I do not have any kind of affiliation with gitlab, but I like their platform. Also this article demonstrates that you can use github and gitlab in a straight forward manner using the free tier in both sides, we rely in the free shared runners to make our custom CI system.
 
-If you want to check the previous article [go here]({{< ref "/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators" >}}), that way you will know what the project is all about.
+If you want to check the previous article [go here](/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators), that way you will know what the project is all about.
 
 ##### **Prerequisites**
 * [A project in github in this case](https://github.com/kainlite/forward)
