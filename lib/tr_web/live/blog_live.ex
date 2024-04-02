@@ -3,15 +3,6 @@ defmodule TrWeb.BlogLive do
   alias Tr.Blog
 
   @impl true
-  def mount(%{"tag" => tag} = _params, _session, socket) do
-    {
-      :ok,
-      socket
-      |> assign(:posts, Blog.by_tag(tag))
-    }
-  end
-
-  @impl true
   def mount(_params, _session, socket) do
     {
       :ok,
@@ -42,7 +33,7 @@ defmodule TrWeb.BlogLive do
             <li class="px-1"></li>
             <%= for tag <- post.tags do %>
               <li class="bg-white shadow-md p-4 rounded-lg border-l-solid border-l-[5px] border-l-gray-700 float-left">
-                <.link navigate={~p"/blog?tag=#{tag}"}>
+                <.link navigate={~p"/blog/tags/#{tag}"}>
                   <%= tag %>
                 </.link>
               </li>

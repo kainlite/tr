@@ -24,6 +24,8 @@ defmodule TrWeb.Router do
   scope "/", TrWeb do
     pipe_through :browser
 
+    get "/blog/tags", PageController, :tags
+    get "/blog/tags/:tag", PageController, :by_tag
     get "/privacy", PageController, :privacy
   end
 

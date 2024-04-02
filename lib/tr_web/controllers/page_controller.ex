@@ -16,4 +16,12 @@ defmodule TrWeb.PageController do
   def privacy(conn, _params) do
     render(conn, :privacy)
   end
+
+  def tags(conn, _params) do
+    render(conn, tags: Tr.Blog.all_tags())
+  end
+
+  def by_tag(conn, %{"tag" => tag} = _params) do
+    render(conn, posts: Blog.by_tag(tag))
+  end
 end

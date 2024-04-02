@@ -17,5 +17,19 @@ defmodule TrWeb.PageControllerTest do
                ~r/<link>.*\/blog\/new-blog<\/link>/
              )
     end
+
+    test "get all tags", %{conn: conn} do
+      conn = get(conn, ~p"/blog/tags")
+
+      assert response(conn, 200) =~ "kubernetes"
+      assert response(conn, 200) =~ "elixir"
+      assert response(conn, 200) =~ "vim"
+    end
+
+    test "filters by tag", %{conn: conn} do
+      conn = get(conn, ~p"/blog/tags/elixir")
+
+      assert response(conn, 200) =~ "RSS is not dead yet"
+    end
   end
 end
