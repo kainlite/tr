@@ -4,6 +4,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
+    <% description = "Techsquad blog page, Welcome to the laboratory, This blog was created to document and learn about
+    different technologies, among other things it has been deployed to a k3s cluster running in OCI, using elixir and
+    the phoenix" %>
+    <meta
+      name="description"
+      content={description}
+    />
+    <meta property="og:title" content="TechSquad.Rocks Blog page" />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="https://techsquad.rocks/blog" />
+
     <.live_title suffix=" · Phoenix Framework">
       <%= assigns[:page_title] || "Tr" %>
     </.live_title>

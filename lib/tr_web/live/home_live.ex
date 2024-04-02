@@ -55,13 +55,11 @@ defmodule TrWeb.HomeLive do
 
         <ul>
           <%= for post <- @posts do %>
-            <div>
               <li>
                 <.link navigate={~p"/blog/#{post.id}"}>
                   <%= post.title %>
                 </.link>
               </li>
-            </div>
           <% end %>
         </ul>
       </article>
