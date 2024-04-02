@@ -22,13 +22,6 @@ defmodule TrWeb.Router do
   end
 
   scope "/", TrWeb do
-    pipe_through :browser
-
-    get "/", PageController, :index
-    get "/privacy", PageController, :privacy
-  end
-
-  scope "/", TrWeb do
     pipe_through :xml
 
     get "/index.xml", PageController, :sitemap
@@ -59,13 +52,16 @@ defmodule TrWeb.Router do
 
   live_session :default,
     on_mount: [{TrWeb.Hooks.AllowEctoSandbox, :default}, {TrWeb.UserAuth, :mount_current_user}] do
-    scope "/blog", TrWeb do
+    scope "/", TrWeb do
       pipe_through :browser
 
-      live "/search", SearchLive, :index
+      live "/", HomeLive, :index
+      live "/privacy", HomeLive, :privacy
 
-      live "/", BlogLive, :index
-      live "/:id", PostLive, :show
+      live "/blog/search", SearchLive, :index
+
+      live "/blog/", BlogLive, :index
+      live "/blog/:id", PostLive, :show
     end
   end
 

@@ -5,14 +5,6 @@ defmodule TrWeb.PageController do
 
   plug :put_layout, false when action in [:sitemap]
 
-  def index(conn, _params) do
-    render(conn, :home, posts: Blog.recent_posts())
-  end
-
-  def privacy(conn, _params) do
-    render(conn, :privacy)
-  end
-
   def sitemap(conn, _params) do
     posts = Blog.all_posts()
 

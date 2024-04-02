@@ -24,7 +24,7 @@ spec:
       - name: regcred
       containers:
       - name: tr
-        image: kainlite/tr:master
+        image: kainlite/tr:latest
         envFrom:
         - secretRef:
             name: tr-postgres-config
