@@ -83,5 +83,29 @@ defmodule TrWeb.Integration.PostIntegrationTest do
       )
       |> assert_has(css("p", text: "Online: 3"))
     end
+
+    test "an user can react to a post", %{session: session} do
+      page = ~p"/blog/upgrading-k3s-with-system-upgrade-controller"
+
+      log_in({:normal, session})
+
+      session
+      |> visit(page)
+      |> click(link("hero-heart-link"))
+      |> assert_has(css(".float-right span.font-semibold", text: "1"))
+    end
+
+    test "an user can remove their reaction to a post", %{session: session} do
+      page = ~p"/blog/upgrading-k3s-with-system-upgrade-controller"
+
+      log_in({:normal, session})
+
+      session
+      |> visit(page)
+      |> click(link("hero-heart-link"))
+      |> assert_has(css(".float-right span.font-semibold", text: "1"))
+      |> click(link("hero-heart-link"))
+      |> assert_has(css(".float-right span.font-semibold", text: "0", count: 3))
+    end
   end
 end

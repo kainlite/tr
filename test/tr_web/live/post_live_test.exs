@@ -98,6 +98,16 @@ defmodule TrWeb.PostLiveTest do
       assert reply2.parent_comment_id == comment.id
       assert reply2.body =~ "some random reply 2"
     end
+
+    test "can like a post", %{conn: conn} do
+      {:ok, lv, _html} =
+        conn
+        |> live(~p"/blog/upgrading-k3s-with-system-upgrade-controller")
+
+      lv |> element("#hero-heart-link") |> render_click()
+
+      assert lv |> element(".float-right span.font-semibold", "1")
+    end
   end
 
   describe "Annonymous users" do
@@ -121,6 +131,14 @@ defmodule TrWeb.PostLiveTest do
         |> live(~p"/blog/upgrading-k3s-with-system-upgrade-controller")
 
       assert html =~ "Online: 2"
+    end
+
+    test "cannot like a post", %{conn: conn} do
+      {:ok, lv, _html} =
+        conn
+        |> live(~p"/blog/upgrading-k3s-with-system-upgrade-controller")
+
+      assert lv |> element("#hero-heart-link") |> render_click() =~ "You need to be logged in"
     end
   end
 end

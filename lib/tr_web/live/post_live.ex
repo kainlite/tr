@@ -68,11 +68,12 @@ defmodule TrWeb.PostLive do
         phx-value-value="rocket-launch"
         phx-value-slug={@post.id}
         aria-label="awesome"
+        id="hero-rocket-launch-link"
       >
         <.icon name={@rocket_launch} class="w-10 h-10 bg-black" />
         <span class="font-semibold"><%= Map.get(@reactions, "rocket-launch", 0) %></span>
       </.link>
-      <.link phx-click="react" phx-value-value="heart" phx-value-slug={@post.id} aria-label="love it">
+      <.link phx-click="react" phx-value-value="heart" phx-value-slug={@post.id} aria-label="love it" id="hero-heart-link">
         <.icon name={@heart} class="w-10 h-10 bg-red-500" />
         <span class="font-semibold">
           <%= Map.get(@reactions, "heart", 0) %>
@@ -83,6 +84,7 @@ defmodule TrWeb.PostLive do
         phx-value-value="hand-thumb-up"
         phx-value-slug={@post.id}
         aria-label="like it"
+        id ="hero-hand-thumb-up-link"
       >
         <.icon name={@hand_thumb_up} class="w-10 h-10 bg-black" />
         <span class="font-semibold"><%= Map.get(@reactions, "hand-thumb-up", 0) %></span>
