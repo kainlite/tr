@@ -16,7 +16,8 @@ defmodule TrWeb.Endpoint do
   ]
 
   socket "/live", Phoenix.LiveView.Socket,
-    websocket: [connect_info: [:user_agent, session: @session_options]]
+    websocket: [connect_info: [:user_agent, session: @session_options]],
+    check_origin: ["https://techsquad.rocks", "https://www.techsquad.rocks"]
 
   # Remote ip parser
   plug RemoteIp
