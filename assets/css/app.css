@@ -799,3 +799,27 @@
     }
   }
 }
+
+.heart {
+  @apply hero-heart;
+}
+
+.heart-solid {
+  @apply hero-heart-solid;
+}
+
+.hero-hand-thumb-up {
+  @apply hero-hand-thumb-up;
+}
+
+.hero-hand-thumb-up-solid {
+  @apply hero-hand-thumb-up;
+}
+
+.hero-rocket-launch {
+  @apply hero-rocket-launch;
+}
+
+.hero-rocket-launch-solid {
+  @apply hero-rocket-launch;
+}
