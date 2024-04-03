@@ -7,6 +7,7 @@ defmodule Tr.Post do
   alias Tr.Repo
 
   alias Tr.Post.Comment
+  alias Tr.Post.Reaction
 
   def subscribe(slug) do
     channel = "post-" <> slug
@@ -71,6 +72,57 @@ defmodule Tr.Post do
 
     comments
     |> Enum.group_by(& &1.parent_comment_id)
+  end
+
+  @doc """
+  Returns the reaction for a slug, value and user
+
+  ## Examples
+
+      iex> get_reaction("slug", "rocket", 1)
+      true
+  """
+  def get_reaction(slug, value, user_id) do
+    query =
+      from p in Tr.Post.Reaction,
+        where: p.slug == ^slug and p.value == ^value and p.user_id == ^user_id
+
+    Repo.one(query)
+  end
+
+  @doc """
+  Returns true/false if the reaction for a slug, value and user exists
+
+  ## Examples
+
+      iex> reaction_exists?("slug", "rocket", 1)
+      true
+  """
+  def reaction_exists?(slug, value, user_id) do
+    query =
+      from p in Tr.Post.Reaction,
+        where: p.slug == ^slug and p.value == ^value and p.user_id == ^user_id
+
+    Repo.exists?(query)
+  end
+
+  @doc """
+  Returns the list of reactions for a post
+
+  ## Examples
+
+      iex> get_reactions("slug")
+      %{15 => [%Reaction{}, ...]}
+  """
+  def get_reactions(slug) do
+    query =
+      from p in Tr.Post.Reaction,
+        where: p.slug == ^slug
+
+    Repo.all(query)
+    |> Enum.group_by(& &1.value)
+    |> Enum.map(fn {k, v} -> {k, Enum.count(v)} end)
+    |> Enum.into(%{})
   end
 
   @doc """
@@ -158,6 +210,25 @@ defmodule Tr.Post do
   end
 
   @doc """
+  Creates a reaction.
+
+  ## Examples
+
+      iex> create_reaction(%{field: value})
+      {:ok, %Reaction{}}
+
+      iex> create_reaction(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_reaction(attrs \\ %{}) do
+    %Reaction{}
+    |> Reaction.changeset(attrs)
+    |> Repo.insert()
+    |> broadcast(:reaction_created)
+  end
+
+  @doc """
   Updates a comment.
 
   ## Examples
@@ -192,6 +263,23 @@ defmodule Tr.Post do
   end
 
   @doc """
+  Deletes a reaction.
+
+  ## Examples
+
+      iex> delete_reaction(reaction)
+      {:ok, %Reaction{}}
+
+      iex> delete_reaction(reaction)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_reaction(%Reaction{} = reaction) do
+    Repo.delete(reaction)
+    |> broadcast(:reaction_deleted)
+  end
+
+  @doc """
   Approve a comment.
 
   ## Examples
@@ -218,5 +306,18 @@ defmodule Tr.Post do
   """
   def change_comment(%Comment{} = comment, attrs \\ %{}) do
     Comment.changeset(comment, attrs)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking reaction changes.
+
+  ## Examples
+
+      iex> change_reaction(reaction)
+      %Ecto.Changeset{data: %Reaction{}}
+
+  """
+  def change_reaction(%Reaction{} = reaction, attrs \\ %{}) do
+    Reaction.changeset(reaction, attrs)
   end
 end

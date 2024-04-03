@@ -26,10 +26,12 @@ defmodule TrWeb.PostLive do
 
     connected_users = calculate_connected_users(post_id)
 
+    post = Blog.get_post_by_id!(post_id)
+
     socket =
       socket
       |> assign(:params, params)
-      |> assign(:post, Blog.get_post_by_id!(post_id))
+      |> assign(:post, post)
       |> assign(check_errors: false)
       |> assign_form(changeset)
       |> assign(:comments, Tr.Post.get_parent_comments_for_post(post_id))
@@ -37,6 +39,19 @@ defmodule TrWeb.PostLive do
       |> assign(:parent_comment_id, nil)
       |> assign(:connected_users, connected_users)
       |> assign(:diff, nil)
+      |> assign(:reactions, Tr.Post.get_reactions(post_id))
+      |> assign(
+        :rocket_launch,
+        get_styled_reaction(post.id, "rocket-launch", socket.assigns.current_user)
+      )
+      |> assign(
+        :hand_thumb_up,
+        get_styled_reaction(post.id, "hand-thumb-up", socket.assigns.current_user)
+      )
+      |> assign(
+        :heart,
+        get_styled_reaction(post.id, "heart", socket.assigns.current_user)
+      )
 
     {:ok, socket, temporary_assigns: [form: nil]}
   end
@@ -48,12 +63,30 @@ defmodule TrWeb.PostLive do
       <h2><%= @post.title %></h2>
     </div>
     <div class="float-right">
-      <h5>
-        <.link navigate={~p"/blog"}>
-          ← All posts
-        </.link>
-        <p class="clear-both"></p>
-      </h5>
+      <.link
+        phx-click="react"
+        phx-value-value="rocket-launch"
+        phx-value-slug={@post.id}
+        aria-label="awesome"
+      >
+        <.icon name={@rocket_launch} class="w-10 h-10 bg-black" />
+        <span class="font-semibold"><%= Map.get(@reactions, "rocket-launch", 0) %></span>
+      </.link>
+      <.link phx-click="react" phx-value-value="heart" phx-value-slug={@post.id} aria-label="love it">
+        <.icon name={@heart} class="w-10 h-10 bg-red-500" />
+        <span class="font-semibold">
+          <%= Map.get(@reactions, "heart", 0) %>
+        </span>
+      </.link>
+      <.link
+        phx-click="react"
+        phx-value-value="hand-thumb-up"
+        phx-value-slug={@post.id}
+        aria-label="like it"
+      >
+        <.icon name={@hand_thumb_up} class="w-10 h-10 bg-black" />
+        <span class="font-semibold"><%= Map.get(@reactions, "hand-thumb-up", 0) %></span>
+      </.link>
     </div>
 
     <p class="clear-both"></p>
@@ -162,6 +195,47 @@ defmodule TrWeb.PostLive do
   end
 
   @impl true
+  def handle_event("react", %{"value" => value, "slug" => slug} = params, socket) do
+    if is_nil(socket.assigns.current_user) do
+      {:noreply, socket |> put_flash(:error, "You need to be logged in to react.")}
+    else
+      params =
+        Map.merge(
+          %{
+            "user_id" => socket.assigns.current_user.id
+          },
+          params
+        )
+
+      case Tr.Post.reaction_exists?(slug, value, socket.assigns.current_user.id) do
+        true ->
+          # credo:disable-for-next-line Credo.Check.Refactor.Nesting
+          reaction = Tr.Post.get_reaction(slug, value, socket.assigns.current_user.id)
+
+          case Tr.Post.delete_reaction(reaction) do
+            {:ok, _} ->
+              {:noreply, socket}
+
+            {:error, _} ->
+              {:noreply,
+               socket |> put_flash(:error, "There is been an error removing your reaction.")}
+          end
+
+        false ->
+          # credo:disable-for-next-line Credo.Check.Refactor.Nesting
+          case Tr.Post.create_reaction(params) do
+            {:ok, _} ->
+              {:noreply, socket}
+
+            {:error, _} ->
+              {:noreply,
+               socket |> put_flash(:error, "There is been an error saving your reaction.")}
+          end
+      end
+    end
+  end
+
+  @impl true
   def handle_event("save", %{"comment" => comment_params}, socket) do
     params =
       Map.merge(
@@ -213,6 +287,38 @@ defmodule TrWeb.PostLive do
         socket
       ) do
     {:noreply, assign(socket, :parent_comment_id, nil)}
+  end
+
+  @impl true
+  def handle_info({:reaction_created, reaction}, socket) do
+    {:noreply,
+     socket
+     |> assign(:reactions, Tr.Post.get_reactions(reaction.slug))
+     |> assign(
+       :rocket_launch,
+       get_styled_reaction(reaction.slug, "rocket-launch", socket.assigns.current_user)
+     )
+     |> assign(
+       :hand_thumb_up,
+       get_styled_reaction(reaction.slug, "hand-thumb-up", socket.assigns.current_user)
+     )
+     |> assign(:heart, get_styled_reaction(reaction.slug, "heart", socket.assigns.current_user))}
+  end
+
+  @impl true
+  def handle_info({:reaction_deleted, reaction}, socket) do
+    {:noreply,
+     socket
+     |> assign(:reactions, Tr.Post.get_reactions(reaction.slug))
+     |> assign(
+       :rocket_launch,
+       get_styled_reaction(reaction.slug, "rocket-launch", socket.assigns.current_user)
+     )
+     |> assign(
+       :hand_thumb_up,
+       get_styled_reaction(reaction.slug, "hand-thumb-up", socket.assigns.current_user)
+     )
+     |> assign(:heart, get_styled_reaction(reaction.slug, "heart", socket.assigns.current_user))}
   end
 
   @impl true
@@ -278,6 +384,20 @@ defmodule TrWeb.PostLive do
       user.display_name
     else
       name
+    end
+  end
+
+  defp get_styled_reaction(_, value, current_user) when is_nil(current_user) do
+    "hero-#{value}"
+  end
+
+  defp get_styled_reaction(post_id, value, current_user) when not is_nil(current_user) do
+    reaction = Tr.Post.reaction_exists?(post_id, value, current_user.id)
+
+    if reaction do
+      "hero-#{value}-solid"
+    else
+      "hero-#{value}"
     end
   end
 end
