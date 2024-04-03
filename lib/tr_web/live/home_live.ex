@@ -44,8 +44,16 @@ defmodule TrWeb.HomeLive do
           Feel free to register (subscribe) to receive a monthly newsletter related to the topics on this blog and a
           notification on new articles (you can unsubscribe at any time from the settings page), in the future I expect to
           develop more features that rely on authentication, so the earlier is set the easiest will be later on.
+        <br /> New reactions! now you can react to posts, use these at the top of an article:
+        <.icon name="hero-heart" />
+        <.icon name="hero-heart-solid" />
+
+        <.icon name="hero-hand-thumb-up" />
+        <.icon name="hero-hand-thumb-up-solid" />
+
+        <.icon name="hero-rocket-launch" />
+        <.icon name="hero-rocket-launch-solid" />
         </p>
-        <br />
       </div>
     </div>
 
