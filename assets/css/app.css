@@ -808,18 +808,18 @@
   @apply hero-heart-solid;
 }
 
-.hero-hand-thumb-up {
+.hand-thumb-up {
   @apply hero-hand-thumb-up;
 }
 
-.hero-hand-thumb-up-solid {
-  @apply hero-hand-thumb-up;
+.hand-thumb-up-solid {
+  @apply hero-hand-thumb-up-solid;
 }
 
-.hero-rocket-launch {
+.rocket-launch {
   @apply hero-rocket-launch;
 }
 
-.hero-rocket-launch-solid {
-  @apply hero-rocket-launch;
+.rocket-launch-solid {
+  @apply hero-rocket-launch-solid;
 }
