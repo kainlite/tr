@@ -32,14 +32,14 @@ defmodule TrWeb.DashboardLive do
       <h2>Admin Dashboard</h2>
       <.link
         href={~p"/admin/dashboard?comments=all"}
-        class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+        class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700 dark:invert"
       >
         All comments
       </.link>
       |
       <.link
         href={~p"/admin/dashboard?comments=unapproved"}
-        class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+        class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700 dark:invert"
       >
         Unapproved comments
       </.link>
@@ -51,7 +51,7 @@ defmodule TrWeb.DashboardLive do
         <:col :let={comment} label="body"><%= comment.body %></:col>
         <:col :let={comment} label="actions">
           <.link
-            class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            class="text-[1.25rem] leading-6 text-zinc-700 font-semibold hover:text-zinc-700"
             phx-click="approve_comment"
             phx-value-slug={comment.slug}
             phx-value-comment-id={comment.id}
@@ -60,7 +60,7 @@ defmodule TrWeb.DashboardLive do
             ✔️
           </.link>
           <.link
-            class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            class="text-[1.25rem] leading-6 text-zinc-700 font-semibold hover:text-zinc-700"
             phx-click="delete_comment"
             phx-value-slug={comment.slug}
             phx-value-comment-id={comment.id}

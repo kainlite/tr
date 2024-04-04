@@ -11,7 +11,7 @@ defmodule TrWeb.HomeLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <section class="phx-hero">
+    <section class="phx-hero dark:bg-zinc-800 dark:text-gray-200">
       <h1>Welcome to the laboratory</h1>
       <p>Be brave, explore the unknown...</p>
     </section>

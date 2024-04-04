@@ -1,3 +1,4 @@
+// app.js
 // If you want to use Phoenix channels, run `mix help phx.gen.channel`
 // to get started and then uncomment the line below.
 // import "./user_socket.js"
@@ -58,3 +59,26 @@ window.addEventListener("phx:live_reload:attached", ({ detail: reloader }) => {
   // disable with reloader.disableServerLogs()
   reloader.enableServerLogs();
 });
+
+function darkExpected() {
+  return (
+    localStorage.theme === "dark" ||
+    (!("theme" in localStorage) &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches)
+  );
+}
+
+function initDarkMode() {
+  // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+  if (darkExpected()) document.documentElement.classList.add("dark");
+  else document.documentElement.classList.remove("dark");
+}
+
+window.addEventListener("toogle-darkmode", (e) => {
+  if (darkExpected()) localStorage.theme = "light";
+  else localStorage.theme = "dark";
+  initDarkMode();
+});
+
+initDarkMode();
+document.documentElement.style.setProperty("color-scheme", "dark");

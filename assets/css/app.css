@@ -298,27 +298,31 @@
     color: #0069d9;
   }
   code {
-    border-radius: 0.4rem;
+    border-radius: 0.2rem;
     font-size: 86%;
-    margin: 0 0.2rem;
-    padding: 0.2rem 0.5rem;
     white-space: nowrap;
   }
   pre {
     background: #f4f5f6;
     border-left: 0.3rem solid #0069d9;
     overflow-y: hidden;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   }
+
+  pre {
+    @apply dark:bg-zinc-500 dark:text-white;
+  }
+
   pre > code {
     border-radius: 0;
     display: block;
-    padding: 1rem 1.5rem;
     white-space: pre;
   }
   hr {
     border: 0;
     border-top: 0.1rem solid #f4f5f6;
-    margin: 3rem 0;
+    margin: 1rem 0;
   }
   input[type="color"],
   input[type="date"],
@@ -548,6 +552,7 @@
   a {
     color: #0069d9;
     text-decoration: none;
+    @apply dark:text-blue-500;
   }
   a:focus,
   a:hover {
@@ -597,10 +602,9 @@
   form,
   ol,
   p,
-  pre,
   table,
   ul {
-    margin-bottom: 2.5rem;
+    margin-bottom: 0.75rem;
   }
   table {
     border-spacing: 0;
@@ -716,9 +720,6 @@
     font-size: 1.4rem;
     letter-spacing: 0;
     line-height: 1.2;
-  }
-  pre {
-    padding: 1em;
   }
 
   .container {

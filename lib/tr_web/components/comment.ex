@@ -19,7 +19,7 @@ defmodule TrWeb.CommentComponent do
               #<%= @comment.id %> On <%= @comment.updated_at %>
             </span>
           </div>
-          <p class="text-gray-800 mt-2 comment-text text-clip md:text-clip break-words line-clamp-1 max-w-3xl">
+          <p class="text-gray-800 dark:text-gray-200 mt-2 comment-text text-clip md:text-clip break-words line-clamp-1 max-w-3xl">
             <%= body %>
           </p>
           <.link

@@ -62,7 +62,7 @@ defmodule TrWeb.PostLive do
     <div class="float-left">
       <h2><%= @post.title %></h2>
     </div>
-    <div class="float-right">
+    <div class="float-right dark:invert">
       <.link
         phx-click="react"
         phx-value-value="rocket-launch"
@@ -80,7 +80,7 @@ defmodule TrWeb.PostLive do
         aria-label="love it"
         id="hero-heart-link"
       >
-        <.icon name={@heart} class="w-10 h-10 bg-red-500" />
+        <.icon name={@heart} class="w-10 h-10 bg-red-500 dark:bg-black" />
         <span class="font-semibold">
           <%= Map.get(@reactions, "heart", 0) %>
         </span>
@@ -105,8 +105,8 @@ defmodule TrWeb.PostLive do
           <h5 class="font-bold py-0">Tags</h5>
         </li>
         <%= for tag <- @post.tags do %>
-          <li class="bg-white shadow-md p-4 rounded-lg border-l-solid border-l-[5px] border-l-gray-700 float-left">
-            <.link navigate={~p"/blog?tag=#{tag}"}>
+          <li class="bg-white dark:bg-zinc-800 dark:text-white shadow-md p-4 rounded-lg border-l-solid border-l-[5px] border-l-gray-700 float-left">
+            <.link navigate={~p"/blog/tags/#{tag}"}>
               <%= tag %>
             </.link>
           </li>
@@ -149,7 +149,7 @@ defmodule TrWeb.PostLive do
             <% user = Tr.Repo.preload(comment, :user).user %>
             <% link_id = "comment-#{comment.id}-#{:rand.uniform(100_000)}" %>
             <% parent_classes =
-              "bg-white shadow-md p-4 rounded-lg border-l-solid border-l-[5px] border-l-gray-700" %>
+              "bg-white dark:bg-zinc-800 dark:text-white shadow-md p-4 rounded-lg border-l-solid border-l-[5px] border-l-gray-700" %>
             <CommentComponent.render_comment
               avatar_url={user.avatar_url}
               display_name={get_display_name(user)}
@@ -164,7 +164,7 @@ defmodule TrWeb.PostLive do
               <% user = Tr.Repo.preload(child, :user).user %>
               <% link_id = "child-comment-#{comment.id}-#{:rand.uniform(100_000)}" %>
               <% child_classes =
-                "bg-white shadow-md p-4 rounded-lg ml-[40px] border-l-solid border-l-[5px] border-l-teal-300" %>
+                "bg-white dark:bg-zinc-800 dark:text-white shadow-md p-4 rounded-lg ml-[40px] border-l-solid border-l-[5px] border-l-teal-300" %>
 
               <CommentComponent.render_comment
                 avatar_url={user.avatar_url}

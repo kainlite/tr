@@ -1,7 +1,12 @@
-<header>
+<header class="dark:bg-zinc-900 dark:text-white">
   <section class="flex flex-row-reverse">
-    <nav class="">
+    <nav class="dark:invert">
       <ul class="relative z-10 flex flex-row items-center gap-4 px-4 sm:px-6 lg:px-8">
+        <li class="order-199">
+          <.link phx-click={JS.dispatch("toogle-darkmode")} aria-label="toggle dark mode">
+            <.icon name="hero-sun" class="w-10 h-10" />
+          </.link>
+        </li>
         <li class="order-99">
           <.link navigate={~p"/blog/search"} aria-label="search">
             <.icon name="hero-magnifying-glass" class="w-10 h-10" />
@@ -64,7 +69,7 @@
       <ul class="float-left">
         <li class="">
           <.link navigate="/" class="phx-logo">
-            <img src={~p"/images/techsquad.png"} alt="Techsquad lab logo" />
+            <img src={~p"/images/techsquad.png"} alt="Techsquad lab logo" class="dark:invert" />
           </.link>
         </li>
       </ul>

@@ -12,7 +12,7 @@ defmodule TrWeb.SearchLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="mx-auto mt-20 flex flex-col space-y-8 bg-white p-8 shadow-sm">
+    <div class="mx-auto mt-20 flex flex-col space-y-8 bg-white p-8 shadow-sm dark:bg-zinc-900">
       <.form :let={f} for={%{}} as={:search} phx-change="search" phx-submit="search" id="search_form">
         <.input
           type="search"
@@ -25,7 +25,7 @@ defmodule TrWeb.SearchLive do
       </.form>
       <div class="flex flex-col space-y-8">
         <div :for={post <- @posts} class="flex flex-col space-y-1">
-          <h2 class="text-2xl font-medium text-gray-900">
+          <h2 class="text-4xl font-medium text-gray-900">
             <.link navigate={~p"/blog/#{post.id}"}>
               <%= post.title %>
             </.link>
