@@ -5,6 +5,9 @@ defmodule TrWeb.Endpoint do
     plug Phoenix.Ecto.SQL.Sandbox
   end
 
+  # Remote ip parser
+  plug RemoteIp
+
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
@@ -17,9 +20,6 @@ defmodule TrWeb.Endpoint do
 
   socket "/live", Phoenix.LiveView.Socket,
     websocket: [connect_info: [:user_agent, session: @session_options]]
-
-  # Remote ip parser
-  plug RemoteIp
 
   # Serve at "/" the static files from "priv/static" directory.
   #
