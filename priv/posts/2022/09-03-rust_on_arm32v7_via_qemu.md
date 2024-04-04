@@ -3,7 +3,7 @@
   author: "Gabriel Garrido",
   description: "In this article we will explore how to use QEMU to run emulating the ARM32v7 architecture to build and
   run a rust project...",
-  tags: ~w(rust arm),
+  tags: ~w(rust arm linux),
   published: true,
 }
 ---

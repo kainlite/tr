@@ -3,7 +3,7 @@
   author: "Gabriel Garrido",
   description: "SSH is a great tool not only to connect and interact with remote servers, in this article we will
   explore SSH Socks proxy and what it means, we also will explore SSH remote proxy...",
-  tags: ~w(linux openssh),
+  tags: ~w(linux openssh networking),
   published: true,
 }
 ---

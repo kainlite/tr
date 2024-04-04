@@ -60,6 +60,7 @@ window.addEventListener("phx:live_reload:attached", ({ detail: reloader }) => {
   reloader.enableServerLogs();
 });
 
+// https://elixirforum.com/t/how-to-add-dark-mode-for-phoenix-1-7/54356/3
 function darkExpected() {
   return (
     localStorage.theme === "dark" ||
@@ -70,15 +71,22 @@ function darkExpected() {
 
 function initDarkMode() {
   // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-  if (darkExpected()) document.documentElement.classList.add("dark");
-  else document.documentElement.classList.remove("dark");
+  if (darkExpected()) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
 }
 
 window.addEventListener("toogle-darkmode", (e) => {
-  if (darkExpected()) localStorage.theme = "light";
-  else localStorage.theme = "dark";
+  if (darkExpected()) {
+    localStorage.theme = "light";
+    document.documentElement.style.setProperty("color-scheme", "light");
+  } else {
+    localStorage.theme = "dark";
+    document.documentElement.style.setProperty("color-scheme", "dark");
+  }
   initDarkMode();
 });
 
 initDarkMode();
-document.documentElement.style.setProperty("color-scheme", "dark");

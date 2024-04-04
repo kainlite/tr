@@ -2,7 +2,7 @@
   title: "Upgrading K3S with system-upgrade-controller",
   author: "Gabriel Garrido",
   description: "Upgrading K3S with system-upgrade-controller",
-  tags: ~w(k3s kubernetes),
+  tags: ~w(k3s kubernetes linux),
   published: true,
 }
 ---
