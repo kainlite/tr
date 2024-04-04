@@ -8,7 +8,7 @@ defmodule TrWeb.Endpoint do
   # Remote ip parser
   plug RemoteIp,
     headers: ~w[cf-connecting-ip x-original-forwarded-for],
-    debug: true
+    debug: false
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.

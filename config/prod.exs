@@ -23,7 +23,7 @@ config :logger, :console, format: "[$level] $metadata $message\n"
 
 config :remote_ip,
   headers: ~w[cf-connecting-ip x-original-forwarded-for],
-  debug: true
+  debug: false
 
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.
