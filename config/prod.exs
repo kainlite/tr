@@ -21,6 +21,10 @@ config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: Tr.Finch
 
 config :logger, :console, format: "[$level] $metadata $message\n"
 
+config :remote_ip,
+  headers: ~w[cf-connecting-ip x-forwarded-for x-original-forwarded-for],
+  debug: true
+
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.
 
