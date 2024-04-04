@@ -260,6 +260,7 @@ defmodule TrWeb.PostLive do
         {:ok, _} ->
           {:noreply,
            socket
+           |> assign_form(Tr.Post.change_comment(%Tr.Post.Comment{}))
            |> put_flash(:info, "Comment saved successfully.")}
 
         {:error, %Ecto.Changeset{} = changeset} ->

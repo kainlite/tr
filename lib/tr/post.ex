@@ -32,7 +32,7 @@ defmodule Tr.Post do
       [%Comment{}, ...]
   """
   def get_comments_for_post(slug) do
-    query = from(Tr.Post.Comment, where: [slug: ^slug])
+    query = from(Tr.Post.Comment, where: [slug: ^slug], order_by: [desc: :inserted_at])
     comments = Repo.all(query)
     Repo.preload(comments, :user)
   end
@@ -48,7 +48,8 @@ defmodule Tr.Post do
   def get_parent_comments_for_post(slug) do
     query =
       from p in Tr.Post.Comment,
-        where: is_nil(p.parent_comment_id) and p.slug == ^slug
+        where: is_nil(p.parent_comment_id) and p.slug == ^slug,
+        order_by: [asc: :inserted_at]
 
     comments = Repo.all(query)
     Repo.preload(comments, :user)
@@ -65,7 +66,8 @@ defmodule Tr.Post do
   def get_children_comments_for_post(slug) do
     query =
       from p in Tr.Post.Comment,
-        where: p.slug == ^slug and not is_nil(p.parent_comment_id)
+        where: p.slug == ^slug and not is_nil(p.parent_comment_id),
+        order_by: [asc: :inserted_at]
 
     comments = Repo.all(query)
     Repo.preload(comments, :user)
