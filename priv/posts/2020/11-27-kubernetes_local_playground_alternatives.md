@@ -167,7 +167,27 @@ kube-system   etcd-minikube                      1/1     Running    0          3
 ```
 
 ###### Then let's validate that it works
-{{< gist kainlite  56d4c6dfc868e59d592ab8814df80247 >}}
+```elixir
+❯ kubectl apply -f netpol-example.yaml
+pod/client configured
+pod/app1 configured
+pod/app2 configured
+service/app1 created
+service/app2 created
+networkpolicy.networking.k8s.io/default-network-policy created
+
+❯ kubectl exec pod/client -- nc -v -z app1 1111
+app1 (10.103.109.255:1111) open
+
+❯ kubectl exec pod/client -- timeout 5 nc -v -z app2 2222
+punt!
+command terminated with exit code 143
+
+❯ kubectl exec pod/client -- nc -v -z app2 2222 -w 5
+nc: app2 (10.97.248.246:2222): Connection timed out
+command terminated with exit code 1
+```
+
 Note that we add the timeout command with 5 seconds wait so we don't have to really wait for nc timeout which by default is no timeout, we also tested with nc timeout.
 
 You can get more info for minikube using Cilium on their [docs](https://docs.cilium.io/en/v1.9/gettingstarted/minikube/)
@@ -298,7 +318,47 @@ command terminated with exit code 1
 
 ##### Kubeadm and vagrant
 This is an interesting scenario and it's great to understand how clusters are configured using kubeadm also to practice things such as adding/removing/upgrading the nodes, backup and restore etcd, etc. if you want to test this one clone this repo: [Kubernetes with kubeadm using vagrant](https://github.com/kainlite/kubernetes-the-easy-way-with-vagrant-and-kubeadm)
-{{< gist kainlite  4c220572ef64fc5632eaca9dd61274d6 >}}
+```elixir
+❯ ./up.sh
+Bringing machine 'cluster1-master1' up with 'virtualbox' provider...
+Bringing machine 'cluster1-worker1' up with 'virtualbox' provider...
+Bringing machine 'cluster1-worker2' up with 'virtualbox' provider...
+==> cluster1-master1: Importing base box 'ubuntu/bionic64'...
+==> cluster1-master1: Matching MAC address for NAT networking...
+==> cluster1-master1: Setting the name of the VM: cluster1-master1
+==> cluster1-master1: Clearing any previously set network interfaces...
+==> cluster1-master1: Preparing network interfaces based on configuration...
+...
+...
+...
+...
+    cluster1-worker2: This node has joined the cluster:
+    cluster1-worker2: * Certificate signing request was sent to apiserver and a response was received.
+    cluster1-worker2: * The Kubelet was informed of the new secure connection details.
+    cluster1-worker2:
+    cluster1-worker2: Run 'kubectl get nodes' on the control-plane to see this node join the cluster.
+######################## WAITING TILL ALL NODES ARE READY ########################
+######################## INITIALISING K8S RESOURCES ########################
+namespace/development created
+namespace/management created
+service/m-2x3-api-svc created
+service/m-2x3-web-svc created
+priorityclass.scheduling.k8s.io/high-priority-important created
+deployment.apps/web-test created
+deployment.apps/web-test-2 created
+deployment.apps/web-dev-shop created
+deployment.apps/web-dev-shop-dev2 created
+deployment.apps/what-a-deployment created
+deployment.apps/m-2x3-api created
+deployment.apps/m-2x3-web created
+deployment.apps/m-3cc-runner created
+deployment.apps/m-3cc-runner-heavy created
+pod/important-pod created
+pod/web-server created
+Connection to 127.0.0.1 closed.
+Connection to 127.0.0.1 closed.
+######################## ALL DONE ########################
+```
 
 ###### Next, lets copy the kubeconfig and deploy our resources then test (this deployment is using weave)
 ```elixir

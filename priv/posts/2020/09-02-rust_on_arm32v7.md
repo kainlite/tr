@@ -49,7 +49,19 @@ Cargo.toml  src
 I was thinking in processing markdown files and show them as html, so that's basically what the code does, it's far from
 optimal but it is good enough to illustrate the example, first lets add some crates for the webserver 
 ([Actix](https://actix.rs/docs/server/)) and converting [markdown to html](https://github.com/johannhof/markdown.rs).
-{{< gist kainlite 8605014563ae858f179fcbb596a5b1da>}}
+
+```elixir
+[package]
+name = "rcv"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix-web = "4"
+markdown = "0.3"
+```
 
 #### Lets add some code
 This simple snippet only listens for `GET` requests to `/` and logs a line with the unix timestamp and IP and returns 

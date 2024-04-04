@@ -166,9 +166,6 @@
     margin-right: 0;
     padding: 1rem 1.5rem;
   }
-  blockquote *:last-child {
-    margin-bottom: 0;
-  }
   .button,
   button,
   input[type="button"],
@@ -596,16 +593,6 @@
   textarea {
     margin-bottom: 1.5rem;
   }
-  blockquote,
-  dl,
-  figure,
-  form,
-  ol,
-  p,
-  table,
-  ul {
-    margin-bottom: 0.75rem;
-  }
   table {
     border-spacing: 0;
     display: block;
@@ -722,13 +709,6 @@
     line-height: 1.2;
   }
 
-  .container {
-    margin: 0 auto;
-    max-width: 80rem;
-    padding: 0 2rem;
-    position: relative;
-    width: 100%;
-  }
   select {
     width: auto;
   }

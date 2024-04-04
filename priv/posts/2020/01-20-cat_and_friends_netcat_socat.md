@@ -20,7 +20,23 @@ Cat as you might have guessed or know already is to con-cat-enate things, when u
 So what happened there? Basically when you want to end the file or the input you send the keyword Ctrl+D, when typed at the start of a line on a terminal, signifies the end of the input. This is not a signal in the unix sense: when an application is reading from the terminal and the user presses Ctrl+D, the application is notified that the end of the file has been reached (just like if it was reading from a file and had passed the last byte). This can be used also to terminate ssh sessions or just log you out from a terminal.
 
 If you want to copy and paste something there you go:
-{{< gist kainlite  bb03d32945ca285572a17e974deffee9 >}}
+
+```elixir
+
+# Normal concatenation to stdout
+cat test-1.txt test-2.txt 
+
+# Creating a file (redirection)
+cat > test-3.txt
+Some content ctrl-d
+
+# Appending to the same file (same redirection but in append mode)
+cat >> test-3.txt
+Some more content ctrl-d
+
+# Reading the file (read and pipe to stdout)
+cat test-3.txt
+```
 
 While cat is overly simplified here, it can do a lot of interesting things and it is usually misused [see here](http://porkmail.org/era/unix/award.html)
 
@@ -37,7 +53,36 @@ Netcat is a bit more interesting since it can use the network and it's really si
 There are many more things that you can do with netcat and is usually really helpful to debug networking issues or to do a quick copy of files over the network.
 
 If you want to copy and paste something there you go:
-{{< gist kainlite  0a37bfba1ae350695790b7f5c842df63 >}}
+```elixir
+### Example one
+# Server
+# -l means listen, and -p to specify the port
+nc -l -p 3000
+Type here
+
+# Client
+# this one doesn't need a lot of explanation if it's not listening, 
+# then it needs a host and a port to connect to,
+nc localhost 3000
+or type anything here
+
+# Example two
+# Server (Example copying a file, it can be used to copy anything that tar can send)
+# First we create a tmp folder, move into it
+# then we listen with netcat and pipe tar with xvf -
+# that means that anything that comes from stdin
+# will be treated as a tar compressed file and decompressed in place
+mkdir tmp && cd tmp && nc -l -p 3000 | tar xvf - 
+
+# Client (send the file)
+# We create a file with some text
+echo "Hello world!" > test.txt
+# Then compress it with tar and print it to stdout 
+# we also redirect that into nc so it will be sent over the network
+# tar cvf is the opposite of tar xvf, x is extract, v is verbose
+# and f is archive file, c is compress
+tar cvf - test.txt | nc localhost 3000
+```
 
 Netcat is pretty good at it's job and it's always a good tool to have at hand, but there are other more complex tasks with sockets and for that we have socat.
 

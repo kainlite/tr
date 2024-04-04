@@ -100,7 +100,7 @@ defmodule TrWeb.PostLive do
     <p class="clear-both"></p>
 
     <div class="mx-auto">
-      <ul class="space-y-4 list-none">
+      <ul class="space-y-6 list-none">
         <li class="px-1">
           <h5 class="font-bold py-0">Tags</h5>
         </li>

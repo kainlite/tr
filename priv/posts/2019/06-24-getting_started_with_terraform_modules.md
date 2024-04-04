@@ -16,7 +16,19 @@ In this article we will see a subtle introduction to terraform modules, how to p
 A module can be any folder with a `main.tf` file in it, yes, that is the only _required_ file for a module to be usable, but the recommendation is that you also put a `README.md` file with a description of the module if it's intended to be used by people if it's a sub-module it's not necessary, also you will need a file called `variables.tf` and other `outputs.tf` of course if it's a big module that cannot be splitted into sub-modules you can split those files for convenience or readability, variables should have descriptions so the tooling can show you what are they for, you can read more about the basics for a module [here](https://www.terraform.io/docs/modules/index.html).
 
 Before moving on let's see the folder structure of our project:
-{{< gist kainlite  4229babfdf16f9caaf16889246a5b53c >}}
+```elixir
+├── account.json
+├── LICENSE
+├── main.tf
+├── module
+│   ├── main.tf
+│   ├── outputs.tf
+│   └── variables.tf
+├── README.md
+└── terraform.tfvars
+
+1 directory, 8 files
+```
 
 ##### **Okay enough talking, show me the code**
 ###### **The project**

@@ -55,7 +55,65 @@ make sure masked is marked but not protected, protected is only used when you wa
 
 ##### **Gitlab-CI config**
 After that we only need to add the code to the repo and that will trigger a build, the file needs to be called `.gitlab-ci.yml`
-{{< gist kainlite  1cb1aeb54f12830f4bcef6f0df02a250 >}}
+```elixir
+image: golang:1.13.7-alpine3.11
+
+stages:
+- test
+- build
+
+variables:
+  PKG_PATH: gitlab.com/kainlite/forward
+  IMAGE_NAME: "kainlite/forward"
+
+before_script:
+  - apk update && apk add curl make musl-dev gcc build-base
+  - BUILD_DIR=$(pwd)
+  - export GOPATH=${BUILD_DIR}/_build
+  - export PATH=${GOPATH}/bin:${PATH}
+  - export PATH=$PATH:/usr/local/bin
+  - mkdir -p "${GOPATH}/src/${PKG_PATH}" && cd "${GOPATH}/src/${PKG_PATH}"
+  - curl -L https://github.com/kubernetes-sigs/kubebuilder/releases/download/v2.2.0/kubebuilder_2.2.0_linux_amd64.tar.gz > /tmp/kubebuilder.tar.gz
+  - tar -zxvf /tmp/kubebuilder.tar.gz
+  - chmod +x kubebuilder_2.2.0_linux_amd64/bin/* && mkdir -p /usr/local/kubebuilder && mv kubebuilder_2.2.0_linux_amd64/bin/ /usr/local/kubebuilder/
+  - export PATH=$PATH:/usr/local/kubebuilder/bin
+  - curl -L https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv3.5.4/kustomize_v3.5.4_linux_amd64.tar.gz > /tmp/kustomize.tar.gz
+  - tar -zxvf /tmp/kustomize.tar.gz
+  - mv kustomize /usr/local/bin
+  - curl -L https://github.com/kubernetes-sigs/kind/releases/download/v0.7.0/kind-linux-amd64 > /usr/local/bin/kind
+  - chmod +x /usr/local/bin/kind /usr/local/bin/kustomize
+  - curl -L https://download.docker.com/linux/static/stable/x86_64/docker-19.03.5.tgz > /tmp/docker.tar.gz
+  - tar -xzvf /tmp/docker.tar.gz -C /tmp/
+  - chmod +x /tmp/docker/* && cp /tmp/docker/docker* /usr/local/bin && rm -rf /tmp/docker
+
+test:
+  stage: test
+  script:
+    - cd ${BUILD_DIR} && make test
+  cache:
+    key: "$CI_COMMIT_REF_SLUG"
+    paths:
+      - _build/pkg
+
+build:
+  stage: build
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://docker:2375
+  services:
+    - docker:dind
+  script:
+    - cd ${BUILD_DIR}
+    - docker login -u "kainlite" -p "${DOCKERHUB_TOKEN}"
+    - docker pull "$IMAGE_NAME:${CI_COMMIT_SHA}" || true
+    - make docker-build docker-push IMG="${IMAGE_NAME}:${CI_COMMIT_SHA}"
+    - docker tag "kainlite/forward:${CI_COMMIT_SHA}" "$IMAGE_NAME:latest"
+    - make docker-push IMG="${IMAGE_NAME}:latest"
+  cache:
+    key: "$CI_COMMIT_REF_SLUG"
+    paths:
+      - _build/pkg
+```
 basically we just install everything we need run the tests if everything goes well, then the build and push process. There is a lot of room for improvement in that initial config, but for now we only care in having some sort of CI system
 
 Then we will see something like this in the `CI/CD->Pipelines` tab, after each commit it will trigger a test, build and push
