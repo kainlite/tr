@@ -7,7 +7,7 @@
 }
 ---
 
-![operator](/images/operator-ts-js.png){:class="mx-auto"}
+![operator](/images/kubernetes-ts-js.png){:class="mx-auto"}
 
 #### **Introduction**
 
