@@ -13,7 +13,8 @@ defmodule TrWeb.DashboardLive do
 
     {:ok,
      socket
-     |> assign(:comments, Tr.Post.list_comments())}
+     |> assign(:comments, Tr.Post.list_comments())
+     |> assign(:user_stats, TrWeb.Presence.list_connected_users())}
   end
 
   @impl true
@@ -22,14 +23,27 @@ defmodule TrWeb.DashboardLive do
       Phoenix.PubSub.subscribe(Tr.PubSub, "#admin-dashboard")
     end
 
-    {:ok, socket |> assign(:comments, Tr.Post.get_unapproved_comments())}
+    {:ok,
+     socket
+     |> assign(:comments, Tr.Post.get_unapproved_comments())
+     |> assign(:user_stats, TrWeb.Presence.list_connected_users())}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <div class="mx-auto">
+      <div class="float-right">
+        <span>Connected users: <%= @user_stats.total %></span>
+        <ul class="list-none text-base bg-gray-100 rounded-lg p-4 shadow-md dark:invert">
+          <%= for {room, count} <- @user_stats.per_room do %>
+            <li class="py-2 border-b border-gray-200 dark:invert"><%= room %>: <%= count %></li>
+          <% end %>
+        </ul>
+      </div>
+
       <h2>Admin Dashboard</h2>
+
       <.link
         href={~p"/admin/dashboard?comments=all"}
         class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700 dark:invert"
