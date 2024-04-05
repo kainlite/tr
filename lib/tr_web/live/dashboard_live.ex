@@ -23,6 +23,8 @@ defmodule TrWeb.DashboardLive do
       Phoenix.PubSub.subscribe(Tr.PubSub, "#admin-dashboard")
     end
 
+    Process.send_after(self(), :refresh, 5000)
+
     {:ok,
      socket
      |> assign(:comments, Tr.Post.get_unapproved_comments())
@@ -104,6 +106,16 @@ defmodule TrWeb.DashboardLive do
     broadcast(Tr.Post.delete_comment(comment))
 
     {:noreply, socket |> put_flash(:info, "Comment deleted successfully.")}
+  end
+
+  @impl true
+  def handle_info(:refresh, socket) do
+    Process.send_after(self(), :refresh, 5000)
+
+    {:noreply,
+     socket
+     |> assign(:comments, Tr.Post.get_unapproved_comments())
+     |> assign(:user_stats, TrWeb.Presence.list_connected_users())}
   end
 
   @impl true
