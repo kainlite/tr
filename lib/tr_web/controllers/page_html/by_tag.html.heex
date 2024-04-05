@@ -1,10 +1,10 @@
 <%= for post <- @posts do %>
   <div id={post.id} style="margin-bottom: 3rem;">
-    <h2>
+    <h1>
       <.link navigate={~p"/blog/#{post.id}"}>
         <%= post.title %>
       </.link>
-    </h2>
+    </h1>
 
     <p>
       <time><%= post.date %></time> by <%= post.author %>
