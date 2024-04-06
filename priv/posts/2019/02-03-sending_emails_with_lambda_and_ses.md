@@ -261,13 +261,13 @@ The code is pretty much straight forward it only expects 2 parameters and it wil
 For this to work you will need to verify/validate your domain in SES.
 
 Go to `SES->Domains->Verify a New Domain`.
-![image](aws-ses-validate-domain.png){:class="mx-auto"}
+![image](/images/aws-ses-validate-domain.png){:class="mx-auto"}
 
 After putting your domain in, you will see something like this:
-![image](aws-ses-validation-and-dkim.png){:class="mx-auto"}
+![image](/images/aws-ses-validation-and-dkim.png){:class="mx-auto"}
 
 As I don't have this domain in Route53 I don't have a button to add the records to it (which makes everything simpler and faster), but it's easy enough just create a few dns records and wait a few minutes until you get something like this:
-![image](aws-ses-validation-ok.png){:class="mx-auto"}
+![image](/images/aws-ses-validation-ok.png){:class="mx-auto"}
 
 **After that just test it**
 ```elixir

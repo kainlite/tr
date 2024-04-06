@@ -33,7 +33,8 @@ defmodule TrWeb.HomeLive do
           <img
             src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
             alt="Buy Me A Coffee"
-            style="height: 60px !important;width: 217px !important;"
+            style="height: 60px !important;width: 217px !important; padding-bottom: 0px !important; padding-top: 0px
+            !important;"
           />
         </a>
       </div>
@@ -57,7 +58,7 @@ defmodule TrWeb.HomeLive do
       </div>
     </div>
 
-    <section class="row">
+    <section class="row columns-2">
       <article class="column">
         <h2>Latest articles</h2>
 

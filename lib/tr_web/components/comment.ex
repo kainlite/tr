@@ -8,9 +8,9 @@ defmodule TrWeb.CommentComponent do
     ~H"""
     <% body = if @comment.approved, do: @comment.body, else: "Comment hidden, awaiting moderation..." %>
     <li class={@classes}>
-      <div class="flex items-start">
-        <img class="w-12 h-12 rounded-full mr-4" src={@avatar_url} alt="User Avatar" />
-        <div class="flex-1 max-w[50-rem]">
+      <div class="flex">
+        <img class="h-12 rounded-full mr-4" src={@avatar_url} alt="User Avatar" />
+        <div class="flex-1 max-w[50-rem] min-h-24">
           <div class="flex justify-between items-center">
             <h2 class="text-lg font-semibold">
               <%= @display_name %>
@@ -19,7 +19,8 @@ defmodule TrWeb.CommentComponent do
               #<%= @comment.id %> On <%= @comment.updated_at %>
             </span>
           </div>
-          <p class="text-gray-800 dark:text-gray-200 mt-2 comment-text text-clip md:text-clip break-words line-clamp-1 max-w-3xl">
+          <p class="text-gray-800 dark:text-gray-200 mt-2 comment-text text-clip md:text-clip text-lg break-words line-clamp-1
+          max-w-3xl min-h-24">
             <%= body %>
           </p>
           <.link

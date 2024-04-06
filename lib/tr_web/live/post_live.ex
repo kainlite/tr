@@ -149,7 +149,8 @@ defmodule TrWeb.PostLive do
             <% user = Tr.Repo.preload(comment, :user).user %>
             <% link_id = "comment-#{comment.id}-#{:rand.uniform(100_000)}" %>
             <% parent_classes =
-              "bg-white dark:bg-zinc-800 dark:text-white shadow-md p-4 rounded-lg border-l-solid border-l-[5px] border-l-gray-700" %>
+              "bg-white dark:bg-zinc-800 dark:text-white shadow-md p-4 rounded-lg border-l-solid border-l-[5px]
+              border-l-gray-700 text-base min-h-24 font-medium" %>
             <CommentComponent.render_comment
               avatar_url={user.avatar_url}
               display_name={get_display_name(user)}
@@ -164,7 +165,7 @@ defmodule TrWeb.PostLive do
               <% user = Tr.Repo.preload(child, :user).user %>
               <% link_id = "child-comment-#{comment.id}-#{:rand.uniform(100_000)}" %>
               <% child_classes =
-                "bg-white dark:bg-zinc-800 dark:text-white shadow-md p-4 rounded-lg ml-[40px] border-l-solid border-l-[5px] border-l-teal-300" %>
+                "bg-white dark:bg-zinc-800 dark:text-white shadow-md p-4 min-h-24 text-base font-medium rounded-lg ml-[40px] border-l-solid border-l-[5px] border-l-teal-300" %>
 
               <CommentComponent.render_comment
                 avatar_url={user.avatar_url}

@@ -43,8 +43,7 @@
     color: #e6db74;
   } /* :string_delimiter */
   .makeup .err {
-    color: #960050;
-    background-color: #1e0010;
+    color: #53bbda;
   } /* :error */
   .makeup .fm {
     color: #a6e22e;
@@ -55,18 +54,15 @@
   .makeup .ge {
     font-style: italic;
   } /* :generic_emph */
-  .makeup .gi {
-    color: #a6e22e;
-  } /* :generic_inserted */
   .makeup .gs {
     font-weight: bold;
   } /* :generic_strong */
   .makeup .gu {
     color: #75715e;
   } /* :generic_subheading */
-  .makeup .il {
-    color: #ae81ff;
-  } /* :number_integer_long */
+  /* .makeup .il { */
+  /*   color: #ae81ff; */
+  /* } /1* :number_integer_long *1/ */
   .makeup .k {
     color: #66d9ef;
   } /* :keyword */
@@ -76,9 +72,6 @@
   .makeup .kd {
     color: #66d9ef;
   } /* :keyword_declaration */
-  .makeup .kn {
-    color: #f92672;
-  } /* :keyword_namespace */
   .makeup .kp {
     color: #66d9ef;
   } /* :keyword_pseudo */
@@ -88,30 +81,6 @@
   .makeup .kt {
     color: #66d9ef;
   } /* :keyword_type */
-  .makeup .l {
-    color: #ae81ff;
-  } /* :literal */
-  .makeup .ld {
-    color: #ae81ff;
-  } /* :literal_date */
-  .makeup .m {
-    color: #ae81ff;
-  } /* :number */
-  .makeup .mb {
-    color: #ae81ff;
-  } /* :number_bin */
-  .makeup .mf {
-    color: #ae81ff;
-  } /* :number_float */
-  .makeup .mh {
-    color: #ae81ff;
-  } /* :number_hex */
-  .makeup .mi {
-    color: #ae81ff;
-  } /* :number_integer */
-  .makeup .mo {
-    color: #ae81ff;
-  } /* :number_oct */
   .makeup .n {
     color: #f8f8f2;
   } /* :name */
@@ -122,14 +91,11 @@
     color: #f8f8f2;
   } /* :name_builtin */
   .makeup .nc {
-    color: #a6e22e;
+    color: #a6e77e;
   } /* :name_class */
   .makeup .nd {
     color: #a6e22e;
   } /* :name_decorator */
-  .makeup .ne {
-    color: #a6e22e;
-  } /* :name_exception */
   .makeup .nf {
     color: #a6e22e;
   } /* :name_function */
@@ -145,21 +111,9 @@
   .makeup .no {
     color: #66d9ef;
   } /* :name_constant */
-  .makeup .nt {
-    color: #f92672;
-  } /* :name_tag */
   .makeup .nv {
     color: #f8f8f2;
   } /* :name_variable */
-  .makeup .nx {
-    color: #a6e22e;
-  } /* :name_other */
-  .makeup .o {
-    color: #f92672;
-  } /* :operator */
-  .makeup .ow {
-    color: #f92672;
-  } /* :operator_word */
   .makeup .p {
     color: #f8f8f2;
   } /* :punctuation */
@@ -187,9 +141,6 @@
   .makeup .sd {
     color: #e6db74;
   } /* :string_doc */
-  .makeup .se {
-    color: #ae81ff;
-  } /* :string_escape */
   .makeup .sh {
     color: #e6db74;
   } /* :string_heredoc */

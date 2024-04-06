@@ -618,7 +618,7 @@ Wait a few moments and verify.
 ![img](/images/aws-alb-listeners.png){:class="mx-auto"}
 
 **The DNS records**
-![image](aws-alb-route53-records.png){:class="mx-auto"}
+![image](/images/aws-alb-route53-records.png){:class="mx-auto"}
 
 **And the app**
 ![img](/images/aws-alb-result.png){:class="mx-auto"}

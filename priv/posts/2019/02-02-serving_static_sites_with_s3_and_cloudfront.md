@@ -320,4 +320,4 @@ This article is the first one in this series of serverless articles, the idea is
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
-Also, you can check the source code and changes in the [generated code](https://github.com/kainjkjkjklite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)

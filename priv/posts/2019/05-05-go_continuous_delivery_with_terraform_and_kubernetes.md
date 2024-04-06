@@ -14,9 +14,9 @@ In this article we will continue where we left off the last time [Go continuous 
 
 ##### **DigitalOcean**
 We need to create a token so terraform can create resources using DO API. Go to your account then in the menu on the left click API, then you should see something like this:
-![image](terraform-do-token-1.png){:class="mx-auto"}
+![image](/images/terraform-do-token-1.png){:class="mx-auto"}
 Once there click generate token (give it a meaningful name to you), and make sure it can write.
-![image](terraform-do-token-2.png){:class="mx-auto"}
+![image](/images/terraform-do-token-2.png){:class="mx-auto"}
 
 ##### **Terraform**
 As the next step it would be good to set the token for terraform, so let's examine all files and see what they are going to do, but first we're going to provide the secrets to our app via environment variables, and I've found quite useful to use `direnv` on many projects, so the content of the first file `.envrc` would look something like:
@@ -266,7 +266,7 @@ after_success:
 As shown in the screenshot we took the base64 encoded certificates and loaded them into travis as environment variables (KUBERNETES_CA, KUBERNETES_CLIENT_CA, KUBERNETES_CLIENT_KEY, KUBERNETES_ENDPOINT), then we decode that into files, create the configuration using kubectl and set it as active and then we apply the deployment with the newly rendered hash.
 
 This is how it should look in travis:
-![image](terraform-do-environment-variables.png){:class="mx-auto"}
+![image](/images/terraform-do-environment-variables.png){:class="mx-auto"}
 
 Let's take a look at the generated kubernetes configuration and what values you should take into account:
 ```elixir
@@ -408,10 +408,10 @@ $ curl -v 142.93.207.200:30000
 ```
 
 Finally let's check what we should see in travis:
-![image](terraform-do-travis-result-1.png){:class="mx-auto"}
+![image](/images/terraform-do-travis-result-1.png){:class="mx-auto"}
 
 As we can see everything went well and our deployment applied successfully in our cluster
-![image](terraform-do-travis-result-2.png){:class="mx-auto"}
+![image](/images/terraform-do-travis-result-2.png){:class="mx-auto"}
 
 ##### **Closing notes**
 I will be posting some articles about CI and CD and good practices that DevOps/SREs should have in mind, tips, tricks, and full deployment examples, this is the second part of a possible series of three articles (Next one should be about the same but using Jenkins) with a complete but basic example of CI first and then CD. This can of course change and any feedback would be greatly appreciated :).
