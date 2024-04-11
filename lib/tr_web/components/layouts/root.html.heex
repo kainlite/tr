@@ -12,12 +12,20 @@
     <meta property="og:title" content="TechSquad.Rocks Blog page" />
     <meta property="og:description" content={description} />
     <meta property="og:image" content="https://techsquad.rocks/blog" />
+    <meta name="google-adsense-account" content="ca-pub-7062237667905629" />
 
     <.live_title>
       <%= assigns[:page_title] || "TechSquad.Rocks information and technology" %>
     </.live_title>
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
+    </script>
+
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7062237667905629"
+      crossorigin="anonymous"
+    >
     </script>
   </head>
   <body class="bg-white dark:bg-zinc-900 dark:text-white antialiased">
