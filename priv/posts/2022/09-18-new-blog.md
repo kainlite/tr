@@ -4,6 +4,7 @@
   description: "New blog to document and learn about the infamous Web3 world with a dynamic self-hosted blog...",
   tags: ~w(elixir phoenix),
   published: true,
+  image: "phoenix.png"
 }
 ---
 

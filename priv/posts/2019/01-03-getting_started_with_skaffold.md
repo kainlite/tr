@@ -4,6 +4,7 @@
   description: "This time we will see how to get started with skaffold...",
   tags: ~w(kubernetes),
   published: true,
+  image: "kubernetes.png"
 }
 ---
 

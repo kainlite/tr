@@ -4,6 +4,7 @@
   description: "Why do I need a service mesh? Basically because in cloud environments you cannot trust that the network will be reliable 100% of the time, that the latency will be low, that the network is secure and the bandwidth is infinite, the service mesh is just an extra layer to help microservices communicate with each other safely and reliably.",
   tags: ~w(kubernetes istio),
   published: true,
+  image: "logo.png"
 }
 ---
 

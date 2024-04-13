@@ -4,6 +4,7 @@
   description: "In this article we will see how to add an RSS feed to your Phoenix application, and how to render XML.",
   tags: ~w(elixir phoenix),
   published: true,
+  image: "rss.png"
 }
 ---
 

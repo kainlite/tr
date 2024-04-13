@@ -4,10 +4,11 @@
   description: "This post is a bit different from the others in the sense that it's a small tool I did to ease spam reporting to...",
   tags: ~w(golang linux),
   published: true,
+  image: "spam.png"
 }
 ---
 
-![spam](/images/spam.jpg){:class="mx-auto"}
+![spam](/images/spam.png){:class="mx-auto"}
 
 ##### **Introduction**
 This post is a bit different from the others in the sense that it's a small "tool" I did to ease spam reporting to [SpamCop.net](https://www.spamcop.net/), this helps to reduce the true Spam from unknown sources, since for some reason I started to get like 40 emails per day (all went to spam), but it is still somewhat annoying, so I started reporting it to spamcop, but the process was kind of slow and I got tired of that quickly, so I created this "script" to make things easier. Basically what it does is list all messages in the spam folders fetches them and then forwards each one as an attachment to spamcop, then you get an email with a link to confirm the submission and that's it.

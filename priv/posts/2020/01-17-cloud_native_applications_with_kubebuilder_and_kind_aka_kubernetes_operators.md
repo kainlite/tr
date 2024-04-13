@@ -4,6 +4,7 @@
   description: "In this article we will see how to use kubebuilder and kind to create and test an operator...",
   tags: ~w(golang kubernetes kubebuilder kind linux),
   published: true,
+  image: "forward.png"
 }
 ---
 

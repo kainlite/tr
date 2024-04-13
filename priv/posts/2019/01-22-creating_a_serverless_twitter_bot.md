@@ -4,6 +4,7 @@
   description: "This article explains how to create a serverless tweet-bot, basically pulls articles from this blog and post them to twitter in a nice way. It uses cron as the trigger...",
   tags: ~w(golang serverless),
   published: true,
+  image: "logo.png"
 }
 ---
 

@@ -5,6 +5,7 @@
   function in AWS Lambda to send an email coming from the HTML form in the site...",
   tags: ~w(golang serverless),
   published: true,
+  image: "aws-lambda-ses.png"
 }
 ---
 

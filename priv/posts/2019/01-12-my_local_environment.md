@@ -4,6 +4,7 @@
   description: "This article is about my current configuration, but I'm going to talk only about the terminal and my text editor because those will work in any linux distribution...",
   tags: ~w(linux vim tmux),
   published: true,
+  image: "urxvt.png"
 }
 ---
 

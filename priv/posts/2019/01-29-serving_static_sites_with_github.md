@@ -4,6 +4,7 @@
   description: "GitHub pages offers some great examples that are really easy to follow, but if you want to know how I configured everything for this blog continue reading...",
   tags: ~w(serverless git github),
   published: true,
+  image: "serve-github.png"
 }
 ---
 

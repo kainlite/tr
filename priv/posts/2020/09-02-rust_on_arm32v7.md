@@ -4,10 +4,11 @@
   description: "In this article we will explore how to create a sample rust project and Dockerfile to run it on ARM32v7...",
   tags: ~w(kubernetes rust arm),
   published: true,
+  image: "rust.png"
 }
 ---
 
-![rust](/images/rust.jpg"){:class="mx-auto"}
+![rust](/images/rust.png"){:class="mx-auto"}
 
 #### **Introduction**
 

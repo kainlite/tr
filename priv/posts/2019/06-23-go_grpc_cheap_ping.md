@@ -4,6 +4,7 @@
   description: "In this article we will explore gRPC with a cheap ping application, basically we will do a ping and measure the time it takes for the message to go to the server and back before...",
   tags: ~w(golang grpc),
   published: true,
+  image: "golang-grpc.png"
 }
 ---
 

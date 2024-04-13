@@ -4,6 +4,7 @@
   description: "In this article we will explore how to create an operator that can prefetch our images (from our deployments to all nodes) using the Operator SDK, you might be wondering why...",
   tags: ~w(golang kubernetes),
   published: true,
+  image: "operator-sdk.png"
 }
 ---
 

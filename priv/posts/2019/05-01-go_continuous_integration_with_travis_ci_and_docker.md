@@ -5,6 +5,7 @@
   travis-ci and docker...",
   tags: ~w(golang travis cicd),
   published: true,
+  image: "travis-ci-docker.png"
 }
 ---
 

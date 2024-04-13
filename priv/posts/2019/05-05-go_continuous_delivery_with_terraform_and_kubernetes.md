@@ -4,6 +4,7 @@
   description: "In this article we will continue where we left off the last time: Go continuous integration with Travis CI and Docker...",
   tags: ~w(golang travis terraform cicd),
   published: true,
+  image: "travis-ci-docker.png"
 }
 ---
 

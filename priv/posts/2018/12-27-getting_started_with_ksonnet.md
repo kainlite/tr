@@ -4,6 +4,7 @@
   description: "This tutorial will show you how to create a simple application and also how to deploy it to kubernetes using ksonnet...",
   tags: ~w(kubernetes jsonnet ksonnet tooling),
   published: true,
+  image: "kubernetes.png"
 }
 ---
 

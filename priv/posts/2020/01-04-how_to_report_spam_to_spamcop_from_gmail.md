@@ -4,10 +4,11 @@
   description: "Easy method to report spam to spamcop using GMail, this helps to reduce the true Spam from unknown sources, since for some reason I started to get...",
   tags: ~w(linux),
   published: true,
+  image: "spam.png"
 }
 ---
 
-![spam](/images/spam.jpg){:class="mx-auto"}
+![spam](/images/spam.png){:class="mx-auto"}
 
 ##### **Introduction**
 Easy method to report spam to [SpamCop.net](https://www.spamcop.net/) using GMail, this helps to reduce the true Spam from unknown sources, since for some reason I started to get like 40 emails per day (all went to spam), but it is still somewhat annoying, so I started reporting it to spamcop, this alternative method doesn't need a script and it's really easy to do as well, same result as with the script from [the previous post](https://techsquad.rocks/blog/how_to_report_your_gmail_spam_folder_to_spamcop/).

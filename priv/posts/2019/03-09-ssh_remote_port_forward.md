@@ -4,6 +4,7 @@
   description: "SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Remote port forward and what it means, we also will explore ...",
   tags: ~w(linux openssh networking),
   published: true,
+  image: "openssh.png"
 }
 ---
 

@@ -4,6 +4,7 @@
   description: "In this article we will see how to use cat, netcat and socat at least some basic examples and why do we have so many cats...",
   tags: ~w(linux networking),
   published: true,
+  image: "linux.png"
 }
 ---
 

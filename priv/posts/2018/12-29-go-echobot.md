@@ -4,6 +4,7 @@
   description: "Exploring ksonnet with an echo bot made in Golang...",
   tags: ~w(golang kubernetes jsonnet ksonnet slack tooling),
   published: true,
+  image: "logo.png"
 }
 ---
 

@@ -4,6 +4,7 @@
   description: "In this article we will explore how to deploy and configure tekton to build and push images to your registry to be consumed from your cluster, we will also see how these are deployed in another article...",
   tags: ~w(kubernetes arm linux tekton cicd),
   published: true,
+  image: "tekton-logo.png"
 }
 ---
 

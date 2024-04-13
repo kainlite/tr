@@ -2,6 +2,16 @@
   <section class="flex flex-row-reverse">
     <nav class="dark:invert">
       <ul class="relative z-10 flex flex-row items-center gap-4 px-4 sm:px-6 lg:px-8">
+        <li class="order-299">
+          <.link
+            id="cookie-consent-preferences"
+            phx-update="ignore"
+            aria-label="cookies"
+            data-cc="show-preferencesModal"
+          >
+            <span class="hero-information-circle w-10 h-10" />
+          </.link>
+        </li>
         <li class="order-199">
           <.link phx-click={JS.dispatch("toogle-darkmode")} aria-label="toggle dark mode">
             <span class="hero-moon dark:hero-sun dark:w-10 dark:h-10 w-10 h-10" />
@@ -15,6 +25,11 @@
         <li class="order-90">
           <.link navigate={~p"/blog/tags"} aria-label="labels">
             <.icon name="hero-tag" class="w-10 h-10" />
+          </.link>
+        </li>
+        <li class="order-100">
+          <.link navigate={~p"/blog"} aria-label="blog">
+            <.icon name="hero-list-bullet" class="w-10 h-10" />
           </.link>
         </li>
         <%= if Map.get(assigns, :current_user) do %>

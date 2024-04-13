@@ -13,7 +13,8 @@ defmodule Tr.Blog.PostTest do
         published: true,
         author: "some author",
         description: "some description",
-        date: ~D[2020-01-01]
+        date: ~D[2020-01-01],
+        image: "terraform.png"
       }
 
       assert post.id == "some-slug"
@@ -24,6 +25,7 @@ defmodule Tr.Blog.PostTest do
       assert post.author == "some author"
       assert post.description == "some description"
       assert post.date == ~D[2020-01-01]
+      assert post.image == "terraform.png"
     end
   end
 end

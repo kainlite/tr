@@ -14,35 +14,57 @@ defmodule TrWeb.BlogLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <%= for post <- @posts do %>
-      <div id={post.id} style="margin-bottom: 3rem;">
-        <h2>
-          <.link navigate={~p"/blog/#{post.id}"}>
-            <%= post.title %>
-          </.link>
-        </h2>
+    <%= TrWeb.AdsComponent.render_large_ad(assigns) %>
 
-        <p>
-          <time><%= post.date %></time> by <%= post.author %>
-        </p>
-        <%= raw(post.description) %>
-
-        <p class="clear-both"></p>
-        <div class="mx-auto">
-          <ul class="space-y-4 list-none">
-            <li class="px-1"></li>
-            <%= for tag <- post.tags do %>
-              <li class="bg-white dark:bg-zinc-800 dark:text-gray-200 shadow-md p-4 rounded-lg border-l-solid border-l-[5px] border-l-gray-700 float-left">
-                <.link navigate={~p"/blog/tags/#{tag}"}>
-                  <%= tag %>
+    <div class="flex flex-row flex-wrap columns-3">
+      <%= for post <- @posts do %>
+        <div id={post.id}>
+          <div class="relative">
+            <div class="bg-white dark:bg-zinc-700 dark:text-gray-200 shadow-md rounded-lg overflow-hidden w-[40rem]
+            h-[30rem] m-4">
+              <.link navigate={~p"/blog/#{post.id}"} class="">
+                <img
+                  src={~p"/images/#{post.image}"}
+                  alt="Article Image"
+                  class="w-full h-32 sm:h-48 object-center object-scale-down"
+                />
+              </.link>
+              <div class="p-6">
+                <h2 class="text-xl font-bold mb-2 truncate">
+                  <.link navigate={~p"/blog/#{post.id}"} class="inline-block">
+                    <%= post.title %>
+                  </.link>
+                  <p class="text-sm float-right font-semibold">
+                    <time><%= post.date %></time> by <%= post.author %>
+                  </p>
+                </h2>
+                <p class="mx-auto text-sm sm:text-base sm:leading-7">
+                  <%= raw(post.description) %>
+                </p>
+              </div>
+              <div class="absolute bottom-3 right-6">
+                <.link
+                  navigate={~p"/blog/#{post.id}"}
+                  class="mt-4 inline-block text-blue-500 float-right text-base font-semibold"
+                >
+                  Read more...
                 </.link>
-              </li>
-            <% end %>
-          </ul>
+              </div>
+              <div class="absolute bottom-0 left-6">
+                <%= for tag <- post.tags do %>
+                  <li class="bg-white dark:bg-zinc-800 dark:text-gray-200 text-base font-semibold shadow-md p-4 rounded-lg border-l-solid
+              border-l-[5px] border-l-gray-700 float-left list-none">
+                    <.link navigate={~p"/blog/tags/#{tag}"}>
+                      <%= tag %>
+                    </.link>
+                  </li>
+                <% end %>
+              </div>
+            </div>
+          </div>
         </div>
-        <p class="clear-both"></p>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
     """
   end
 end

@@ -22,6 +22,7 @@ import "phoenix_html";
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
+import * as CookieConsent from "../vendor/cookieconsent.esm";
 
 let Hooks = {};
 Hooks.Scroll = {
@@ -73,8 +74,10 @@ function initDarkMode() {
   // On page load or when changing themes, best to add inline in `head` to avoid FOUC
   if (darkExpected()) {
     document.documentElement.classList.add("dark");
+    document.documentElement.classList.add("cc--darkmode");
   } else {
     document.documentElement.classList.remove("dark");
+    document.documentElement.classList.remove("cc--darkmode");
   }
 }
 
@@ -90,3 +93,64 @@ window.addEventListener("toogle-darkmode", (e) => {
 });
 
 initDarkMode();
+
+CookieConsent.run({
+  guiOptions: {
+    consentModal: {
+      layout: "box wide",
+      position: "bottom right",
+      equalWeightButtons: true,
+      flipButtons: false,
+    },
+    preferencesModal: {
+      layout: "box",
+      position: "right",
+      equalWeightButtons: true,
+      flipButtons: false,
+    },
+  },
+  categories: {
+    necessary: {
+      readOnly: true,
+    },
+    marketing: {
+      readOnly: true,
+    },
+  },
+  language: {
+    default: "en",
+    autoDetect: "browser",
+    translations: {
+      en: {
+        consentModal: {
+          title: "Hello blogger!",
+          description:
+            "Please accept the usage of cookies to be able to continue browsing our site.",
+          acceptAllBtn: "Accept all",
+          showPreferencesBtn: "Manage preferences",
+          footer:
+            '<a href="https://techsquad.rocks/privacy">Privacy Policy</a>',
+        },
+        preferencesModal: {
+          title: "Consent Preferences Center",
+          acceptAllBtn: "Accept all",
+          savePreferencesBtn: "Save preferences",
+          closeIconLabel: "Close modal",
+          serviceCounterLabel: "Service|Services",
+          sections: [
+            {
+              title: "Cookie Usage",
+              description:
+                "We use only necessary cookies to ensure the website works properly, and to run 1 ad per page, as the content is free this is an incentive to keep everything running. There are only three cookies that you might see one is to maintain your session information (purely functional), and the second one is a pseudoanonymous cookie created by AdsTerra to run the ads in the site, the third cookie is cc_cookie which is used to save your cookie preferences, by using this site you are agreeing to the privacy terms from this site and to keep these cookies as long as you are using the site.",
+            },
+            {
+              title: "More information",
+              description:
+                'For any query in relation to my policy on cookies and your choices, please <a class="cc__link" href="mailto:support@techsquad.rocks">support@techsquad.rocks</a>.',
+            },
+          ],
+        },
+      },
+    },
+  },
+});

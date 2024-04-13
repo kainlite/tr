@@ -4,6 +4,7 @@
   description: "Exploring ksonnet with an echo bot made in Golang...",
   tags: ~w(git gitkube kubernetes cicd ci),
   published: true,
+  image: "logo.png"
 }
 ---
 

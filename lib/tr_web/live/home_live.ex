@@ -22,19 +22,27 @@ defmodule TrWeb.HomeLive do
       and later on a newsletter, so I hope you enjoy your stay and see you on the other side...
     </p>
 
-    <div class="flex">
+    <%= TrWeb.AdsComponent.render_large_ad(assigns) %>
+
+    <div class="flex flex-col">
       <div class="m-auto pb-[10px]">
         <%= unless @current_user do %>
-          <.link navigate={~p"/users/register"} class="text-[1.25rem] button h-auto w-[217px]">
-            Subscribe
-          </.link>
+          <p class="text-[1.2rem]">
+            Get access to comments, reactions and get rid of ads for free!
+            <.link navigate={~p"/users/register"} class="text-[1.25rem]  h-auto w-[217px]">
+              Register
+            </.link>
+          </p>
         <% end %>
+      </div>
+
+      <div class="m-auto">
         <a href="https://www.buymeacoffee.com/NDx5OFh" target="_blank" class="">
           <img
             src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
             alt="Buy Me A Coffee"
             style="height: 60px !important;width: 217px !important; padding-bottom: 0px !important; padding-top: 0px
-            !important;"
+        !important;"
           />
         </a>
       </div>
@@ -43,8 +51,7 @@ defmodule TrWeb.HomeLive do
       <div class="m-auto">
         <p class="text-[1.2rem] justify-center">
           Feel free to register (subscribe) to receive a monthly newsletter related to the topics on this blog and a
-          notification on new articles (you can unsubscribe at any time from the settings page), in the future I expect to
-          develop more features that rely on authentication, so the earlier is set the easiest will be later on.
+          notification on new articles (you can unsubscribe at any time from the settings page).
           <br /> New reactions! now you can react to posts, use these at the top of an article:
           <.icon name="hero-heart" />
           <.icon name="hero-heart-solid" />

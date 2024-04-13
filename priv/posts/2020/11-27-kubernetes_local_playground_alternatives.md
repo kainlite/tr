@@ -4,10 +4,11 @@
   description: "In this article we will explore different alternatives for spinning up a cluster locally for testing, practicing or just developing an application...",
   tags: ~w(kubernetes vagrant linux),
   published: true,
+  image: "kubernetes.png"
 }
 ---
 
-![kubernetes](/images/kubernetes.jpg){:class="mx-auto"}
+![kubernetes](/images/kubernetes.png){:class="mx-auto"}
 
 ##### **Introduction**
 In this article we will explore different alternatives for spinning up a cluster locally for testing, practicing or just developing an application.

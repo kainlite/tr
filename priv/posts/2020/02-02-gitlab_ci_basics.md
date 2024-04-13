@@ -5,6 +5,7 @@
   will use gitlab-ci...",
   tags: ~w(kubernetes golang linux docker kubebuilder gitlab cicd),
   published: true,
+  image: "gitlab.png"
 }
 ---
 

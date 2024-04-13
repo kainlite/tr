@@ -4,6 +4,7 @@
   description: "In this article we will see a subtle introduction to terraform modules, how to pass data into the module, get something from the module and create a resource (GKE cluster)...",
   tags: ~w(kubernetes gcp terraform),
   published: true,
+  image: "terraform.png"
 }
 ---
 

@@ -4,10 +4,11 @@
   description: "In this article we will explore how to create a sample operator using typescript and to deploy it to our cluster, the operator will be pretty dummy...",
   tags: ~w(kubernetes typescript operator),
   published: true,
+  image: "kubernetes-ts.png"
 }
 ---
 
-![operator](/images/kubernetes-ts-js.png){:class="mx-auto"}
+![operator](/images/kubernetes-ts.png){:class="mx-auto"}
 
 #### **Introduction**
 

@@ -12,6 +12,7 @@ defmodule TrWeb.SearchLive do
   @impl true
   def render(assigns) do
     ~H"""
+    <%= TrWeb.AdsComponent.render_large_ad(assigns) %>
     <div class="mx-auto mt-20 flex flex-col space-y-8 bg-white p-8 shadow-sm dark:bg-zinc-900">
       <.form :let={f} for={%{}} as={:search} phx-change="search" phx-submit="search" id="search_form">
         <.input

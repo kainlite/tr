@@ -5,6 +5,7 @@
   explore SSH Local port forward and what it means, we also will explore SSH Remote port...",
   tags: ~w(openssh linux networking),
   published: true,
+  image: "openssh.png"
 }
 ---
 

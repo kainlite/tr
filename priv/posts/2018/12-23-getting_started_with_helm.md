@@ -5,6 +5,7 @@
   helm...",
   tags: ~w(kubernetes helm),
   published: true,
+  image: "kubernetes.png"
 }
 ---
 

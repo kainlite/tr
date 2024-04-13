@@ -116,6 +116,8 @@ defmodule TrWeb.PostLive do
 
     <p class="clear-both"></p>
 
+    <%= TrWeb.AdsComponent.render_large_ad(assigns) %>
+
     <%= raw(@post.body) %>
 
     <div class="mx-auto max-w-4xl">

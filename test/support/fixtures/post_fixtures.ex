@@ -19,7 +19,8 @@ defmodule Tr.PostFixtures do
         published: true,
         author: "some author",
         description: "some description",
-        date: ~D[2020-01-01]
+        date: ~D[2020-01-01],
+        image: "terraform.png"
       })
 
     post
@@ -37,7 +38,8 @@ defmodule Tr.PostFixtures do
         body: "some body",
         parent_comment_id: 1,
         slug: "some-slug",
-        user_id: user.id
+        user_id: user.id,
+        image: "terraform.png"
       })
       |> Tr.Post.create_comment()
 

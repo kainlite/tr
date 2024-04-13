@@ -4,6 +4,7 @@
   description: "How to use helm from the cli...",
   tags: ~w(kubernetes helm),
   published: true,
+  image: "kubernetes.png"
 }
 ---
 

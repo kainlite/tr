@@ -4,6 +4,7 @@
   description: "In the previous article we configured Vault with Consul on our cluster, now it's time to go ahead and use it to provision secrets to our pods/applications...",
   tags: ~w(kubernetes vault security),
   published: true,
+  image: "vault-kubernetes.png"
 }
 ---
 
