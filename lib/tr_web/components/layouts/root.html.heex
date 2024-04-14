@@ -9,12 +9,12 @@
         technologies. Our blog is hosted on a k3s cluster in OCI, powered by Elixir and Phoenix. Dive in to discover
         insights, tutorials, and experiments across the tech landscape." %>
     <meta name="description" content={description} />
-    <meta property="og:title" content="TechSquad.Rocks Blog page" />
+    <meta property="og:title" content="TechSquad.Rocks" />
     <meta property="og:description" content={description} />
     <meta property="og:image" content="https://techsquad.rocks/blog" />
 
     <.live_title>
-      <%= assigns[:page_title] || "TechSquad.Rocks information and technology" %>
+      <%= assigns[:page_title] || "TechSquad.Rocks" %>
     </.live_title>
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
@@ -23,4 +23,36 @@
   <body class="bg-white dark:bg-zinc-900 dark:text-white antialiased">
     <%= @inner_content %>
   </body>
+
+  <footer class="bg-zinc-900 dark:bg-black text-white text-center py-4">
+    <article class="column text-sm">
+      <ul>
+        <li>
+          <a href="https://techsquad.rocks/blog">This blog</a>
+        </li>
+        <li>
+          <a href="https://github.com/kainlite/tr">Github repository</a>
+        </li>
+        <li>
+          <a href="https://twitter.com/kainlite">Twitter @kainlite</a>
+        </li>
+        <li>
+          <.link
+            rel="alternate"
+            type="application/rss+xml"
+            title="Blog Title"
+            navigate={~p"/index.xml"}
+          >
+            RSS
+          </.link>
+        </li>
+        <li>
+          <.link navigate={~p"/privacy"}>
+            Privacy policy
+          </.link>
+        </li>
+      </ul>
+    </article>
+    <p class="text-base">© 2021 TechSquad.Rocks</p>
+  </footer>
 </html>

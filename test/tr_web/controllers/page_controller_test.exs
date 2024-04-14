@@ -3,7 +3,9 @@ defmodule TrWeb.PageControllerTest do
 
   test "GET /", %{conn: conn} do
     conn = get(conn, ~p"/")
-    assert html_response(conn, 200) =~ "Welcome to the laboratory"
+
+    assert html_response(conn, 200) =~
+             "Get access to comments, reactions and get rid of ads for free"
   end
 
   describe "GET /sitemap.xml" do

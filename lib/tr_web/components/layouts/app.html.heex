@@ -83,8 +83,12 @@
     <nav class="flex flex-row">
       <ul class="float-left">
         <li class="">
-          <.link navigate="/" class="phx-logo">
-            <img src={~p"/images/techsquad.png"} alt="Techsquad lab logo" class="dark:invert" />
+          <.link navigate="/" class="">
+            <img
+              src={~p"/images/logo.png"}
+              alt="Techsquad lab logo"
+              class="dark:invert max-h-24 max-w-24"
+            />
           </.link>
         </li>
       </ul>
@@ -92,7 +96,7 @@
   </section>
 </header>
 
-<main class="sm:px-6 lg:px-8">
+<main class="sm:px-6 lg:px-8 min-h-[70vh]">
   <div class="mx-auto max-w-screen-2xl">
     <.flash_group flash={@flash} />
     <%= @inner_content %>

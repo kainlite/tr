@@ -41,7 +41,7 @@ defmodule TrWeb.PostComponent do
                 <%= @post.title %>
               </.link>
               <p class="text-sm float-right font-semibold">
-                <time><%= @post.date %></time> by <%= @post.author %>
+                <time><%= @post.date %></time>
               </p>
             </h2>
             <p class="mx-auto text-sm sm:text-base sm:leading-7">
@@ -61,6 +61,10 @@ defmodule TrWeb.PostComponent do
               <li class="bg-white dark:bg-zinc-800 dark:text-gray-200 text-base font-semibold shadow-md p-4 rounded-lg border-l-solid
               border-l-[5px] border-l-gray-700 float-left list-none">
                 <.link navigate={~p"/blog/tags/#{tag}"}>
+                  <span class="inline-flex items-center justify-center text-white bg-emerald-700 rounded-full w-8 h-8 text-sm
+        font-semibold">
+                    <%= Enum.count(Tr.Blog.by_tag(tag)) %>
+                  </span>
                   <%= tag %>
                 </.link>
               </li>

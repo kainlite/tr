@@ -13,9 +13,8 @@ defmodule TrWeb.Integration.PostIntegrationTest do
     test "has a big hero section", %{session: session} do
       session
       |> visit("/")
-      |> find(css("section", count: 3))
-      |> Enum.at(1)
-      |> assert_has(css("h1", text: "Welcome to the laboratory"))
+      |> find(css("div #rss-is-not-dead-yet", count: 1))
+      |> assert_has(css("h2", text: "RSS is not dead yet"))
     end
 
     test "has some articles", %{session: session} do
