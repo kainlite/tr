@@ -1,14 +1,9 @@
 <div class="mx-auto">
-  <ul class="space-y-4 list-none">
-    <li class="px-1">
-      <h1 class="font-bold py-0">Tags</h1>
-    </li>
+  <h1 class="font-bold">Tags</h1>
+
+  <ul class="list-none flex flex-row flex-wrap">
     <%= for tag <- @tags do %>
-      <li class="bg-white dark:bg-zinc-800 dark:text-white shadow-md p-4 rounded-lg border-l-solid border-l-[5px] border-l-gray-700 float-left">
-        <.link navigate={~p"/blog/tags/#{tag}"}>
-          <%= tag %>
-        </.link>
-      </li>
+      <%= TrWeb.PostComponent.render_tag_card(%{tag: tag}) %>
     <% end %>
   </ul>
 </div>

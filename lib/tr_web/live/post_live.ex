@@ -104,13 +104,11 @@ defmodule TrWeb.PostLive do
         <li class="px-1">
           <h5 class="font-bold py-0">Tags</h5>
         </li>
-        <%= for tag <- @post.tags do %>
-          <li class="bg-white dark:bg-zinc-800 dark:text-white shadow-md p-4 rounded-lg border-l-solid border-l-[5px] border-l-gray-700 float-left">
-            <.link navigate={~p"/blog/tags/#{tag}"}>
-              <%= tag %>
-            </.link>
-          </li>
-        <% end %>
+        <div class="flex flex-row flex-wrap">
+          <%= for tag <- @post.tags do %>
+            <%= TrWeb.PostComponent.render_tag_card(%{tag: tag}) %>
+          <% end %>
+        </div>
       </ul>
     </div>
 

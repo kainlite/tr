@@ -3,7 +3,7 @@
   author: "Gabriel Garrido",
   description: "In this article we will continue where we left off the forward project last time, in this article we
   will use gitlab-ci...",
-  tags: ~w(kubernetes golang linux docker kubebuilder gitlab cicd),
+  tags: ~w(kubernetes golang linux kubebuilder cicd),
   published: true,
   image: "gitlab.png"
 }
