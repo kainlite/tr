@@ -27,8 +27,6 @@ spec:
         image: kainlite/tr:latest
         envFrom:
         - secretRef:
-            name: tr-paraxial-config
-        - secretRef:
             name: tr-postgres-config
         - secretRef:
             name: tr-mailer-config
