@@ -10,8 +10,10 @@
 
 ### Introduction
 This article builds up on what we did in the [last article](/blog/why_do_i_need_a_service_mesh), so refer to that one before starting this one, if you are planing to follow the documentation examples you will find many similarities since I based this article on that.
+<br />
 
 In this example I will be using [Digital Ocean](https://m.do.co/c/01d040b789de) (that's my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25.
+<br />
 
 ### Before starting a few concepts
 * A VirtualService defines the rules that control how requests for a service are routed within an Istio service mesh.
@@ -19,6 +21,7 @@ In this example I will be using [Digital Ocean](https://m.do.co/c/01d040b789de) 
 * A ServiceEntry is commonly used to enable requests to services outside of an Istio service mesh.
 * A Gateway configures a load balancer for HTTP/TCP traffic, most commonly operating at the edge of the mesh to enable ingress traffic for an application.
 These basic concepts will help you understand the manifest that we are going to see.
+<br />
 
 ### Let's get started
 We already have the bookinfo project deployed and using all three versions of the service (ratings) but we will need to make some changes to test route based on user identity, you can check the configuration with:
@@ -126,6 +129,7 @@ metadata:
   selfLink: ""
 ```
 There we have all the destination rules, and now we need to apply the new manifest that will send everything to the version 1 and the user _jason_ to the version 2 of the reviews microservice.
+<br />
 
 ```elixir
 istio-1.0.5/samples/bookinfo $ kubectl apply -f networking/virtual-service-reviews-test-v2.yaml
@@ -163,13 +167,16 @@ spec:
         subset: v1
 ```
 What's going on here, how Istio knows what user is logged in?, well, the app adds a header called end-user and value _jason_ then the route will be used, it's a nifty trick.
+<br />
 
 Not jason:
 ![img](/images/istio-servicev1.png){:class="mx-auto"}
+<br />
 
 jason:
 ![img](/images/istio-servicev2.png){:class="mx-auto"}
 As you can see the difference in the v1 and v2 of the app are the stars below the reviews, but that is more than enough to indicate that it works, this is really nice for beta testers you don't need or have to complicate your code but just add a header.
+<br />
 
 ### Injecting an HTTP abort fault:
 This time we will inject a failure for our friend _jason_:
@@ -215,6 +222,7 @@ spec:
 
 So he decided to check the book reviews again and boom, the ratings service was not available but everything else works just fine, this only applies for _jason_ everyone else will see the version without stars or the error message.
 ![img](/images/istio-servicev3.png){:class="mx-auto"}
+<br />
 
 ### Notes
 Istio seems an it is indeed really powerful, there many more features like:
@@ -224,15 +232,21 @@ Istio seems an it is indeed really powerful, there many more features like:
 * Circuit breaking.
 * Mirroring.
 * And a lot more.
+<br />
 
 I left aside Policies, Telemetry and Security, if you want to learn more about Istio I highly recommend you to try the examples yourself and read on the [official documentation](https://istio.io/docs/tasks/traffic-management/#collapse24).
+<br />
 
 I also spent some time improving the navigation of the blog and some other minor details, but I wanted to keep the articles going so that's why this one is so simple and similar to the documentation.
+<br />
 
 ### Upcoming topics and ideas
 I Want to start creating series of content on different topics, brief articles that can get you started with some new technology or maybe give you an idea of how it works, let me know if you are interested in that kind of content in the comments or via twitter 🐦 (it's a bird, in case you cannot see unicode characters).
+<br />
 
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+
+<br />

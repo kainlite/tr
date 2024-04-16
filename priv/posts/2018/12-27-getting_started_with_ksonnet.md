@@ -11,38 +11,50 @@
 ### **Introduction**
 
 This tutorial will show you how to create a simple application and also how to deploy it to kubernetes using [ksonnet](https://ksonnet.io/), in the examples I will be using [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube) or you can [check out this repo](https://github.com/kainlite/kainlite.github.io) that has a good overview of minikube, once installed and started (`minikube start`) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working, before we dive into an example let's review some terminology from ksonnet (extracted from the [official documentation](https://ksonnet.io/docs/concepts/)):
+<br />
 
 #### Application
 A ksonnet application represents a well-structured directory of Kubernetes manifests (this is generated using the `ks init`).
+<br />
 
 #### Environment
 An environment consists of four elements, some of which can be pulled from your current kubeconfig context: Name, Server, Namespace, API version. The environment determines to which cluster you're going to deploy the application.
+<br />
 
 #### Component
 A component can be as simple as a Kubernetes resource (a Pod, Deployment, etc), or a fully working stack for example EFK/ELK, you can generate components using `ks generate`.
+<br />
 
 #### Prototype
 Prototype + Parameters = Component. Think of a prototype as a base template before you apply the parameters, to set a name, replicas, etc for the resource, you can explore some system prototypes with `ks prototype`.
+<br />
 
 #### Parameter
 It gives live to a component with dynamic values, you can use `ks param` to view or modify params, there are App params (global), Component params, and Environment params (overrides app params).
+<br />
 
 #### Module
 Modules provide a way for you to share components across environments. More concisely, a module refers to a subdirectory in components/ containing its own params.libsonnet. To create a module `ks module create <module name>`.
+<br />
 
 #### Part
 It provides a way to organize and re-use code.
+<br />
 
 #### Package
 A package is a set of related prototypes and associates helper libraries, it allows you to create and share packages between applications.
+<br />
 
 #### Registry
 It's essentially a repository for packages, it supports the incubator registry, github, filesystem, and Helm.
+<br />
 
 #### Manifest
 The same old YAML or JSON manifest but this time written in [Jsonnet](https://jsonnet.org/learning/tutorial.html), basically Jsonnet is a simple extension of JSON.
+<br />
 
 Phew, that's a lot of names and terminology at once, let's get started with the terminal already.
+<br />
 
 ### Let's get started
 This command will generate the following folder structure `ks init wordpress`:
@@ -58,6 +70,7 @@ environments    <--- By default there is only one environment called default.
 lib             <--- Here we can find the ksonnet helpers that match the Kubernetes API with the common resources (Pods, Deployments, etc).
 vendor          <--- Here is where the installed packages/apps go, it can be seen as a dependencies folder.
 ```
+<br />
 
 Let's generate a _deployed-service_ and inspect it's context:
 ```elixir
@@ -68,6 +81,7 @@ $ ks generate deployed-service wordpress \
 INFO Writing component at '~/k8s-examples/wordpress/components/wordpress.jsonnet'
 ```
 At the moment of this writing the latest version of Wordpress is 5.0.2, it's always recommended to use static version numbers instead of tags like latest (because latest can not be latest).
+<br />
 
 Let's see how our component looks like:
 ```elixir
@@ -132,6 +146,7 @@ local params = std.extVar("__ksonnet/params").components.wordpress;
 ```
 It's just another template for some known resources, a [service](https://kubernetes.io/docs/concepts/services-networking/service/) and a [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) that's where the name came from: _deployed-service_, but where are those params coming from?
 
+<br />
 If we run `ks show default`:
 ```elixir
 ---
@@ -171,6 +186,7 @@ spec:
         ports:
         - containerPort: 80
 ```
+<br />
 We will see what our package will generate in *YAML* with some good defaults. And by default if you remember from the definitions a component needs a params file to fill the blanks in this case it is `components/params.libsonnet`:
 ```elixir
 {
@@ -193,6 +209,7 @@ We will see what our package will generate in *YAML* with some good defaults. An
 }
 ```
 But that's not enough to run wordpress is it?, No is not, we need a database with persistent storage for it to work properly, so we will need to generate and extend another _deployed-service_.
+<br />
 
 The next step would be to create another component:
 ```elixir
@@ -203,6 +220,7 @@ $ ks generate deployed-service mariadb \
 INFO Writing component at '/home/kainlite/Webs/k8s-examples/wordpress/components/mariadb.jsonnet'
 ```
 The latest stable version of MariaDB 10.1 GA at the moment of this writting is 10.1.37.
+<br />
 
 Then we will need to add a persistent volume and also tell Wordpress to use this MariaDB instance. How do we do that, we will need to modify a few files, like this (in order to re-use things I placed the mysql variables in the global section, for this example that will simplify things, but it might not be the best approach for a production environment):
 The resulting `components/params.json` will be:
@@ -238,6 +256,7 @@ The resulting `components/params.json` will be:
   },
 }
 ```
+<br />
 
 The resulting `components/wordpress.jsonnet` will be:
 ```elixir
@@ -319,6 +338,7 @@ local params = std.extVar("__ksonnet/params").components.wordpress;
 ]
 ```
 The only thing that changed here is `spec.containers.env` which wasn't present before.
+<br />
 
 The resulting `components/mariadb.jsonnet` will be:
 ```elixir
@@ -418,10 +438,13 @@ local params = std.extVar("__ksonnet/params").components.mariadb;
 ]
 ```
 I know, I know, that is a lot of JSON, I trust you have a decent scroll :).
+<br />
 
 The only things that changed here are `spec.containers.env`, `spec.containers.volumeMount` and `spec.volumes` which weren't present before, that's all you need to make wordpress work with mariadb.
+<br />
 
 This post only scratched the surface of what Ksonnet and Jsonnet can do, in another post I will describe more advances features with less _JSON_ / _YAML_. There are a lot of things that can be improved and we will cover those things in the next post, if you want to see all the source code for this post go [here](https://github.com/kainlite/ksonnet-wordpress-example).
+<br />
 
 Let's clean up `ks delete default`:
 ```elixir
@@ -430,12 +453,15 @@ INFO Deleting deployments mariadb
 INFO Deleting services wordpress
 INFO Deleting deployments wordpress
 ```
+<br />
 
 ### Notes
 
 If you want to check the wordpress installation via browser you can do `minikube proxy` and then look up the following URL: [Wordpress](http://localhost:8001/api/v1/namespaces/default/services/wordpress/proxy/) (I'm using the default namespace here and the service name is wordpress, if you use ingress you don't need to do this step)
+<br />
 
 I'm not aware if Ksonnet supports releases and rollbacks like Helm, but it seems it could be emulated using git tags and just some git hooks.
+<br />
 
 If everything goes well, you should see something like this in the logs:
 ```elixir
@@ -489,8 +515,11 @@ INFO  ==> Starting wordpress...
 ```
 
 And that folks is all I have for now, be sure to check out the [Ksonnet official documentation](https://ksonnet.io/docs/) and `ks help` to know more about what ksonnet can do to help you deploy your applications to any kubernetes cluster.
+<br />
 
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+
+<br />

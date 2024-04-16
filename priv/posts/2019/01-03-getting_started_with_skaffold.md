@@ -11,13 +11,17 @@
 ### **Skaffold**
 
 This time we will see how to get started with [Skaffold](https://github.com/GoogleContainerTools/skaffold), it seems a relatively mature project, and it does a lot more than some of the previous explored alternatives: _Skaffold is a command line tool that facilitates continuous development for Kubernetes applications. You can iterate on your application source code locally then deploy to local or remote Kubernetes clusters. Skaffold handles the workflow for building, pushing and deploying your application. It also provides building blocks and describe customizations for a CI/CD pipeline._ (Extracted from [github](https://github.com/GoogleContainerTools/skaffold))
+<br />
 
 In this example I will be using [Digital Ocean](https://m.do.co/c/01d040b789de) (that's my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25, I got the idea from [Pelado Nerd Spanish Youtube Channel](https://www.youtube.com/watch?v=fhYSKEy0s8w).
+<br />
 
 ### Let's get started
 Once you have created your account and added your credit card you will get the $100 of free credit, then you will have to go to Manage on the left side panel and click on Kubernetes, then create your cluster with the amount of nodes that you consider necessary but remember to power them off or delete these resources so you don't waste the free credit or your credit card itself. Once you have created your cluster and downloaded the kubectl config you're ready to go.
+<br />
 
 We will be working with the chat bot again you can see the original [article here](/blog/go-echobot), and the repo [here](https://github.com/kainlite/echobot/tree/skaffold).
+<br />
 
 Let's tell our kubectl to use our recently downloaded config:
 ```elixir
@@ -29,12 +33,14 @@ crazy-wozniak-8306   Ready     <none>    6h        v1.13.1   178.128.154.205   D
 crazy-wozniak-830t   Ready     <none>    6h        v1.13.1   167.99.224.115    Debian GNU/Linux 9 (stretch)   4.9.0-8-amd64    docker://18.9.0
 ```
 Your config might have a slightly different name, but it should be similar. We can see in the output a lot of information about our nodes (workers).
+<br />
 
 But let's cut to the chase, we are here for _Skaffold_:
 ```elixir
 curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v0.20.0/skaffold-linux-amd64 && chmod +x skaffold && sudo mv skaffold /usr/local/bin
 ```
 You can install the binary using the provided line (linux) or downloading it from the [releases page](https://github.com/GoogleContainerTools/skaffold/releases).
+<br />
 
 Once installed we can see the [examples](https://github.com/GoogleContainerTools/skaffold/tree/master/examples), I will be using the getting-started example:
 ```elixir
@@ -49,6 +55,7 @@ deploy:
       - k8s-*
 ```
 With very litle YAML we can accomplish a lot.
+<br />
 
 We need a manifest file that matches that pattern so skaffold can deploy/re-deploy our application, so let's generate one with `kubectl run echobot --image=kainlite/echobot --dry-run -o yaml`
 ```elixir
@@ -83,6 +90,7 @@ spec:
             - '/app/health_check.sh'
 ```
 The above command can be used to generate any kind of k8s resource :), I stripped it a bit, because there were fields that I didn't want in and added some that we need for it to work.
+<br />
 
 Then the only thing left to do is testing that everything works properly:
 ```elixir
@@ -185,6 +193,7 @@ Test complete in 9.15µs
 kainlite/echobot -> kainlite/echobot:fc03e3d-dirty-3541257
 ```
 As we can see skaffold build not only did the docker build but also tagged and pushed the image to [docker hub](https://cloud.docker.com/repository/docker/kainlite/echobot/tags), which is really nice and really useful to build a CI/CD system with it.
+<br />
 
 But wait, we need to deploy that to our cluster, right on:
 ```elixir
@@ -262,6 +271,7 @@ deployment.extensions "echobot" configured
 Deploy complete in 5.676513226s
 ```
 Deploy does a lot like with gitkube, it build the image, pushes it to the registry and then makes the deployment to the cluster, as you can see in there skaffold relies on kubectl and I have an old version of it.
+<br />
 
 After a few seconds we can see that our deployment has been triggered and we have a new pod being created for it.
 ```elixir
@@ -271,6 +281,7 @@ echobot-57fdcccf76-4qwvq   0/1       ContainerCreating   0          5s
 echobot-6fcd78658c-njvpx   0/1       Terminating         0          9m
 ```
 Skaffold also has another nice option that it's called _dev_ it watches the folder for changes and re-deploys the app so you can focus on code.
+<br />
 
 Let's clean up and call it a day:
 ```elixir
@@ -279,11 +290,15 @@ Cleaning up...
 deployment.extensions "echobot" deleted
 Cleanup complete in 3.833219278s
 ```
+<br />
 
 ### Notes
 I really liked the workflow that skaffold provides, I hope that I can use it some more in the near future. And remember to shutdown the kubernetes cluster if you are using Digital Ocean so you don't get charged by surprise later on.
+<br />
 
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+
+<br />

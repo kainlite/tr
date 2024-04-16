@@ -233,3 +233,5 @@ least now you know how it works!
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [sources here](https://github.com/kainlite/tr)
+
+<br />

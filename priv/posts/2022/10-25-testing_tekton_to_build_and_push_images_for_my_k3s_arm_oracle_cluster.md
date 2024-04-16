@@ -20,15 +20,21 @@ expect, by using this approach we can just forget about the architecture and jus
 definitely faster and even some of your nodes will already have the images available meaning less bandwidth consumption
 as well in the long run.
 
+<br />
+
 ##### **Sources**
 
 * [tr](https://github.com/kainlite/tr), go ahead and check it out, my new blog runs there: https://techsquad.rocks
   you can check the manifests used here in the `manifests` folder.
 
+<br />
+
 The source code and/or documentation of the projects that we will be testing are listed here:
 * [tekton](https://tekton.dev/docs/)
 * [tekton-triggers](https://tekton.dev/docs/triggers/)
 * [kaniko](https://github.com/GoogleContainerTools/kaniko)
+
+<br />
 
 #### Installing tekton-pipelines and tekton-triggers
 Why do we need tekton-pipelines or tekton-triggers again? pipelines allows you to run multiple tasks in order and pass
@@ -40,6 +46,7 @@ kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline
 kubectl apply --filename https://storage.googleapis.com/tekton-releases/triggers/latest/release.yaml
 kubectl apply --filename https://storage.googleapis.com/tekton-releases/triggers/latest/interceptors.yaml
 ```
+<br />
 
 Then we need to install `tkn` locally and configure some packages from the hub
 ```elixir
@@ -47,6 +54,7 @@ tkn -n tekton-pipelines hub install task git-clone
 tkn -n tekton-pipelines hub install task kaniko
 tkn -n tekton-pipelines hub install task kubernetes-actions
 ```
+<br />
 
 In my deployment I used fixed versions which is recommended for any kind of "production" deployment, you can see the
 readme [here](https://github.com/kainlite/tr/blob/master/manifests/tekton/README.md).
@@ -55,6 +63,7 @@ readme [here](https://github.com/kainlite/tr/blob/master/manifests/tekton/README
 ##### tekton-pipelines
 Okay, so we have tekton and friends installed, ready for business, but what now? well, it's a bit tricky and require a
 few manifests to get going, so I will try to explain what is happening with each file and why do we need them.
+<br />
 
 You can see this file in github as well
 [01-pipeline.yaml](https://github.com/kainlite/tr/blob/master/manifests/tekton/pipelines/01-pipeline.yaml),
@@ -110,6 +119,7 @@ spec:
       value: |
         kubectl -n tr rollout restart deployment/tr-deployment
 ```
+<br />
 You can see this file in github as well 
 [02-pipeline-run.yaml](https://github.com/kainlite/tr/blob/master/manifests/tekton/pipelines/02-pipeline-run.yaml), 
 This is basically to run our defined pipeline with specific values, we will use something very similar from the trigger
@@ -150,6 +160,7 @@ spec:
 ```
 With all that we have a basic pipeline but we need to trigger it or run it manually, let's add the necessary manifests
 for it to react to changes in our github repository...
+<br />
 
 
 ##### tekton-triggers
@@ -224,6 +235,7 @@ roleRef:
   kind: ClusterRole
   name: tekton-triggers-clusterrole
 ```
+<br />
 
 You can see this file on github as well 
 [02-eventlistener.yaml](https://github.com/kainlite/tr/blob/master/manifests/tekton/triggers/02-eventlistener.yaml),
@@ -258,6 +270,7 @@ spec:
       template:
         ref: clone-build-push-template
 ```
+<br />
 
 The secret would be something like the one depicted below, replace `secretToken` with your generated token this will be
 used for the webhook configuration so save it somewhere safe until it is configured there.
@@ -270,6 +283,7 @@ type: Opaque
 stringData:
   secretToken: "1234567"
 ```
+<br />
 
 You can see this file on github as well 
 [04-triggerbinding.yaml](https://github.com/kainlite/tr/blob/master/manifests/tekton/triggers/04-triggerbinding.yaml),
@@ -288,6 +302,7 @@ spec:
     - name: gitrevision
       value: $(body.pull_request.head.sha)
 ```
+<br />
 
 You can see this file in github as well
 [05-triggertemplate.yaml](https://github.com/kainlite/tr/blob/master/manifests/tekton/triggers/05-triggertemplate.yaml),
@@ -339,6 +354,7 @@ spec:
           value: kainlite/tr:$(tt.params.gitrevision)
       kind: PipelineRun
 ```
+<br />
 
 You can see this file on github as well 
 [06-ingress.yaml](https://github.com/kainlite/tr/blob/master/manifests/tekton/triggers/06-ingress.yaml),
@@ -380,6 +396,7 @@ WHEW! that was a lot of work but trust me it's worth it, now you can build, push
 with no external or weird CI/CD system and everything following a GitOps model since everything can be committed and
 applied from your repository, in my case I'm using ArgoCD and Kustomize to apply everything but that is for another
 chapter.
+<br />
 
 #### Then let's validate that it works
 We have the event listener ready:
@@ -388,6 +405,7 @@ We have the event listener ready:
 NAME               AGE           URL                                                                  AVAILABLE
 clone-build-push   5 seconds ago   http://el-clone-build-push.tekton-pipelines.svc.cluster.local:8080   True
 ```
+<br />
 
 We have the pipeline, notice that it says failed this is because there is an issue with ARM that it is still not solved
 but everything actually works as expected:
@@ -396,6 +414,7 @@ but everything actually works as expected:
 NAME               AGE           LAST RUN                 STARTED       DURATION   STATUS
 clone-build-push   5 seconds ago   clone-build-push-5qkv6   5 weeks ago   4m26s      Failed
 ```
+<br />
 
 We can see the pipelinerun being triggered, same issue as described before, see the notes for the github issues:
 ```elixir
@@ -404,6 +423,7 @@ NAME                           STARTED       DURATION   STATUS
 clone-build-push-5qkv6         5 seconds ago   4m26s      Failed
 clone-build-push-blkrm         5 seconds ago   3m58s      Failed
 ```
+<br />
 
 We can also see some of the other resources created for tekton:
 ```elixir
@@ -426,6 +446,7 @@ Namespace:   tekton-pipelines
  NAME    GENERATENAME        KIND          APIVERSION
  ∙ ---   clone-build-push-   PipelineRun   tekton.dev/v1beta1
 ```
+<br />
 
 You can also see the pods created or logs using either `kubectl` or `tkn`:
 ```elixir
@@ -437,6 +458,7 @@ I hope this is useful for someone and if you are having issues with your CI/CD s
 it, in my particular case I was having many issues with ARM and building for it, it was slow, had a ton of weird errors
 and all that went away by building the images where I run things, it's faster and it also utilizes the idle computing
 power.
+<br />
 
 #### Some of the sources and known issues
 This post was heavily insipired by these articles, and it was configured and tested following these examples:
@@ -454,9 +476,12 @@ https://github.com/tektoncd/pipeline/issues/4247
 https://github.com/tektoncd/pipeline/issues/5233
 
 But everything should just work tm.
+<br />
 
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io)
 and the [sources here](https://github.com/kainlite/blog).
+
+<br />

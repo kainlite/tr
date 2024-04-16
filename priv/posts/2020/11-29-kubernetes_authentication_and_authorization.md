@@ -12,21 +12,27 @@
 
 #### Introduction
 In this article we will explore how authentication and authorization works in kubernetes. But first what's the difference?
+<br />
 
 **Authentication**:
 
 When you validate your identity against a service or system you are authenticated meaning that the system recognizes you as a valid user. In kubernetes when you are creating the clusters you basically create a CA (Certificate Authority) that then you use to generate certificates for all components and users.
+<br />
 
 **Authorization**:
 
 After you are authenticated the system needs to know if you have enough privileges to do whatever you might want to do. In kubernetes this is known as RBAC (Role based access control) and it translates to Roles as entities with permissions and are associated to service accounts via role bindings when things are scoped to a given namespace, otherwise you can have a cluster role and cluster role binding.
+<br />
 
 So we are going to create a namespace, a serviceaccount, a role and a role binding and then generate a kubeconfig for it and then test it.
+<br />
 
 The sources for this article can be found at: [RBAC Example](https://github.com/kainlite/rbac-example)
+<br />
 
 #### Let's get to it
 Let's start, I will use these generators but I'm saving these to a file and then applying.
+<br />
 
 **Namespace**:
 
@@ -44,6 +50,7 @@ status: {}
 ```
 
 You can see more [here](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
+<br />
 
 **Service account**:
 
@@ -62,6 +69,7 @@ metadata:
 ```
 
 You can see more [here](https://kubernetes.io/docs/reference/access-authn-authz/authentication/)
+<br />
 
 **Role**:
 
@@ -91,6 +99,7 @@ rules:
 
 You can see more [here](https://kubernetes.io/docs/reference/access-authn-authz/authorization/#determine-the-request-verb)
 and [here](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#clusterrole-example)
+<br />
 
 **Role binding**:
 
@@ -117,6 +126,7 @@ subjects:
 ```
 
 You can see more [here](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#clusterrolebinding-example)
+<br />
 
 **Example pod**
 
@@ -145,6 +155,7 @@ spec:
 status: {}
 
 ```
+<br />
 
 **Applying**
 
@@ -162,6 +173,7 @@ rolebinding.rbac.authorization.k8s.io/myuser-myrole created
 pod/mypod created
 
 ```
+<br />
 
 **Validating from the pod**
 
@@ -234,9 +246,11 @@ Here we will export the token for our service account and query the kubernetes A
 
 ```
 Notice that to be able to reach the kubernetes service since it's in a different namespace we need to specify it with `.default` (because it's in the default namespace) try: `kubectl get svc -A` to see all services.
+<br />
 
 Everything went well from our pod and we can communicate to the API from our pod, let's see if it works for kubectl as well.
 
+<br />
 **Generate kubectl config**
 
 Fetch the token (as you can see it's saved as a kubernetes secret, so it's mounted to pods as any other secret but automatically thanks to the service account)
@@ -344,14 +358,19 @@ Error from server (Forbidden): cronjobs.batch is forbidden: User "system:service
 
 ```
 Notes: I used `kubectl config view` to discover the kind endpoint which is `server: https://127.0.0.1:35617` in my case, then replaced the values from the secret for the CA and the service account token/secret, also note that you need to decode from base64 when using `kubectl get -o yaml`, also note that we will get errors when trying to do things outside of our namespace because we simply don't have permissions, this is a really powerful way to give permissions to users and this works because we created the role binding for our extra user and for the pod service account (be careful when wiring things up).
+<br />
 
 You can see more [here](http://docs.shippable.com/deploy/tutorial/create-kubeconfig-for-self-hosted-kubernetes-cluster/)
 and [here](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/)
+<br />
 
 #### Clean up
 Always remember to clean up your local machine / cluster / etc, in my case `kind delete cluster` will do it.
+<br />
 
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+
+<br />

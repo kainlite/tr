@@ -12,9 +12,11 @@
 
 ##### **Introduction**
 In this article we will see how to use Terraform and Go to create a serverless API using API Gateway, Lambda, and Go, and we will also handle authentication with AWS Cognito, the repo with the files can be found [here](https://github.com/kainlite/serverless-cognito).
+<br />
 
 ##### **Terraform**
 In this example I used terraform 0.12, and I kind of liked the new changes, it feels more like coding and a more natural way to describe things, however I think there are more bugs than usual in this version, but I really like the new output for the plan, apply, etc, getting back to the article since there is a lot of code I will gradually update the post with more notes and content or maybe another post explaining another section, but the initial version will only show the cognito part and the code to make it work and how to test it.
+<br />
 
 ##### Cognito
 ```elixir
@@ -47,6 +49,7 @@ data "aws_cognito_user_pools" "this" {
 
 ```
 As we can see it's really simple to have a cognito user pool working, the most important part here is the `auto_verified_attributes` because that is what makes cognito to actually send an email or an sms with the confirmation code, the rest is self-describing, it creates a pool and a client, since what we need to be able to interact with out pool is the client that part is of considerable importance even that we have most things with default values. As you might have noticed we defined two `explicit_auth_flows` and that is to be able to interact with this user pool using user and password.
+<br />
 
 ##### ACM
 Next let's see how we manage the certificate creation using ACM.
@@ -77,6 +80,7 @@ resource "aws_api_gateway_domain_name" "api" {
 
 ```
 Here basically we create the certificate using `aws_acm_certificate` and validate it automatically using the `DNS` method and the resource `aws_acm_certificate_validation`, the other resources in the file are just there because they are kind of associated but not necessarily need to be there.
+<br />
 
 ##### Route53
 Here we just create an alias record for the API Gateway and the validation record.
@@ -106,6 +110,7 @@ resource "aws_route53_record" "cert_validation" {
 }
 
 ```
+<br />
 
 ##### API Gateway
 While this file might seem relatively simple, the API Gateway has many features and can get really complex really fast, basically what we are doing here is creating an API with a resource that accepts all method types and proxy that as it is to our lambda function.
@@ -162,6 +167,7 @@ resource "aws_lambda_permission" "lambda_permission" {
 }
 
 ```
+<br />
 
 ##### Lambda
 This file has the lambda function definition, the policy and the roles needed, basically the policy is to be able to log to CloudWatch and to inspect with X-Ray, then the log group to store the logs will set the retention period by default 7 days.
@@ -226,6 +232,7 @@ resource "aws_cloudwatch_log_group" "lambda-api" {
 }
 
 ```
+<br />
 
 ##### Variables and locals
 First the variables file with the default values
@@ -273,6 +280,7 @@ variable "environment_variables" {
 }
 
 ```
+<br />
 
 And last the locals file, in this small snippet we are just making a map with a computed value and the values that can come from a variable which can be quite useful in many scenarios where you don't know all the information in advance or something is dynamically assigned:
 ```elixir
@@ -284,6 +292,7 @@ locals {
 }
 
 ```
+<br />
 
 ##### Deployment scripts
 There is a small bash script to make it easier to run the deployment, AKA as compiling the code, zipping it, and running terraform to update our function or whatever we changed.
@@ -317,6 +326,7 @@ terraform apply -auto-approve \
 cd ..
 
 ```
+<br />
 
 ##### **Go**
 The good thing is that everything is code, but we don't have to manage any server, we just consume services from AWS completely from code, isn't that amazing?, I apologize for the length of the file, but you will notice that it's very repetitive, in most functions we load the AWS configuration, we make a request and return a response, we're also using Gin as a router, which is pretty straight-forward and easy to use, we have only one authenticated path (`/user/profile`), and we also have another unauthenticated path which is a health check (`/app/health`), the other two paths (`/user` and `/user/validate`) are exclusively for the user creation process with cognito.
@@ -506,6 +516,7 @@ func main() {
 
 ```
 All logs go to CloudWatch and you can also use X-Ray to diagnose issues.
+<br />
 
 ##### **Testing it**
 So we're going to hit the API to create, validate, and query the empty profile of the user from the terminal using curl.
@@ -590,13 +601,17 @@ OUTPUT:
 
 ```
 I have added most info in as comments in the snippet, note that I also used my test domain `skynetng.pw` with the subdomain `api` for all tests.
+<br />
 
 ##### **Closing notes**
 This post was heavily inspired by [this post](https://a.l3x.in/2018/07/25/lambda-api-custom-domain-tutorial.html) from Alexander, kudos to him for the great work!, this post expands on that and adds the certificate with ACM, it also handles a basic AWS Cognito configuration and the necessary go code to make it work, there are other ways to accomplish the same, but what I like about this approach is that you can have some endpoints or paths without authentication and you can use authentication, etc on-demand. This article is a bit different but I will try to re-shape it in the following weeks, and also cover more of the content displayed here, let me know if you have any comments or suggestions!
 
 In some near future I will build upon this article in another article adding a few cool things, for example to allow an user to upload an image to an S3 bucket and fetch that with a friendly name using Cloudfront (In a secure manner, and only able to upload/update his/her profile picture, while being able to fetch anyone profile pic), the idea is to have a fully functional small API using AWS services and serverless facilities with common tasks that you can find in any functional website.
+<br />
 
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+
+<br />

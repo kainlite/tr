@@ -12,10 +12,13 @@
 
 #### **Introduction**
 In this article we will explore how to create an operator that can prefetch our images (from our deployments to all nodes) using the Operator SDK, you might be wondering why would you want to do this? the main idea is to get the images in advance so you don't have to pull them when the pod actually needs to start running in a given node, this can speed up things a bit and it's also an interesting exercise.
+<br />
 
 If you have read the article [Cloud native applications with kubebuilder and kind aka kubernetes operators](/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/) you will note that the commands are really similar between each other, since now the operator-sdk uses kubebuilder, you can read more [here](https://github.com/operator-framework/operator-sdk/issues/3558#issuecomment-664206538).
+<br />
 
 The source for this article is [here](https://github.com/kainlite/kubernetes-prefetch-operator/)
+<br />
 
 ##### **Prerequisites**
 * [Operator SDK](https://sdk.operatorframework.io/docs/installation/install-operator-sdk/)
@@ -23,6 +26,8 @@ The source for this article is [here](https://github.com/kainlite/kubernetes-pre
 * [Kind](https://github.com/kubernetes-sigs/kind)
 * [Docker](https://hub.docker.com/?overlay=onboarding)
 * [kustomize](https://github.com/kubernetes-sigs/kustomize)
+
+<br />
 
 #### Creating our local cluster
 ##### Kind config for multi-cluster
@@ -38,6 +43,7 @@ nodes:
 - role: worker
 
 ```
+<br />
 
 ##### Creating the cluster
 We will need a cluster to run and test our operator, so kind is pretty straight forward and lightweight enough to run anywhere.
@@ -59,6 +65,7 @@ kubectl cluster-info --context kind-kind
 Have a nice day! 👋
 
 ```
+<br />
 
 #### Creating our operator
 Here we bootstrap our go project aka as kubernetes operator
@@ -110,6 +117,7 @@ Next: define a resource with:
 $ operator-sdk create api
 
 ```
+<br />
 
 #### Creating our API
 This will be the object that it will hold all the important information for a given image, the files that we need to modify at first hand are in: `controllers/*_controller.go` and `api/v1/*_types.go`
@@ -161,6 +169,7 @@ Next: define a resource with:
 $ operator-sdk create api
 
 ```
+<br />
 
 #### Building and pushing (docker image)
 Basic build and push of the operator image with the projects helper
@@ -229,6 +238,7 @@ fd6fa224ea91: Pushed
 latest: digest: sha256:f0519419c8c4bfdcd4a9b2d3f0e7d0086f3654659058de62447f373fd0489ddc size: 739
 
 ```
+<br />
 
 #### Deploying
 Now that we have the project built into a docker image and stored in dockerhub then we can install our CRD and then deploy the operator
@@ -239,6 +249,7 @@ $ make install
 customresourcedefinition.apiextensions.k8s.io/prefetches.cache.techsquad.rocks created
 
 ```
+<br />
 
 ##### Deploy the operator
 Then we can deploy our operator
@@ -260,6 +271,7 @@ service/kubernetes-prefetch-operator-controller-manager-metrics-service created
 deployment.apps/kubernetes-prefetch-operator-controller-manager created
 
 ```
+<br />
 
 ##### Validate that our operator was deployed
 Check that our pods are running
@@ -274,6 +286,7 @@ So far everything is peachy but our operator is kind of useless at the moment, s
 
 #### Our code
 A lot of what we use is generated however we need to give it some specific permissions and behaviour to our operator so it does what we want when we create an object in kubernetes
+<br />
 
 ##### Our manifest
 This will be the manifest that we will be using to tell our operator which deployments we want to prefetch images for
@@ -294,6 +307,7 @@ spec:
   node_filter: worker
 
 ```
+<br />
 
 ##### Sample nginx deployment
 This nginx deployment will be used to validate that the images are fetched in all nodes
@@ -337,6 +351,7 @@ spec:
 ```
 We don't actually need to do this, but this way it's easy to make sure that a pod won't be scheduled if the label is not present: `kubectl label nodes kind-worker3 nginx-schedulable="true"`
 
+<br />
 ##### Our actual logic (this made me chuckle so much bootstrap just to get here, but imagine having to do all that by yourself)
 This is where things actually happen, first we get our Spec updated:
 ```elixir
@@ -418,6 +433,7 @@ func init() {
 
 ```
 You can find this file [here](https://github.com/kainlite/kubernetes-prefetch-operator/blob/master/api/v1/prefetch_types.go)
+<br />
 
 Then we can put some code, I will add more comments later in the code to explain what everything does:
 ```elixir
@@ -713,6 +729,7 @@ func (r *PrefetchReconciler) SetupWithManager(mgr ctrl.Manager) error {
 ```
 Basically what we do is set a timer to create a pod in each node to force it fetch the image that the deployments (that we filter by labels) needs or is going to use, by doing this if the node already has the image nothing happens and it will be removed in the next run, however if the image is not there it will be fetched so if anything happens and a pod needs to be actually scheduled there it won't need to download everything so it should be relatively faster.
 You can find this file [here](https://github.com/kainlite/kubernetes-prefetch-operator/blob/master/controllers/prefetch_controller.go)
+<br />
 
 ##### What we should be seeing in our cluster
 ```elixir
@@ -728,6 +745,7 @@ kube-system                           coredns-66bff467f8-4vnd8                  
 kube-system                           coredns-66bff467f8-tsrtp                                          1/1     Running     6          6d7h    10.244.3.3    kind-worker          <none>           <none>
 
 ```
+<br />
 
 #### Cleaning up
 To clean up the operator from the cluster you can do, and also remember to clean up your clusters or whatever you are using if it's in the cloud to avoid unexpected bills
@@ -773,6 +791,7 @@ $ kind delete cluster
 Deleting cluster "kind" ...
 
 ```
+<br />
 
 ##### **Closing notes**
 Be sure to check the links if you want to learn more about the project and I hope you enjoyed it, see you on [twitter](https://twitter.com/kainlite) or [github](https://github.com/kainlite)!
@@ -782,8 +801,11 @@ Be sure to check the links if you want to learn more about the project and I hop
 * https://opensource.com/article/20/3/kubernetes-operator-sdk
 
 The source for this article is [here](https://github.com/kainlite/kubernetes-prefetch-operator/)
+<br />
 
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+
+<br />

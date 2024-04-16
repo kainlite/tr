@@ -14,13 +14,16 @@
 
 In this article we will explore how to create a sample [Rust](https://www.rust-lang.org/) project and Dockerfile to 
 run it on [ARM32v7 architectures](https://github.com/docker-library/official-images#architectures-other-than-amd64).
+<br />
 
 To configure the cluster I used this project [k3s-oci-cluster](https://github.com/garutilorenzo/k3s-oci-cluster), since
 Oracle is providing a very generous free tier for ARM workloads you might as well give it a try, or maybe use your 
 raspberry pi cluster.
+<br />
 
 The source for this article is here [RCV](https://github.com/kainlite/rcv/) and the docker image is 
 [here](https://hub.docker.com/repository/docker/kainlite/rcv).
+<br />
 
 ##### **Prerequisites**
 
@@ -29,6 +32,8 @@ examples.
 - [k3s-oci-cluster](https://github.com/garutilorenzo/k3s-oci-cluster)
 - [Docker](https://hub.docker.com/?overlay=onboarding)
 - [Rust](https://www.rust-lang.org/tools/install)
+
+<br />
 
 ### Let's jump to the example
 
@@ -45,6 +50,7 @@ get started:
 Cargo.toml  src
 
 ```
+<br />
 
 #### Our example and the dependencies
 I was thinking in processing markdown files and show them as html, so that's basically what the code does, it's far from
@@ -63,6 +69,7 @@ edition = "2021"
 actix-web = "4"
 markdown = "0.3"
 ```
+<br />
 
 #### Lets add some code
 This simple snippet only listens for `GET` requests to `/` and logs a line with the unix timestamp and IP and returns 
@@ -119,6 +126,7 @@ Example logs
 
 At this point we have enough to run and test locally, but what about other architectures? (I'm running on linux-amd64),
 you can test it locally if you want running `cargo run`.
+<br />
 
 #### ARM32v7 Dockerfile
 This Dockerfile can be optimized and secured in many ways, but for the sake of simplicity it is good enough to start 
@@ -156,6 +164,7 @@ COPY --from=builder /usr/src/app/cv.md /usr/src/app
 CMD ["/usr/src/app/rcv"]
 
 ```
+<br />
 
 #### Building and pushing (docker image)
 So lets build it and push it [here](https://hub.docker.com/repository/docker/kainlite/rcv).
@@ -449,6 +458,7 @@ b74e98d1b921: Layer already exists
 armv7-2: digest: sha256:86be73465a5e4819b97d4aafe8195b977a4e9b1d6ff3780315972ad23223f812 size: 2216
 
 ```
+<br />
 
 ### lets quickly review the manifests
 The manifests are fairly simple, you can see them there, as you can see we are restricting the user and privileges of
@@ -515,6 +525,7 @@ spec:
               number: 8080
 
 ```
+<br />
 
 #### Deploying it
 Assuming you already have a cluster up and running, this can be deployed like this, you will see a deployment, a service
@@ -536,6 +547,7 @@ NAME          CLASS   HOSTS                 ADDRESS      PORTS   AGE
 rcv-ingress   nginx   rcv.techsquad.rocks   10.0.0.104   80      12s
 
 ```
+<br />
 
 #### Extra
 
@@ -546,6 +558,7 @@ machine.
 
 For more details and to see how everything fits together I encourage you to clone the repo, test it, and modify it to
 make your own.
+<br />
 
 ### Cleaning up
 To clean up the resources you can do this:
@@ -556,12 +569,14 @@ ingress.networking.k8s.io "rcv-ingress" deleted
 service "rcv" deleted
 
 ```
+<br />
 
 #### **Closing notes**
 Be sure to check the links if you want to learn more about the examples, I hope you enjoyed it, 
 see you on [twitter](https://twitter.com/kainlite) or [github](https://github.com/kainlite)!
 
 The source for this article is [here](https://github.com/kainlite/rcv/)
+<br />
 
 ### Errata
 
@@ -569,3 +584,5 @@ If you spot any error or have any suggestion, please send me a message so it get
 
 Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io)
 and the [sources here](https://github.com/kainlite/blog)
+
+<br />

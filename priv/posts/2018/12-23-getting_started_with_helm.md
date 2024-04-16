@@ -12,12 +12,14 @@
 ### **Introduction**
 
 This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using [Helm](https://helm.sh/), in the examples I will be using [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube) or you can [check out this repo](https://github.com/kainlite/kainlite.github.io) that has a good overview of minikube, once installed and started (`minikube start`) that command will download and configure the local environment, you can follow with the following example:
+<br />
 
 Create the chart:
 ```elixir
 helm create hello-world
 ```
 Always use valid DNS names if you are going to have services, otherwise you will have issues later on.
+<br />
 
 Inspect the contents, as you will notice every resource is just a kubernetes resource with some placeholders and basic logic to get something more reusable:
 ```elixir
@@ -29,6 +31,7 @@ templates    <--- Here is where the magic happens.
 values.yaml  <--- Default values file (this is used to replace in the templates at runtime)
 ```
 Note: the following link explains the basics of [dependencies](https://docs.helm.sh/developing_charts/#managing-dependencies-manually-via-the-charts-directory), your chart can have as many dependencies as you need, the only thing that you need to do is add or install the other charts as dependencies.
+<br />
 
 The file `values.yaml` by default will look like the following snippet:
 ```elixir
@@ -64,6 +67,7 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 ```
+<br />
 
 The next step would be to check the `templates` folder:
 ```elixir
@@ -75,6 +79,7 @@ service.yaml     <--- The service that we will use internally and/or via ingress
 ```
 Go [templates](https://blog.gopheracademy.com/advent-2017/using-go-templates/) basics, if you need a refresher or a crash course in go templates, also always be sure to check Helm's own [documentation](https://github.com/helm/helm/blob/master/docs/chart_template_guide/functions_and_pipelines.md) and also some [tips and tricks](https://github.com/helm/helm/blob/master/docs/charts_tips_and_tricks.md).
 
+<br />
 Let's check the [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) file:
 ```elixir
 apiVersion: apps/v1beta2
@@ -130,6 +135,7 @@ spec:
     {{- end }}
 ```
 As you can see everything will get replaced by what you define in the `values.yaml` file and everything is under `.Values` unless you define a local variable or some other variable using helpers for example.
+<br />
 
 Let's check the [service](https://kubernetes.io/docs/concepts/services-networking/service/) file:
 ```elixir
@@ -154,6 +160,7 @@ spec:
     app.kubernetes.io/instance: {{ .Release.Name }}
 ```
 
+<br />
 Let's check the [ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) file:
 ```elixir
 {{- if .Values.ingress.enabled -}}
@@ -196,6 +203,7 @@ spec:
 {{- end }}
 ```
 The ingress file is one of the most interesting ones in my humble opinion because it has a if else example and also local variables (`$fullName` for example), also iterates over a possible slice of dns record names (hosts), and the same if you have certs for them (a good way to get let's encrypt certificates automatically is using cert-manager, in the next post I will expand on this example adding a basic web app with mysql and ssl/tls).
+<br />
 
 After checking that everything is up to our needs the only thing missing is to finally deploy it to kubernetes (But first let's install tiller):
 ```elixir
@@ -210,6 +218,7 @@ For more information on securing your installation see: https://docs.helm.sh/usi
 Happy Helming!
 ```
 Note that many of the complains that Helm receives are because of the admin-y capabilities that Tiller has. A good note on the security issues that Tiller can suffer and some possible mitigation alternatives can be found on the [Bitnami page](https://engineering.bitnami.com/articles/helm-security.html), this mostly applies to multi-tenant clusters. And also be sure to check [Securing Helm](https://docs.helm.sh/using_helm/#securing-your-helm-installation)
+<br />
 
 Deploy our chart:
 ```elixir
@@ -239,6 +248,7 @@ NOTES:
   kubectl port-forward $POD_NAME 8080:80
 ```
 Our deployment was successful and we can see that our pod is waiting to be scheduled.
+<br />
 
 Let's check that our service is there:
 ```elixir
@@ -248,6 +258,7 @@ kubernetes             ClusterIP   10.96.0.1       <none>        443/TCP   1h
 my-nginx-hello-world   ClusterIP   10.111.222.70   <none>        80/TCP    5m
 ```
 
+<br />
 And now we can test that everything is okay by running another pod in interactive mode, for example:
 ```elixir
 $ kubectl run -i --tty alpine --image=alpine -- sh
@@ -313,6 +324,7 @@ Commercial support is available at
 * Connection #0 to host my-nginx-hello-world left intact
 ```
 And voila we see our nginx deployed there and accessible via service name to our other pods (this is fantastic for microservices).
+<br />
 
 Our current deployment can be checked like this:
 ```elixir
@@ -320,6 +332,7 @@ $ helm ls
 NAME            REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
 my-nginx        1               Sun Dec 23 00:30:11 2018        DEPLOYED        hello-world-0.1.0       1.0             default
 ```
+<br />
 
 The last example would be to upgrade our deployment, lets change the `tag` in the `values.yaml` file from `stable` to `mainline` and update also the metadata file (`Chart.yaml`) to let Helm know that this is a new version of our chart.
 ```elixir
@@ -351,6 +364,7 @@ NOTES:
   kubectl port-forward $POD_NAME 8080:80
 ```
 Note that I always specify the -f values.yaml just for explicitness.
+<br />
 
 It seems that our upgrade went well, let's see what Helm sees
 ```elixir
@@ -358,30 +372,35 @@ $ helm ls
 NAME            REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
 my-nginx        2               Sun Dec 23 00:55:22 2018        DEPLOYED        hello-world-0.1.1       1.0             default
 ```
+<br />
 
 But before we go let's validate that it did deployed the nginx version that we wanted to have:
 ```elixir
 $ kubectl exec my-nginx-hello-world-c5cdcc95c-shgc6 -- /usr/sbin/nginx -v
 nginx version: nginx/1.15.7
 ```
+<br />
 At the moment of this writing mainline is 1.15.7, we could rollback to the previous version by doing:
 ```elixir
 $ helm rollback my-nginx 1
 Rollback was a success! Happy Helming!
 ```
 Basically this command needs a deployment name `my-nginx` and the revision number to rollback to in this case `1`.
+<br />
 
 Let's check the versions again:
 ```elixir
 $ kubectl exec my-nginx-hello-world-6f948db8d5-bsml2 -- /usr/sbin/nginx -v
 nginx version: nginx/1.14.2
 ```
+<br />
 
 Let's clean up:
 ```elixir
 $ helm del --purge my-nginx
 release "my-nginx" deleted
 ```
+<br />
 
 If you need to see what will be sent to the kubernetes API then you can use the following command (sometimes it's really useful for debugging or to inject a sidecar using pipes):
 ```elixir
@@ -392,8 +411,10 @@ kind: Service
 metadata:
   name: ame-hello-world
 ```
+<br />
 
 And that folks is all I have for now, be sure to check own [Helm Documentation](https://docs.helm.sh/) and `helm help` to know more about what helm can do to help you deploy your applications to any kubernetes cluster.
+<br />
 
 ### Don't Repeat Yourself
 DRY is a good design goal and part of the art of a good template is knowing when to add a new template and when to update an existing one. While you're figuring that out, accept that you'll be doing some refactoring. Helm and go makes that easy and fast.
@@ -405,8 +426,11 @@ The following posts will be about package managers, development deployment tools
 * [Getting started with Ksonnet and friends](/blog/getting_started_with_ksonnet)
 * [Getting started with Skaffold](/blog/getting_started_with_skaffold).
 * [Getting started with Gitkube](/blog/getting_started_with_gitkube).
+<br />
 
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+
+<br />

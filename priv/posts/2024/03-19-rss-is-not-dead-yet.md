@@ -13,9 +13,11 @@
 RSS stands for Really Simple Syndication. It's a technology that allows users to subscribe to content from their
 favorite websites or blogs in a standardized format, in this article we will see how to configure it for a Phoenix
 application in the simplest way possible.
+<br />
 
 The example will be based in this blog configuration, but it would be the same if you replace the app name `tr` with
 your app name.
+<br />
 
 ##### **Configuration**
 First we need to accept the format, this happens in `lib/tr_web.ex`
@@ -23,6 +25,7 @@ First we need to accept the format, this happens in `lib/tr_web.ex`
 ```elixir
   formats: [:html, :json, :xml],
 ```
+<br />
 
 As I'm using the page controller as index for the site, I decided to reuse that controller for the sitemap and rss feed,
 basically the plug disables the layout for that action and the action renders the template.
@@ -38,6 +41,7 @@ basically the plug disables the layout for that action and the action renders th
   end
 
 ```
+<br />
 
 Before going into the template we need to add the route for it, first we add a pipeline to accept XML and then we define
 the routes that will serve the sitemap.
@@ -53,6 +57,7 @@ the routes that will serve the sitemap.
     get "/sitemap.xml", PageController, :sitemap
   end
 ```
+<br />
 
 The next two files are the last part of the configuration, first `lib/tr_web/controllers/page_xml.ex`, we set the
 template and a helper to show the date. 
@@ -71,6 +76,7 @@ defmodule TrWeb.PageXML do
   end
 end
 ```
+<br />
 
 And the last part of our configuration is the template itself `lib/tr_web/controllers/page_xml/index.xml.eex`, this will
 be used to generate the list of all posts with the relevant fields.
@@ -105,6 +111,7 @@ be used to generate the list of all posts with the relevant fields.
   </channel>
 </rss>
 ```
+<br />
 
 You can also test it this way, remember that if you decide to use another module you will have to place that there
 instead of where the page controller tests are:
@@ -118,6 +125,7 @@ instead of where the page controller tests are:
     end
   end
 ```
+<br />
 
 Then you can provide your readers with a link like this one so your readers can discover your feed:
 ```elixir
@@ -125,11 +133,15 @@ Then you can provide your readers with a link like this one so your readers can 
   RSS
 </.link>
 ```
+<br />
 
 ##### **Closing notes**
 Let me know if there is anything that you would like to see implemented or tested, explored and what not in here...
+<br />
 
 ##### **Errata**
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [sources here](https://github.com/kainlite/tr)
+
+<br />

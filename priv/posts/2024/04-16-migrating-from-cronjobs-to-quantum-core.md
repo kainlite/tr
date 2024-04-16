@@ -45,7 +45,7 @@ Some steps are required to make this cron work:
 
 #### Add library to the deps in `mix.exs`
 ```elixir
-      {:quantum, "~> 3.5"}
+  {:quantum, "~> 3.5"}
 ```
 Run `mix.deps get` to fetch the new dependency.
 
@@ -176,3 +176,5 @@ least now you know how it works!
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [sources here](https://github.com/kainlite/tr)
+
+<br /> 

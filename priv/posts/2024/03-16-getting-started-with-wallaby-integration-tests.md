@@ -18,19 +18,24 @@ For developers building web applications with Elixir, robust testing is essentia
 
 * https://hexdocs.pm/wallaby/Wallaby.html
 
+<br />
+
 If you cannot wait to read the code, this pull requests illustrates all the changes needed for it to work well.
 * https://github.com/kainlite/tr/pull/10
 
+<br />
 
 ##### **Understanding Wallaby**
 
 Wallaby operates by automating interactions within a real web browser. This allows you to simulate user actions like clicking buttons, filling out forms, and verifying that the correct elements are displayed on the page. This end-to-end testing approach complements traditional unit and integration tests.
+<br />
 
 ##### **Advantages of Wallaby**
 
 **Efficiency**: Wallaby's support for concurrent test execution significantly speeds up your test suite, providing faster feedback.
 
 **Confidence**: By testing within real browsers, you can catch browser-specific compatibility issues early on, ensuring your application functions as expected for your users.
+<br />
 
 ##### **Installation**
 
@@ -39,6 +44,7 @@ Add Wallaby as a dependency in your `mix.exs` file:
 {:wallaby, "~> 0.30", runtime: false, only: :test}
 ```
 Then install it with `mix deps.get`
+<br />
 
 ##### **Configuration**
 
@@ -46,6 +52,7 @@ To use Wallaby, adjust the following settings in your `config/test.exs` file:
 * Endpoint: Set `server: true` to enable your Phoenix endpoint in testing.
 * SQL Sandbox: Set `sql_sandbox: true` for isolated database testing.
 * Wallaby Configuration: Add a Wallaby configuration block, replacing `tr` with your application's name:
+<br />
 
 ```elixir
 config :tr, TrWeb.Endpoint,
@@ -60,6 +67,7 @@ config :wallaby,
   driver: Wallaby.Chrome,
   chromedriver: [headless: true, binary: "/usr/bin/google-chrome-stable"]
 ```
+<br />
 
 **Instrumenting Your Endpoint** `lib/tr_web/endpoint.ex`
 
@@ -75,6 +83,7 @@ config :wallaby,
     websocket: [connect_info: [:user_agent, session: @session_options]]
 ```
 The `user_agent` setting within the socket configuration ensures Wallaby can correctly associate each test browser session with the appropriate database interactions.
+<br />
 
 **Router**
 
@@ -93,6 +102,7 @@ The first block makes sure that all the default LiveView sessions uses the hook.
     end
   end
 ```
+<br />
 
 The second block adds the same hook for all the remaining LiveViews, specifying it in the `on_mount`.
 ```elixir
@@ -139,6 +149,7 @@ The second block adds the same hook for all the remaining LiveViews, specifying 
     end
   end
 ```
+<br />
 
 **Understanding the Hook's Purpose**
 
@@ -150,6 +161,7 @@ Think of the hook as a helper that performs these important tasks:
 
 * **Prepares the Database:** It ensures each Wallaby test starts with a fresh, isolated database, preventing conflicts.
 * **Connects Wallaby to Your App:** The hook creates a bridge between Wallaby's test browser sessions and your application, allowing Wallaby to interact with your code correctly.
+<br />
 
 ```elixir
 defmodule TrWeb.Hooks.AllowEctoSandbox do
@@ -174,6 +186,7 @@ defmodule TrWeb.Hooks.AllowEctoSandbox do
   end
 end
 ```
+<br />
 
 One of the last steps before we can run a test is to set the right case for us `test/support/feature_case.ex`: 
 ```elixir
@@ -202,6 +215,7 @@ defmodule TrWeb.FeatureCase do
   end
 end
 ```
+<br />
 
 **Up next:** `test/test_helper.exs`:
 
@@ -257,6 +271,7 @@ Why the Change?
 ```elixir
   use TrWeb.ConnCase, async: false
 ```
+<br />
 
 ##### **Running a test** 
 
@@ -329,6 +344,7 @@ end
 ```
 
 To see the results head over to the checks page [here](https://github.com/kainlite/tr/actions/runs/8310299885/job/22742643890)
+<br />
 
 ##### **Running it in github actions** 
 
@@ -342,15 +358,20 @@ When you want Wallaby tests to run automatically as part of your continuous inte
           sudo Xvfb -ac :99 -screen 0 1920x1080x24 > /dev/null 2>&1 & # optional
 ```
 see the full file [here](https://github.com/kainlite/tr/blob/master/.github/workflows/coverage.yaml#L38)
+<br />
 
 ##### **The Journey Continues** 
 
 This is a foundational introduction to Wallaby. In subsequent articles, we'll explore advanced features, best practices, and ways to streamline your testing process. if you found this tutorial useful please leave a comment.
+<br />
 
 ##### **Closing notes**
 Let me know if there is anything that you would like to see implemented or tested, explored and what not in here...
+<br />
 
 ##### **Errata**
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [sources here](https://github.com/kainlite/tr)
+
+<br />

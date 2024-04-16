@@ -10,19 +10,26 @@
 
 ### Introduction
 This time we will see how to get started with [Istio](https://istio.io/) and why do we need to use a service mesh.
+<br />
 
 In this example I will be using [Digital Ocean](https://m.do.co/c/01d040b789de) (that's my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25.
+<br />
 
 ### Istio
 So... You might be wondering some of those questions: why Istio? Why do I need a service mesh?, when do I need that? And I want to help you with some answers:
+<br />
 
 Why do I need a service mesh? Basically because in cloud environments you cannot trust that the network will be reliable 100% of the time, that the latency will be low, that the network is secure and the bandwidth is infinite, the service mesh is just an extra layer to help microservices communicate with each other safely and reliably.
+<br />
 
 When do I need to have one? This one can be tricky and will depend on your environment, but the moment that you start experiencing network issues between your microservices would be a good moment to do it, it could be done before of course, but it will highly depend on the project, if you can start early with it the better and easier to implement will be, always have in mind the benefits of added security, observability and likely performance improvement.
+<br />
 
 Why Istio? This will be a small series of service meshes for kubernetes and I decided to start with Istio.
+<br />
 
 In case you don't agree with my explanations that's ok, this is a TL;DR version and also I simplified things a lot, for a more complete overview you can check [this](https://blog.buoyant.io/2017/04/25/whats-a-service-mesh-and-why-do-i-need-one/) article or [this one](https://www.oreilly.com/ideas/do-you-need-a-service-mesh) or if you want a more in-depth introduction you can read more [here](https://www.toptal.com/kubernetes/service-mesh-comparison).
+<br />
 
 ### Let's get started
 First of all we need to download and install Istio in our cluster, the recommended way of doing it is using helm (In this case I will be using the no Tiller alternative, but it could be done with helm install as well, check here for [more info](https://istio.io/docs/setup/kubernetes/helm-install/)):
@@ -30,6 +37,7 @@ First of all we need to download and install Istio in our cluster, the recommend
 $ curl -L https://git.io/getLatestIstio | sh -
 ```
 This will download and extract the latest release, in this case 1.0.5 at this moment.
+<br />
 
 So let's install Istio... only pay attention to the first 3 commands, then you can skip until the end of the code block, I post all the output because I like full examples :)
 ```elixir
@@ -173,6 +181,7 @@ destinationrule.networking.istio.io "istio-policy" created
 destinationrule.networking.istio.io "istio-telemetry" created
 ```
 WOAH, What did just happen?, a lot of new resources were created, basically we just generated the manifest from the helm chart and applied that to our cluster.
+<br />
 
 So lets see what's running and what that means:
 ```elixir
@@ -190,19 +199,26 @@ istio-telemetry-664d896cf5-jdcwv          2/2       Running     0          3m
 prometheus-76b7745b64-f8jxn               1/1       Running     0          3m
 ```
 A few minutes later, almost everything is up, but what's all that? Istio has several components, see the following overview extracted from [github](https://github.com/istio/istio).
+<br />
 
 **Envoy**: Sidecar proxies per microservice to handle ingress/egress traffic between services in the cluster and from a service to external services. The proxies form a secure microservice mesh providing a rich set of functions like discovery, rich layer-7 routing, circuit breakers, policy enforcement and telemetry recording/reporting functions.
 Note: The service mesh is not an overlay network. It simplifies and enhances how microservices in an application talk to each other over the network provided by the underlying platform.
+<br />
 
 **Mixer**: Central component that is leveraged by the proxies and microservices to enforce policies such as authorization, rate limits, quotas, authentication, request tracing and telemetry collection.
+<br />
 
 **Pilot**: A component responsible for configuring the proxies at runtime.
+<br />
 
 **Citadel**: A centralized component responsible for certificate issuance and rotation.
+<br />
 
 **Node Agent**: A per-node component responsible for certificate issuance and rotation.
+<br />
 
 **Galley**: Central component for validating, ingesting, aggregating, transforming and distributing config within Istio.
+<br />
 
 Ok so, a lot of new things were installed but how do I know it's working? let's deploy a [test application](https://istio.io/docs/examples/bookinfo/) and check it:
 ```elixir
@@ -219,6 +235,7 @@ deployment.extensions "reviews-v3" created
 service "productpage" created
 deployment.extensions "productpage-v1" created
 ```
+<br />
 That command not only deployed the application but injected the Istio sidecar to each pod:
 ```elixir
 $ kubectl get pods
@@ -231,6 +248,7 @@ reviews-v2-575446d5db-r6kwc       2/2       Running   0          2m
 reviews-v3-74458c4889-kr4wb       2/2       Running   0          2m
 ```
 As we can see each pod has 2 containers in it, the app container and istio-proxy. You can also configure [automatic sidecar injection](https://istio.io/docs/setup/kubernetes/sidecar-injection/#automatic-sidecar-injection).
+<br />
 
 Also all services are running:
 ```elixir
@@ -242,6 +260,7 @@ productpage   ClusterIP   10.245.32.221    <none>        9080/TCP   3m
 ratings       ClusterIP   10.245.159.112   <none>        9080/TCP   3m
 reviews       ClusterIP   10.245.77.125    <none>        9080/TCP   3m
 ```
+<br />
 
 But how do I access the app?
 ```elixir
@@ -250,6 +269,7 @@ gateway.networking.istio.io "bookinfo-gateway" created
 virtualservice.networking.istio.io "bookinfo" created
 ```
 In Istio a Gateway configures a load balancer for HTTP/TCP traffic, most commonly operating at the edge of the mesh to enable ingress traffic for an application (L4-L6).
+<br />
 
 After that we need to set some environment variables to fetch the LB ip, port, etc.
 ```elixir
@@ -262,24 +282,31 @@ curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/productpage
 ```
 If the latest curl returns 200 then we're good, you can also browse the app `open http://${GATEWAY_URL}/productpage` and you will see something like the following image:
 ![img](/images/productpage-example.png){:class="mx-auto"}
+<br />
 
 Also you can use [Grafana](https://grafana.com/) to check some metrics about the service usage, etc. (You don't have to worry about prometheus since it's enabled by default). Spin up the port-forward so we don't have to expose grafana: to the world with: `kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000`, and then `open http://localhost:3000`.
+<br />
 
 As a general advice check all the settings that Istio offers try the ones that you think that could be useful for your project and always measure and compare.
+<br />
 
 ### Notes
 * Do mind that **pilot** pod requires at least 4 Gbs of memory, so you will need at least one node with that amount of memory.
 * You can check the load balancer status under: Manage -> Networking -> Load balancers. And if everything is okay your LB will say Healthy.
 * Grafana is not enabled by default but we do enable it via helm with `--set grafana.enabled=true`, if you want to check all the possible options [go here](https://istio.io/docs/reference/config/installation-options/), if you are using more than two `--set` options I would recommend creating a `values.yaml` file and use that instead.
 * Istio is a big beast and should be treated carefully, there is a lot more to learn and test out. We only scratched the surface here.
+<br />
 
 ### Upcoming posts
 * More examples using Istio.
 * Linkerd.
 * Maybe some Golang fun.
 * Serverless or kubeless, that's the question.
+<br />
 
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+
+<br />

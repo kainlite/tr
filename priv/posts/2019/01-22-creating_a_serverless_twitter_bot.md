@@ -8,13 +8,15 @@
 }
 ---
 
-![logo](/images/logo.png){:class="mx-auto"}
+![logo](/images/logo.png){:class="mx-auto" style="max-height:300px;"}
 
 ### **Introduction**
 This article explains how to create a serverless tweet-bot, basically pulls articles from this blog and post them to twitter in a nice way. It uses cron as the trigger so it should post a tweet every 12 hours, or you can invoke it manually.
+<br />
 
 ### **Twitter**
 So before you can start with the Twitter API you need to get a developer account in [this url](https://developer.twitter.com/en/apply/user), after submitted and created, you then need to create an App and generate the keys and tokens to be able to use it, it might take a while, I recommend you read everything that Twitter wants you to read while creating both the dev account and the app, so you can understand the scope and the good practices of using their services.
+<br />
 
 
 ### **The code**
@@ -319,6 +321,7 @@ func main() {
 }
 ```
 The code is fairly straigth forward, it checks for the environment to have a locally runable/debuggable app if it's development or if it's running as an AWS Function in production.
+<br />
 
 ### **While debugging locally it can be ran like this**
 You can save use an .env file to test debug how your tweets are going to look.
@@ -337,6 +340,7 @@ go run .
 # time="2019-01-21T22:39:16-03:00" level=info msg="Non production mode, would've tweeted: Getting started with skaffold: https://techsquad.rocks/blog/getting_started_with_skaffold/ - TBO" func="main.(*Twitter).Send" file="/home/kainlite/Webs/tbo/tbo/main.go:113"
 ```
 The output is very verbose but it will show you everything that the function will do.
+<br />
 
 ### **Creating the project**
 But how did you get the project skeleton?
@@ -344,6 +348,7 @@ But how did you get the project skeleton?
 mkdir tbo && cd tbo && serverless create -t aws-go
 ```
 By default it creates two go functions: hello and world, if you look at the files serverless.yaml and the go code, it will be easy to understand how everything is tied together in the default example.
+<br />
 
 ### **Serverless framework**
 This function is managed by the [serverless framework](https://serverless.com/), as you can see it's an easy way to manage your functions, what this small block of YAML will do is compile, upload, and schedule our function (because we use an event schedule)
@@ -396,6 +401,7 @@ functions:
       TWITTER_ACCESS_SECRET: "example_secret"
 ```
 We provide the environment variables there that the app needs to run, under the hood what serverless will do is create an s3 bucket for this function with a cloudformation stack and a zip file with your function (for each version or deployment), then it will apply that that stack and validate that everything went ok.
+<br />
 
 ### **Deploy the function**
 Once the code is ready and you are ready to test it in production aka send a real tweet, just deploy it.
@@ -428,6 +434,7 @@ serverless deploy
 #   None
 ```
 As we described before you can see everything that the serverless framework did for us, nothing really hard to remember and everything automated.
+<br />
 
 ### **S3**
 Example s3 bucket from the previous deployment.
@@ -437,6 +444,7 @@ aws s3 ls
 # 2019-01-21 22:42:05 handler-prod-serverlessdeploymentbucket-1s5fs5igk2pwc
 ```
 As we can see after the deployment we see a new bucket with our function and if we take a look at the files we will find several (depending on how many deployments you do) stacks/manifests and the zip file with our function for each version/deployment.
+<br />
 
 ### **Invoke the function**
 Ok, but I don't want to wait 12 hours to see if everything is okay, then just invoke the function.
@@ -447,12 +455,17 @@ serverless invoke -f tweet
 ```
 Wait, where did tweet came from?, if you look at the serverless manifest you will see that our function is called tweet. If everything went well you will be able to see that tweet in your profile, something like this:
 ![img](/images/twitter-tbo.png){:class="mx-auto"}
+<br />
 
 ### Notes
 * Why TBO, what's tbo? bot misspelled.
 * The Serverless framework is really cool and works in a variety of environments, I certainly recommend taking a look and at least trying it, I use it for a few small projects and it eases my life a lot.
+<br />
 
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+
+
+<br />

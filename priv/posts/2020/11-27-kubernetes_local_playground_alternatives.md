@@ -12,6 +12,7 @@
 
 ##### **Introduction**
 In this article we will explore different alternatives for spinning up a cluster locally for testing, practicing or just developing an application.
+<br />
 
 The source code and/or documentation of the projects that we will be testing are listed here:
 * [minikube](https://minikube.sigs.k8s.io/docs/start/)
@@ -19,11 +20,16 @@ The source code and/or documentation of the projects that we will be testing are
 * [Kubernetes the hard way using vagrant](https://github.com/kainlite/kubernetes-the-easy-way-with-vagrant)
 * [Kubernetes with kubeadm using vagrant](https://github.com/kainlite/kubernetes-the-easy-way-with-vagrant-and-kubeadm)
 
+<br />
+
 There are more alternatives like [Microk8s](https://microk8s.io/) but I will leave that as an exercise for the reader.
+<br />
 
 If you want to give it a try to each one make sure to follow their recommended way of install or your distro/system way.
+<br />
 
 The first two (minikube and kind) we will see how to configure a CNI plugin in order to be able to use [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/), in the other two environments you can customize everything and these are best for learning rather than for daily usage but if you have enough ram you could do that as well.
+<br />
 
 We will be using the following pods and network policy to test that it works, we will create 3 pods, 1 client and 2 app backends, one backend will be listening in port TCP/1111 and the other in the port TCP/2222, in our netpolicy we will only allow our client to connect to app1:
 ```elixir
@@ -137,6 +143,7 @@ spec:
 ```
 
 If you want to learn more about netcat and friends go to: [Cat and friends: netcat and socat](https://techsquad.rocks/blog/cat_and_friends_netcat_socat/)
+<br />
 
 ##### Minikube
 Minikube is heavily used but it can be too heavy sometimes, in any case we will see an example of making it work with network policies, the good thing is that it has a lot of documentation because a lot of people use it and it is updated often:
@@ -154,6 +161,7 @@ Minikube is heavily used but it can be too heavy sometimes, in any case we will 
 🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
 
 ```
+<br />
 
 ###### Give it a couple of minutes to start, for new versions of minikube you can install it like this, otherwise you can specify that you will install the CNI plugin and then just install the manifests.
 ```elixir
@@ -166,6 +174,7 @@ kube-system   etcd-minikube                      1/1     Running    0          3
 ...
 
 ```
+<br />
 
 ###### Then let's validate that it works
 ```elixir
@@ -190,8 +199,10 @@ command terminated with exit code 1
 ```
 
 Note that we add the timeout command with 5 seconds wait so we don't have to really wait for nc timeout which by default is no timeout, we also tested with nc timeout.
+<br />
 
 You can get more info for minikube using Cilium on their [docs](https://docs.cilium.io/en/v1.9/gettingstarted/minikube/)
+<br />
 
 ###### Remember to clean up
 ```elixir
@@ -202,6 +213,7 @@ You can get more info for minikube using Cilium on their [docs](https://docs.cil
 💀  Removed all traces of the "minikube" cluster.
 
 ```
+<br />
 
 ##### KIND
 KIND is really lightweight and fast, I usually test and develop using KIND the main reason is that almost everything works like in a real cluster but it has no overhead, it's simple to install and easy to run, first we need to put this config in place to tell kind not to use it's default CNI.
@@ -223,6 +235,7 @@ nodes:
 - role: worker
 
 ```
+<br />
 
 Then we can create the cluster and install calico (there is a small gotcha here, you need to check that the calico node pods come up if not kill them and they should come up and everything will start working normally, this is due to the environment variable that gets added after the deployment for it to work with KIND):
 ```elixir
@@ -271,6 +284,7 @@ poddisruptionbudget.policy/calico-kube-controllers created
 daemonset.apps/calico-node env updated
 
 ```
+<br />
 
 You can check for more config options for KIND [here](https://kind.sigs.k8s.io/docs/user/configuration/#networking)
 
@@ -304,6 +318,7 @@ service/app2 created
 networkpolicy.networking.k8s.io/default-network-policy created
 
 ```
+<br />
 
 ###### Testing again:
 ```elixir
@@ -316,6 +331,7 @@ nc: app2 (10.96.187.41:2222): Connection timed out
 command terminated with exit code 1
 
 ```
+<br />
 
 ##### Kubeadm and vagrant
 This is an interesting scenario and it's great to understand how clusters are configured using kubeadm also to practice things such as adding/removing/upgrading the nodes, backup and restore etcd, etc. if you want to test this one clone this repo: [Kubernetes with kubeadm using vagrant](https://github.com/kainlite/kubernetes-the-easy-way-with-vagrant-and-kubeadm)
@@ -360,6 +376,7 @@ Connection to 127.0.0.1 closed.
 Connection to 127.0.0.1 closed.
 ######################## ALL DONE ########################
 ```
+<br />
 
 ###### Next, lets copy the kubeconfig and deploy our resources then test (this deployment is using weave)
 ```elixir
@@ -384,6 +401,7 @@ client                        0/1     ContainerCreating   0          6s
 web-test-2-594487698d-vnltx   1/1     Running             0          2m33s
 
 ```
+<br />
 
 ###### Test it (wait until the pods are in ready state)
 ```elixir
@@ -395,6 +413,7 @@ nc: app2 (10.108.254.138:2222): Connection timed out
 command terminated with exit code 1
 
 ```
+<br />
 
 ###### For more info refer to the readme in the repo and the scripts in there, it should be straight forward to follow and reproduce, remember to clean up:
 ```elixir
@@ -408,6 +427,7 @@ command terminated with exit code 1
 
 ```
 
+<br />
 ##### Kubernetes the hard way and vagrant
 This is probably the most complex scenario and it's purely educational you get to generate all the certificates by hand basically and configure everything by yourself (see the original repo for instructions in how to do that in gcloud if you are interested), if you want to test this one clone this repo: [Kubernetes the hard way using vagrant](https://github.com/kainlite/kubernetes-the-easy-way-with-vagrant), but be patient and ready to debug if something doesn't go well.
 ```elixir
@@ -459,6 +479,7 @@ above with their current state. For more information about a specific
 VM, run `vagrant status NAME`.
 
 ```
+<br />
 
 ###### Validation:
 ```elixir
@@ -504,6 +525,7 @@ worker-2   Ready    <none>   3m47s   v1.18.6
 root@controller-0:~#
 
 ```
+<br />
 ```elixir
 root@controller-0:~# kubectl apply -f /vagrant/manifests/coredns-1.7.0.yaml
 serviceaccount/coredns created
@@ -543,6 +565,7 @@ NAME                                                     POD-SELECTOR   AGE
 networkpolicy.networking.k8s.io/default-network-policy   app=client     112s
 
 ```
+<br />
 
 
 ###### Install the manifests and test it:
@@ -561,6 +584,7 @@ nc: 10.200.0.3 (10.200.0.3:2222): No route to host
 command terminated with exit code 1
 
 ```
+<br />
 
 ###### Clean up
 ```elixir
@@ -579,9 +603,11 @@ command terminated with exit code 1
 ==> controller-0: Destroying VM and associated drives...
 
 ```
+<br />
 
 ##### Wrap up
 Each alternative has its use case, test each one and pick the one that best fit your needs.
+<br />
 
 ##### Clean up
 Remember to clean up to recover some resources in your machine.
@@ -590,3 +616,5 @@ Remember to clean up to recover some resources in your machine.
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+
+<br />

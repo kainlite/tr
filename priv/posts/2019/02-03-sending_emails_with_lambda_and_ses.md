@@ -13,11 +13,14 @@
 
 ##### **Serverless series**
 Part I: [Serving static websites with s3 and cloudfront](/blog/serving_static_sites_with_s3_and_cloudfront), so refer to that one before starting this one if you want to know how did we get here.
+<br />
 
 Part II: [Sending emails with AWS Lambda and SES from a HTML form](/blog/sending_emails_with_lambda_and_ses), **You are here**.
+<br />
 
 ##### **Introduction**
 This article is part of the serverless series, in this article we will see how to create a serverless function in AWS Lambda to send an email coming from the HTML form in the site the source code can be [found here](https://github.com/kainlite/aws-serverless-go-ses-example), that is the go version but if you prefer node you can use [this one](https://github.com/kainlite/aws-serverless-nodejs-ses-example).
+<br />
 
 ##### **Serverless framework**
 **As usual I will be using the serverless framework to manage our functions, create the project**
@@ -74,6 +77,7 @@ functions:
           method: post
 ```
 The interesting parts here are the IAM permissions and the function send_mail, the rest is pretty much standard, we define a function and the event HTTP POST for the API Gateway, where our executable can be found and we also request permissions to send emails via SES.
+<br />
 
 **Deploy the function**
 ```elixir
@@ -121,6 +125,7 @@ make deploy
 # ServerlessDeploymentBucketName: sendmail-prod-serverlessdeploymentbucket-1vbmb6gwt8559
 ```
 Everything looks right, so what's next? the source code.
+<br />
 
 ##### **Lambda**
 This is basically the full source code for this function, as you will see it's really simple:
@@ -257,18 +262,23 @@ func main() {
 }
 ```
 The code is pretty much straight forward it only expects 2 parameters and it will send an email and return sent! if everything went well. You can debug and compile your function before uploading by issuing the command `make` (This is really useful), and if you use `make deploy` you will save lots of time by only deploying working files.
+<br />
 
 ##### **SES**
 For this to work you will need to verify/validate your domain in SES.
+<br />
 
 Go to `SES->Domains->Verify a New Domain`.
 ![image](/images/aws-ses-validate-domain.png){:class="mx-auto"}
+<br />
 
 After putting your domain in, you will see something like this:
 ![image](/images/aws-ses-validation-and-dkim.png){:class="mx-auto"}
+<br />
 
 As I don't have this domain in Route53 I don't have a button to add the records to it (which makes everything simpler and faster), but it's easy enough just create a few dns records and wait a few minutes until you get something like this:
 ![image](/images/aws-ses-validation-ok.png){:class="mx-auto"}
+<br />
 
 **After that just test it**
 ```elixir
@@ -284,6 +294,7 @@ serverless invoke -f send_mail -d '{ "Email": "kainlite@gmail.com", "Message": "
 }
 ```
 After hitting enter the message popped up right away in my inbox :).
+<br />
 
 **Another option is to use [httpie](https://devhints.io/httpie)**
 ```elixir
@@ -304,6 +315,7 @@ echo '{ "email": "kainlite@gmail.com", "message": "test2" }' | http https://m8eb
 #
 # sent!
 ```
+<br />
 
 **OR [curl](https://devhints.io/curl)**
 ```elixir
@@ -325,8 +337,11 @@ curl -i -X POST https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod/send
 ```
 
 And that's all for now, see you in the next article.
+<br />
 
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+
+<br />

@@ -16,16 +16,20 @@
 In this article we will explore how to use [QEMU](https://www.qemu.org/download/#linux) to run emulating the ARM32v7 
 architecture to build and run [Rust](https://www.rust-lang.org/) code like if it was a native 
 [ARM32v7 architecture](https://github.com/docker-library/official-images#architectures-other-than-amd64).
+<br />
 
 There are some drawbacks and performance considerations when using this approach, it can be simpler but way slower for
 big projects.
+<br />
 
 The source for this article is here [RCV](https://github.com/kainlite/rcv/) and the docker image is 
 [here](https://hub.docker.com/repository/docker/kainlite/rcv).
+<br />
 
 This article can be considered a part 2 of 
 [Running rust on ARM32v7K3S Oracle cluster](https://techsquad.rocks/blog/rust_on_arm32v7/) 
 so we will not be creating the rust project and all that here, but focusing on building and running the project.
+<br />
 
 ##### **Prerequisites**
 
@@ -33,6 +37,8 @@ so we will not be creating the rust project and all that here, but focusing on b
 - [Buildah](https://github.com/containers/buildah/blob/main/install.md)
 - [QEMU](https://www.qemu.org/download/#linux)
 - [Rust](https://www.rust-lang.org/tools/install)
+
+<br />
 
 ### Let's jump to the example
 
@@ -65,6 +71,7 @@ COPY --from=builder /usr/src/app/cv.md /usr/src/app
 CMD ["/usr/src/app/rcv"]
 
 ```
+<br />
 
 #### Last steps for QEMU/Docker
 After installing the required packages you will still need to perform some simple steps in order for it to work with
@@ -114,6 +121,7 @@ WARNING: The requested image's platform (linux/arm/v7) does not match the detect
 armv7l
 
 ```
+<br />
 
 ##### Short names error
 If you get an error about short names when pulling images add the following line to your `/etc/containers/registries.conf`
@@ -122,6 +130,7 @@ file
 unqualified-search-registries = ["docker.io"]
 
 ```
+<br />
 
 #### Lets build it
 For the build we will use buildah because it is smarter than docker for this kind of scenarios.
@@ -440,6 +449,7 @@ Storing signatures
 f9fe5e59b8d124fe147ef045ceb9195421a2613e48df91f48875ed11c1d9f5de
 
 ```
+<br />
 
 #### Lets test it
 After building it, we can push it to the docker daemon and then run it and test it from another terminal
@@ -464,10 +474,12 @@ WARNING: The requested image's platform (linux/arm/v7) does not match the detect
 ```
 
 Notice: you will see some warnings about the architecture, that's fine as we are emulating things.
+<br />
 
 #### Performance considerations
 This project build with the rust toolchain and then copied to an ARM32v7 image took 2 minutes, but using QEMU and the
 given emulation it took around 8 minutes and a half, so it is something to be aware since the difference is quite big.
+<br />
 
 #### Extra
 
@@ -475,12 +487,14 @@ You can see it running [here](http://rcv.techsquad.rocks/), a very basic HTML Cu
 
 For more details and to see how everything fits together I encourage you to clone the repo, test it, and modify it to
 make your own.
+<br />
 
 #### **Closing notes**
 Be sure to check the links if you want to learn more about the examples, I hope you enjoyed it, 
 see you on [twitter](https://twitter.com/kainlite) or [github](https://github.com/kainlite)!
 
 The source for this article is [here](https://github.com/kainlite/rcv/)
+<br />
 
 ### Errata
 
@@ -488,3 +502,5 @@ If you spot any error or have any suggestion, please send me a message so it get
 
 Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io)
 and the [sources here](https://github.com/kainlite/blog)
+
+<br />

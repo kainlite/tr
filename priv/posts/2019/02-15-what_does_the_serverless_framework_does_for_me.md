@@ -12,8 +12,10 @@
 
 ### **Introduction**
 The [serverless framework](https://serverless.com/) is a nice tool to manage all your cloud functions. from their page:
+<br />
 
 > The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require. It's a CLI that offers structure, automation and best practices out-of-the-box, allowing you to focus on building sophisticated, event-driven, serverless architectures, comprised of Functions and Events.
+<br />
 
 ### **Let's take the golang example for a spin**
 So let's generate a project with the serverless framework and see everything that it does for us.
@@ -33,8 +35,10 @@ mkdir foo && cd "$_" &&  serverless create -t aws-go
 # Serverless: NOTE: Please update the "service" property in serverless.yml with your service name
 ```
 Got you a bit of command line fu right there with the "$_" (it means the first parameter of the previous command)
+<br />
 
 Okay all peachy but what just happened? We initialized a serverless framework project with the template aws-go (as you probably figured by now) the serverless framework can handle different languages and cloud providers, in this example we picked aws and go (there is another template for go called aws-go-dep which as the name indicates uses dep to manage dependencies), enough talking.
+<br />
 
 **Let's take a look at the files**
 ```elixir
@@ -50,6 +54,7 @@ tree .
 # 2 directories, 4 files
 ```
 We got a manifest `serverless.yml` a `Makefile` (which you can use to build your functions (to validate syntax errors for instance or run in test mode before pushing them to AWS, it will also be used to build them while deploying)
+<br />
 
 **The manifest file indicates a lot of things, I will add comments to the _code_**
 ```elixir
@@ -81,6 +86,7 @@ functions:
           path: world
           method: get
 ```
+<br />
 
 **Let's take a look at the hello function / file**
 ```elixir
@@ -131,6 +137,7 @@ func main() {
 }
 ```
 This function only returns some text with some headers, every lambda function requires the lambda.Start with your function name as an entrypoint, in this case Handler, the context is usually used to pass data between calls or functions. The rest of the code is pretty straight forward go code, it builds a json object and returns it along with some headers.
+<br />
 
 ##### **Let's deploy it**
 ```elixir
@@ -164,6 +171,7 @@ serverless deploy
 #   None
 ```
 So a lot happened here, the deploy function compiled our binary, packaged it, uploaded that package to s3, created a cloudformation stack and after everything was completed, returned the endpoints that were defined, as you can see the framework enabled us to create and deploy a function (two actually) really easily which totally simplifies the process of managing functions and events.
+<br />
 
 **And test it**
 ```elixir
@@ -221,6 +229,7 @@ curl -v https://cfr9zyw3r1.execute-api.us-east-1.amazonaws.com/dev/hello
 # {"message":"Go Serverless v1.0! Your function executed successfully!"}%
 ```
 As expected we can see the headers x-my-company-func-reply and the json object that it created for us.
+<br />
 
 ### **Cleanup**
 ```elixir
@@ -235,10 +244,14 @@ serverless remove
 # Serverless: Stack removal finished...
 ```
 This will as you expect remove everything that was created with the deploy command.
+<br />
 
 In the next article we will explore how to do create and deploy a function like this one by hand.
+<br />
 
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+
+<br />

@@ -22,15 +22,18 @@ need to run a script or validate some information in your productive environment
 database is sometimes an option it should be discouraged, you want in most cases to interact with your database from
 code that was tested and prepared for certain scenario, but sometimes that code is not easily available so you need a
 terminal to be able to run it, but how can we do that in the elixir / beam world?
+<br />
 
 Be aware that whilst this is an option you should always strive to use migrations or some tested and automated way if
 feasible, in a subsequent article we will explore how to do that with cron jobs in kubernetes.
+<br />
 
 #### Options?
 * port-forward to the prod instance or cluster
 * from one of the machines or pods (if using kubernetes)
 
 there are likely many more options but we will explore these two.
+<br />
 
 ### **Port-forward**
 In this scenario we will use our local stack to connect to the remote instances or cluster, how do we do so? figure that
@@ -55,16 +58,19 @@ In kubernetes you would need two port-forward commands:
 kubectl -n tr port-forward pod/tr-xxxx 4369:4369 &
 kubectl -n tr port-forward pod/tr-xxxx 44091:44091 &
 ```
+<br />
 
 Finally, the local shell:
 ```elixir
 iex --name local@127.0.0.1 --cookie my_cookie --remsh tr@127.0.0.1
 ```
 Note: if you can't remember your cookie or find it in your environment connect to any node and run `Node.get_cookie()`.
+<br />
 
 Then you can run the `:observer.start()` app with that command, or any module that was loaded in the cluster, while this
 is fun and all it is too complex and has many drawbacks, so my recommendation is to stick with the second method, it is
 safer, it has less dependencies and it is way simpler to use.
+<br />
 
 #### **Important** 
 
@@ -73,6 +79,7 @@ cluster (this can be mitigated by using a docker container for example), but oth
 cluster could gain full access to your machine, so use this as a last resort thing.
 
 You can read more in this great [article](https://broot.ca/erlang-remsh-is-dangerous.html)
+<br />
 
 ### **Remote machine or pod**
 This scenario assumes you have access to the given environment where the application is running, it is really straight
@@ -92,12 +99,16 @@ remote we can get an `iex` shell and interact with our modules.
 if you were in a virtual machine environment just remove everything before `--` and use `ssh` instead.
 
 Any questions? Drop a comment 👇
+<br />
 
 ##### **Closing notes**
 Never expose `epmd` to the internet, nor your node random port, instead use ssh or a host in the destination network,
 this way it is easier to isolate the workload and prevent unwanted surprises, I hope it was useful for you as it was for
 me.
+<br />
 ##### **Errata**
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [sources here](https://github.com/kainlite/tr)
+
+<br />

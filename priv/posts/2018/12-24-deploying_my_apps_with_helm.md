@@ -11,6 +11,7 @@
 ### **Deploying my apps with Helm**
 
 If you are already familiar with [Helm](https://helm.sh/), and the different types of kubernetes workloads / resource types you might be wondering how to install apps directly to kubernetes, yes, you don't have to re-invent the wheel for your mysql installation, or your postgres, or nginx, jenkins, You name it. Helm solves that problem with [Charts](https://github.com/helm/charts), this list has the official charts maintained by the community, where the folder incubator may refer to charts that are still not compliant with the [technical requirements](https://github.com/helm/charts/blob/master/CONTRIBUTING.md#technical-requirements) but probably usable and the folder stable is for _graduated_ charts. This is not the only source of charts as you can imagine, You can use any source for your charts, even just the [tgz](https://docs.helm.sh/using_helm/#helm-install-installing-a-package) files, as we will see in this post.
+<br />
 
 How do I search for charts?:
 
@@ -19,10 +20,12 @@ $ helm search wordpress
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
 stable/wordpress        3.3.0           4.9.8           Web publishing platform for building blogs and websites.
 ```
+<br />
 Note that I'm not a fan of Wordpress or PHP itself, but it seems like the most common example everywhere. As we can see here it says stable/wordpress so we know that we're using the official repo in the folder stable, but what if we don't want that chart, but someone else provides one with more features or something that You like better. Let's use the one from [Bitnami](https://bitnami.com/stack/wordpress/helm), so if we check their page you can select different kind of deployments but for it to work we need to add another external repo:
 ```elixir
 helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
+<br />
 So if we search again we will now see two options (at the moment of this writing, the latest version is actually 5.0.2):
 ```elixir
 $ helm search wordpress
@@ -31,6 +34,7 @@ bitnami/wordpress       5.0.2           5.0.2           Web publishing platform 
 stable/wordpress        3.3.0           4.9.8           Web publishing platform for building blogs and websites.
 ```
 Let's check the [documentation](https://github.com/helm/charts/tree/master/stable/wordpress) of the chart to create our `values.yaml` file, note that in this example the stable wordpress chart it's also maintained by Bitnami, so they have the same configuration :), this won't always be the case but it simplifies things for us.
+<br />
 
 Our example `values.yaml` will look like:
 ```elixir
@@ -40,11 +44,13 @@ persistence:
 ingress:
   enabled: true
 ```
+<br />
 We will only change the blog name by default, the persistent volume size and also enable [ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) (Our app should be available through `wordpress.local` inside the cluster), if you are using minikube be sure to enable the [ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) addon.
 ```elixir
 $ minikube addons enable ingress
 ingress was successfully enabled
 ```
+<br />
 
 We can then install `stable/wordpress` or `bitnami/wordpress`, we will follow up with the one from Bitnami repo.
 ```elixir
@@ -54,6 +60,7 @@ $ helm install bitnami/wordpress \
 -f values.yaml
 ```
 As it's a common good practice to use specific versions we will do it here, it's better to do it this way because you can easily move between known versions and also avoid unknown states, this can happen by misunderstanding what latest means, [follow the example](https://medium.com/@mccode/the-misunderstood-docker-tag-latest-af3babfd6375).
+<br />
 
 You should see something like:
 ```elixir
@@ -107,8 +114,10 @@ NOTES:
   echo Password: $(kubectl get secret --namespace default plucking-condor-wordpress -o jsonpath="{.data.wordpress-password}" | base64 --decode)
 ```
 Depending on the cluster provider or installation itself, you might need to replace the `persistence.storageClass` to match what your cluster has, note that in the values file is represented like JSON with dot notation but in your `values.yaml` you need to stick to YAML format and indent `storageClass` under persistence as usual, the kubernetes API parses and uses JSON but YAML seems more human friendly.
+<br />
 
 At this point we should a working wordpress installation, also move between versions, but be aware that the application is in charge of the database schema and updating it to match what the new version needs, this can also be troublesome rolling back or when downgrading, so if you use persistent data *ALWAYS* have a working backup, because when things go south, you will want to quickly go back to a known state, also note that I said "working backup", yes, test that the backup works and that You can restore it somewhere else before doing anything destructive or that can has repercussions, this will bring you peace of mind and better ways to organize yourself while upgrading, etc.
+<br />
 
 Now let's check that all resources are indeed working and that we can use our recently installed app.
 ```elixir
@@ -132,6 +141,7 @@ NAME                                       DESIRED   CURRENT   AGE
 statefulset.apps/plucking-condor-mariadb   1         1         12m
 ```
 You can deploy it to a custom namespace (In this case I deployed it to the default namespace), the only change for that would be to set the parameter `--namespace` in the `helm install` line.
+<br />
 
 If you use minikube then ingress will expose a nodeport that we can find using `minikube service list` then using the browser or curl to navigate our freshly installed wordpress.
 ```elixir
@@ -165,9 +175,11 @@ helm del --purge plucking-condor
 
 
 That's all I have for now, I will be adding more content next week.
+<br />
 
 ### Don't Repeat Yourself
 DRY is a good design goal and part of the art of a good template is knowing when to add a new template and when to update or use an existing one. While helm and go helps with that, there is no perfect tool so we will explore other options in the following posts, explore what the community provides and what seems like a suitable tool for you. Happy Helming!.
+<br />
 
 ### Upcoming topics
 The following posts will be about package managers, development deployment tools, etc. It's hard to put all the tools in a category, but they are trying to solve similar problems in different ways, and we will be exploring the ones that seem more promising to me, if you would like me to cover any other tool/project/whatever, just send me a message :)
@@ -176,7 +188,11 @@ The following posts will be about package managers, development deployment tools
 * Getting started with Skaffold.
 * Getting started with Gitkube.
 
+<br />
+
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+
+<br />

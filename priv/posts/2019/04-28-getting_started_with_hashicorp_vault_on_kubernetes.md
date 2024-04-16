@@ -12,10 +12,13 @@
 
 ##### **Introduction**
 Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. What this means is that you can safely store all your App secrets in Vault without having to worry anymore how to store, provide, and use those secrets, we will see how to install it on a running kubernetes cluster and save and read a secret by our application, in this page we will be using Vault version 1.1.1, we will be using dynamic secrets, that means that each pod will have a different secret and that secret will expire once the pod is killed.
+<br />
 
 Before you start you will need [Consul](https://www.consul.io/docs/install/index.html), [Vault](https://www.vaultproject.io/docs/install/) client binaries and [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) or any running cluster, you can find the files used here in [this repo](https://github.com/kainlite/vault-consul-tls).
+<br />
 
 This is the part one of [two](/blog/actually_using_vault_on_kubernetes)
+<br />
 
 ##### **Preparing the cluster**
 Let's start minikube and validate that we can reach our cluster with `minikube start` and then with `kubectl get nodes`, also the dashboard can become handy you can invoke it like this `minikube dashboard`
@@ -43,6 +46,7 @@ $ kubectl get nodes
 NAME       STATUS   ROLES    AGE     VERSION
 minikube   Ready    master   4d20h   v1.14.0
 ```
+<br />
 
 ##### **Creating certificates for Consul and Vault**
 Vault needs a backend to store data, this backend can be consul, etcd, postgres, and [many more](https://www.vaultproject.io/docs/configuration/storage/index.html), so the first thing that we are going to do is create a certificate so consul and vault can speak to each other securely.
@@ -65,6 +69,7 @@ $ consul tls cert create -client
 ==> Saved dc1-client-consul-0.pem
 ==> Saved dc1-client-consul-0-key.pem
 ```
+<br />
 
 ##### **Consul**
 The next steps would be to create an encryption key for the consul cluster and to create all the kubernetes resources associated with it
@@ -104,6 +109,7 @@ consul-0  172.17.0.5:8301  alive   server  1.4.4  2         dc1  <all>
 consul-1  172.17.0.6:8301  alive   server  1.4.4  2         dc1  <all>
 consul-2  172.17.0.7:8301  alive   server  1.4.4  2         dc1  <all>
 ```
+<br />
 
 ##### **Vault**
 Once we have Consul running starting vault should be straight forward, we need to create all kubernetes resources associated with it and then initialize and unseal the vault.
@@ -202,11 +208,15 @@ Key    Value
 ---    -----
 foo    world
 ```
+<br />
 
 ##### **Closing notes**
 As you can see it takes a while to configure a Vault server but I really like the pattern that renders for the apps using it, in the next post we will see how to unlock it automatically with kubernetes and also how to mount the secrets automatically to our pods so our applications can use it :), this post was heavily inspired by [this one](https://testdriven.io/blog/running-vault-and-consul-on-kubernetes/) and [this one](https://learn.hashicorp.com/consul/advanced/day-1-operations/certificates#configuring-agents).
+<br />
 
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+
+<br />

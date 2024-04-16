@@ -11,12 +11,15 @@
 ### **Gitkube**
 
 This time we will see how to get started with [Gitkube](https://gitkube.sh/), it's a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it's just a [CRD](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle. You can find more [examples here](https://github.com/hasura/gitkube-example), also be sure to check their page and documentation if you like it or want to learn more.
+<br />
 
 In the examples I will be using [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube) or you can [check out this repo](https://github.com/kainlite/kainlite.github.io) that has a good overview of minikube, once installed and started (`minikube start`) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working, *but in this post be sure to use _minikube tunnel_* if you configure gitkube with a load balancer (or if you configure any service type as load balancer):
+<br />
 
 ### Let's get started
 We're going to deploy or re-deploy our echo bot one more time but this time using gitkube.
 You can find the chat bot: [article here](/blog/go-echobot), and the repo: [here](https://github.com/kainlite/echobot/tree/gitkube)
+<br />
 
 First of all we need to install the gitkube binary in our machine and then the CRD in our kubernetes cluster:
 ```elixir
@@ -32,6 +35,7 @@ $ kubectl --namespace kube-system expose deployment gitkubed --type=LoadBalancer
 service "gitkubed" exposed
 ```
 Note that there are 2 ways to install gitkube into our cluster, using the manifests as displayed there or using the gitkube binary and doing `gitkube install`.
+<br />
 
 To install the gitkube binary, the easiest way is to do:
 ```elixir
@@ -39,6 +43,7 @@ curl https://raw.githubusercontent.com/hasura/gitkube/master/gimme.sh | sudo bas
 ```
 This will download and copy the binary into: `/usr/local/bin`, as a general rule I recommend reading whatever you are going to pipe into bash in your terminal to avoid potential dangers of _the internet_.
 
+<br />
 Then we need to generate (and then create it in the cluster) a file called `remote.yaml` (or any name you like), it's necessary in order to tell gitkube how to deploy our application once we `git push` it:
 ```elixir
 $ gitkube remote generate -f remote.yaml
@@ -56,6 +61,7 @@ Add another container? [y/N] Enter
 Add another deployment? [y/N] Enter
 ```
 And this will yield the following `remote.yaml` file that we then need to create in our cluster as it is a custom resource it might look a bit different from the default kubernetes resources.
+<br />
 
 The actual file `remote.yaml`:
 ```elixir
@@ -89,6 +95,7 @@ status:
   remoteUrlDesc: ""
 ```
 There are a few details to have in mind here, the _deployment_ name because gitkube expects a deployment to be already present with that name in order to update/upgrade it, the path to the Dockerfile, or helm chart, credentials for the registry if any, I'm using a public image, so we don't need any of that. The _wizard_ will let you choose and customize a few options for your deployment.
+<br />
 
 The last step would be to finally create the resource:
 ```elixir
@@ -101,6 +108,7 @@ INFO[0000] remote url: ssh://default-minikube@10.98.213.202/~/git/default-miniku
   git remote add minikube ssh://default-minikube@10.98.213.202/~/git/default-minikube
   git push minikube master
 ```
+<br />
 
 After adding the new remote called _minikube_  we have everything ready to go, so let's test it and see what happens:
 ```elixir
@@ -200,6 +208,7 @@ To ssh://10.98.213.202/~/git/default-minikube
  * [new branch]      master -> master
 ```
 Quite a lot happened there, first of all gitkubed checked out the commit from the branch or HEAD that we pushed to `/home/default-minikube/build/default-minikube` and then started building and tagged the docker image with the corresponding SHA, after that it pushed the image to [docker hub](https://cloud.docker.com/u/kainlite/repository/docker/kainlite/default-minikube-default.echobot-echobot) and then updated the deployment that we already had in there for the echo bot.
+<br />
 
 The last step would be to verify that the pod was actually updated, so we can inspect the pod configuration with `kubectl describe pod echobot-654cdbfb99-g4bwv`:
 ```elixir
@@ -256,10 +265,14 @@ Events:
   Normal  Started    39m   kubelet, minikube  Started container
 ```
 As we can see the image is the one that got built from our `git push` and everything is working as expected.
+<br />
 
 And that's it for now, I think this tool has a lot of potential, it's simple, nice and fast.
+<br />
 
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+
+<br />

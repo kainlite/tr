@@ -12,11 +12,14 @@
 
 ### **Serverless series**
 Part I: [Serving static websites with s3 and cloudfront](/blog/serving_static_sites_with_s3_and_cloudfront), **You're here**.
+<br />
 
 Part II: [Sending emails with AWS Lambda and SES from a HTML form](/blog/sending_emails_with_lambda_and_ses)
+<br />
 
 ##### **Introduction**
 This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN). The site that we will be using were written using [elm](https://elm-lang.org/) and can be [found here](https://github.com/kainlite/aws-serverless-s3-elm-example).
+<br />
 
 ##### **S3**
 **First of all we need to create a bucket**
@@ -28,6 +31,7 @@ aws s3api create-bucket --bucket techsquad-serverless-site --region us-east-1
 # }
 ```
 We could serve directly from S3 but that can be expensive in a site with lots of traffic (You can do it by [enabling web hosting in the bucket](https://docs.aws.amazon.com/cli/latest/reference/s3/website.html)).\
+<br />
 
 **For this setup to work we first need to create a cloud-front-origin-access-identity**
 ```elixir
@@ -46,6 +50,7 @@ aws cloudfront create-cloud-front-origin-access-identity --cloud-front-origin-ac
 }
 ```
 Our origin access identity was successfully created, we need to grab the S3CanonicalUserId for our S3 bucket policy.
+<br />
 
 **Limit access to your bucket with the following policy (save as bucket-policy.json)**
 ```elixir
@@ -64,17 +69,20 @@ Our origin access identity was successfully created, we need to grab the S3Canon
 }
 ```
 This policy will only allow CloudFront to fetch the files from the S3 bucket, because we want to avoid users or anyone actually from hitting the bucket directly.
+<br />
 
 **And then just attach that policy to the bucket**
 ```elixir
 aws s3api put-bucket-policy --bucket techsquad-serverless-site --policy file://bucket-policy.json
 ```
+<br />
 
 **I'm using an old example I created and probably will continue building upon it, copy the files (the source files are in [this github repo](https://github.com/kainlite/aws-serverless-s3-elm-example))**
 ```elixir
 aws s3 sync . s3://techsquad-serverless-site/
 ```
 So far so good, We have our S3 bucket ready.
+<br />
 
 ##### **CloudFront**
 We will use this file to create our CF distribution (save it as distconfig.json or generate it with `aws cloudfront create-distribution --generate-cli-skeleton > /tmp/distconfig.json` and then replace the values: Id, DomainName, TargetOriginId, and the cname in Aliases.Items):
@@ -130,6 +138,7 @@ We will use this file to create our CF distribution (save it as distconfig.json 
 }
 ```
 We will leave most values in their defaults, but if you want to know more or customize your deployment [check here](https://docs.aws.amazon.com/cli/latest/reference/cloudfront/create-distribution.html) or type `aws cloudfront create-distribution help`.
+<br />
 
 **Let's finally create the CloudFront distribution for our site**
 ```elixir
@@ -252,6 +261,7 @@ aws cloudfront create-distribution --distribution-config file://distconfig.json
 # }
 ```
 Woah a lot of details in there, but what we might need later is the ETAG if we want to download and update our distribution, so have that handy, also we can see our CloudFront URL in there which is: d3v3xtkl1l2ynj.cloudfront.net in this case.
+<br />
 
 **It might take a few minutes to initialize the distribution, you can check the progress with**
 ```elixir
@@ -260,6 +270,7 @@ aws cloudfront list-distributions | jq ".DistributionList.Items[0].Status"
 # "InProgress"
 ```
 Once it's ready the status will be: "Deployed", and now if we go to the CloudFront url you should see the site :). The S3 bucket will only let CloudFront access to the files so the only way to serve the site is through CloudFront.
+<br />
 
 ##### **DNS**
 **The only thing missing is the record in the DNS (I don't have this domain name in Route53, shame on me but a CNAME will do for now), so let's add it and verify it using dig.**
@@ -288,9 +299,11 @@ dig serverless.techsquad.rocks
 # ;; MSG SIZE  rcvd: 98
 ```
 As we can see the record is already there so we can go to http://serverless.techsquad.rocks (note that this only works because we set that alias in the distribution), We could add SSL by creating a certificate using Amazon Certificate Manager, but we will leave that as an exercise or a future small article.
+<br />
 
 ##### **Useful commands**
 In case you need to get some information some useful commands:\
+<br />
 
 **This command will give us the Id of our distribution**
 ```elixir
@@ -302,6 +315,7 @@ aws cloudfront list-distributions --output table --query 'DistributionList.Items
 # |  EFJVJEPWAPGU2  |
 # +-----------------+
 ```
+<br />
 
 **This one the ETag (needed to perform updates for example)**
 ```elixir
@@ -309,16 +323,21 @@ aws cloudfront get-distribution-config --id EFJVJEPWAPGU2 | jq '. | .ETag'
 # OUTPUT:
 # "E2TPQRAUPJL2P3"
 ```
+<br />
 
 **And this one will save the current config in /tmp so we can update it.**
 ```elixir
 aws cloudfront get-distribution-config --id EFJVJEPWAPGU2 | jq '. | .DistributionConfig' > /tmp/curent-distribution-E2TPQRAUPJL2P
 ```
+<br />
 
 ##### **Upcoming articles**
 This article is the first one in this series of serverless articles, the idea is to build a fully functional website using only serverless technologies, the next post will cover the AWS Lambda function used to send the contact form, also all code from the site can be [found here](https://github.com/kainlite/aws-serverless-s3-elm-example).
+<br />
 
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+
+<br />

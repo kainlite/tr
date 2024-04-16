@@ -10,6 +10,7 @@
 
 ##### **Introduction**
 In this article we will create a lambda function and an API Gateway route like we did with the serverless framework but only using AWS tools, we will be using the same generated code for our function from the last article [What does the serverless framework does for me](/blog/what_does_the_serverless_framework_does_for_me), so refer to that one before starting this one if you want to know how did we get here. Also as a side note this is a very basic example on how to get started with lambda without any additional tool.
+<br />
 
 ##### **Let's see the code one more time**
 ```elixir
@@ -61,11 +62,13 @@ func main() {
 ```
 
 With that code as a starting point, now we need to build, package, upload, and deploy our function:
+<br />
 
 **Build**
 ```elixir
 GOOS=linux go build main.go
 ```
+<br />
 
 **Package**
 ```elixir
@@ -73,11 +76,13 @@ zip main.zip ./main
 # OUTPUT:
 #   adding: main (deflated 51%)
 ```
+<br />
 
 **Create the role**
 
 Go to IAM > Roles > Create.
 Then select Lambda, assign a name and a description and then get the ARN for this role. Note that with the serverless framework this is done automatically for us, so we don't need to create a new role for each
+<br />
 
 **Upload / Deploy**
 ```elixir
@@ -111,6 +116,7 @@ aws lambda create-function \
 # }
 ```
 Note that your function-name must match the name of your Lambda handler name (Handler). Note that this role might be insecure in some scenarios if you grant too much permissions, so try to restrict it as much as possible as with any role and policy.
+<br />
 
 **Test the function**
 ```elixir
@@ -123,6 +129,7 @@ aws lambda invoke --function-name helloworld --log-type Tail /dev/stdout
 # }
 ```
 Everything looks about right, so what's next? We will eventually need to communicate with this code from an external source, so let's see how we can do that with the API Gateway. Also the log is encoded in base64, so if you want to see what the log result was do the following.
+<br />
 
 **Check the logs**
 ```elixir
@@ -133,18 +140,22 @@ echo "U1RBUlQgUmVxdWVzdElkOiBmZTRmMWE4Zi1kYzAyLTQyYWQtYjBlYy0wMjA5YjY4MDY1YWQgVm
 # REPORT RequestId: fe4f1a8f-dc02-42ad-b0ec-0209b68065ad  Duration: 13.19 ms      Billed Duration: 100 ms         Memory Size: 128 MB     Max Memory Used: 45 MB
 ```
 You should also be able to see this same output in CloudWatch.
+<br />
 
 ##### **API Gateway**
 
 To make this step simpler I decided to use the AWS Console instead of the CLI it will also cut down the size of this article substantially.
+<br />
 
 **Now we need to create the API Gateway endpoint**
 
 Note that you only have to go to Lambda->Functions->helloworld->Add triggers->API Gateway. And then complete as shown in the image, when you save this new trigger you will get the resource that then can be used to test the API Gateway integration.
 ![img](/images/lambda-helloworld-example.png){:class="mx-auto"}
+<br />
 
 The endpoint will show as follows (Click on API Gateway):
-![image](lambda-helloworld-example-endpoint.png){:class="mx-auto"}
+![image](/images/lambda-helloworld-example-endpoint.png){:class="mx-auto"}
+<br />
 
 **Test the API**
 ```elixir
@@ -200,11 +211,15 @@ curl -v https://r8efasfb26.execute-api.us-east-1.amazonaws.com/default/helloworl
 ```
 
 If you ask me that was a lot of effort to handle without automation, maybe AWS SAM or the serverless framework can make things easier and let you focus on your application rather than the boilerplate required for it to run.
+<br />
 
 ### Clean up
 Always remember to clean up and delete everything that you created (to avoid surprises and save money), in this article I will leave that as an exercise for the reader :)
+<br />
 
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+
+<br />

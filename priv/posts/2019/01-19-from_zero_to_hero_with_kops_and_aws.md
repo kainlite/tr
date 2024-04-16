@@ -12,10 +12,13 @@
 
 ### **Introduction**
 In this article we will create a cluster from scratch with [kops](https://github.com/kubernetes/kops) (K8s installation, upgrades and management) in [AWS](https://aws.amazon.com/), We will configure [aws-alb-ingress-controller](https://github.com/kubernetes-sigs/aws-alb-ingress-controller) (External traffic into our services/pods) and [external dns](https://github.com/kubernetes-incubator/external-dns) (Update the records based in the ingress rules) and also learn a bit about awscli in the process.
+<br />
 
 Basically we will have a fully functional cluster that will be able to handle public traffic in minutes, first we will install the cluster with kops, then we will enable the ingress controller and lastly external-dns, then we will deploy a basic app to test that everything works fine, SSL/TLS is out of the scope but it's fairly easy to implement if you are using ACM.
+<br />
 
 Just in case you don't know this setup is not going to be free, cheap for sure because we will use small instances, etc, but not completely free, so before you dive in, be sure that you can spend a few bucks testing it out.
+<br />
 
 ### **Kops**
 This is an awesome tool to setup and maintain your clusters, currently only compatible with AWS and GCE, other platforms are planned and some are also supported in alpha, we will be using AWS in this example, it requires kubectl so make sure you have it installed:
@@ -24,12 +27,14 @@ curl -LO https://github.com/kubernetes/kops/releases/download/$(curl -s https://
 chmod +x kops-linux-amd64
 sudo mv kops-linux-amd64 /usr/local/bin/kops
 ```
+<br />
 
 **Export the credentials that we will be using to create the kops user and policies**
 ```elixir
 export AWS_ACCESS_KEY_ID=XXXX && export AWS_SECRET_ACCESS_KEY=XXXXX
 ```
 You can do it this way or just use `aws configure` and set a profile.
+<br />
 
 The next thing that we need are IAM credentials for kops to work, you will need awscli configured and working with your AWS admin-like account most likely before proceeding:
 ```elixir
@@ -79,6 +84,7 @@ aws iam create-access-key --user-name kops
 # }
 ```
 The last command will output the access key and the secret key for the _kops_ user, save that information because we will use it from now on, note that we gave kops a lot of power with that user, so be careful with the keys.
+<br />
 
 **Additional permissions to be able to create ALBs**
 ```elixir
@@ -164,6 +170,7 @@ aws iam create-policy --policy-name kops-route53-policy --policy-document file:/
 # }
 ```
 Note that even we just created these kops policies for alb and route53 we cannot add them right now, we need to first create the cluster, you can skip them if you don't plan on using these resources.
+<br />
 
 **Now we will also export or set the cluster name and kops state store as environment variables**
 ```elixir
@@ -171,6 +178,7 @@ export NAME=k8s.techsquad.rocks
 export KOPS_STATE_STORE=techsquad-cluster-state-store
 ```
 We will be using these in a few places, so to not repeat ourselves let's better have it as variables.
+<br />
 
 **Create the zone for the subdomain in Route53**
 ```elixir
@@ -186,6 +194,7 @@ ID=$(uuidgen) && aws route53 create-hosted-zone --name ${NAME} --caller-referenc
 As I'm already using this domain for the blog with github we can create a subdomain for it and add some NS records in our root zone for that subdomain, in this case k8s.techsquad.rocks. To make this easier I will show you how it should look like:
 ![img](/images/kops-dns-subdomain.png){:class="mx-auto"}
 So with this change and our new zone in Route53 for the subdomain, we can freely manage it like if it was another domain, this means that everything that goes to \*.k8s.techsquad.rocks will be handled by our Route53 zone.
+<br />
 
 **Create a bucket to store the cluster state**
 ```elixir
@@ -198,16 +207,19 @@ aws s3api create-bucket \
 # }
 ```
 Note that bucket names are unique, so it's always a good idea to prefix them with your domain name or something like that.
+<br />
 
 **Set the versioning on, in case we need to rollback at some point**
 ```elixir
 aws s3api put-bucket-versioning --bucket ${KOPS_STATE_STORE}  --versioning-configuration Status=Enabled
 ```
+<br />
 
 **Set encryption on for the bucket**
 ```elixir
 aws s3api put-bucket-encryption --bucket ${KOPS_STATE_STORE} --server-side-encryption-configuration '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}'
 ```
+<br />
 
 **And finally let's create our cluster**
 ```elixir
@@ -254,6 +266,7 @@ kops create cluster \
 #  * read about installing addons at: https://github.com/kubernetes/kops/blob/master/docs/addons.md.
 ```
 We set the KOPS_STATE_STORE to a valid S3 url for kops, and then created the cluster, this will set kubectl context to our new cluster, we might need to wait a few minutes before being able to use it, but before doing anything let's validate that's up and ready.
+<br />
 
 ```elixir
 kops validate cluster ${NAME}
@@ -276,6 +289,7 @@ kops validate cluster ${NAME}
 # Your cluster k8s.techsquad.rocks is ready
 ```
 The validation passed and we can see that our cluster is ready, it can take several minutes until the cluster is up and functional, in this case it took about 3-5 minutes.
+<br />
 
 We will create an additional subnet to satisfy our ALB:
 ```elixir
@@ -303,6 +317,7 @@ aws ec2 create-tags --resources subnet-017a5609ce6104e1b --tags Key=kubernetes.i
 aws ec2 create-tags --resources subnet-017a5609ce6104e1b --tags Key=kubernetes.io/role/elb,Value=1
 ```
 Note that we applied some required tags for the controller, and created an extra subnet, in a HA setup this would not be necessary since kops would create it for us but this is a small testing/dev cluster, so we will need to do it manually.
+<br />
 
 And lastly a security group for our ALB:
 ```elixir
@@ -316,6 +331,7 @@ aws ec2 authorize-security-group-ingress --group-id sg-09f0b1233696e65ef --proto
 aws ec2 authorize-security-group-ingress --group-id sg-057d2b0f6e288aa70 --protocol all --port 0 --source-group sg-09f0b1233696e65ef
 ```
 Note that this rule will open the port 80 to the world, you can add your ip or your VPN ips there if you want to restrict it, the second rule will allow the traffic from the load balancer to reach the nodes where our app is running.
+<br />
 
 ### **Aws-alb-ingress-controller**
 We will use [Aws ALB Ingress Controller](https://aws.amazon.com/blogs/opensource/kubernetes-ingress-aws-alb-ingress-controller/), to serve our web traffic, this will create an manage an ALB based in our ingress rules.
@@ -327,11 +343,13 @@ clusterrole.rbac.authorization.k8s.io "alb-ingress-controller" created
 clusterrolebinding.rbac.authorization.k8s.io "alb-ingress-controller" created
 serviceaccount "alb-ingress" created
 ```
+<br />
 
 Download the manifest and then modify the cluster-name to `k8s.techsquad.rocks` and a few other parameters, you can list the vpcs with `aws ec2 describe-vpcs` it will have some kops tags, so it's easy to identify.
 ```elixir
 curl -sS "https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.0.0/docs/examples/alb-ingress-controller.yaml" > alb-ingress-controller.yaml
 ```
+<br />
 
 Or copy and paste the following lines:
 ```elixir
@@ -425,6 +443,7 @@ spec:
 EOF
 ```
 Note that I only modified the args section if you want to compare it with the original.
+<br />
 
 Then finally apply it.
 ```elixir
@@ -435,6 +454,7 @@ kubectl apply -f alb-ingress-controller.yaml
 
 ### **External-dns**
 [External DNS](https://github.com/kubernetes-incubator/external-dns/blob/master/docs/tutorials/aws.md) will update our zone in Route53 based in the ingress rules as well, so everything will be done automatically for us once we add an ingress resource.
+<br />
 
 But first let's attach those policies that we created before:
 ```elixir
@@ -444,12 +464,14 @@ aws iam attach-role-policy --policy-arn arn:aws:iam::894527626897:policy/kops-al
 aws iam attach-role-policy --policy-arn arn:aws:iam::894527626897:policy/kops-alb-policy --role-name masters.k8s.techsquad.rocks
 ```
 Note that we just used the policies that we created before but we needed the cluster running because kops creates the roles nodes.k8s.techsquad.rocks and masters.k8s.techsquad.rocks, and this is needed for the aws-alb-ingress-controller and external-dns so these are able to do their job.
+<br />
 
 We need to download the manifests and modify a few parameters to match our deployment, the parameters are domain-filter and txt-owner-id, the rest is as is:
 ```elixir
 curl -Ss https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.0/docs/examples/external-dns.yaml > external-dns.yaml
 ```
 This configuration will only update records, that's the default policy (upsert), and it will only look for public hosted zones.
+<br />
 
 Or copy and paste the following lines:
 ```elixir
@@ -517,6 +539,7 @@ spec:
         - --txt-owner-id=k8s.techsquad.rocks
 EOF
 ```
+<br />
 
 And apply it:
 ```elixir
@@ -527,6 +550,7 @@ kubectl apply -f external-dns.yaml
 # clusterrolebinding.rbac.authorization.k8s.io "external-dns-viewer" configured
 # deployment.extensions "external-dns" created
 ```
+<br />
 
 Validate that we have everything that we installed up and running:
 ```elixir
@@ -557,6 +581,7 @@ kubectl get pods -n kube-system
 # kube-scheduler-ip-172-20-42-37.ec2.internal            1/1       Running   0          26m
 ```
 We can see that alb-ingress-controller is running, also external-dns, and everything looks good and healthy, time to test it with a deployment.
+<br />
 
 ### **Testing everything**
 ```elixir
@@ -568,11 +593,13 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingre
 # deployment.extensions "2048-deployment" created
 # service "service-2048" created
 ```
+<br />
 
 We need to download and edit the ingress resource to make it use our domain so we can then see the record pointing to the ALB.
 ```elixir
 curl -Ss https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.0.0/docs/examples/2048/2048-ingress.yaml > 2048-ingress.yaml
 ```
+<br />
 
 Or just copy and paste the next snippet.
 ```elixir
@@ -604,6 +631,7 @@ spec:
 EOF
 ```
 You can use `aws ec2 describe-subnets`, to find the first subnet id, this subnet already has some tags that we need in order to make it work, for example: `kubernetes.io/role/elb: 1`, and the second subnet is the one that we created manually and applied the same tags.
+<br />
 
 And finally apply it:
 ```elixir
@@ -612,17 +640,21 @@ kubectl apply -f 2048-ingress.yaml
 # ingress.extensions "2048-ingress" created
 ```
 Wait a few moments and verify.
+<br />
 
 ### **Results**
 
 **The ALB**
 ![img](/images/aws-alb-listeners.png){:class="mx-auto"}
+<br />
 
 **The DNS records**
 ![image](/images/aws-alb-route53-records.png){:class="mx-auto"}
+<br />
 
 **And the app**
 ![img](/images/aws-alb-result.png){:class="mx-auto"}
+<br />
 
 ### **Clean up**
 Remember this is not free, and if you don't want to get charged after you're done testing just shutdown and delete everything.
@@ -641,6 +673,7 @@ kops delete cluster ${NAME} --yes
 # Deleted cluster: "k8s.techsquad.rocks"
 ```
 This command is really verbose, so I skipped it to the end, be aware that in order to delete the cluster with kops you first need to detach the additionally attached privileges. Also be careful to delete first the ingress resources so the ALB gets removed before you delete the cluster, or you will have an ALB laying around afterwards. You can re-run it if it gets stuck and cannot delete any resource.
+<br />
 
 ### **Notes**
 * I was going to use helm and deploy a more complex application here, but the article was already too long, so I decided to go with the aws alb ingress controller example.
@@ -650,8 +683,11 @@ This command is really verbose, so I skipped it to the end, be aware that in ord
 * Documenting what you do and how you do it (Also keeping the documentation updated is really important), not only will help the future you (Yes, you can thank your past self when reading and old doc), but also it will make it easier to share the knowledge and purpose of whatever you are implementing with your team.
 * I spent 3 bucks with all the instances and dns zones, etc during this tutorial in case you are interested :).
 * Notes I also removed all $ from the code blocks and added the output of the commands with # OUTPUT:, let me know if this is clear and easy to read, or if you have any suggestion.
+<br />
 
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+
+<br />

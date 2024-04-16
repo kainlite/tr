@@ -13,15 +13,20 @@
 #### **Introduction**
 
 In this article we will explore how to create a sample operator using typescript and to deploy it to our cluster, the operator will be pretty dummy in the sense that it will only deploy some resources based in a CRD, but you can customize it to do whatever you might need or want, the idea is to get an idea of all that it takes to do an operator outside of the magic land of [Go](https://golang.org/) and [kubebuilder](https://github.com/kubernetes-sigs/kubebuilder).
+<br />
 
 If you want to check past articles that explore other alternative frameworks and languages go to:
 
 - [Cloud native applications with kubebuilder and kind aka kubernetes operators](/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/).
 - [Testing the Operator SDK and making a prefetch mechanism for Kubernetes](/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/).
 
+<br />
+
 You will notice that both are very similar and it is because the operator-sdk uses kubebuilder.
+<br />
 
 The source for this article is here [TypeScript Operator](https://github.com/kainlite/ts-operator/) and the docker image is [here](https://github.com/kainlite/ts-operator/pkgs/container/ts-operator), also this article is based in this example from Nodeshift's [Operator in JavaScript](https://github.com/nodeshift-blog-examples/operator-in-JavaScript).
+<br />
 
 ##### **Prerequisites**
 
@@ -31,12 +36,15 @@ The source for this article is here [TypeScript Operator](https://github.com/kai
 - [Node.js](https://nodejs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 
+<br />
+
 ### Let's jump to the example
 
 #### Creating the cluster
 
 We will need a cluster to run and test our operator, so kind is pretty straight forward and lightweight enough to run anywhere.
 ```elixir=system('gist -r ' . submatch(1))```
+<br />
 
 #### Creating our operator
 
@@ -64,6 +72,7 @@ local-path-storage   local-path-provisioner-547f784dff-tp6cq      1/1     Runnin
 ts-operator          ts-operator-86dbcd9f9c-xwgdt                 0/1     ContainerCreating   0          23s
 
 ```
+<br />
 
 #### Deploying our operator
 
@@ -95,6 +104,7 @@ workers              mycustomresource-sample-644c6fdf78-hprt7     0/1     Contai
 mycustomresource.custom.example.com "mycustomresource-sample" deleted
 
 ```
+<br />
 
 #### Logs from the operator
 
@@ -112,6 +122,7 @@ Example logs based in the creation, update and deletion of our custom resource
 7/22/2021, 8:56:20 PM: Deleted mycustomresource-sample
 
 ```
+<br />
 
 #### Brief comparison operator-sdk vs custom operator?
 
@@ -121,6 +132,7 @@ There are some main differences to have in mind, in Go you:
 - Out of the box tooling to build, deploy and manage your operator.
 
 In TypeScript or JavaScript you have to handle more things which can be easily done from a CI system, In this example I used github actions to build the image and the example already had everything else configured to make typescript usable with kubernetes as an example.
+<br />
 
 #### Building and pushing (docker image)
 
@@ -173,6 +185,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
 ```
+<br />
 
 #### Local development
 
@@ -189,6 +202,7 @@ Bonus: if you want to run the operator locally when developing or debugging you 
 The reason I used it like this was mostly to assume zero configuration, and it is possible because ts-node is listed as a development dependency, also the docker image could have been used with a bit of configuration.
 
 Note that I did not add all the code from the resources folder or the setup for the typescript project, I recommend you to check that directly in the repo to understand all the missing pieces.
+<br />
 
 ### Now let's see the code
 
@@ -388,6 +402,7 @@ process.on("unhandledRejection", (reason, p) => {
 main();
 
 ```
+<br />
 
 #### The `deployment.json` file
 
@@ -426,6 +441,7 @@ This file basically is what gets deployed when we create our custom resource
 }
 
 ```
+<br />
 
 #### And finally our custom resource
 
@@ -440,6 +456,7 @@ spec:
   size: 2
 
 ```
+<br />
 
 #### Extra
 
@@ -471,6 +488,7 @@ kube-system          kube-scheduler-kind-control-plane            1/1     Runnin
 local-path-storage   local-path-provisioner-547f784dff-tp6cq      1/1     Running   0          10h
 
 ```
+<br />
 
 #### **Closing notes**
 
@@ -481,9 +499,12 @@ Be sure to check the links if you want to learn more about the examples from Nod
 The source for this article is [here](https://github.com/kainlite/ts-operator/)
 
 DISCLAIMER: I'm not using OpenShift, but all examples are easily translatables to a vanilla cluster.
+<br />
 
 ### Errata
 
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
 Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+
+<br />
