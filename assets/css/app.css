@@ -314,6 +314,9 @@
 
   pre {
     @apply dark:bg-zinc-500 dark:text-white;
+    @apply rounded-lg;
+    @apply mx-auto w-[99%];
+    @apply my-2;
   }
 
   pre > code {
@@ -511,21 +514,6 @@
     width: auto;
   }
 
-  /* Phoenix promo and logo */
-  .phx-hero {
-    text-align: center;
-    border-bottom: 1px solid #e3e3e3;
-    background: #eee;
-    border-radius: 6px;
-    padding: 3em 3em 1em;
-    margin-bottom: 3rem;
-    font-weight: 200;
-    font-size: 120%;
-  }
-  .phx-hero input {
-    background: #ffffff;
-  }
-
   /* Headers */
   header {
     width: 100%;
@@ -562,10 +550,6 @@
     }
     header nav ul {
       margin: 1rem;
-    }
-    .phx-logo {
-      flex-basis: 527px;
-      margin: 2rem 1rem;
     }
   }
 }

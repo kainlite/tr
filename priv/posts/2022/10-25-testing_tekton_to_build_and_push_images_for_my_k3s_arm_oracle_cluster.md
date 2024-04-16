@@ -35,14 +35,14 @@ Why do we need tekton-pipelines or tekton-triggers again? pipelines allows you t
 things around (this is basic to tekton and to any CI/CD system), then we need to do something when we push for example
 to our git repository, that's when tekton-triggers gets handy and let us react to changes and trigger a build or some 
 process, interceptors are a part of tekton-triggers and let's say it gives you flexibility using events.
-```bash
+```elixir
 kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
 kubectl apply --filename https://storage.googleapis.com/tekton-releases/triggers/latest/release.yaml
 kubectl apply --filename https://storage.googleapis.com/tekton-releases/triggers/latest/interceptors.yaml
 ```
 
 Then we need to install `tkn` locally and configure some packages from the hub
-```
+```elixir
 tkn -n tekton-pipelines hub install task git-clone
 tkn -n tekton-pipelines hub install task kaniko
 tkn -n tekton-pipelines hub install task kubernetes-actions
@@ -61,7 +61,7 @@ You can see this file in github as well
 basically we need to define a pipeline which defines the steps and what it will happen, here we are cloning the
 repository, then building it with kaniko and then pushing it to the docker registry, note that the script is hardcoded
 there that could be dynamic but not really necessary for my use case.
-```yaml
+```elixir
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
@@ -110,13 +110,12 @@ spec:
       value: |
         kubectl -n tr rollout restart deployment/tr-deployment
 ```
----
 You can see this file in github as well 
 [02-pipeline-run.yaml](https://github.com/kainlite/tr/blob/master/manifests/tekton/pipelines/02-pipeline-run.yaml), 
 This is basically to run our defined pipeline with specific values, we will use something very similar from the trigger
 to run automatically when we push commits to our repo, the docker secret is a regular dockercfg secret mounted so we can
 push to that registry.
-```yaml
+```elixir
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
@@ -152,12 +151,11 @@ spec:
 With all that we have a basic pipeline but we need to trigger it or run it manually, let's add the necessary manifests
 for it to react to changes in our github repository...
 
----
 
 ##### tekton-triggers
 You can see this file in github as well [01-rbac.yaml](https://github.com/kainlite/tr/blob/master/manifests/tekton/triggers/01-rbac.yaml), 
 let's give tekton-triggers some permissions
-```yaml
+```elixir
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -226,7 +224,6 @@ roleRef:
   kind: ClusterRole
   name: tekton-triggers-clusterrole
 ```
----
 
 You can see this file on github as well 
 [02-eventlistener.yaml](https://github.com/kainlite/tr/blob/master/manifests/tekton/triggers/02-eventlistener.yaml),
@@ -234,7 +231,7 @@ This is where things get a bit tricky, in theory you don't need a secret to read
 private when I started testing this, then it was made public, if you are interested  in the format of the secret check
 below this yaml, however this only "listens" to events in our repo and triggers an event using our pipeline, we still
 need an ingress for the webhook and other configs as we will see in the next steps.
-```
+```elixir
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: EventListener
 metadata:
@@ -264,7 +261,7 @@ spec:
 
 The secret would be something like the one depicted below, replace `secretToken` with your generated token this will be
 used for the webhook configuration so save it somewhere safe until it is configured there.
-```yaml
+```elixir
 apiVersion: v1
 kind: Secret
 metadata:
@@ -273,13 +270,12 @@ type: Opaque
 stringData:
   secretToken: "1234567"
 ```
----
 
 You can see this file on github as well 
 [04-triggerbinding.yaml](https://github.com/kainlite/tr/blob/master/manifests/tekton/triggers/04-triggerbinding.yaml),
 When we receive the webhook we can get some information from it, basically we are interested in the repo URL and the
 commit SHA.
-```yaml
+```elixir
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerBinding
 metadata:
@@ -292,13 +288,12 @@ spec:
     - name: gitrevision
       value: $(body.pull_request.head.sha)
 ```
----
 
 You can see this file in github as well
 [05-triggertemplate.yaml](https://github.com/kainlite/tr/blob/master/manifests/tekton/triggers/05-triggertemplate.yaml),
 This would be the equivalent of the manually run pipelinerun that we have, but this uses the trigger and the template to
 automatically trigger, hence the similarities.
-```yaml
+```elixir
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerTemplate
 metadata:
@@ -344,14 +339,13 @@ spec:
           value: kainlite/tr:$(tt.params.gitrevision)
       kind: PipelineRun
 ```
----
 
 You can see this file on github as well 
 [06-ingress.yaml](https://github.com/kainlite/tr/blob/master/manifests/tekton/triggers/06-ingress.yaml),
 And last but not least the ingress configuration, without this it won't work because we need to receive a request from
 github, to configure that just go to settings on the repository, hit webhooks and create a new one with the secret token
 that you generated and put your URL as `https://subdomain.domain/hooks`, then mark TLS on, only push and active.
-```yaml
+```elixir
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -387,11 +381,9 @@ with no external or weird CI/CD system and everything following a GitOps model s
 applied from your repository, in my case I'm using ArgoCD and Kustomize to apply everything but that is for another
 chapter.
 
----
-
 #### Then let's validate that it works
 We have the event listener ready:
-```bash
+```elixir
 ❯ tkn -n tekton-pipelines eventlistener list
 NAME               AGE           URL                                                                  AVAILABLE
 clone-build-push   5 seconds ago   http://el-clone-build-push.tekton-pipelines.svc.cluster.local:8080   True
@@ -399,14 +391,14 @@ clone-build-push   5 seconds ago   http://el-clone-build-push.tekton-pipelines.s
 
 We have the pipeline, notice that it says failed this is because there is an issue with ARM that it is still not solved
 but everything actually works as expected:
-```bash
+```elixir
 ❯ tkn -n tekton-pipelines pipeline list
 NAME               AGE           LAST RUN                 STARTED       DURATION   STATUS
 clone-build-push   5 seconds ago   clone-build-push-5qkv6   5 weeks ago   4m26s      Failed
 ```
 
 We can see the pipelinerun being triggered, same issue as described before, see the notes for the github issues:
-```bash
+```elixir
 ❯ tkn -n tekton-pipelines pipelinerun list
 NAME                           STARTED       DURATION   STATUS
 clone-build-push-5qkv6         5 seconds ago   4m26s      Failed
@@ -414,7 +406,7 @@ clone-build-push-blkrm         5 seconds ago   3m58s      Failed
 ```
 
 We can also see some of the other resources created for tekton:
-```bash
+```elixir
 ❯ tkn -n tekton-pipelines triggertemplate list
 NAME                          AGE
 clone-build-push-template     5 seconds ago
@@ -436,7 +428,7 @@ Namespace:   tekton-pipelines
 ```
 
 You can also see the pods created or logs using either `kubectl` or `tkn`:
-```bash
+```elixir
 tekton-pipelines   clone-build-push-vt6jz-fetch-source-pod                  0/1     Completed   0             1d
 tekton-pipelines   clone-build-push-wzlkb-build-push-pod                    0/2     Completed   0             1d
 ```

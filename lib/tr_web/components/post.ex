@@ -26,7 +26,7 @@ defmodule TrWeb.PostComponent do
     ~H"""
     <div id={@post.id}>
       <div class="relative">
-        <div class="bg-white dark:bg-zinc-700 dark:text-gray-200 shadow-md rounded-lg overflow-hidden w-[40rem]
+        <div class="bg-white dark:bg-zinc-700 dark:text-gray-200 shadow-md rounded-lg overflow-hidden w-[39rem]
             h-[30rem] m-4">
           <.link navigate={~p"/blog/#{@post.id}"} class="">
             <img
