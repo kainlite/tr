@@ -6,13 +6,16 @@
   general enough, there are some interesting things to learn about the elixir ecosystem as well.",
   tags: ~w(elixir kubernetes phoenix tips-and-tricks),
   published: true,
-  image: "trickster.png"
+  image: "trickster-cool.png"
 }
 ---
 
 ### **Introduction**
 
-![trickster](/images/trickster.png){:class="mx-auto"}
+![trickster](/images/trickster-cool.png){:class="mx-auto" style="max-height: 450px;"}
+In case you are wondering about the image, it is intended to represent the trickster, as I plan to do many posts about
+tips and tricks.
+<br/> 
 
 In this article we will explore how to run scheduled tasks using the 
 [CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/) resource in kubernetes, you might be 
@@ -22,16 +25,34 @@ daily backup, send some daily statistics, etc, it would be still doable and comp
 example using the [quantum-core](https://github.com/quantum-elixir/quantum-core) app (hint: a subsequent post will possibly be
 about testing this approach 😉).
 <br/> 
-In case you are wondering about the image, it is intended to represent the trickster, as I plan to do many posts about
-tips and tricks.
 
-### **Some questions**
+### When to use each option? key differences?
+
+#### Home-made scheduler:
+* Flexible
+* Tailored to your needs
+* Might require a deployment to change/update the schedule/tasks
+* More load on the beam as more apps will be running
+
+#### External scheduler (k8s cronjobs, regular vm cronjob, etc)
+* Slight delay at startup (similar to cold starts, requires more preparation)
+* Easier to change/update schedule without redeploying
+* Logging and history are easily preserved (and configurable)
+* History and job preservation are easily configurable.
+* More load on the k8s API server.
+
+#### Library or app (cron-like, for example quantum-core)
+* Very similar to a regular cronjob 
+* Super flexible
+* Might require a deployment to change/update the schedule/tasks
+* More load on the beam as more apps will be running
+
+### Some questions
 Some questions you might ask yourself before scheduling a task:
 * Can it safely be run concurrently? given that for example the previous one didn't finish for example.
 * How often does it need to run?
 * Does it need to alter any data besides what the task is in charge of? for example setting something up beforehand
   (script)
-<br/> 
 
 And there could be many more questions that you can ask yourself before creating an scheduled task, but for now that
 will do.
@@ -51,6 +72,9 @@ or to run concurrenly (the other options are `Allow` and `Replace`), since we ne
 secrets present in order to be able to send emails and connect to the database, the rest is pretty straight forward and
 not specific to this task, except the command, that's probably the most interesting bit in there, by calling the release
 of the app with `eval` we can call our module in this case the function `Tr.Tracker.start`.
+<br/> 
+Note: by default cronjobs keep the last 3 runs for successful jobs and 1 for failed jobs, that's configurable under the 
+keys: `.spec.successfulJobsHistoryLimit`, `.spec.failedJobsHistoryLimit`.
 ```elixir
 apiVersion: batch/v1
 kind: CronJob

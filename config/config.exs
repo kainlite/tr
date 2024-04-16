@@ -65,6 +65,14 @@ config :phoenix, :json_library, Jason
 # Locale
 config :tr, TrWeb.Gettext, locales: ~w(en es), default_locale: "en"
 
+config :tr, Tr.Scheduler,
+  jobs: [
+    # Every 30 minutes
+    {"*/30 * * * *", {Tr.Tracker, :start, []}},
+    # Every 15 minutes
+    {"*/15 * * * *", {Tr.Approver, :start, []}}
+  ]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

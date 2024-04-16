@@ -80,7 +80,8 @@ defmodule Tr.MixProject do
       {:ollamex, "0.2.0"},
       {:mimic, "~> 1.7", only: :test},
       {:bandit, "~> 1.0"},
-      {:haystack, "~> 0.1.0"}
+      {:haystack, "~> 0.1.0"},
+      {:quantum, "~> 3.5"}
     ]
   end
 

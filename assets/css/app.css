@@ -4,12 +4,14 @@
 @import "monokai";
 @import "cookieconsent";
 
-/* This file is for your main application CSS */
 @layer base {
   p,
   li {
     @apply text-xl;
     @apply font-normal;
+  }
+  .thumb {
+    max-height: 450px !important;
   }
   /* Alerts and form errors used by phx.new */
   .alert {

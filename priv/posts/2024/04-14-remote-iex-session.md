@@ -13,6 +13,9 @@
 ### **Introduction**
 
 ![trickster](/images/trickster.png){:class="mx-auto"}
+In case you are wondering about the image, it is intended to represent the trickster, as I plan to do many posts about
+tips and tricks.
+<br />
 
 In case you are wondering the image was generated using [Gemini](https://gemini.google.com), so basically some times you
 need to run a script or validate some information in your productive environment, while connecting directly to the
@@ -22,9 +25,6 @@ terminal to be able to run it, but how can we do that in the elixir / beam world
 
 Be aware that whilst this is an option you should always strive to use migrations or some tested and automated way if
 feasible, in a subsequent article we will explore how to do that with cron jobs in kubernetes.
-
-In case you are wondering about the image, it is intended to represent the trickster, as I plan to do many posts about
-tips and tricks.
 
 #### Options?
 * port-forward to the prod instance or cluster
