@@ -30,6 +30,7 @@ defmodule TrWeb.PostLive do
 
     socket =
       socket
+      |> assign(:page_title, post.title)
       |> assign(:params, params)
       |> assign(:post, post)
       |> assign(check_errors: false)
