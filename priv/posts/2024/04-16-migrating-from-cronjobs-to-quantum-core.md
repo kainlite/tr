@@ -79,17 +79,17 @@ classic MFA (Module-Function-Arguments).
 ```elixir
 config :tr, Tr.Scheduler,
        jobs: [
-# Every 30 minutes
-{"*/30 * * * *", {Tr.Tracker, :start, []}},
-# Every 15 minutes
-{"*/15 * * * *", {Tr.Approver, :start, []}}
+         # Every 30 minutes
+         {"*/30 * * * *", {Tr.Tracker, :start, []}},
+         # Every 15 minutes
+         {"*/15 * * * *", {Tr.Approver, :start, []}}
        ]
 ```
 
 #### Restart your server & verify!
 Excelent! it seems to be working as expected
 ```elixir
-  iex -S mix phx.server
+iex -S mix phx.server
 [debug]  Loading Initial Jobs from Config
 [debug]  Adding job
 [debug]  Adding job
