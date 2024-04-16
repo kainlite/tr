@@ -41,6 +41,7 @@ Some steps are required to make this cron work:
 * Add it to your children list in the app supervisor `lib/tr/application.ex`
 * Configure your scheduled tasks `config/config.ex`
 * Restart your server & verify!
+
 <br/> 
 
 #### Add library to the deps in `mix.exs`
