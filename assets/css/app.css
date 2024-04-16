@@ -6,9 +6,10 @@
 
 /* This file is for your main application CSS */
 @layer base {
-  p {
-    @apply text-2xl;
-    @apply font-medium;
+  p,
+  li {
+    @apply text-xl;
+    @apply font-normal;
   }
   /* Alerts and form errors used by phx.new */
   .alert {
@@ -301,7 +302,7 @@
   }
   code {
     border-radius: 0.2rem;
-    font-size: 86%;
+    font-size: 80%;
     white-space: nowrap;
   }
   pre {
