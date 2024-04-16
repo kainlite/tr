@@ -9,9 +9,9 @@
         technologies. Our blog is hosted on a k3s cluster in OCI, powered by Elixir and Phoenix. Dive in to discover
         insights, tutorials, and experiments across the tech landscape." %>
     <meta name="description" content={description} />
-    <meta property="og:title" content="TechSquad.Rocks" />
+    <meta property="og:title" content={assigns[:page_title] || "TechSquad.Rocks"} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="https://techsquad.rocks/blog" />
+    <meta property="og:image" content={url(~p"/images/logo.png")} />
 
     <.live_title>
       <%= assigns[:page_title] || "TechSquad.Rocks" %>
