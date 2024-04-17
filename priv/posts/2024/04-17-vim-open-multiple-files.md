@@ -2,7 +2,7 @@
   title: "How to open multiple files in vim",
   author: "Gabriel Garrido",
   description: "In this article we will quickly see a few different ways of opening multiple files in vim and how to
-  navigate these.",
+  navigate these, keep an eye out for the bonus section as it can get complex pretty quickly.",
   tags: ~w(vim tips-and-tricks),
   published: true,
   image: "vim-tips.png"
@@ -130,25 +130,33 @@ So for the sake of the example, the following gist:
 ```
 <br />
 
-Would become the next snippet of code after running the previous command:
-```elixir
-❯ kind create cluster
-Creating cluster "kind" ...
- ✓ Ensuring node image (kindest/node:v1.21.1) 🖼
- ✓ Preparing nodes 📦
- ✓ Writing configuration 📜
- ✓ Starting control-plane 🕹️
- ✓ Installing CNI 🔌
- ✓ Installing StorageClass 💾
-Set kubectl context to "kind-kind"
-You can now use your cluster with:
+Would become the next snippet of code after running the previous command (this would be plain unformatted text):
+    ```elixir
+    ❯ kind create cluster
+    Creating cluster "kind" ...
+     ✓ Ensuring node image (kindest/node:v1.21.1) 🖼
+     ✓ Preparing nodes 📦
+     ✓ Writing configuration 📜
+     ✓ Starting control-plane 🕹️
+     ✓ Installing CNI 🔌
+     ✓ Installing StorageClass 💾
+    Set kubectl context to "kind-kind"
+    You can now use your cluster with:
 
-kubectl cluster-info --context kind-kind
+    kubectl cluster-info --context kind-kind
 
-Have a question, bug, or feature request? Let us know! https://kind.sigs.k8s.io/#community 🙂
-```
+    Have a question, bug, or feature request? Let us know! https://kind.sigs.k8s.io/#community 🙂
+    ```
 
 <br />
+
+But what does any of that has to do with buffers and all that? well, you can apply that search and replace to all
+buffers using `:bufdo`, so our command would become:
+```elixir
+:bufdo %s/{{< gist kainlite \(.*\) >}}/\=printf('```elixir\n%s\n```', substitute(system('gist -r ' . submatch(1)), '\n', '\\n', 'g'))/
+```
+And that will apply the search and replace command to all the opened buffers, also note the change in the capture group
+so we actually use the right gist id instead of the example one.
 
 So, it was always a tab? yes! Any questions? Drop a comment 👇
 
