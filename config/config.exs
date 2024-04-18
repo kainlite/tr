@@ -21,6 +21,13 @@ config :tr, TrWeb.Endpoint,
   pubsub_server: Tr.PubSub,
   live_view: [signing_salt: "XF0oI1yw"]
 
+config :tr, TrWeb.Endpoint,
+  render_errors: [
+    view: TrWeb.ErrorView,
+    accepts: ~w(html),
+    root_layout: {TrWeb.ErrorHTML, :root}
+  ]
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails

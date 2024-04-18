@@ -81,7 +81,8 @@ defmodule Tr.MixProject do
       {:mimic, "~> 1.7", only: :test},
       {:bandit, "~> 1.0"},
       {:haystack, "~> 0.1.0"},
-      {:quantum, "~> 3.5"}
+      {:quantum, "~> 3.5"},
+      {:mix_audit, "~> 2.1", only: [:dev, :test], runtime: false}
     ]
   end
 
