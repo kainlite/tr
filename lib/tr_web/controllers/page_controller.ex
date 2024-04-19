@@ -27,26 +27,24 @@ defmodule TrWeb.PageController do
         "Welcome to the Techsquad blog! This page is dedicated to documenting and exploring various technologies. Our blog is hosted on a k3s cluster in OCI, powered by Elixir and Phoenix. Dive in to discover insights, tutorials, and experiments across the tech landscape.",
       favicon: "https://techsquad.rocks/favicon.ico",
       language: "en-US",
-      items: [
-        for post <- posts do
-          %{
-            id: post.id,
-            url: url(~p"/blog/#{post.id}"),
-            title: post.title,
-            content_html: post.body,
-            date_published: post.date |> format_date,
-            summary: post.description,
-            image: url(~p"/images/#{post.image}"),
-            tags: Enum.join(post.tags, ", "),
-            language: "en-US",
-            authors: [
-              %{
-                name: "Gabriel"
-              }
-            ]
-          }
-        end
-      ]
+      items: for post <- posts do
+        %{
+          id: post.id,
+          url: url(~p"/blog/#{post.id}"),
+          title: post.title,
+          content_html: post.body,
+          date_published: post.date |> format_date,
+          summary: post.description,
+          image: url(~p"/images/#{post.image}"),
+          tags: Enum.join(post.tags, ", "),
+          language: "en-US",
+          authors: [
+            %{
+              name: "Gabriel"
+            }
+          ]
+        }
+      end
     })
   end
 
