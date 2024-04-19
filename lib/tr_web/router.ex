@@ -30,6 +30,12 @@ defmodule TrWeb.Router do
   end
 
   scope "/", TrWeb do
+    pipe_through :api
+
+    get "/index.json", PageController, :json_sitemap
+  end
+
+  scope "/", TrWeb do
     pipe_through :xml
 
     get "/index.xml", PageController, :sitemap
