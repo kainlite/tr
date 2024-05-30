@@ -27,25 +27,6 @@ defmodule TrWeb.HomeLive do
         </div>
 
         <div class="m-auto">
-          <p class="text-[1.4rem] justify-center font-semibold">
-            Do you need help with your project (kubernetes/dockerization/cicd/automation/etc)?
-            <a href="mailto:support@techsquad.rocks" class="text-[1.25rem]  h-auto w-[217px]">
-              Contact us
-            </a>
-            Or <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
-            <script
-              src="https://assets.calendly.com/assets/external/widget.js"
-              type="text/javascript"
-              async
-            >
-            </script>
-            <a
-              href=""
-              onclick="Calendly.initPopupWidget({url: 'https://calendly.com/kainlite/15min'});return false;"
-            >
-              Schedule time with me
-            </a>
-          </p>
           <p class="text-[1.2rem] items-center text-center justify-center">
             Register to receive a notification on new articles, the ability to comment and react to acticles.
             <.icon name="hero-heart" class="hidden" />
