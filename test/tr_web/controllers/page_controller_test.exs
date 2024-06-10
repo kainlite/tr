@@ -1,11 +1,11 @@
 defmodule TrWeb.PageControllerTest do
-  use TrWeb.ConnCase
+  use TrWeb.ConnCase, async: false
 
   test "GET /", %{conn: conn} do
     conn = get(conn, ~p"/")
 
     assert html_response(conn, 200) =~
-             "Get access to comments, reactions and get rid of ads for free"
+             "Sign in with Google"
   end
 
   describe "GET /sitemap.xml" do

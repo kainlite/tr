@@ -27,6 +27,41 @@ defmodule Tr.Accounts do
   end
 
   @doc """
+  Gets a user by email or creates a new account.
+
+  ## Examples
+
+      iex> get_user_by_email_or_create("foo@example.com")
+      %User{}
+
+      iex> get_user_by_email_or_create("unknown@example.com")
+      %User{}
+
+  """
+  def get_user_by_email_or_create(email) when is_binary(email) do
+    user = Repo.get_by(User, email: email)
+
+    if is_nil(user) do
+      random_password = :crypto.strong_rand_bytes(16)
+      faker = Faker.Superhero
+
+      name = faker.prefix() <> " " <> faker.name() <> " " <> faker.suffix()
+
+      {:ok, user} =
+        register_user(%{
+          email: email,
+          password: random_password,
+          password_confirmation: random_password,
+          display_name: name
+        })
+
+      user
+    else
+      user
+    end
+  end
+
+  @doc """
   Gets a user by email and password.
 
   ## Examples

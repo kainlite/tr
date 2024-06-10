@@ -13,6 +13,15 @@ defmodule TrWeb.PageController do
     |> render("index.xml", posts: posts)
   end
 
+  def index(conn, _params) do
+    oauth_google_url = ElixirAuthGoogle.generate_oauth_url(conn)
+    render(conn, "index.html", oauth_google_url: oauth_google_url)
+  end
+
+  def welcome(conn, _params) do
+    render(conn, "welcome.html")
+  end
+
   def json_sitemap(conn, _params) do
     posts = Blog.all_posts()
 
