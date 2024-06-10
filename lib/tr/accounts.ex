@@ -47,13 +47,18 @@ defmodule Tr.Accounts do
 
       name = faker.prefix() <> " " <> faker.name() <> " " <> faker.suffix()
 
+      avatar = Faker.Avatar.image_url()
+
       {:ok, user} =
         register_user(%{
           email: email,
           password: random_password,
           password_confirmation: random_password,
-          display_name: name
+          display_name: name,
+          avatar_url: avatar
         })
+
+      Tr.Accounts.User.confirm_changeset(user)
 
       user
     else
