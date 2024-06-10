@@ -26,7 +26,7 @@ defmodule TrWeb.HomeLive do
             <p class="text-[1.2rem]">
               <!-- <div style="display:flex; flex-direction:column; width:368px; text-center items-center
               justify-center"> -->
-              <div style="display:none; flex-direction:column; width:368px; text-center items-center justify-center">
+              <div style="display:flex; flex-direction:column; width:368px; text-center items-center justify-center">
                 <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" />
 
                 <a
