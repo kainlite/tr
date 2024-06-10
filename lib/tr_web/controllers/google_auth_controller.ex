@@ -17,4 +17,9 @@ defmodule TrWeb.GoogleAuthController do
       |> put_flash(:error, "Email not verified")
     end
   end
+
+
+  def index(conn, params) do
+    index(conn, params["code"])
+  end
 end

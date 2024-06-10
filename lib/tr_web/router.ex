@@ -29,7 +29,6 @@ defmodule TrWeb.Router do
     get "/blog/tags", PageController, :tags
     get "/blog/tags/:tag", PageController, :by_tag
     get "/privacy", PageController, :privacy
-    get "/auth/google", PageController, :index
   end
 
   scope "/", TrWeb do
