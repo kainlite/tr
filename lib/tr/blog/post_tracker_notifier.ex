@@ -43,8 +43,8 @@ defmodule Tr.PostTracker.Notifier do
     """)
   end
 
-  def deliver_new_comment_notification(user, subject, body, url) do
-    deliver(user.email, subject, """
+  def deliver_new_comment_notification(user, body, url) do
+    deliver(user.email, "You have a new message in #{url}", """
 
     ==============================
 
@@ -63,8 +63,8 @@ defmodule Tr.PostTracker.Notifier do
     """)
   end
 
-  def deliver_new_reply_notification(user, subject, body, url) do
-    deliver(user.email, subject, """
+  def deliver_new_reply_notification(user, body, url) do
+    deliver(user.email, "You have a new reply in #{url}", """
     ==============================
     Hi #{user.email},
 
