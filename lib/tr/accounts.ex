@@ -54,11 +54,10 @@ defmodule Tr.Accounts do
           email: email,
           password: random_password,
           password_confirmation: random_password,
+          confirmed_at: NaiveDateTime.utc_now(),
           display_name: name,
           avatar_url: avatar
         })
-
-      Tr.Accounts.User.confirm_changeset(user)
 
       user
     else
