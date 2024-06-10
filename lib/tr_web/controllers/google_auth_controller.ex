@@ -5,7 +5,7 @@ defmodule TrWeb.GoogleAuthController do
   `index/2` handles the callback from Google Auth API redirect.
   """
   def index(conn, %{"code" => code}) do
-    {:ok, token} = ElixirAuthGoogle.get_token(code, conn)
+    {:ok, token} = ElixirAuthGoogle.get_token(code, TrWeb.Endpoint.url())
     {:ok, profile} = ElixirAuthGoogle.get_user_profile(token.access_token)
 
     if profile.email_verified do
@@ -17,7 +17,6 @@ defmodule TrWeb.GoogleAuthController do
       |> put_flash(:error, "Email not verified")
     end
   end
-
 
   def index(conn, params) do
     index(conn, params["code"])

@@ -10,10 +10,7 @@ defmodule TrWeb.HomeLive do
      |> assign(:posts, Blog.recent_posts(6))
      |> assign(
        :oauth_google_url,
-       ElixirAuthGoogle.generate_oauth_url(%{
-         host: System.get_env("PHX_HOST") || "techsquad.rocks",
-         scheme: System.get_env("PHX_SCHEME") || :https
-       })
+       ElixirAuthGoogle.generate_oauth_url(TrWeb.Endpoint.url())
      )}
   end
 
