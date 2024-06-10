@@ -50,6 +50,13 @@ defmodule Tr.Accounts.User do
     |> validate_password(opts)
   end
 
+  def google_registration_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:avatar_url, :display_name, :email, :password, :confirmed_at])
+    |> validate_email(opts)
+    |> validate_password(opts)
+  end
+
   def registration_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:avatar_url, :display_name, :email, :password])

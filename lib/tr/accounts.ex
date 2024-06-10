@@ -50,7 +50,7 @@ defmodule Tr.Accounts do
       avatar = Faker.Avatar.image_url()
 
       {:ok, user} =
-        register_user(%{
+        register_google_user(%{
           email: email,
           password: random_password,
           password_confirmation: random_password,
@@ -138,6 +138,24 @@ defmodule Tr.Accounts do
   def register_user(attrs) do
     %User{}
     |> User.registration_changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Registers a google user.
+
+  ## Examples
+
+      iex> register_google_user(%{field: value})
+      {:ok, %User{}}
+
+      iex> register_google_user(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def register_google_user(attrs) do
+    %User{}
+    |> User.google_registration_changeset(attrs)
     |> Repo.insert()
   end
 
