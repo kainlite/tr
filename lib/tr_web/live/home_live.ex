@@ -11,9 +11,9 @@ defmodule TrWeb.HomeLive do
      |> assign(
        :oauth_google_url,
        ElixirAuthGoogle.generate_oauth_url(%{
-         host: TrWeb.Endpoint.host(),
-         port: TrWeb.Endpoint.struct_url().port,
-         scheme: String.to_atom(TrWeb.Endpoint.struct_url().scheme)
+         host: System.get_env("PHX_HOST") || "techsquad.rocks",
+         port: System.get_env("PHX_PORT") || 443,
+         scheme: System.get_env("PHX_SCHEME") || :https
        })
      )}
   end
