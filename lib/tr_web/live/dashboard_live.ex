@@ -36,7 +36,11 @@ defmodule TrWeb.DashboardLive do
     ~H"""
     <div class="mx-auto">
       <div class="float-right">
-        <span>Connected users: <%= @user_stats.total %></span>
+        <div class="flex flex-col">
+          <span>Registered users: <%= Tr.Accounts.get_users_count() %></span>
+          <span>Total comments: <%= Tr.Post.get_comments_count() %></span>
+          <span>Connected users: <%= @user_stats.total %></span>
+        </div>
         <ul class="list-none text-base bg-gray-100 rounded-lg p-4 shadow-md dark:invert">
           <%= for {room, count} <- @user_stats.per_room do %>
             <li class="py-2 border-b border-gray-200 dark:invert"><%= room %>: <%= count %></li>

@@ -142,6 +142,19 @@ defmodule Tr.Post do
   end
 
   @doc """
+  Gets comments count.
+
+  ## Examples
+
+      iex> get_comments_count()
+      42
+
+  """
+  def get_comments_count do
+    Repo.one(from u in Tr.Post.Comment, select: count(u.id))
+  end
+
+  @doc """
   Returns the list of unapproved comments.
 
   ## Examples

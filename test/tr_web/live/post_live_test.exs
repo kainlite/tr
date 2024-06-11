@@ -118,7 +118,7 @@ defmodule TrWeb.PostLiveTest do
         conn
         |> live(~p"/blog/upgrading-k3s-with-system-upgrade-controller")
 
-      assert html =~ "Please complete your account verification to be able to write comments"
+      assert html =~ "Please sign in to be able to write comments"
     end
 
     test "checks the presence counter", %{conn: conn} do

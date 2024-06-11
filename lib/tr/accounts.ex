@@ -27,6 +27,19 @@ defmodule Tr.Accounts do
   end
 
   @doc """
+  Gets users count.
+
+  ## Examples
+
+      iex> get_users_count()
+      42
+
+  """
+  def get_users_count() do
+    Repo.one(from u in User, select: count(u.id))
+  end
+
+  @doc """
   Gets a user by email or creates a new account.
 
   ## Examples
