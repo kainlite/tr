@@ -85,9 +85,7 @@ defmodule TrWeb.Integration.PostIntegrationTest do
       |> visit(page)
       |> assert_has(message("Hello user1!"))
       |> assert_has(message("Hello user2!"))
-      |> assert_has(
-        css("p", text: "Please sign in to be able to write comments")
-      )
+      |> assert_has(css("p", text: "Please sign in to be able to write comments"))
       |> assert_has(css("p", text: "Online: 3"))
     end
 
