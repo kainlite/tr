@@ -8,6 +8,8 @@ defmodule TrWeb.PostLiveTest do
     setup %{conn: conn} do
       password = valid_user_password()
       user = confirmed_user_fixture(%{password: password})
+      admin_user_fixture()
+
       %{conn: log_in_user(conn, user), user: user, password: password}
     end
 

@@ -6,10 +6,18 @@ defmodule TrWeb.Integration.PostIntegrationTest do
   import Wallaby.Query
 
   import TrWeb.TestHelpers
+  import Tr.AccountsFixtures
 
   @send_button button("Send")
 
   describe "Blog articles" do
+    setup %{} do
+      password = valid_user_password()
+      admin_user_fixture(%{password: password})
+
+      :ok
+    end
+
     test "has a big hero section", %{session: session} do
       session
       |> visit("/")

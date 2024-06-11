@@ -6,6 +6,7 @@ defmodule TrWeb.Integration.AdminIntegrationTest do
   import Tr.PostFixtures
 
   import Wallaby.Query
+  import Wallaby.Browser
 
   import TrWeb.TestHelpers
 
@@ -48,7 +49,11 @@ defmodule TrWeb.Integration.AdminIntegrationTest do
     |> visit("/admin/dashboard")
     |> assert_has(css("h2", text: "Admin Dashboard"))
     |> assert_has(css("table"))
-    |> click(css("a", text: "✔️"))
+    |> accept_confirm(fn s ->
+      click(s, css("a", text: "✔️"))
+    end)
+
+    session
     |> assert_has(css("div #flash", text: "Comment approved successfully."))
   end
 
@@ -61,7 +66,11 @@ defmodule TrWeb.Integration.AdminIntegrationTest do
     |> visit("/admin/dashboard")
     |> assert_has(css("h2", text: "Admin Dashboard"))
     |> assert_has(css("table"))
-    |> click(css("a", text: "❌"))
-    |> assert_has(css("div #flash", text: "Comment deleted successfully."))
+    |> accept_confirm(fn s ->
+      click(s, css("a", text: "❌"))
+    end)
+
+    session
+    |> assert_has(css("div#flash", text: "Comment deleted successfully."))
   end
 end

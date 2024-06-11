@@ -105,6 +105,24 @@ defmodule Tr.Accounts do
   def get_user!(id), do: Repo.get!(User, id)
 
   @doc """
+  Gets a single admin user.
+
+  ## Examples
+
+      iex> get_admin_user()
+      %User{admin: true}
+
+  """
+  def get_admin_user() do
+    query =
+      from(t in Tr.Accounts.User,
+        where: t.admin == true
+      )
+
+    Repo.one(query)
+  end
+
+  @doc """
   Get all users that can be notified of new posts
 
   ## Examples

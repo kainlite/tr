@@ -273,7 +273,7 @@ defmodule TrWeb.PostLive do
           # credo:disable-for-next-line Credo.Check.Refactor.Nesting
           if is_nil(comment.parent_comment_id) do
             Tr.PostTracker.Notifier.deliver_new_comment_notification(
-              Tr.Accounts.get_user_by_email("kainlite@gmail.com"),
+              Tr.Accounts.get_admin_user(),
               comment.body,
               "#{TrWeb.Endpoint.url()}/blog/#{comment.slug}"
             )
@@ -387,6 +387,11 @@ defmodule TrWeb.PostLive do
         socket
       ) do
     {:noreply, socket |> assign(:connected_users, calculate_connected_users(topic))}
+  end
+
+  @impl true
+  def handle_info({:email, _}, socket) do
+    {:noreply, socket}
   end
 
   defp calculate_connected_users(post_id) do

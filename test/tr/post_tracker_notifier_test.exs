@@ -10,6 +10,7 @@ defmodule Tr.PostTracker.NotifierTest do
     setup %{} do
       password = valid_user_password()
       user = confirmed_user_fixture(%{password: password})
+      _ = admin_user_fixture(%{password: password})
       post = post_fixture(%{user_id: user.id})
 
       %{user: user, post: post, password: password}
