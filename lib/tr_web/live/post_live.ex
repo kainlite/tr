@@ -261,19 +261,23 @@ defmodule TrWeb.PostLive do
       case Tr.Post.create_comment(params) do
         {:ok, comment} ->
           # credo:disable-for-next-line Credo.Check.Refactor.Nesting
-          unless is_nil(comment.parent_comment_id) do
+          if !is_nil(comment.parent_comment_id) &&
+               Tr.Post.get_comment(comment.parent_comment_id).user_id != current_user.id do
             Tr.PostTracker.Notifier.deliver_new_reply_notification(
-              current_user,
+              Tr.Accounts.get_user!(Tr.Post.get_comment(comment.parent_comment_id).user_id),
               comment.body,
               "#{TrWeb.Endpoint.url()}/blog/#{comment.slug}"
             )
           end
 
-          Tr.PostTracker.Notifier.deliver_new_comment_notification(
-            Tr.Accounts.get_user_by_email("kainlite@gmail.com"),
-            comment.body,
-            "#{TrWeb.Endpoint.url()}/blog/#{comment.slug}"
-          )
+          # credo:disable-for-next-line Credo.Check.Refactor.Nesting
+          if is_nil(comment.parent_comment_id) do
+            Tr.PostTracker.Notifier.deliver_new_comment_notification(
+              Tr.Accounts.get_user_by_email("kainlite@gmail.com"),
+              comment.body,
+              "#{TrWeb.Endpoint.url()}/blog/#{comment.slug}"
+            )
+          end
 
           {:noreply,
            socket

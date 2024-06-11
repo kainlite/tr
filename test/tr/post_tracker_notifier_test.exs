@@ -33,12 +33,11 @@ defmodule Tr.PostTracker.NotifierTest do
       {:ok, mail} =
         Notifier.deliver_new_comment_notification(
           user,
-          "New comment",
           post.body,
           "/blog/upgrading-k3s-with-system-upgrade-controller"
         )
 
-      assert mail.subject =~ "New comment"
+      assert mail.subject =~ "new message"
       assert mail.text_body =~ "A new comment was just added to a post you are following:"
       assert mail.text_body =~ "upgrading-k3s-with-system-upgrade-controller"
     end
@@ -47,12 +46,11 @@ defmodule Tr.PostTracker.NotifierTest do
       {:ok, mail} =
         Notifier.deliver_new_reply_notification(
           user,
-          "New comment",
           post.body,
           "/blog/upgrading-k3s-with-system-upgrade-controller"
         )
 
-      assert mail.subject =~ "New comment"
+      assert mail.subject =~ "new reply"
       assert mail.text_body =~ "A new reply was just added to a comment you are following:"
       assert mail.text_body =~ "upgrading-k3s-with-system-upgrade-controller"
     end
