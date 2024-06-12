@@ -2,7 +2,7 @@ apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerTemplate
 metadata:
   name: clone-build-push-template
-  namespace: tekton-pipelines
+  namespace: pipelines
 spec:
   params:
     - name: gitrevision
@@ -13,7 +13,7 @@ spec:
   resourcetemplates:
     - apiVersion: tekton.dev/v1beta1
       metadata:
-        namespace: tekton-pipelines
+        namespace: pipelines
         generateName: clone-build-push-
       spec:
         pipelineRef:

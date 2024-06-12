@@ -2,7 +2,7 @@ apiVersion: triggers.tekton.dev/v1alpha1
 kind: EventListener
 metadata:
   name: clone-build-push
-  namespace: tekton-pipelines
+  namespace: pipelines
 spec:
   serviceAccountName: tekton-triggers-sa
   triggers:

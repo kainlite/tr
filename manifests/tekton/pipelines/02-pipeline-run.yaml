@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
   name: clone-build-push-run
-  namespace: tekton-pipelines
+  namespace: pipelines
 spec:
   pipelineRef:
     name: clone-build-push
@@ -10,10 +10,10 @@ spec:
     podTemplate:
       securityContext:
         fsGroup: 65532
-        runAsNonRoot: true
-        runAsUser: 1001
-        seccompProfile:
-          type: RuntimeDefault
+        # runAsNonRoot: true
+        # runAsUser: 1001
+        # seccompProfile:
+        #   type: RuntimeDefault
   workspaces:
   - name: shared-data
     volumeClaimTemplate:
