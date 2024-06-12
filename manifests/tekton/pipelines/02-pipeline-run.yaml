@@ -9,6 +9,14 @@ spec:
   podTemplate:
     securityContext:
       fsGroup: 65532
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      runAsNonRoot: true
+      runAsUser: 1001
+      seccompProfile:
+        type: RuntimeDefault
   workspaces:
   - name: shared-data
     volumeClaimTemplate:
