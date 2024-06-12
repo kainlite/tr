@@ -12,7 +12,7 @@ metadata:
 rules:
 # EventListeners need to be able to fetch all namespaced resources
 - apiGroups: ["triggers.tekton.dev"]
-  resources: ["eventlisteners", "triggerbindings", "triggertemplates", "triggers", "interceptors"]
+  resources: ["eventlisteners", "triggerbindings", "triggertemplates", "triggers", "interceptors", "clusterinterceptors"]
   verbs: ["get", "list", "watch"]
 - apiGroups: [""]
 # configmaps is needed for updating logging config
@@ -80,7 +80,7 @@ metadata:
 rules:
 # EventListeners need to be able to fetch all namespaced resources
 - apiGroups: ["triggers.tekton.dev"]
-  resources: ["eventlisteners", "triggerbindings", "triggertemplates", "triggers", "interceptors"]
+  resources: ["eventlisteners", "triggerbindings", "triggertemplates", "triggers", "interceptors", "clusterinterceptors"]
   verbs: ["get", "list", "watch"]
 - apiGroups: [""]
 # configmaps is needed for updating logging config
