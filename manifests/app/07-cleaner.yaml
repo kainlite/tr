@@ -3,13 +3,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: cleaner
-  namespace: tekton-pipelines
+  namespace: pipelines
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: cleaner
-  namespace: tekton-pipelines
+  namespace: pipelines
 rules:
   - apiGroups: ["tekton.dev"]
     resources: ["pipelineruns"]
@@ -19,7 +19,7 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: cleaner-to-cleaner
-  namespace: tekton-pipelines
+  namespace: pipelines
 roleRef:
   kind: Role
   name: cleaner
@@ -32,7 +32,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: cleanup-pipelineruns
-  namespace: tekton-pipelines
+  namespace: pipelines
 spec:
   schedule: "*/15 * * * *"
   concurrencyPolicy: Forbid
@@ -52,5 +52,5 @@ spec:
               - /bin/bash
               - -c
               - |
-                  TO_DELETE="$(kubectl -n tekton-pipelines get pipelinerun -o jsonpath='{range .items[?(@.status.completionTime)]}{.status.completionTime}{" "}{.metadata.name}{"\n"}{end}' | sort | head -n -${NUM_TO_KEEP} | awk '{ print $2}')"
-                  test -n "$TO_DELETE" && kubectl -n tekton-pipelines delete pipelinerun ${TO_DELETE} || true
+                  TO_DELETE="$(kubectl -n pipelines get pipelinerun -o jsonpath='{range .items[?(@.status.completionTime)]}{.status.completionTime}{" "}{.metadata.name}{"\n"}{end}' | sort | head -n -${NUM_TO_KEEP} | awk '{ print $2}')"
+                  test -n "$TO_DELETE" && kubectl -n pipelines delete pipelinerun ${TO_DELETE} || true
