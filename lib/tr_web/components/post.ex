@@ -7,7 +7,7 @@ defmodule TrWeb.PostComponent do
   def render_tag_card(assigns) do
     ~H"""
     <li class="bg-white dark:bg-zinc-800 dark:text-white shadow-md p-4 mx-1 rounded-lg border-l-solid border-l-[5px]
-      border-l-gray-700 max-w-32 max-h-20">
+      border-l-gray-700 max-w-42 max-h-20">
       <span class="inline-flex items-center justify-center text-white bg-emerald-700 rounded-full w-8 h-8 text-sm
         font-semibold">
         <%= Enum.count(Tr.Blog.by_tag(@tag)) %>

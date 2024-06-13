@@ -67,7 +67,7 @@ defmodule TrWeb.PostLive do
     <div class="float-left">
       <h2><%= @post.title %></h2>
     </div>
-    <div class="float-right dark:invert">
+    <div class="float-right dark:invert py-6">
       <.link
         phx-click="react"
         phx-value-value="rocket-launch"
@@ -106,9 +106,6 @@ defmodule TrWeb.PostLive do
 
     <div class="mx-auto">
       <ul class="space-y-6 list-none">
-        <li class="px-1">
-          <h5 class="font-bold py-0">Tags</h5>
-        </li>
         <div class="flex flex-row flex-wrap">
           <%= for tag <- @post.tags do %>
             <%= TrWeb.PostComponent.render_tag_card(%{tag: tag}) %>
