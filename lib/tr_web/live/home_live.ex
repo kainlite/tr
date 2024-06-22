@@ -95,7 +95,7 @@ defmodule TrWeb.HomeLive do
           </div>
         </div>
       </div>
-      <div class="flex flex-row flex-wrap columns-3">
+      <div class="flex flex-row flex-wrap columns-3 text-center justify-center">
         <%= for post <- @posts do %>
           <%= TrWeb.PostComponent.render_post_card(%{post: post}) %>
         <% end %>
