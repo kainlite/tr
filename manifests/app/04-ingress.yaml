@@ -39,3 +39,23 @@ spec:
             name: tr
             port:
               number: 4000
+  - host: redbeard.team
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: tr
+            port:
+              number: 4000
+  - host: www.redbeard.team
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: tr
+            port:
+              number: 4000

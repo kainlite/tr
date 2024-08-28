@@ -11,7 +11,12 @@ import Config
 # before starting your production server.
 config :tr, TrWeb.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json",
-  check_origin: ["//techsquad.rocks", "//www.techsquad.rocks"]
+  check_origin: [
+    "//techsquad.rocks",
+    "//www.techsquad.rocks",
+    "//redbeard.team",
+    "//www.redbeard.team"
+  ]
 
 # Configures Swoosh API Client
 config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: Tr.Finch
