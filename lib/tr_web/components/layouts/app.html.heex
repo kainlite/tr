@@ -83,13 +83,23 @@
     <nav class="flex flex-row">
       <ul class="float-left">
         <li class="">
-          <.link navigate="/" class="">
-            <img
-              src={~p"/images/logo.png"}
-              alt="Techsquad lab logo"
-              class="dark:invert max-h-24 max-w-24"
-            />
-          </.link>
+          <%= if String.contains?(TrWeb.Endpoint.host, "redbeard.team") do %>
+            <.link navigate="/" class="">
+              <img
+                src={~p"/images/logo-beard.webp"}
+                alt="Red Beard logo"
+                class="max-h-28 max-w-28 rounded-full scale-125"
+              />
+            </.link>
+          <% else %>
+            <.link navigate="/" class="">
+              <img
+                src={~p"/images/logo.png"}
+                alt="Techsquad lab logo"
+                class="dark:invert max-h-24 max-w-24"
+              />
+            </.link>
+          <% end %>
         </li>
       </ul>
     </nav>

@@ -68,6 +68,12 @@ defmodule TrWeb.Router do
 
   live_session :default,
     on_mount: [{TrWeb.Hooks.AllowEctoSandbox, :default}, {TrWeb.UserAuth, :mount_current_user}] do
+    scope "/", TrWeb, host: ["local.redbeard.team", "redbeard.team"] do
+      pipe_through :browser
+
+      live "/", BeardLive, :index
+    end
+
     scope "/", TrWeb do
       pipe_through :browser
 

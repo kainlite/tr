@@ -101,18 +101,6 @@ defmodule TrWeb.HomeLive do
             <.icon name="hero-rocket-launch" class="hidden" />
             <.icon name="hero-rocket-launch-solid" class="hidden" />
           </p>
-          <div class="flex">
-            <div class="mx-auto items-center text-center">
-              <a href="https://www.buymeacoffee.com/NDx5OFh" target="_blank" class="">
-                <img
-                  src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
-                  alt="Buy Me A Coffee"
-                  style="height: 60px !important;width: 217px !important; padding-bottom: 0px !important; padding-top: 0px
-          !important;"
-                />
-              </a>
-            </div>
-          </div>
         </div>
       </div>
       <div class="flex flex-row flex-wrap columns-3 text-center justify-center">
