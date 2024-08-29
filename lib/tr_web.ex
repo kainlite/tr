@@ -43,7 +43,7 @@ defmodule TrWeb do
         layouts: [html: TrWeb.Layouts]
 
       import Plug.Conn
-      import TrWeb.Gettext
+      use Gettext, backend: TrWeb.Gettext
 
       unquote(verified_routes())
     end
@@ -85,7 +85,7 @@ defmodule TrWeb do
       import Phoenix.HTML
       # Core UI components and translation
       import TrWeb.CoreComponents
-      import TrWeb.Gettext
+      use Gettext, backend: TrWeb.Gettext
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS

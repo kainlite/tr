@@ -11,7 +11,7 @@ defmodule TrWeb.CoreComponents do
   use Phoenix.Component
 
   alias Phoenix.LiveView.JS
-  import TrWeb.Gettext
+  use Gettext, backend: TrWeb.Gettext
 
   @doc """
   Renders a modal.
