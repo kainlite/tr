@@ -72,6 +72,10 @@ defmodule TrWeb.Router do
       pipe_through :browser
 
       live "/", BeardLive, :index
+      live "/blog/search", SearchLive, :index
+
+      live "/blog/", BlogLive, :index
+      live "/blog/:id", PostLive, :show
     end
 
     scope "/", TrWeb do

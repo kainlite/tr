@@ -3,16 +3,15 @@ defmodule TrWeb.BeardLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    {:ok, socket, layout: false}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <div class="flex flex-col">
-      <%= TrWeb.AdsComponent.render_large_ad(assigns) %>
 
-      <div class="w-72 h-[21rem] m-auto justify-center">
+      <div class="w-72 mt-12 h-[21rem] m-auto justify-center">
         <img
           src={~p"/images/logo-beard.webp"}
           alt="Red Beard logo"
