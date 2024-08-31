@@ -10,7 +10,6 @@ defmodule TrWeb.BeardLive do
   def render(assigns) do
     ~H"""
     <div class="flex flex-col">
-
       <div class="w-72 mt-12 h-[21rem] m-auto justify-center">
         <img
           src={~p"/images/logo-beard.webp"}
