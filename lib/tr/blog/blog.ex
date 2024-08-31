@@ -34,6 +34,7 @@ defmodule Tr.Blog do
 
   def by_tag(tag), do: get_posts_by_tag!(tag)
   def recent_posts(num \\ 5), do: Enum.take(posts(), num)
+  def get_latest_post(num \\ 1), do: Enum.at(Enum.take(posts(), num), 0)
 
   defmodule NotFoundError, do: defexception([:message, plug_status: 404])
 

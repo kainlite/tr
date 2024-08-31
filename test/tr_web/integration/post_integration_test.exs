@@ -19,10 +19,12 @@ defmodule TrWeb.Integration.PostIntegrationTest do
     end
 
     test "has a big hero section", %{session: session} do
+      post = Tr.Blog.get_latest_post()
+
       session
       |> visit("/")
-      |> find(css("div #rss-is-not-dead-yet", count: 1))
-      |> assert_has(css("h2", text: "RSS is not dead yet"))
+      |> find(css("div ##{Map.get(post, :id)}", count: 1))
+      |> assert_has(css("h2", text: post.title))
     end
 
     test "has some articles", %{session: session} do
