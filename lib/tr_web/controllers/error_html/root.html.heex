@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
     <% description =
-      "Welcome to the Techsquad blog! This page is dedicated to documenting and exploring various
+      "Welcome to the Techsquad and Red Beard blog! This page is dedicated to documenting and exploring various
         technologies. Our blog is hosted on a k3s cluster in OCI, powered by Elixir and Phoenix. Dive in to discover
         insights, tutorials, and experiments across the tech landscape." %>
     <meta name="description" content={description} />
-    <meta property="og:title" content={assigns[:page_title] || "TechSquad.Rocks"} />
+    <meta property="og:title" content={assigns[:page_title] || "Red Beard Team"} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={url(~p"/images/logo.png")} />
 
     <.live_title>
-      <%= assigns[:page_title] || "TechSquad.Rocks" %>
+      <%= assigns[:page_title] || "Red Beard Team" %>
     </.live_title>
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
@@ -27,8 +27,8 @@
           <li class="">
             <.link navigate="/" class="">
               <img
-                src={~p"/images/logo.png"}
-                alt="Techsquad lab logo"
+                src={~p"/images/logo-beard.webp"}
+                alt="Red Beard team logo"
                 class="dark:invert max-h-24 max-w-24"
               />
             </.link>
@@ -48,7 +48,7 @@
     <article class="column text-sm">
       <ul>
         <li>
-          <a href="https://techsquad.rocks/blog">This blog</a>
+          <a href="https://redbeard.team/blog">This blog</a>
         </li>
         <li>
           <a href="https://github.com/kainlite/tr">Github repository</a>
@@ -73,6 +73,6 @@
         </li>
       </ul>
     </article>
-    <p class="text-base">© 2021 TechSquad.Rocks</p>
+    <p class="text-base">© 2021 Red Beard Team</p>
   </footer>
 </html>

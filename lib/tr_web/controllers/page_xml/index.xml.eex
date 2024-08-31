@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Techsquad Rocks</title>
+    <title>Red Beard Team</title>
     <link><%= url(~p"/blog") %></link>
     <atom:link href="<%= ~p"/index.xml" %>" rel="self" type="application/rss+xml" />
     <description>This blog was created to document and learn about different technologies, among other things it has
@@ -10,7 +10,7 @@
     to receive new posts notifications and later on a newsletter, so I hope you enjoy your stay and see you on the other
     side...</description>
     <language>en</language>
-    <copyright>Copyright <%= DateTime.utc_now.year %> TechSquad Rocks </copyright>
+    <copyright>Copyright <%= DateTime.utc_now.year %> Red Beard Team </copyright>
     <lastBuildDate><%= DateTime.utc_now |> format_date() %></lastBuildDate>
     <category>IT/Internet/Web development</category>
     <ttl>60</ttl>

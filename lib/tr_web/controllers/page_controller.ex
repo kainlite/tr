@@ -29,12 +29,12 @@ defmodule TrWeb.PageController do
     |> put_resp_content_type("application/feed+json")
     |> json(%{
       version: "https://jsonfeed.org/version/1.1",
-      title: "TechSquad Rocks",
-      home_page_url: "https://techsquad.rocks/",
-      feed_url: "https://techsquad.rocks/index.json",
+      title: "Red Beard team",
+      home_page_url: "https://redbeard.team/",
+      feed_url: "https://redbeard.team/index.json",
       description:
-        "Welcome to the Techsquad blog! This page is dedicated to documenting and exploring various technologies. Our blog is hosted on a k3s cluster in OCI, powered by Elixir and Phoenix. Dive in to discover insights, tutorials, and experiments across the tech landscape.",
-      favicon: "https://techsquad.rocks/favicon.ico",
+        "Welcome to the Techsquad and Red Beard blog! This page is dedicated to documenting and exploring various technologies. Our blog is hosted on a k3s cluster in OCI, powered by Elixir and Phoenix. Dive in to discover insights, tutorials, and experiments across the tech landscape.",
+      favicon: "https://redbeard.team/favicon.ico",
       language: "en-US",
       items:
         for post <- posts do
