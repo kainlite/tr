@@ -22,7 +22,7 @@ jobs:
       - name: Prepare
         id: prep
         run: |
-          DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/${GITHUB_REPOSITORY#*/}-gh
+          DOCKER_IMAGE=kainlite/tr-gh
           SHORTREF=${GITHUB_SHA::8}
           TAG="${DOCKER_IMAGE}:${SHORTREF}"
           echo tag=${TAG} >> ${GITHUB_OUTPUT}
