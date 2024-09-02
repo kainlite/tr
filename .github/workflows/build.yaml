@@ -23,24 +23,9 @@ jobs:
         id: prep
         run: |
           DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/${GITHUB_REPOSITORY#*/}-gh
-          VERSION=latest
           SHORTREF=${GITHUB_SHA::8}
-
-          # If this is git tag, use the tag name as a docker tag
-          if [[ $GITHUB_REF == refs/tags/* ]]; then
-            VERSION=${GITHUB_REF#refs/tags/v}
-          fi
-          TAGS="${DOCKER_IMAGE}:${VERSION},${DOCKER_IMAGE}:${SHORTREF}"
-
-          # If the VERSION looks like a version number, assume that
-          # this is the most recent version of the image and also
-          # tag it 'latest'.
-          if [[ $VERSION =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
-            TAGS="$TAGS,${DOCKER_IMAGE}:latest"
-          fi
-
-          # Set output parameters.
-          echo tags=${TAGS} >> ${GITHUB_OUTPUT}
+          TAG="${DOCKER_IMAGE}:${SHORTREF}"
+          echo tag=${TAG} >> ${GITHUB_OUTPUT}
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -52,4 +37,4 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: ${{ steps.prep.outputs.tags }}
+          tags: ${{ steps.prep.outputs.tag }}
