@@ -6,31 +6,27 @@ on:
 
 jobs:
   docker:
-    runs-on: self-hosted
+    runs-on: ubuntu-22
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - # Add support for more platforms with QEMU (optional)
-        # https://github.com/docker/setup-qemu-action
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+      - name: Prepare
+        id: prep
+        run: |
+          DOCKER_IMAGE=docker.io/kainlite/tr-gh
+          SHORTREF=${GITHUB_SHA::8}
+          TAG="${DOCKER_IMAGE}:${SHORTREF}"
+          echo tag=${TAG} >> ${GITHUB_OUTPUT}
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image
+      - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          tags: docker.io/kainlite/tr-gh:latest
-          outputs: type=oci,dest=/tmp/image.tar
-
-      - name: Import image in containerd
-        run: |
-          sudo ctr i import --base-name docker.io/kainlite/tr-gh --digests --all-platforms /tmp/image.tar
-
-      - name: Push image with containerd
-        run: |
-          sudo ctr --debug i push --user "${{ secrets.DOCKER_USERNAME }}:${{ secrets.DOCKER_PASSWORD }}" docker.io/kainlite/tr-gh:latest
+          push: true
+          tags: ${{ steps.prep.outputs.tag }}
