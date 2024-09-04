@@ -26,7 +26,8 @@ defmodule TrWeb.BeardLive do
               <a href="mailto:gabriel@redbeard.team" class=" h-auto w-[217px]">
                 Contact us
               </a>
-              or <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
+              or
+              <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
               <script
                 src="https://assets.calendly.com/assets/external/widget.js"
                 type="text/javascript"
@@ -44,7 +45,7 @@ defmodule TrWeb.BeardLive do
               We support you in your cloud journey, from architecture to security, with a focus on automation and best practices.
             </p>
 
-            <br>
+            <br />
 
             <p class="text-[1.4rem] justify-center font-semibold">
               We support different working methodologies, to match what your company needs:
