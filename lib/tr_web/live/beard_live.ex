@@ -21,7 +21,40 @@ defmodule TrWeb.BeardLive do
       <div class="flex flex-col">
         <div class="m-auto">
           <div class="justify-center text-center">
-            We can help, <a href="mailto:gabriel@redbeard.team">Contact us</a>
+            <span class="font-bold">Free 2 hours assessment for your project, get in touch!</span>
+            <p class="text-[1.4rem] justify-center font-semibold">
+              <a href="mailto:gabriel@redbeard.team" class=" h-auto w-[217px]">
+                Contact us
+              </a>
+              or <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
+              <script
+                src="https://assets.calendly.com/assets/external/widget.js"
+                type="text/javascript"
+                async
+              >
+              </script>
+              <a
+                href=""
+                onclick="Calendly.initPopupWidget({url: 'https://calendly.com/kainlite/15min'});return false;"
+              >
+                Schedule time with us
+              </a>
+            </p>
+            <p class="text-[1.4rem] justify-center font-semibold">
+              We support you in your cloud journey, from architecture to security, with a focus on automation and best practices.
+            </p>
+
+            <br>
+
+            <p class="text-[1.4rem] justify-center font-semibold">
+              We support different working methodologies, to match what your company needs:
+              <ul>
+                <li class="text-[1.4rem] justify-center font-semibold">Per hour billing</li>
+                <li class="text-[1.4rem] justify-center font-semibold">Per project or objective</li>
+                <li class="text-[1.4rem] justify-center font-semibold">As part-time consultants</li>
+                <li class="text-[1.4rem] justify-center font-semibold">As full-time consultants</li>
+              </ul>
+            </p>
           </div>
           <div class="flex flex-row flex-wrap columns-3 text-center justify-center">
             <div id="architecture">

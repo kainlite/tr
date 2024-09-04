@@ -72,7 +72,7 @@ defmodule TrWeb.HomeLive do
 
         <div class="m-auto">
           <p class="text-[1.4rem] justify-center font-semibold">
-            Do you need help with your project (kubernetes/dockerization/cicd/automation/etc)?
+            Do you need help with your project?
             <a href="mailto:gabriel@redbeard.team" class=" h-auto w-[217px]">
               Contact us
             </a>
@@ -87,7 +87,7 @@ defmodule TrWeb.HomeLive do
               href=""
               onclick="Calendly.initPopupWidget({url: 'https://calendly.com/kainlite/15min'});return false;"
             >
-              Schedule time with me
+              Schedule time with us
             </a>
           </p>
 
