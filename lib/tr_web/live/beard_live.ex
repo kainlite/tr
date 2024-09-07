@@ -54,6 +54,7 @@ defmodule TrWeb.BeardLive do
                 <li class="text-[1.4rem] justify-center font-semibold">Per project or objective</li>
                 <li class="text-[1.4rem] justify-center font-semibold">As part-time consultants</li>
                 <li class="text-[1.4rem] justify-center font-semibold">As full-time consultants</li>
+                <li class="text-[1.4rem] justify-center font-semibold">Fractional</li>
               </ul>
             </p>
           </div>
