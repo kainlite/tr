@@ -25,6 +25,7 @@ defmodule TrWeb.Router do
     pipe_through :browser
 
     get "/auth/google/callback", GoogleAuthController, :index
+    get "/auth/github/callback", GithubAuthController, :index
 
     get "/blog/tags", PageController, :tags
     get "/blog/tags/:tag", PageController, :by_tag

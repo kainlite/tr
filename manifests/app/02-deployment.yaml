@@ -29,6 +29,8 @@ spec:
         - secretRef:
             name: tr-google-oauth
         - secretRef:
+            name: tr-github-oauth
+        - secretRef:
             name: tr-postgres-config
         - secretRef:
             name: tr-mailer-config

@@ -83,7 +83,8 @@ defmodule Tr.MixProject do
       {:haystack, "~> 0.1.0"},
       {:quantum, "~> 3.5"},
       {:mix_audit, "~> 2.1", only: [:dev, :test], runtime: false},
-      {:elixir_auth_google, "~> 1.6.9"}
+      {:elixir_auth_google, "~> 1.6"},
+      {:elixir_auth_github, "~> 1.6"}
     ]
   end
 
