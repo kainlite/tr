@@ -57,7 +57,7 @@ defmodule Tr.SponsorsCache do
       iex> sponsor?(github_username)
       true
   """
-  def sponsor?(github_username) do
+  def sponsor?(github_username) when not is_nil(github_username) do
     sponsor = Repo.get_by(Cache, github_username: github_username)
 
     if sponsor do
@@ -66,4 +66,6 @@ defmodule Tr.SponsorsCache do
       false
     end
   end
+
+  def sponsor?(_github_username), do: false
 end
