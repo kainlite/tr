@@ -4,7 +4,9 @@
   description: "This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but...",
   tags: ~w(aws serverless),
   published: true,
-  image: "serve-s3-cloudfront.png"
+  image: "serve-s3-cloudfront.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

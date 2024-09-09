@@ -4,7 +4,9 @@
   description: "The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require. It's a CLI that offers structure...",
   tags: ~w(serverless golang),
   published: true,
-  image: "serverless.png"
+  image: "serverless.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

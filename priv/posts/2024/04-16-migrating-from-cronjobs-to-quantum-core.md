@@ -6,7 +6,9 @@
   boot our entire app before running our task.",
   tags: ~w(elixir phoenix tips-and-tricks),
   published: true,
-  image: "trickster-clock.png"
+  image: "trickster-clock.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

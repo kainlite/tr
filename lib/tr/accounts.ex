@@ -390,6 +390,34 @@ defmodule Tr.Accounts do
     end
   end
 
+  @doc """
+  Updates github_username field
+
+  ## Examples
+
+      iex> change_user_github_username(user, github_username)
+      %Ecto.Changeset{data: %User{}}
+
+  """
+  def change_user_github_username(user, attrs \\ %{}) do
+    User.github_username_changeset(user, attrs)
+  end
+
+  def update_user_github_username(user, github_username) do
+    changeset =
+      user
+      |> User.github_username_changeset(github_username)
+      |> User.confirm_changeset()
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:user, changeset)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{user: user}} -> {:ok, user}
+      {:error, :user, changeset, _} -> {:error, changeset}
+    end
+  end
+
   ## Session
 
   @doc """

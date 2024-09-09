@@ -122,7 +122,42 @@ defmodule TrWeb.PostLive do
 
     <%= TrWeb.AdsComponent.render_large_ad(assigns) %>
 
-    <%= raw(@post.body) %>
+    <%= cond do %>
+      <% @post.sponsored && @current_user && Tr.SponsorsCache.sponsor?(@current_user.github_username) -> %>
+        <br />
+        <p>
+          <iframe
+            width="100%"
+            height="800px"
+            src={decrypt(@post.video)}
+            title=""
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          >
+          </iframe>
+        </p>
+        <br />
+        <%= raw(Earmark.as_html!(decrypt(@post.encrypted_content))) %>
+      <% @post.sponsored && @current_user && !Tr.SponsorsCache.sponsor?(@current_user.github_username) -> %>
+        <br /> To see this article, please visit the
+        <.link href="https://github.com/sponsors/kainlite#sponsors" class="">
+          sponsor's page.
+        </.link>
+        <br />
+        <br />
+        <br />
+      <% @post.sponsored && is_nil(@current_user) -> %>
+        <br /> To see this article, please visit the
+        <.link href="https://github.com/sponsors/kainlite#sponsors" class="">
+          sponsor's page.
+        </.link>
+        <br />
+        <br />
+        <br />
+      <% !@post.sponsored -> %>
+        <%= raw(@post.body) %>
+    <% end %>
 
     <div class="mx-auto max-w-4xl">
       <%= unless @current_user do %>
@@ -509,5 +544,12 @@ defmodule TrWeb.PostLive do
     else
       "hero-#{value}"
     end
+  end
+
+  defp decrypt(b64cipher) do
+    {:ok, b64dec} = Base.decode64(b64cipher)
+    {:ok, dec} = Tr.Vault.decrypt(b64dec)
+
+    dec
   end
 end

@@ -4,7 +4,9 @@
   description: "In this article we will explore how authentication and authorization works in kubernetes. But first what's the difference?",
   tags: ~w(kubernetes linux security networking),
   published: true,
-  image: "kubernetes.png"
+  image: "kubernetes.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

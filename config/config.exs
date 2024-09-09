@@ -77,7 +77,9 @@ config :tr, Tr.Scheduler,
     # Every 30 minutes
     {"*/30 * * * *", {Tr.Tracker, :start, []}},
     # Every 15 minutes
-    {"*/15 * * * *", {Tr.Approver, :start, []}}
+    {"*/15 * * * *", {Tr.Approver, :start, []}},
+    # Every 5 minutes
+    {"*/5 * * * *", {Tr.Sponsors, :start, []}}
   ]
 
 # Import environment specific config. This must remain at the bottom

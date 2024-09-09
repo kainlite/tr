@@ -6,7 +6,9 @@
   general enough, there are some interesting things to learn about the elixir ecosystem as well.",
   tags: ~w(elixir kubernetes phoenix tips-and-tricks),
   published: true,
-  image: "trickster-cool.png"
+  image: "trickster-cool.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

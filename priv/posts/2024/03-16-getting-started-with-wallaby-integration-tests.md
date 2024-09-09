@@ -6,7 +6,9 @@
   and also validate your application as a real user would do.",
   tags: ~w(elixir phoenix wallaby),
   published: true,
-  image: "wallaby.png"
+  image: "wallaby.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

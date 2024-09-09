@@ -4,7 +4,9 @@
   description: "Upgrading K3S with system-upgrade-controller",
   tags: ~w(k3s kubernetes linux),
   published: true,
-  image: "kubernetes.png"
+  image: "kubernetes.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

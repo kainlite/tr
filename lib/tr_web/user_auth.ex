@@ -52,6 +52,20 @@ defmodule TrWeb.UserAuth do
     |> redirect(to: user_return_to || ~p"/blog")
   end
 
+  def log_in_github_user(conn, profile, params \\ %{}) do
+    user = Accounts.get_user_by_email_or_create(profile.email)
+    token = Accounts.generate_user_session_token(user)
+    user_return_to = get_session(conn, :user_return_to)
+
+    Accounts.update_user_github_username(user, profile.login)
+
+    conn
+    |> renew_session()
+    |> put_token_in_session(token)
+    |> maybe_write_remember_me_cookie(token, params)
+    |> redirect(to: user_return_to || ~p"/blog")
+  end
+
   defp maybe_write_remember_me_cookie(conn, token, %{"remember_me" => "true"}) do
     put_resp_cookie(conn, @remember_me_cookie, token, @remember_me_options)
   end

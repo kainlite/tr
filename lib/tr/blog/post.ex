@@ -2,8 +2,33 @@ defmodule Tr.Blog.Post do
   @moduledoc """
     Transforms markdown into nice HTML blog posts
   """
-  @enforce_keys [:id, :author, :title, :body, :description, :tags, :date, :published, :image]
-  defstruct [:id, :author, :title, :body, :description, :tags, :date, :published, :image]
+  @enforce_keys [
+    :id,
+    :author,
+    :title,
+    :body,
+    :description,
+    :tags,
+    :date,
+    :published,
+    :image,
+    :sponsored,
+    :video
+  ]
+  defstruct [
+    :id,
+    :author,
+    :title,
+    :body,
+    :description,
+    :tags,
+    :date,
+    :published,
+    :image,
+    :sponsored,
+    :video,
+    :encrypted_content
+  ]
 
   def build(filename, attrs, body) do
     [year, month_day_id] = filename |> Path.rootname() |> Path.split() |> Enum.take(-2)

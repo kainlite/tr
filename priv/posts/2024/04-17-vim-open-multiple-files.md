@@ -5,7 +5,9 @@
   navigate these, keep an eye out for the bonus section as it can get complex pretty quickly.",
   tags: ~w(vim tips-and-tricks),
   published: true,
-  image: "vim-tips.png"
+  image: "vim-tips.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

@@ -4,7 +4,9 @@
   description: "Exploring ksonnet with an echo bot made in Golang...",
   tags: ~w(kubernetes vault linux security),
   published: true,
-  image: "vault.png"
+  image: "vault.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

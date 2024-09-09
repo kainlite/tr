@@ -4,7 +4,9 @@
   description: "In this article we will create a lambda function and an API Gateway route like we did with the serverless framework but only using AWS tools, we will be using the same generated...",
   tags: ~w(golang serverless terraform),
   published: true,
-  image: "lambda-helloworld-example.png"
+  image: "lambda-helloworld-example.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

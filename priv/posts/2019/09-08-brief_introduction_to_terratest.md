@@ -4,7 +4,9 @@
   description: "In this article we will see the basics to have tests for your terraform code using a re-usable pattern, we will use the code from the last article...",
   tags: ~w(kubernetes terratest golang terraform),
   published: true,
-  image: "terraform.png"
+  image: "terraform.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

@@ -4,7 +4,9 @@
   description: "In this article I want to introduce you to tmux, you might have used screen in the past or heard about it, what tmux and screen are is terminal multiplexers...",
   tags: ~w(vim tmux linux),
   published: true,
-  image: "tmux-terminal.png"
+  image: "tmux-terminal.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

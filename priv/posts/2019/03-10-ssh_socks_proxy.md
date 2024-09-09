@@ -5,7 +5,9 @@
   explore SSH Socks proxy and what it means, we also will explore SSH remote proxy...",
   tags: ~w(linux openssh networking),
   published: true,
-  image: "openssh.png"
+  image: "openssh.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

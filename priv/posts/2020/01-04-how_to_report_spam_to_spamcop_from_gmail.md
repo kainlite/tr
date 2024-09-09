@@ -4,7 +4,9 @@
   description: "Easy method to report spam to spamcop using GMail, this helps to reduce the true Spam from unknown sources, since for some reason I started to get...",
   tags: ~w(linux),
   published: true,
-  image: "spam.png"
+  image: "spam.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

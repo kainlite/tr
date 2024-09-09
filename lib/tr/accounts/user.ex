@@ -14,6 +14,7 @@ defmodule Tr.Accounts.User do
     field :display_name, :string
     field :avatar_url, :string
     field :admin, :boolean, default: false
+    field :github_username, :string
 
     timestamps()
 
@@ -201,6 +202,20 @@ defmodule Tr.Accounts.User do
     |> validate_accept_emails(opts)
     |> case do
       %{changes: %{accept_emails: _}} = changeset -> changeset
+      %{} = changeset -> changeset
+    end
+  end
+
+  @doc """
+  A user changeset for changing the github_username field.
+
+  """
+  def github_username_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:github_username])
+    |> validate_accept_emails(opts)
+    |> case do
+      %{changes: %{github_username: _}} = changeset -> changeset
       %{} = changeset -> changeset
     end
   end

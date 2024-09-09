@@ -4,7 +4,9 @@
   description: "Continue building on Istio and understand how can be used...",
   tags: ~w(kubernetes istio),
   published: true,
-  image: "kubernetes.png"
+  image: "kubernetes.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

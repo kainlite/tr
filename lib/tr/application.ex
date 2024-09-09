@@ -26,6 +26,8 @@ defmodule Tr.Application do
       TrWeb.Presence,
       # Start haystack
       {Haystack.Storage.ETS, storage: Tr.Search.storage()},
+      # Initialize the vault
+      Tr.Vault,
       # Start the scheduler
       Tr.Scheduler,
       # Start the Endpoint (http/https)

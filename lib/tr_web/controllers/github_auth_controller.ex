@@ -9,7 +9,7 @@ defmodule TrWeb.GithubAuthController do
 
     if profile.email do
       conn
-      |> TrWeb.UserAuth.log_in_google_user(profile)
+      |> TrWeb.UserAuth.log_in_github_user(profile)
       |> redirect(to: ~p"/blog", profile: profile)
     else
       conn

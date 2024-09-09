@@ -4,7 +4,9 @@
   description: "This post is a bit different from the others in the sense that it's a small tool I did to ease spam reporting to...",
   tags: ~w(golang linux),
   published: true,
-  image: "spam.png"
+  image: "spam.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

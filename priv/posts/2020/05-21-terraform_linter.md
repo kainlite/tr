@@ -5,7 +5,9 @@
   terraform code using reviewdog...",
   tags: ~w(github terraform),
   published: true,
-  image: "reviewdog.png"
+  image: "reviewdog.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

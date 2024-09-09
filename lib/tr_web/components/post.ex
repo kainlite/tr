@@ -27,7 +27,14 @@ defmodule TrWeb.PostComponent do
     <div id={@post.id}>
       <div class="relative">
         <div class="bg-white dark:bg-zinc-700 dark:text-gray-200 shadow-md rounded-lg overflow-hidden w-[39rem]
-            h-[30rem] m-4">
+            h-[30rem] m-4 ">
+          <%= if @post.sponsored do %>
+            <.link href="https://github.com/sponsors/kainlite#sponsors" class="">
+              <.icon name="hero-lock-closed-solid" class="absolute right-6 top-1 w-7 h-7 dark:invert" />
+            </.link>
+          <% else %>
+            <.icon name="hero-lock-open-solid" class="absolute right-6 top-1 w-7 h-7 dark:invert" />
+          <% end %>
           <.link navigate={~p"/blog/#{@post.id}"} class="">
             <img
               src={~p"/images/#{@post.image}"}

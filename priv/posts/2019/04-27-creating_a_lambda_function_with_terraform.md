@@ -5,7 +5,9 @@
   node.js, available as gist...",
   tags: ~w(terraform lambda serverless aws),
   published: true,
-  image: "terraform.png"
+  image: "terraform.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

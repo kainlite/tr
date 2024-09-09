@@ -6,7 +6,9 @@
   manual intervention.",
   tags: ~w(elixir shell phoenix tips-and-tricks),
   published: true,
-  image: "trickster.png"
+  image: "trickster.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

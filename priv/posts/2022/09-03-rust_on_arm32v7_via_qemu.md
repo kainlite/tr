@@ -5,7 +5,9 @@
   run a rust project...",
   tags: ~w(rust arm linux),
   published: true,
-  image: "rust.png"
+  image: "rust.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

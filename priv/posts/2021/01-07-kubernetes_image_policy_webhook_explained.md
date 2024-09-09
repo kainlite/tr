@@ -4,7 +4,9 @@
   description: "In this article we will explore how webhook works in kubernetes and more specifically about the ImagePolicyWebhook, the kubernetes documentation about it is kind of vague...",
   tags: ~w(kubernetes linux security),
   published: true,
-  image: "kubernetes-admission-phases.png"
+  image: "kubernetes-admission-phases.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

@@ -5,7 +5,9 @@
   travis-ci and docker...",
   tags: ~w(golang travis cicd),
   published: true,
-  image: "travis-ci-docker.png"
+  image: "travis-ci-docker.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

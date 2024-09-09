@@ -5,7 +5,9 @@
   any task within github actions",
   tags: ~w(git github tips-and-tricks),
   published: true,
-  image: "github-logo.png"
+  image: "github-logo.png",
+  sponsored: false,
+  video: "https://youtu.be/sDjXY5RJX3c"
 }
 ---
 

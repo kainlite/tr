@@ -4,7 +4,9 @@
   description: "This is an awesome tool to setup and maintain your clusters, currently only compatible with AWS and GCE...",
   tags: ~w(kubernetes kops aws),
   published: true,
-  image: "kubernetes-aws.png"
+  image: "kubernetes-aws.png",
+  sponsored: false,
+  video: ""
 }
 ---
 

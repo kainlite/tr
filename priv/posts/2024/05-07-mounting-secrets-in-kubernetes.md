@@ -7,7 +7,9 @@
   can take advantage of",
   tags: ~w(kubernetes tips-and-tricks),
   published: true,
-  image: "kubernetes.png"
+  image: "kubernetes.png",
+  sponsored: false,
+  video: ""
 }
 ---
 
