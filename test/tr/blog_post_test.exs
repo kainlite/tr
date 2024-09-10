@@ -17,10 +17,16 @@ defmodule Tr.Blog.PostTest do
         image: "terraform.png",
         sponsored: true,
         video:
-          "AQpBRVMuR0NNLlYxnMlG3Z1gqmBJsog8BCiq8aJ6Oplpc7ncKP2UWeziuzgze6d6gfgbu5sKEIq6C4ktQxrg+nDhACQkXz9aTZnwhYQUOYJq",
+          "AQpBRVMuR0NNLlYx4ip+EAWEzH1p+PskhwGtZrgGIOm4xMTDVEsqbIusxiTWueU3Mm3k8yCAEw9oweCsEwRO7d0f7ibVEZHgz/zgwecG7Gdy",
         encrypted_content:
-          "AQpBRVMuR0NNLlYxJJUZ6S+zhjv81zDHqUMSo3g5JkVGsTchQlKfB7fZfxg//hMIyX/XsUCygsFRr+MFlpw0vne8FxO2Si6jshOw8lKDMNvoXioHNmgQeozlahuIce0+D0NCh5vFFsbJIi//TTpac1coUdiEbReH94yDQ07V4O848C5J7F5JjZslhGekKVjq0eT3T7PmIibJfii391tqgYUBHIg/jpY2LifxzgrHW5jaFRzrsIZNuCiBF1M4lUjSORF01aPgT68s1vHcG/+r0LE8EsCsHRT9VDvKl0F6ntgwoTUY/OSqONCbkzE2wfWsy5jGGV3YN8jCkMYIWi7FylgpCrMbb99DfNIKRA37GpvoLx08+X8YPbBRHoL1Gs3JGIi91UBAMQ=="
+          "AQpBRVMuR0NNLlYxyxHp0XKGD8ILH5ghdzsE6y9MLd2FJN1kMurokKoAv4CxUJXB9unmg+jx8yfun0VqXNo53xD/ao3NrWk="
       }
+
+      video_decoded = Base.decode64!(post.video)
+      {:ok, video_decrypted} = Tr.Vault.decrypt(video_decoded)
+
+      encrypted_content_decoded = Base.decode64!(post.encrypted_content)
+      {:ok, encrypted_content_decrypted} = Tr.Vault.decrypt(encrypted_content_decoded)
 
       assert post.id == "some-slug"
       assert post.title == "some title"
@@ -31,6 +37,9 @@ defmodule Tr.Blog.PostTest do
       assert post.description == "some description"
       assert post.date == ~D[2020-01-01]
       assert post.image == "terraform.png"
+      assert post.sponsored == true
+      assert video_decrypted == "https://www.youtube.com/embed/sDjXY5RJX3c"
+      assert encrypted_content_decrypted == "This is the content of the post"
     end
   end
 end

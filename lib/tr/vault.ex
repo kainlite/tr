@@ -19,7 +19,7 @@ defmodule Tr.Vault do
 
   defp decode_env!(var) do
     var
-    |> System.get_env()
+    |> System.get_env("oKm5YrZmbh8kS34n3fXLiAHLbDFEmC+H+z8TEseGQFs=")
     |> Base.decode64!()
   end
 end
