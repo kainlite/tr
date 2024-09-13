@@ -1,6 +1,6 @@
 name: 'build images'
 
-# on:
+on: []
 #   push:
 
 jobs:
