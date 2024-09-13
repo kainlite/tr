@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Red Beard Team</title>
+    <title>Fractional DevOps Services | Linux, Kubernetes & AWS Experts | Red Beard Team</title>
     <link><%= url(~p"/blog") %></link>
     <atom:link href="<%= ~p"/index.xml" %>" rel="self" type="application/rss+xml" />
-    <description>This blog was created to document and learn about different technologies, among other things it has
-    been deployed to a k3s cluster running in OCI, using elixir and the phoenix framework, postgres, docker, kubernetes
-    on ARM64, and many other things, if that sounds interesting, you can follow me on twitter or create an account here
-    to receive new posts notifications and later on a newsletter, so I hope you enjoy your stay and see you on the other
-    side...</description>
+    <description>Red Beard Team offers expert fractional DevOps services specializing in Linux, Kubernetes, AWS, Terraform, Docker, and more. Transform your infrastructure with our tailored solutions. Explore insights, tutorials, and experiments across the tech landscape.
+    </description>
     <language>en</language>
     <copyright>Copyright <%= DateTime.utc_now.year %> Red Beard Team </copyright>
     <lastBuildDate><%= DateTime.utc_now |> format_date() %></lastBuildDate>

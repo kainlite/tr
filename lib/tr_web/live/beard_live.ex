@@ -10,6 +10,7 @@ defmodule TrWeb.BeardLive do
   def render(assigns) do
     ~H"""
     <div class="flex flex-col">
+      <h1 class="justify-center items-center m-auto">Red Beard Team</h1>
       <div class="w-72 mt-12 h-[21rem] m-auto justify-center">
         <img
           src={~p"/images/logo-beard.webp"}
@@ -21,8 +22,11 @@ defmodule TrWeb.BeardLive do
       <div class="flex flex-col">
         <div class="m-auto">
           <div class="justify-center text-center">
-            <span class="font-bold">Free 2 hours assessment for your project, get in touch!</span>
+            <span class="font-bold">
+              Get a Free 2-Hour DevOps Assessment — Accelerate Your Cloud Transformation Today!
+            </span>
             <p class="text-[1.4rem] justify-center font-semibold">
+              Ready to Elevate Your Infrastructure?
               <a href="mailto:gabriel@redbeard.team" class=" h-auto w-[217px]">
                 Contact us
               </a>
@@ -38,23 +42,34 @@ defmodule TrWeb.BeardLive do
                 href=""
                 onclick="Calendly.initPopupWidget({url: 'https://calendly.com/kainlite/15min'});return false;"
               >
-                Schedule time with us
+                Schedule a Consultation Now!
               </a>
             </p>
             <p class="text-[1.4rem] justify-center font-semibold">
-              We support you in your cloud journey, from architecture to security, with a focus on automation and best practices.
+              Expert Support on Your Cloud Journey — from Innovative Architecture to Robust Security — Specializing in
+              Automation and Best Practices.
             </p>
 
             <br />
 
             <p class="text-[1.4rem] justify-center font-semibold">
-              We support different working methodologies, to match what your company needs:
+              Flexible Engagement Models Tailored to Your Needs:
               <ul>
-                <li class="text-[1.4rem] justify-center font-semibold">Per hour billing</li>
-                <li class="text-[1.4rem] justify-center font-semibold">Per project or objective</li>
-                <li class="text-[1.4rem] justify-center font-semibold">As part-time consultants</li>
-                <li class="text-[1.4rem] justify-center font-semibold">As full-time consultants</li>
-                <li class="text-[1.4rem] justify-center font-semibold">Fractional</li>
+                <li class="text-[1.4rem] justify-center font-semibold">
+                  Hourly Billing: Pay only for the time you need.
+                </li>
+                <li class="text-[1.4rem] justify-center font-semibold">
+                  Project-Based Contracts: Define objectives and outcomes upfront.
+                </li>
+                <li class="text-[1.4rem] justify-center font-semibold">
+                  Part-Time Consulting: Expertise on a part-time basis.
+                </li>
+                <li class="text-[1.4rem] justify-center font-semibold">
+                  Full-Time Consulting: Dedicated support for your team.
+                </li>
+                <li class="text-[1.4rem] justify-center font-semibold">
+                  Fractional Services: Access high-level expertise without the full-time cost.
+                </li>
               </ul>
             </p>
           </div>

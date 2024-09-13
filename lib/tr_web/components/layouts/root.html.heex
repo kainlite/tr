@@ -5,13 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
     <% description =
-      "Welcome to the Techsquad and Red Beard blog! This page is dedicated to documenting and exploring various
-        technologies. Our blog is hosted on a k3s cluster in OCI, powered by Elixir and Phoenix. Dive in to discover
-        insights, tutorials, and experiments across the tech landscape." %>
+      "Red Beard Team offers expert fractional DevOps services specializing in Linux, Kubernetes, AWS, Terraform, Docker, and more. Transform your infrastructure with our tailored solutions. Explore insights, tutorials, and experiments across the tech landscape." %>
     <meta name="description" content={description} />
     <meta property="og:title" content={assigns[:page_title] || "Red Beard Team"} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={url(~p"/images/logo.png")} />
+    <meta property="og:image" content={url(~p"/images/logo-beard.webp")} />
 
     <.live_title>
       <%= assigns[:page_title] || "Red Beard Team" %>
