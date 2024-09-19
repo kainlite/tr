@@ -5,13 +5,13 @@ defmodule TrWeb.UserLoginLive do
     ~H"""
     <div class="mx-auto max-w-sm">
       <.header class="text-center dark:invert">
-        Sign in to account
+        <%= gettext("Sign in to account") %>
         <:subtitle>
-          Don't have an account?
+          <%= gettext("Don't have an account?") %>
           <.link navigate={~p"/users/register"} class="font-semibold text-brand hover:underline">
-            Sign up
+            <%= gettext("Sign up") %>
           </.link>
-          for an account now.
+          <%= gettext("for an account now.") %>
         </:subtitle>
       </.header>
 
@@ -22,7 +22,7 @@ defmodule TrWeb.UserLoginLive do
         <:actions>
           <.input field={@form[:remember_me]} type="checkbox" label="Keep me logged in" />
           <.link href={~p"/users/reset_password"} class="text-sm font-semibold">
-            Forgot your password?
+            <%= gettext("Forgot your password?") %>
           </.link>
         </:actions>
         <:actions>

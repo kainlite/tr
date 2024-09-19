@@ -6,8 +6,9 @@ defmodule TrWeb.UserSettingsLive do
   def render(assigns) do
     ~H"""
     <.header class="text-center  dark:invert">
-      Account Settings
-      <:subtitle>Manage your account email address and password settings</:subtitle>
+      <%= gettext("      Account Settings
+            <:subtitle>Manage your account email address and password settings</:subtitle>
+      ") %>
     </.header>
 
     <div class="space-y-12 divide-y">
@@ -16,12 +17,12 @@ defmodule TrWeb.UserSettingsLive do
           <.input
             field={@email_form[:display_name]}
             type="text"
-            label="Display Name"
+            label={gettext("Display Name")}
             value={@current_user.display_name}
             required
           />
           <:actions>
-            <.button phx-disable-with="Changing...">Change display name</.button>
+            <.button phx-disable-with="Changing..."><%= gettext("Change display name") %></.button>
           </:actions>
         </.simple_form>
       </div>
@@ -43,7 +44,7 @@ defmodule TrWeb.UserSettingsLive do
             required
           />
           <:actions>
-            <.button phx-disable-with="Changing...">Change Email</.button>
+            <.button phx-disable-with="Changing..."><%= gettext("Change Email") %></.button>
           </:actions>
         </.simple_form>
       </div>
@@ -78,7 +79,7 @@ defmodule TrWeb.UserSettingsLive do
             required
           />
           <:actions>
-            <.button phx-disable-with="Changing...">Change Password</.button>
+            <.button phx-disable-with="Changing..."><%= gettext("Change Password") %></.button>
           </:actions>
         </.simple_form>
       </div>
@@ -96,7 +97,7 @@ defmodule TrWeb.UserSettingsLive do
             checked={@current_user.accept_emails}
           />
           <:actions>
-            <.button phx-disable-with="Changing...">Change Accept Emails</.button>
+            <.button phx-disable-with="Changing..."><%= gettext("Change Accept Emails") %></.button>
           </:actions>
         </.simple_form>
       </div>
@@ -108,10 +109,10 @@ defmodule TrWeb.UserSettingsLive do
     socket =
       case Accounts.update_user_email(socket.assigns.current_user, token) do
         :ok ->
-          put_flash(socket, :info, "Email changed successfully.")
+          put_flash(socket, :info, gettext("Email changed successfully."))
 
         :error ->
-          put_flash(socket, :error, "Email change link is invalid or it has expired.")
+          put_flash(socket, :error, gettext("Email change link is invalid or it has expired."))
       end
 
     {:ok, push_navigate(socket, to: ~p"/users/settings")}
@@ -161,7 +162,7 @@ defmodule TrWeb.UserSettingsLive do
           |> Accounts.change_user_display_name(params)
           |> to_form()
 
-        info = "Display name changed successfully."
+        info = gettext("Display name changed successfully.")
 
         {:noreply,
          socket
@@ -187,7 +188,7 @@ defmodule TrWeb.UserSettingsLive do
           &url(~p"/users/settings/confirm_email/#{&1}")
         )
 
-        info = "A link to confirm your email change has been sent to the new address."
+        info = gettext("A link to confirm your email change has been sent to the new address.")
         {:noreply, socket |> put_flash(:info, info) |> assign(email_form_current_password: nil)}
 
       {:error, changeset} ->
@@ -240,7 +241,7 @@ defmodule TrWeb.UserSettingsLive do
         {:noreply,
          socket
          |> assign(trigger_submit: true, accept_emails_form: accept_emails_form)
-         |> put_flash(:info, "Accept emails changed successfully.")}
+         |> put_flash(:info, gettext("Accept emails changed successfully."))}
 
       {:error, changeset} ->
         {:noreply, assign(socket, accept_emails_form: to_form(changeset))}

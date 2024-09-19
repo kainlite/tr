@@ -50,7 +50,7 @@ defmodule TrWeb.HomeLive do
                       />
                     </svg>
                   </div>
-                  <div style="margin-left: 5px;">Sign in with GitHub</div>
+                  <div style="margin-left: 5px;"><%= gettext("Sign in with GitHub") %></div>
                 </a>
               </div>
               <div style="display:flex; flex-direction:column; width:368px; text-center items-center justify-center">
@@ -91,7 +91,7 @@ defmodule TrWeb.HomeLive do
                     </svg>
                   </div>
                   <div style="margin-left: 27px;">
-                    Sign in with Google
+                    <%= gettext("Sign in with Google") %>
                   </div>
                 </a>
               </div>
@@ -101,7 +101,7 @@ defmodule TrWeb.HomeLive do
 
         <div class="m-auto">
           <p class="text-[1.4rem] justify-center font-semibold">
-            Do you need help with your project?
+            <%= gettext("DevOps on demand, send us a message") %>
             <a href="mailto:gabriel@redbeard.team" class=" h-auto w-[217px]">
               Contact us
             </a>
@@ -116,7 +116,7 @@ defmodule TrWeb.HomeLive do
               href=""
               onclick="Calendly.initPopupWidget({url: 'https://calendly.com/kainlite/15min'});return false;"
             >
-              Schedule time with us
+              <%= gettext("Schedule time with us") %>
             </a>
           </p>
 
@@ -138,7 +138,7 @@ defmodule TrWeb.HomeLive do
         <% end %>
       </div>
       <.link navigate={~p"/blog"} aria-label="blog" class="text-center items-center m-4 ">
-        More...
+        <%= gettext("More...") %>
       </.link>
     </div>
     """

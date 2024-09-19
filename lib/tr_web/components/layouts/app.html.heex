@@ -39,7 +39,7 @@
                 href={~p"/admin/dashboard?comments=unapproved"}
                 class="text-[1.25rem] leading-6 text-[#0069d9] dark:text-[rgb(253 79 0 / var(--tw-text-opacity))] font-semibold hover:text-zinc-700"
               >
-                Dashboard
+                <%= gettext("Dashboard") %>
               </.link>
             </li>
           <% end %>
@@ -57,7 +57,7 @@
               method="delete"
               class="text-[1.25rem] leading-6 text-[#0069d9] dark:text-[rgb(253 79 0 / var(--tw-text-opacity))] font-semibold hover:text-zinc-700"
             >
-              Log out
+              <%= gettext("Log out") %>
             </.link>
           </li>
         <% else %>
@@ -66,7 +66,7 @@
               href={~p"/users/log_in"}
               class="text-[1.25rem] leading-6 text-[#0069d9] dark:text-[rgb(253 79 0 / var(--tw-text-opacity))] font-semibold hover:text-zinc-700"
             >
-              Log in
+              <%= gettext("Log in") %>
             </.link>
           </li>
           <li class="order-60">
@@ -74,7 +74,7 @@
               href={~p"/users/register"}
               class="text-[1.25rem] leading-6 text-[#0069d9] dark:text-[rgb(253 79 0 / var(--tw-text-opacity))] font-semibold hover:text-zinc-700"
             >
-              Register
+              <%= gettext("Register") %>
             </.link>
           </li>
         <% end %>

@@ -60,7 +60,7 @@ defmodule TrWeb.PostComponent do
               navigate={~p"/blog/#{@post.id}"}
               class="mt-4 inline-block text-blue-500 float-right text-base font-semibold"
             >
-              Read more...
+              <%= gettext("Read more...") %>
             </.link>
           </div>
           <div class="absolute bottom-0 left-6">

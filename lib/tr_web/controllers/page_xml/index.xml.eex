@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Fractional DevOps Services | Linux, Kubernetes & AWS Experts | Red Beard Team</title>
+    <title><%= gettext "Fractional DevOps Services | Linux, Kubernetes & AWS Experts | Red Beard Team" %></title>
     <link><%= url(~p"/blog") %></link>
     <atom:link href="<%= ~p"/index.xml" %>" rel="self" type="application/rss+xml" />
-    <description>Red Beard Team offers expert fractional DevOps services specializing in Linux, Kubernetes, AWS, Terraform, Docker, and more. Transform your infrastructure with our tailored solutions. Explore insights, tutorials, and experiments across the tech landscape.
+    <description><%= gettext("Red Beard Team offers expert fractional DevOps services specializing in Linux, Kubernetes,
+    AWS, Terraform, Docker, and more. Transform your infrastructure with our tailored solutions. Explore insights,
+    tutorials, and experiments across the tech landscape.") %>
     </description>
     <language>en</language>
     <copyright>Copyright <%= DateTime.utc_now.year %> Red Beard Team </copyright>

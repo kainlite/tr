@@ -51,7 +51,7 @@ defmodule TrWeb.BlogLive do
                     />
                   </svg>
                 </div>
-                <div style="margin-left: 5px;">Sign in with GitHub</div>
+                <div style="margin-left: 5px;"><%= gettext("Sign in with GitHub") %></div>
               </a>
             </div>
             <div style="display:flex; flex-direction:column; width:368px; text-center items-center justify-center">
@@ -92,7 +92,7 @@ defmodule TrWeb.BlogLive do
                   </svg>
                 </div>
                 <div style="margin-left: 27px;">
-                  Sign in with Google
+                  <%= gettext("Sign in with Google") %>
                 </div>
               </a>
             </div>

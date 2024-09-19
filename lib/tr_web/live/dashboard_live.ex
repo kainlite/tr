@@ -37,9 +37,9 @@ defmodule TrWeb.DashboardLive do
     <div class="mx-auto">
       <div class="float-right">
         <div class="flex flex-col">
-          <span>Registered users: <%= Tr.Accounts.get_users_count() %></span>
-          <span>Total comments: <%= Tr.Post.get_comments_count() %></span>
-          <span>Connected users: <%= @user_stats.total %></span>
+          <span><%= gettext("Registered users:") %> <%= Tr.Accounts.get_users_count() %></span>
+          <span><%= gettext("Total comments:") %> <%= Tr.Post.get_comments_count() %></span>
+          <span><%= gettext("Connected users:") %> <%= @user_stats.total %></span>
         </div>
         <ul class="list-none text-base bg-gray-100 rounded-lg p-4 shadow-md dark:invert">
           <%= for {room, count} <- @user_stats.per_room do %>
@@ -48,20 +48,20 @@ defmodule TrWeb.DashboardLive do
         </ul>
       </div>
 
-      <h2>Admin Dashboard</h2>
+      <h2><%= gettext("Admin Dashboard") %></h2>
 
       <.link
         href={~p"/admin/dashboard?comments=all"}
         class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700 dark:invert"
       >
-        All comments
+        <%= gettext("All comments") %>
       </.link>
       |
       <.link
         href={~p"/admin/dashboard?comments=unapproved"}
         class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700 dark:invert"
       >
-        Unapproved comments
+        <%= gettext("Unapproved comments") %>
       </.link>
 
       <.table id="comments" rows={@comments}>

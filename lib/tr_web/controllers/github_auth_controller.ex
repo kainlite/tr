@@ -13,7 +13,7 @@ defmodule TrWeb.GithubAuthController do
       |> redirect(to: ~p"/blog", profile: profile)
     else
       conn
-      |> put_flash(:error, "Email not verified")
+      |> put_flash(:error, gettext("Email not verified"))
     end
   end
 

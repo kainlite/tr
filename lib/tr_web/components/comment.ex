@@ -6,7 +6,8 @@ defmodule TrWeb.CommentComponent do
 
   def render_comment(assigns) do
     ~H"""
-    <% body = if @comment.approved, do: @comment.body, else: "Comment hidden, awaiting moderation..." %>
+    <% body =
+      if @comment.approved, do: @comment.body, else: gettext("Comment hidden, awaiting moderation...") %>
     <li class={@classes}>
       <div class="flex">
         <img class="h-12 rounded-full mr-4" src={@avatar_url} alt="User Avatar" />
@@ -52,7 +53,7 @@ defmodule TrWeb.CommentComponent do
     <% end %>
     <.simple_form for={@form} id="comment_form" phx-submit="save">
       <.error :if={@check_errors}>
-        Oops, something went wrong! Please check the errors below.
+        <%= gettext("Oops, something went wrong! Please check the errors below.") %>
       </.error>
 
       <.input field={@form[:body]} type="textarea" label="Message" required />
@@ -65,7 +66,9 @@ defmodule TrWeb.CommentComponent do
       <.input field={@form[:slug]} type="hidden" id="hidden_post_slug" value={@post.id} />
 
       <:actions>
-        <.button id="comment_submit" phx-disable-with="Saving..." class="w-full">Send</.button>
+        <.button id="comment_submit" phx-disable-with={gettext("Saving...")} class="w-full">
+          Send
+        </.button>
       </:actions>
     </.simple_form>
     """

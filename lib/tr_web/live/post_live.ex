@@ -122,6 +122,8 @@ defmodule TrWeb.PostLive do
 
     <%= TrWeb.AdsComponent.render_large_ad(assigns) %>
 
+    <%= raw(@post.body) %>
+
     <%= cond do %>
       <% @post.sponsored && @current_user && Tr.SponsorsCache.sponsor?(@current_user.github_username) -> %>
         <br />
@@ -140,38 +142,38 @@ defmodule TrWeb.PostLive do
         <br />
         <%= raw(Earmark.as_html!(decrypt(@post.encrypted_content))) %>
       <% @post.sponsored && @current_user && !Tr.SponsorsCache.sponsor?(@current_user.github_username) -> %>
-        <br /> To see this article, please visit the
-        <.link href="https://github.com/sponsors/kainlite#sponsors" class="">
-          sponsor's page.
-        </.link>
+        <br /> <%= gettext("To see this article, please visit the
+        ") %><.link href="https://github.com/sponsors/kainlite#sponsors" class="">
+          <%= gettext "sponsor's page.
+          " %></.link>
         <br />
         <br />
         <br />
       <% @post.sponsored && is_nil(@current_user) -> %>
-        <br /> To see this article, please visit the
+        <br /> <%= gettext("To see this article, please visit the") %>
         <.link href="https://github.com/sponsors/kainlite#sponsors" class="">
-          sponsor's page.
+          <%= gettext("sponsor's page.") %>
         </.link>
         <br />
         <br />
         <br />
-      <% !@post.sponsored -> %>
-        <%= raw(@post.body) %>
+      <% true -> %>
+      
     <% end %>
 
     <div class="mx-auto max-w-4xl">
       <%= unless @current_user do %>
         <.header class="text-center">
-          No account? Register
+          <%= gettext("No account? Register") %>
           <.link navigate={~p"/users/register"} class="font-semibold text-brand hover:underline">
-            here
+            <%= gettext("here") %>
           </.link>
           <:subtitle>
-            Already registered?
+            <%= gettext("Already registered?") %>
             <.link navigate={~p"/users/log_in"} class="font-semibold text-brand hover:underline">
-              Sign in
+              <%= gettext("Sign in") %>
             </.link>
-            to your account now.
+            <%= gettext("to your account now.") %>
           </:subtitle>
         </.header>
 
@@ -198,7 +200,7 @@ defmodule TrWeb.PostLive do
                 />
               </svg>
             </div>
-            <div style="margin-left: 5px;">Sign in with GitHub</div>
+            <div style="margin-left: 5px;"><%= gettext("Sign in with GitHub") %></div>
           </a>
         </div>
 
@@ -240,7 +242,7 @@ defmodule TrWeb.PostLive do
               </svg>
             </div>
             <div style="margin-left: 27px;">
-              Sign in with Google
+              <%= gettext("Sign in with Google") %>
             </div>
           </a>
         </div>
@@ -249,7 +251,7 @@ defmodule TrWeb.PostLive do
       <div class="mx-auto">
         <ul class="list-none mb-0">
           <li class="px-1 mb-0">
-            <h4 class="font-bold  float-left">Comments</h4>
+            <h4 class="font-bold  float-left"><%= gettext("Comments") %></h4>
             <p class="text-sm float-right mb-0 p-0 font-bold ">
               Online: <%= @connected_users %>
               <span class="flex w-3 h-3 me-3 bg-green-500 rounded-full float-right mr-[5px]"></span>
@@ -303,7 +305,7 @@ defmodule TrWeb.PostLive do
         </CommentComponent.render_comment_input>
       <% else %>
         <p class="text-sm font-bold text-center">
-          Please sign in to be able to write comments.
+          <%= gettext("Please sign in to be able to write comments.") %>
         </p>
       <% end %>
 
@@ -317,7 +319,7 @@ defmodule TrWeb.PostLive do
   @impl true
   def handle_event("react", %{"value" => value, "slug" => slug} = params, socket) do
     if is_nil(socket.assigns.current_user) do
-      {:noreply, socket |> put_flash(:error, "You need to be logged in to react.")}
+      {:noreply, socket |> put_flash(:error, gettext("You need to be logged in to react."))}
     else
       params =
         Map.merge(
@@ -338,7 +340,8 @@ defmodule TrWeb.PostLive do
 
             {:error, _} ->
               {:noreply,
-               socket |> put_flash(:error, "There is been an error removing your reaction.")}
+               socket
+               |> put_flash(:error, gettext("There is been an error removing your reaction."))}
           end
 
         false ->
@@ -349,7 +352,8 @@ defmodule TrWeb.PostLive do
 
             {:error, _} ->
               {:noreply,
-               socket |> put_flash(:error, "There is been an error saving your reaction.")}
+               socket
+               |> put_flash(:error, gettext("There is been an error saving your reaction."))}
           end
       end
     end
@@ -392,17 +396,17 @@ defmodule TrWeb.PostLive do
           {:noreply,
            socket
            |> assign_form(Tr.Post.change_comment(%Tr.Post.Comment{}))
-           |> put_flash(:info, "Comment saved successfully.")}
+           |> put_flash(:info, gettext("Comment saved successfully."))}
 
         {:error, %Ecto.Changeset{} = changeset} ->
           {:noreply,
            socket
            |> assign(check_errors: true)
            |> assign_form(changeset)
-           |> put_flash(:error, "There is been an error saving your comment.")}
+           |> put_flash(:error, gettext("There is been an error saving your comment."))}
       end
     else
-      {:noreply, socket |> put_flash(:error, "You need to validate your account")}
+      {:noreply, socket |> put_flash(:error, gettext("You need to validate your account"))}
     end
   end
 

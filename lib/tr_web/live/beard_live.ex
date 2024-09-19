@@ -9,174 +9,188 @@ defmodule TrWeb.BeardLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="flex flex-col">
-      <h1 class="justify-center items-center m-auto">Red Beard Team</h1>
+    <div class="flex flex-col bg-gray-100 dark:bg-gray-900 min-h-screen">
       <div class="w-72 mt-12 h-[21rem] m-auto justify-center">
         <img
           src={~p"/images/logo-beard.webp"}
-          alt="Red Beard logo"
+          alt={gettext("Red Beard logo")}
           class="max-h-72 max-w-72 rounded-full scale-125"
         />
       </div>
 
-      <div class="flex flex-col">
-        <div class="m-auto">
-          <div class="justify-center text-center">
-            <span class="font-bold">
-              Get a Free 2-Hour DevOps Assessment — Accelerate Your Cloud Transformation Today!
-            </span>
-            <p class="text-[1.4rem] justify-center font-semibold">
-              Ready to Elevate Your Infrastructure?
-              <a href="mailto:gabriel@redbeard.team" class=" h-auto w-[217px]">
-                Contact us
-              </a>
-              or
-              <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
-              <script
-                src="https://assets.calendly.com/assets/external/widget.js"
-                type="text/javascript"
-                async
-              >
-              </script>
-              <a
-                href=""
-                onclick="Calendly.initPopupWidget({url: 'https://calendly.com/kainlite/15min'});return false;"
-              >
-                Schedule a Consultation Now!
-              </a>
+      <section class="text-center mt-8">
+        <h2 class="text-2xl font-bold">
+          <%= gettext("Get a Free 2-Hour DevOps Assessment — Accelerate Your Cloud
+        Transformation Today!") %>
+        </h2>
+        <p class="text-xl mt-4">
+          <%= gettext("Ready to Elevate Your Infrastructure?") %>
+          <a href="mailto:gabriel@redbeard.team" class="text-blue-500 underline">
+            <%= gettext("Contact us") %>
+          </a>
+          or
+          <a
+            href=""
+            onclick="Calendly.initPopupWidget({url: 'https://calendly.com/kainlite/45min'});return false;"
+            class="text-blue-500 underline"
+          >
+            <%= gettext("Schedule a Consultation Now!") %>
+          </a>
+        </p>
+        <p class="text-lg mt-4">
+          <%= gettext(
+            "Expert Support on Your Cloud Journey — from Innovative Architecture to Robust Security —
+          Specializing in Automation and Best Practices."
+          ) %>
+        </p>
+
+        <p class="text-lg mt-4">
+          <%= gettext(
+            "DevOps on demand, need help with linux, CI/CD, Docker, Kubernetes, AWS, send us a message."
+          ) %>
+        </p>
+        <br />
+        <h4 class="mx-auto"><%= gettext("Flexible Engagement Models Tailored to Your Needs") %></h4>
+        <p class="text-lg mt-2">
+          <ul class="list-outside mt-2 text-left inline-block ml-60">
+            <li>
+              <%= gettext(
+                "Fractional Services: Access high-level expertise without the full-time cost."
+              ) %>
+            </li>
+            <li>
+              <%= gettext("Project-Based Contracts: Define objectives and outcomes upfront.") %>
+            </li>
+            <li>
+              <%= gettext(
+                "Part-Time Consulting: Expertise on a part-time basis fixed hours per day dedicated
+            exclusively to you."
+              ) %>
+            </li>
+            <li><%= gettext("Full-Time Consulting: Dedicated support for your team.") %></li>
+          </ul>
+        </p>
+      </section>
+
+      <section class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-8">
+        <div
+          id="architecture"
+          class="bg-white dark:bg-zinc-700 dark:text-gray-200 shadow-lg rounded-lg overflow-hidden"
+        >
+          <img
+            src={~p"/images/architecture.png"}
+            alt={gettext("Cloud Architecture")}
+            class="w-full h-56 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="text-xl font-bold"><%= gettext("Cloud Architecture") %></h3>
+            <p class="mt-2 text-gray-700 dark:text-gray-300">
+              <%= gettext(
+                "Designing Robust, Scalable, and Secure Cloud Infrastructures for optimized performance across AWS and Azure."
+              ) %>
             </p>
-            <p class="text-[1.4rem] justify-center font-semibold">
-              Expert Support on Your Cloud Journey — from Innovative Architecture to Robust Security — Specializing in
-              Automation and Best Practices.
-            </p>
-
-            <br />
-
-            <p class="text-[1.4rem] justify-center font-semibold">
-              Flexible Engagement Models Tailored to Your Needs:
-              <ul>
-                <li class="text-[1.4rem] justify-center font-semibold">
-                  Hourly Billing: Pay only for the time you need.
-                </li>
-                <li class="text-[1.4rem] justify-center font-semibold">
-                  Project-Based Contracts: Define objectives and outcomes upfront.
-                </li>
-                <li class="text-[1.4rem] justify-center font-semibold">
-                  Part-Time Consulting: Expertise on a part-time basis.
-                </li>
-                <li class="text-[1.4rem] justify-center font-semibold">
-                  Full-Time Consulting: Dedicated support for your team.
-                </li>
-                <li class="text-[1.4rem] justify-center font-semibold">
-                  Fractional Services: Access high-level expertise without the full-time cost.
-                </li>
-              </ul>
-            </p>
-          </div>
-          <div class="flex flex-row flex-wrap columns-3 text-center justify-center">
-            <div id="architecture">
-              <div class="relative">
-                <div class="bg-white dark:bg-zinc-700 dark:text-gray-200 shadow-md rounded-lg overflow-hidden w-[39rem]
-                    h-[24rem] m-4">
-                  <div class="p-6">
-                    <h3>Architecture</h3>
-                    <p class="mx-auto sm:text-base sm:leading-7">
-                      At Red Beard, we specialize in designing and implementing robust, scalable, and secure cloud infrastructures tailored to meet your business needs.
-                      Our cloud architecture services encompass a comprehensive approach, from initial strategy and planning to deployment and ongoing optimization.
-                      We ensure your infrastructure is not only aligned with industry best practices but also optimized for performance, cost-efficiency, and security.
-                      Whether you're migrating to the cloud, modernizing your existing systems, or building from the ground up, our team of experts leverages leading cloud platforms like AWS, Azure, and Google Cloud to deliver a resilient and future-proof architecture.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div id="iac">
-              <div class="relative">
-                <div class="bg-white dark:bg-zinc-700 dark:text-gray-200 shadow-md rounded-lg overflow-hidden w-[39rem]
-                    h-[24rem] m-4">
-                  <div class="p-6">
-                    <h3>Infrastructure as code</h3>
-                    <p class="mx-auto sm:text-base sm:leading-7">
-                      Red Beard empowers your organization with Infrastructure as Code (IaC), enabling you to manage and provision your entire infrastructure through code.
-                      By automating the setup and management of your infrastructure, we eliminate manual processes, reduce errors, and ensure consistency across your environments.
-                      Our IaC services include the design, implementation, and maintenance of infrastructure using tools
-                      like Terraform, Pulumi, and Ansible.
-                      This approach not only accelerates deployment times but also enhances scalability, security, and reliability, allowing your teams to focus on innovation rather than infrastructure management.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div id="containers">
-              <div class="relative">
-                <div class="bg-white dark:bg-zinc-700 dark:text-gray-200 shadow-md rounded-lg overflow-hidden w-[39rem]
-                    h-[24rem] m-4">
-                  <div class="p-6">
-                    <h3>Containers</h3>
-                    <p class="mx-auto sm:text-base sm:leading-7">
-                      At Red Beard, we streamline your application deployment and management through expert containerization and Kubernetes services.
-                      We design, implement, and optimize containerized environments to ensure scalability, reliability, and ease of management.
-                      Our team leverages Kubernetes to orchestrate your containers, automate deployments, and enhance resilience, enabling your applications to thrive in dynamic cloud environments.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div id="cicd">
-              <div class="relative">
-                <div class="bg-white dark:bg-zinc-700 dark:text-gray-200 shadow-md rounded-lg overflow-hidden w-[39rem]
-                    h-[24rem] m-4">
-                  <div class="p-6">
-                    <h3>CI/CD Pipelines</h3>
-                    <p class="mx-auto sm:text-base sm:leading-7">
-                      Red Beard accelerates your software development lifecycle with our Continuous Integration and Continuous Deployment (CI/CD) services.
-                      We design and implement CI/CD pipelines that automate testing, integration, and deployment, ensuring faster delivery of high-quality code.
-                      By streamlining these processes, we help your teams release features more efficiently, reduce downtime, and maintain a competitive edge.
-                      Our main tools are Github Actions, Gitlab CI/CD, ArgoCD, among others.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div id="monitoring">
-              <div class="relative">
-                <div class="bg-white dark:bg-zinc-700 dark:text-gray-200 shadow-md rounded-lg overflow-hidden w-[39rem]
-                    h-[24rem] m-4">
-                  <div class="p-6">
-                    <h3>Observability and monitoring</h3>
-                    <p class="mx-auto sm:text-base sm:leading-7">
-                      At Red Beard, we provide comprehensive monitoring and observability solutions to ensure the health and performance of your infrastructure and applications.
-                      Utilizing tools like Datadog, Grafana, Prometheus, or your preferred platform, we set up robust monitoring systems that offer real-time insights, alerting, and analytics.
-                      Our services help you proactively identify issues, optimize performance, and maintain system reliability, giving you full visibility into your operations.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div id="security">
-              <div class="relative">
-                <div class="bg-white dark:bg-zinc-700 dark:text-gray-200 shadow-md rounded-lg overflow-hidden w-[39rem]
-                    h-[24rem] m-4">
-                  <div class="p-6">
-                    <h3>Security</h3>
-                    <p class="mx-auto sm:text-base sm:leading-7">
-                      Security is at the core of every service we provide at Red Beard.
-                      We integrate robust security practices into every aspect of your infrastructure, from cloud architecture and IaC to CI/CD pipelines and monitoring.
-                      Our approach ensures that security is a continuous focus, with proactive measures implemented at every stage of your development and deployment processes.
-                      By embedding security into your workflows, we help safeguard your data, applications, and infrastructure against evolving threats, ensuring compliance and peace of mind.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-      </div>
+
+        <div
+          id="iac"
+          class="bg-white dark:bg-zinc-700 dark:text-gray-200 shadow-lg rounded-lg overflow-hidden"
+        >
+          <img
+            src={~p"/images/terraform-workflow.png"}
+            alt={gettext("Infrastructure as Code")}
+            class="w-full h-56 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="text-xl font-bold">Infrastructure as Code</h3>
+            <p class="mt-2 text-gray-700 dark:text-gray-300">
+              <%= gettext(
+                "Automate, Simplify, and Scale Your Infrastructure with Terraform, Pulumi, and Ansible."
+              ) %>
+            </p>
+          </div>
+        </div>
+
+        <div
+          id="containers"
+          class="bg-white dark:bg-zinc-700 dark:text-gray-200 shadow-lg rounded-lg overflow-hidden"
+        >
+          <img
+            src={~p"/images/docker-kubernetes.png"}
+            alt={gettext("Containerization and Orchestration")}
+            class="w-full h-56
+          object-fill"
+          />
+          <div class="p-6">
+            <h3 class="text-xl font-bold"><%= gettext("Containerization and Orchestration") %></h3>
+            <p class="mt-2 text-gray-700 dark:text-gray-300">
+              <%= gettext(
+                "Streamline Application Deployment with Docker and Kubernetes for scalable, portable solutions."
+              ) %>
+            </p>
+          </div>
+        </div>
+
+        <div
+          id="cicd"
+          class="bg-white dark:bg-zinc-700 dark:text-gray-200 shadow-lg rounded-lg overflow-hidden"
+        >
+          <img
+            src={~p"/images/github-actions.png"}
+            alt={gettext("CI/CD Pipelines")}
+            class="w-full h-56 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="text-xl font-bold">CI/CD Pipelines</h3>
+            <p class="mt-2 text-gray-700 dark:text-gray-300">
+              <%= gettext(
+                "Accelerate Software Delivery with Automated CI/CD Solutions using GitHub Actions, GitLab, and
+              ArgoCD."
+              ) %>
+            </p>
+          </div>
+        </div>
+
+        <div
+          id="monitoring"
+          class="bg-white dark:bg-zinc-700 dark:text-gray-200 shadow-lg rounded-lg overflow-hidden"
+        >
+          <img
+            src={~p"/images/prometheus-dashboards.png"}
+            alt={gettext("Observability and Monitoring")}
+            class="w-full h-56 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="text-xl font-bold"><%= gettext("Observability and Monitoring") %></h3>
+            <p class="mt-2 text-gray-700 dark:text-gray-300">
+              <%= gettext(
+                "Gain full visibility with comprehensive monitoring tools like Datadog, Prometheus, and
+              Grafana."
+              ) %>
+            </p>
+          </div>
+        </div>
+
+        <div
+          id="security"
+          class="bg-white dark:bg-zinc-700 dark:text-gray-200 shadow-lg rounded-lg overflow-hidden"
+        >
+          <img
+            src={~p"/images/cybersecurity.webp"}
+            alt={gettext("Integrated Security")}
+            class="w-full h-56 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="text-xl font-bold"><%= gettext("Integrated Security") %></h3>
+            <p class="mt-2 text-gray-700 dark:text-gray-300">
+              <%= gettext(
+                "Embed robust security throughout your infrastructure with secure architecture, IaC, and
+              compliance solutions."
+              ) %>
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
     """
   end

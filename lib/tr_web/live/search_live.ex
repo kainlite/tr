@@ -18,7 +18,7 @@ defmodule TrWeb.SearchLive do
         <.input
           type="search"
           field={f[:q]}
-          placeholder="Try full terms like: linux, kubernetes, elixir..."
+          placeholder={gettext("Try full terms like: linux, kubernetes, elixir...")}
           value={@q}
           autofocus="true"
           class="max-w-2xl border border-gray-100 text-2xl active:border-0 active:border-gray-200 focus:border-gray-200 focus:ring-0 bg-gray-50"

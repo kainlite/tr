@@ -29,11 +29,14 @@ defmodule TrWeb.PageController do
     |> put_resp_content_type("application/feed+json")
     |> json(%{
       version: "https://jsonfeed.org/version/1.1",
-      title: "Fractional DevOps Services | Linux, Kubernetes & AWS Experts | Red Beard Team",
+      title:
+        gettext("Fractional DevOps Services | Linux, Kubernetes & AWS Experts | Red Beard Team"),
       home_page_url: "https://redbeard.team/",
       feed_url: "https://redbeard.team/index.json",
       description:
-        "Red Beard Team offers expert fractional DevOps services specializing in Linux, Kubernetes, AWS, Terraform, Docker, and more. Transform your infrastructure with our tailored solutions. Explore insights, tutorials, and experiments across the tech landscape.",
+        gettext(
+          "Red Beard Team offers expert fractional DevOps services specializing in Linux, Kubernetes, AWS, Terraform, Docker, and more. Transform your infrastructure with our tailored solutions. Explore insights, tutorials, and experiments across the tech landscape."
+        ),
       favicon: "https://redbeard.team/favicon.ico",
       language: "en-US",
       items:

@@ -15,24 +15,26 @@ defmodule TrWeb.UserResetPasswordLive do
         phx-change="validate"
       >
         <.error :if={@form.errors != []}>
-          Oops, something went wrong! Please check the errors below.
+          <%= gettext("Oops, something went wrong! Please check the errors below.") %>
         </.error>
 
         <.input field={@form[:password]} type="password" label="New password" required />
         <.input
           field={@form[:password_confirmation]}
           type="password"
-          label="Confirm new password"
+          label={gettext("Confirm new password")}
           required
         />
         <:actions>
-          <.button phx-disable-with="Resetting..." class="w-full">Reset Password</.button>
+          <.button phx-disable-with="Resetting..." class="w-full">
+            <%= gettext("Reset Password") %>
+          </.button>
         </:actions>
       </.simple_form>
 
       <p class="text-center text-sm mt-4">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/log_in"}>Log in</.link>
+        <.link href={~p"/users/register"}><%= gettext("Register") %></.link>
+        | <.link href={~p"/users/log_in"}><%= gettext("Log in") %></.link>
       </p>
     </div>
     """
@@ -60,7 +62,7 @@ defmodule TrWeb.UserResetPasswordLive do
       {:ok, _} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Password reset successfully.")
+         |> put_flash(:info, gettext("Password reset successfully."))
          |> redirect(to: ~p"/users/log_in")}
 
       {:error, changeset} ->
@@ -78,7 +80,7 @@ defmodule TrWeb.UserResetPasswordLive do
       assign(socket, user: user, token: token)
     else
       socket
-      |> put_flash(:error, "Reset password link is invalid or it has expired.")
+      |> put_flash(:error, gettext("Reset password link is invalid or it has expired."))
       |> redirect(to: ~p"/")
     end
   end
