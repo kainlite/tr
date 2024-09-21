@@ -8,7 +8,7 @@ defmodule TrWeb.UserForgotPasswordLive do
     <div class="mx-auto max-w-sm">
       <.header class="text-center">
         <%= gettext("Forgot your password?") %>
-        <:subtitle><%= gettext "We'll send a password reset link to your inbox" %></:subtitle>
+        <:subtitle><%= gettext("We'll send a password reset link to your inbox") %></:subtitle>
       </.header>
 
       <.simple_form for={@form} id="reset_password_form" phx-submit="send_email">

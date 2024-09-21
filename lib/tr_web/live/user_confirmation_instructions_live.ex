@@ -8,7 +8,7 @@ defmodule TrWeb.UserConfirmationInstructionsLive do
     <div class="mx-auto max-w-sm">
       <.header class="text-center">
         <%= gettext("No confirmation instructions received?") %>
-        <:subtitle><%= gettext "We'll send a new confirmation link to your inbox" %></:subtitle>
+        <:subtitle><%= gettext("We'll send a new confirmation link to your inbox") %></:subtitle>
       </.header>
 
       <.simple_form for={@form} id="resend_confirmation_form" phx-submit="send_instructions">
