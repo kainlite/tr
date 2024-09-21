@@ -18,17 +18,23 @@
           </.link>
         </li>
         <li class="order-99">
-          <.link navigate={~p"/blog/search"} aria-label="search">
+          <.link
+            navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/search"}
+            aria-label="search"
+          >
             <.icon name="hero-magnifying-glass" class="w-10 h-10" />
           </.link>
         </li>
         <li class="order-90">
-          <.link navigate={~p"/blog/tags"} aria-label="labels">
+          <.link
+            navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/tags"}
+            aria-label="labels"
+          >
             <.icon name="hero-tag" class="w-10 h-10" />
           </.link>
         </li>
         <li class="order-100">
-          <.link navigate={~p"/blog"} aria-label="blog">
+          <.link navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog"} aria-label="blog">
             <.icon name="hero-list-bullet" class="w-10 h-10" />
           </.link>
         </li>
@@ -45,7 +51,7 @@
           <% end %>
           <li class="order-70">
             <.link
-              href={~p"/users/settings"}
+              href={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/users/settings"}
               class="text-[1.25rem] leading-6 text-[#0069d9] dark:text-[rgb(253 79 0 / var(--tw-text-opacity))] font-semibold hover:text-zinc-700"
             >
               <%= @current_user.email %>
@@ -63,7 +69,7 @@
         <% else %>
           <li class="order-50">
             <.link
-              href={~p"/users/log_in"}
+              href={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/users/log_in"}
               class="text-[1.25rem] leading-6 text-[#0069d9] dark:text-[rgb(253 79 0 / var(--tw-text-opacity))] font-semibold hover:text-zinc-700"
             >
               <%= gettext("Log in") %>
@@ -71,7 +77,7 @@
           </li>
           <li class="order-60">
             <.link
-              href={~p"/users/register"}
+              href={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/users/register"}
               class="text-[1.25rem] leading-6 text-[#0069d9] dark:text-[rgb(253 79 0 / var(--tw-text-opacity))] font-semibold hover:text-zinc-700"
             >
               <%= gettext("Register") %>
@@ -83,7 +89,7 @@
     <nav class="flex flex-row">
       <ul class="float-left">
         <li class="">
-          <.link navigate="/" class="">
+          <.link navigate="/#{Gettext.get_locale(TrWeb.Gettext)}" class="">
             <img
               src={~p"/images/logo-beard.webp"}
               alt="Red Beard logo"

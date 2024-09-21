@@ -137,7 +137,11 @@ defmodule TrWeb.HomeLive do
           <%= TrWeb.PostComponent.render_post_card(%{post: post}) %>
         <% end %>
       </div>
-      <.link navigate={~p"/blog"} aria-label="blog" class="text-center items-center m-4 ">
+      <.link
+        navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog"}
+        aria-label="blog"
+        class="text-center items-center m-4 "
+      >
         <%= gettext("More...") %>
       </.link>
     </div>

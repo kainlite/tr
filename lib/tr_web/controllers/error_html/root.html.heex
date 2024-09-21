@@ -27,7 +27,7 @@
       <section class="">
         <ul class="list-none float-left">
           <li class="">
-            <.link navigate="/" class="">
+            <.link navigate="/#{Gettext.get_locale(TrWeb.Gettext)}/" class="">
               <img
                 src={~p"/images/logo-beard.webp"}
                 alt="Red Beard team logo"
@@ -69,7 +69,7 @@
           </.link>
         </li>
         <li>
-          <.link navigate={~p"/privacy"}>
+          <.link navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/privacy"}>
             Privacy policy
           </.link>
         </li>

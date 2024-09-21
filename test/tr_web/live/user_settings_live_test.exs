@@ -33,7 +33,7 @@ defmodule TrWeb.UserSettingsLiveTest do
     end
 
     test "updates the user display name", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, ~p"/users/settings")
+      {:ok, lv, _html} = live(conn, ~p"/en/users/settings")
 
       result =
         lv
@@ -54,7 +54,7 @@ defmodule TrWeb.UserSettingsLiveTest do
     end
 
     test "updates the accept email toggle", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, ~p"/users/settings")
+      {:ok, lv, _html} = live(conn, ~p"/en/users/settings")
 
       result =
         lv
@@ -209,7 +209,7 @@ defmodule TrWeb.UserSettingsLiveTest do
       {:error, redirect} = live(conn, ~p"/users/settings/confirm_email/#{token}")
 
       assert {:live_redirect, %{to: path, flash: flash}} = redirect
-      assert path == ~p"/users/settings"
+      assert path == ~p"/en/users/settings"
       assert %{"info" => message} = flash
       assert message == "Email changed successfully."
       refute Accounts.get_user_by_email(user.email)
@@ -218,7 +218,7 @@ defmodule TrWeb.UserSettingsLiveTest do
       # use confirm token again
       {:error, redirect} = live(conn, ~p"/users/settings/confirm_email/#{token}")
       assert {:live_redirect, %{to: path, flash: flash}} = redirect
-      assert path == ~p"/users/settings"
+      assert path == ~p"/en/users/settings"
       assert %{"error" => message} = flash
       assert message == "Email change link is invalid or it has expired."
     end
@@ -226,7 +226,7 @@ defmodule TrWeb.UserSettingsLiveTest do
     test "does not update email with invalid token", %{conn: conn, user: user} do
       {:error, redirect} = live(conn, ~p"/users/settings/confirm_email/oops")
       assert {:live_redirect, %{to: path, flash: flash}} = redirect
-      assert path == ~p"/users/settings"
+      assert path == ~p"/en/users/settings"
       assert %{"error" => message} = flash
       assert message == "Email change link is invalid or it has expired."
       assert Accounts.get_user_by_email(user.email)

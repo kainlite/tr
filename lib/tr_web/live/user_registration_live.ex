@@ -11,7 +11,10 @@ defmodule TrWeb.UserRegistrationLive do
         <%= gettext("Register for an account") %>
         <:subtitle>
           <%= gettext("Already registered?") %>
-          <.link navigate={~p"/users/log_in"} class="font-semibold text-brand hover:underline">
+          <.link
+            navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/users/log_in"}
+            class="font-semibold text-brand hover:underline"
+          >
             <%= gettext("Sign in") %>
           </.link>
           <%= gettext("to your account now.") %>
@@ -24,7 +27,7 @@ defmodule TrWeb.UserRegistrationLive do
         phx-submit="save"
         phx-change="validate"
         phx-trigger-action={@trigger_submit}
-        action={~p"/users/log_in?_action=registered"}
+        action={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/users/log_in?_action=registered"}
         method="post"
       >
         <.error :if={@check_errors}>

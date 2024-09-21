@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title><%= gettext "Fractional DevOps Services | Linux, Kubernetes & AWS Experts | Red Beard Team" %></title>
-    <link><%= url(~p"/blog") %></link>
+    <title><%= gettext "Fractional DevOps Services | Linux, Kubernetes, AWS Experts | Red Beard Team" %></title>
+    <link><%= url(~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog") %></link>
     <atom:link href="<%= ~p"/index.xml" %>" rel="self" type="application/rss+xml" />
     <description><%= gettext("Red Beard Team offers expert fractional DevOps services specializing in Linux, Kubernetes,
     AWS, Terraform, Docker, and more. Transform your infrastructure with our tailored solutions. Explore insights,
@@ -17,8 +17,8 @@
     <%= for post <- @posts do %>
       <item>
         <title><%= post.title %></title>
-        <link><%= url(~p"/blog/#{post.id}") %></link>
-        <guid><%= url(~p"/blog/#{post.id}") %></guid>
+        <link><%= url(~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{post.id}") %></link>
+        <guid><%= url(~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{post.id}") %></guid>
         <description><![CDATA[ <%= post.description %> ]]></description>
         <pubDate><%= post.date |> format_date %></pubDate>
       </item>

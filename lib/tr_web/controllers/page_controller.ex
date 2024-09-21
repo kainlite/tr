@@ -5,8 +5,17 @@ defmodule TrWeb.PageController do
 
   plug :put_layout, false when action in [:sitemap, :json_sitemap]
 
+  def sitemap(conn, %{"locale" => locale}) do
+    Gettext.put_locale(TrWeb.Gettext, locale)
+    posts = Blog.posts(Gettext.get_locale(TrWeb.Gettext))
+
+    conn
+    |> put_resp_content_type("text/xml")
+    |> render("index.xml", posts: posts)
+  end
+
   def sitemap(conn, _params) do
-    posts = Blog.all_posts()
+    posts = Blog.posts(Gettext.get_locale(TrWeb.Gettext))
 
     conn
     |> put_resp_content_type("text/xml")
@@ -22,15 +31,16 @@ defmodule TrWeb.PageController do
     render(conn, "welcome.html")
   end
 
-  def json_sitemap(conn, _params) do
-    posts = Blog.all_posts()
+  def json_sitemap(conn, %{"locale" => locale}) do
+    Gettext.put_locale(TrWeb.Gettext, locale)
+    posts = Blog.posts(Gettext.get_locale(TrWeb.Gettext))
 
     conn
     |> put_resp_content_type("application/feed+json")
     |> json(%{
       version: "https://jsonfeed.org/version/1.1",
       title:
-        gettext("Fractional DevOps Services | Linux, Kubernetes & AWS Experts | Red Beard Team"),
+        gettext("Fractional DevOps Services | Linux, Kubernetes, AWS Experts | Red Beard Team"),
       home_page_url: "https://redbeard.team/",
       feed_url: "https://redbeard.team/index.json",
       description:
@@ -38,7 +48,7 @@ defmodule TrWeb.PageController do
           "Red Beard Team offers expert fractional DevOps services specializing in Linux, Kubernetes, AWS, Terraform, Docker, and more. Transform your infrastructure with our tailored solutions. Explore insights, tutorials, and experiments across the tech landscape."
         ),
       favicon: "https://redbeard.team/favicon.ico",
-      language: "en-US",
+      language: Gettext.get_locale(TrWeb.Gettext),
       items:
         for post <- posts do
           %{
@@ -50,7 +60,7 @@ defmodule TrWeb.PageController do
             summary: post.description,
             image: url(~p"/images/#{post.image}"),
             tags: Enum.join(post.tags, ", "),
-            language: "en-US",
+            language: Gettext.get_locale(TrWeb.Gettext),
             authors: [
               %{
                 name: "Gabriel"
@@ -59,6 +69,10 @@ defmodule TrWeb.PageController do
           }
         end
     })
+  end
+
+  def json_sitemap(conn, _params) do
+    json_sitemap(conn, %{locale: "en"})
   end
 
   def privacy(conn, _params) do

@@ -54,6 +54,7 @@ defmodule TrWeb do
       use Phoenix.LiveView,
         layout: {TrWeb.Layouts, :app}
 
+      on_mount TrWeb.RestoreLocale
       unquote(html_helpers())
     end
   end

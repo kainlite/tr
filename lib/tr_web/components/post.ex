@@ -13,7 +13,7 @@ defmodule TrWeb.PostComponent do
         <%= Enum.count(Tr.Blog.by_tag(@tag)) %>
       </span>
       <.link
-        navigate={~p"/blog/tags/#{@tag}"}
+        navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/tags/#{@tag}"}
         class="inline-flex items-center justify-center text-lg font-semibold"
       >
         <%= @tag %>
@@ -35,7 +35,7 @@ defmodule TrWeb.PostComponent do
           <% else %>
             <.icon name="hero-lock-open-solid" class="absolute right-6 top-1 w-7 h-7 dark:invert" />
           <% end %>
-          <.link navigate={~p"/blog/#{@post.id}"} class="">
+          <.link navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{@post.id}"} class="">
             <img
               src={~p"/images/#{@post.image}"}
               alt="Article Image"
@@ -44,7 +44,10 @@ defmodule TrWeb.PostComponent do
           </.link>
           <div class="p-6">
             <h2 class="text-xl font-bold mb-2 truncate">
-              <.link navigate={~p"/blog/#{@post.id}"} class="inline-block">
+              <.link
+                navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{@post.id}"}
+                class="inline-block"
+              >
                 <%= @post.title %>
               </.link>
               <p class="text-sm float-right font-semibold">
@@ -57,7 +60,7 @@ defmodule TrWeb.PostComponent do
           </div>
           <div class="absolute bottom-3 right-6">
             <.link
-              navigate={~p"/blog/#{@post.id}"}
+              navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{@post.id}"}
               class="mt-4 inline-block text-blue-500 float-right text-base font-semibold"
             >
               <%= gettext("Read more...") %>
@@ -67,7 +70,7 @@ defmodule TrWeb.PostComponent do
             <%= for tag <- @post.tags do %>
               <li class="bg-white dark:bg-zinc-800 dark:text-gray-200 text-base font-semibold shadow-md p-4 rounded-lg border-l-solid
               border-l-[5px] border-l-gray-700 float-left list-none">
-                <.link navigate={~p"/blog/tags/#{tag}"}>
+                <.link navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/tags/#{tag}"}>
                   <span class="inline-flex items-center justify-center text-white bg-emerald-700 rounded-full w-8 h-8 text-sm
         font-semibold">
                     <%= Enum.count(Tr.Blog.by_tag(tag)) %>

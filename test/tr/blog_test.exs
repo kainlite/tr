@@ -5,7 +5,7 @@ defmodule Tr.BlogTest do
 
   describe "Blog" do
     test "gets all posts sorted by date and filtered by published" do
-      posts = Blog.posts()
+      posts = Blog.posts("en")
 
       assert Enum.sort_by(posts, & &1.date, {:desc, Date}) == posts
       assert Enum.all?(posts, & &1.published)
@@ -30,18 +30,18 @@ defmodule Tr.BlogTest do
     end
 
     test "gets recent posts" do
-      posts = Blog.recent_posts()
+      posts = Blog.recent_posts("en")
       assert Enum.count(posts) > 0
     end
 
     test "gets post by id" do
-      post = Enum.random(Blog.all_posts())
+      post = Enum.random(Blog.posts("en"))
       assert Blog.get_post_by_id!(post.id) == post
     end
 
     test "gets post by slug" do
-      post = Enum.random(Blog.all_posts())
-      assert Blog.get_post_by_slug(post.id) == post
+      post = Enum.random(Blog.posts("en"))
+      assert Blog.get_post_by_slug("en", post.id) == post
     end
 
     test "raises NotFoundError when post by id is not found" do

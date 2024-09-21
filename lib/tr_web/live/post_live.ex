@@ -26,7 +26,7 @@ defmodule TrWeb.PostLive do
 
     connected_users = calculate_connected_users(post_id)
 
-    post = Blog.get_post_by_id!(post_id)
+    post = Blog.get_post_by_id!(Gettext.get_locale(TrWeb.Gettext), post_id)
 
     socket =
       socket
@@ -122,10 +122,9 @@ defmodule TrWeb.PostLive do
 
     <%= TrWeb.AdsComponent.render_large_ad(assigns) %>
 
-    <%= raw(@post.body) %>
-
     <%= cond do %>
       <% @post.sponsored && @current_user && Tr.SponsorsCache.sponsor?(@current_user.github_username) -> %>
+        <%= raw(@post.body) %>
         <br />
         <p>
           <iframe
@@ -142,23 +141,13 @@ defmodule TrWeb.PostLive do
         <br />
         <%= raw(Earmark.as_html!(decrypt(@post.encrypted_content))) %>
       <% @post.sponsored && @current_user && !Tr.SponsorsCache.sponsor?(@current_user.github_username) -> %>
-        <br /> <%= gettext("To see this article, please visit the
-        ") %><.link href="https://github.com/sponsors/kainlite#sponsors" class="">
-          <%= gettext "sponsor's page.
-          " %></.link>
         <br />
-        <br />
-        <br />
+        <%= render_sponsors_banner(assigns) %>
       <% @post.sponsored && is_nil(@current_user) -> %>
-        <br /> <%= gettext("To see this article, please visit the") %>
-        <.link href="https://github.com/sponsors/kainlite#sponsors" class="">
-          <%= gettext("sponsor's page.") %>
-        </.link>
         <br />
-        <br />
-        <br />
+        <%= render_sponsors_banner(assigns) %>
       <% true -> %>
-      
+        <%= render_sponsors_banner(assigns) %>
     <% end %>
 
     <div class="mx-auto max-w-4xl">
@@ -380,7 +369,7 @@ defmodule TrWeb.PostLive do
             Tr.PostTracker.Notifier.deliver_new_reply_notification(
               Tr.Accounts.get_user!(Tr.Post.get_comment(comment.parent_comment_id).user_id),
               comment.body,
-              "#{TrWeb.Endpoint.url()}/blog/#{comment.slug}"
+              "#{TrWeb.Endpoint.url()}/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{comment.slug}"
             )
           end
 
@@ -389,7 +378,7 @@ defmodule TrWeb.PostLive do
             Tr.PostTracker.Notifier.deliver_new_comment_notification(
               Tr.Accounts.get_admin_user(),
               comment.body,
-              "#{TrWeb.Endpoint.url()}/blog/#{comment.slug}"
+              "#{TrWeb.Endpoint.url()}/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{comment.slug}"
             )
           end
 
@@ -555,5 +544,36 @@ defmodule TrWeb.PostLive do
     {:ok, dec} = Tr.Vault.decrypt(b64dec)
 
     dec
+  end
+
+  defp render_sponsors_banner(assigns) do
+    ~H"""
+    <div class="mx-auto items-center justify-center">
+      <iframe
+        src="https://github.com/sponsors/kainlite/card"
+        title="Sponsor kainlite"
+        height="225"
+        width="600"
+        style="border: 0;"
+        class="mx-auto justify-center items-center"
+      >
+      </iframe>
+
+      <br />
+
+      <%= raw(@post.body) %>
+
+      <br />
+
+      <div class="mx-auto items-center justify-center">
+        <%= gettext("To see the full page, please visit the") %>
+        <.link href="https://github.com/sponsors/kainlite#sponsors" class="">
+          <%= gettext("sponsor's page.") %>
+        </.link>
+      </div>
+
+      <br />
+    </div>
+    """
   end
 end

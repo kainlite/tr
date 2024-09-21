@@ -32,7 +32,7 @@ defmodule Tr.Search do
   def load do
     Task.Supervisor.start_child(Tr.TaskSupervisor, fn ->
       Haystack.index(haystack(), :posts, fn index ->
-        Tr.Blog.posts()
+        Tr.Blog.posts(Gettext.get_locale(TrWeb.Gettext))
         |> Stream.map(&Map.take(&1, ~w{id description body}a))
         |> Enum.each(&Haystack.Index.add(index, [&1]))
 

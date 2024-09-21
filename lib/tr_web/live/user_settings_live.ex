@@ -6,9 +6,8 @@ defmodule TrWeb.UserSettingsLive do
   def render(assigns) do
     ~H"""
     <.header class="text-center  dark:invert">
-      <%= gettext("      Account Settings
-            <:subtitle>Manage your account email address and password settings</:subtitle>
-      ") %>
+      <%= gettext("Account Settings") %>
+      <:subtitle><%= gettext("Manage your account email address and password settings") %></:subtitle>
     </.header>
 
     <div class="space-y-12 divide-y">
@@ -115,7 +114,7 @@ defmodule TrWeb.UserSettingsLive do
           put_flash(socket, :error, gettext("Email change link is invalid or it has expired."))
       end
 
-    {:ok, push_navigate(socket, to: ~p"/users/settings")}
+    {:ok, push_navigate(socket, to: ~p"/#{Gettext.get_locale(TrWeb.Gettext)}/users/settings")}
   end
 
   def mount(_params, _session, socket) do
@@ -185,7 +184,7 @@ defmodule TrWeb.UserSettingsLive do
         Accounts.deliver_user_update_email_instructions(
           applied_user,
           user.email,
-          &url(~p"/users/settings/confirm_email/#{&1}")
+          &url(~p"/#{Gettext.get_locale(TrWeb.Gettext)}/users/settings/confirm_email/#{&1}")
         )
 
         info = gettext("A link to confirm your email change has been sent to the new address.")

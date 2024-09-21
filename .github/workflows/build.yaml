@@ -1,11 +1,11 @@
 name: 'build images'
 
-on: []
-#   push:
+on:
+  push:
 
 jobs:
   docker:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4

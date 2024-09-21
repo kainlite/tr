@@ -32,10 +32,29 @@ defmodule TrWeb.Router do
     get "/privacy", PageController, :privacy
   end
 
+  scope "/:locale", TrWeb do
+    pipe_through :browser
+
+    get "/auth/google/callback", GoogleAuthController, :index
+    get "/auth/github/callback", GithubAuthController, :index
+
+    get "/blog/tags", PageController, :tags
+    get "/blog/tags/:tag", PageController, :by_tag
+    get "/privacy", PageController, :privacy
+  end
+
   scope "/", TrWeb do
     pipe_through :api
 
     get "/index.json", PageController, :json_sitemap
+  end
+
+  scope "/:locale", TrWeb do
+    scope "/" do
+      pipe_through :api
+
+      get "/index.json", PageController, :json_sitemap
+    end
   end
 
   scope "/", TrWeb do
@@ -45,10 +64,14 @@ defmodule TrWeb.Router do
     get "/sitemap.xml", PageController, :sitemap
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", TrWeb do
-  #   pipe_through :api
-  # end
+  scope "/:locale", TrWeb do
+    scope "/" do
+      pipe_through :xml
+
+      get "/index.xml", PageController, :sitemap
+      get "/sitemap.xml", PageController, :sitemap
+    end
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:tr, :dev_routes) do
@@ -80,6 +103,27 @@ defmodule TrWeb.Router do
     end
 
     scope "/", TrWeb do
+      pipe_through :browser
+
+      live "/", HomeLive, :index
+
+      live "/blog/search", SearchLive, :index
+
+      live "/blog/", BlogLive, :index
+      live "/blog/:id", PostLive, :show
+    end
+
+    scope "/:locale", TrWeb, host: ["local.redbeard.team", "redbeard.team"] do
+      pipe_through :browser
+
+      live "/", BeardLive, :index
+      live "/blog/search", SearchLive, :index
+
+      live "/blog/", BlogLive, :index
+      live "/blog/:id", PostLive, :show
+    end
+
+    scope "/:locale", TrWeb do
       pipe_through :browser
 
       live "/", HomeLive, :index
@@ -123,10 +167,42 @@ defmodule TrWeb.Router do
     post "/users/log_in", UserSessionController, :create
   end
 
+  scope "/:locale", TrWeb do
+    pipe_through [:browser, :redirect_if_user_is_authenticated]
+
+    live_session :redirect_if_user_is_authenticated_localized,
+      on_mount: [
+        {TrWeb.UserAuth, :redirect_if_user_is_authenticated},
+        {TrWeb.Hooks.AllowEctoSandbox, :default},
+        {TrWeb.UserAuth, :mount_current_user}
+      ] do
+      live "/users/register", UserRegistrationLive, :new
+      live "/users/log_in", UserLoginLive, :new
+      live "/users/reset_password", UserForgotPasswordLive, :new
+      live "/users/reset_password/:token", UserResetPasswordLive, :edit
+    end
+
+    post "/users/log_in", UserSessionController, :create
+  end
+
   scope "/", TrWeb do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
+      on_mount: [
+        {TrWeb.UserAuth, :ensure_authenticated},
+        {TrWeb.Hooks.AllowEctoSandbox, :default},
+        {TrWeb.UserAuth, :mount_current_user}
+      ] do
+      live "/users/settings", UserSettingsLive, :edit
+      live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+    end
+  end
+
+  scope "/:locale", TrWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live_session :require_authenticated_user_localized,
       on_mount: [
         {TrWeb.UserAuth, :ensure_authenticated},
         {TrWeb.Hooks.AllowEctoSandbox, :default},
