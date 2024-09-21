@@ -8,7 +8,7 @@
     AWS, Terraform, Docker, and more. Transform your infrastructure with our tailored solutions. Explore insights,
     tutorials, and experiments across the tech landscape.") %>
     </description>
-    <language>en</language>
+    <language><%= Gettext.get_locale(TrWeb.Gettext) %></language>
     <copyright>Copyright <%= DateTime.utc_now.year %> Red Beard Team </copyright>
     <lastBuildDate><%= DateTime.utc_now |> format_date() %></lastBuildDate>
     <category>IT/Internet/Web development</category>

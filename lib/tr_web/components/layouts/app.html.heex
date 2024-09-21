@@ -2,6 +2,15 @@
   <section class="flex flex-row-reverse">
     <nav class="dark:invert">
       <ul class="relative z-10 flex flex-row items-center gap-4 px-4 sm:px-6 lg:px-8">
+        <li class="order-399">
+          <% locale = if Gettext.get_locale(TrWeb.Gettext) == "en", do: "es", else: "en" %>
+          <.link
+            aria-label="language-toggle"
+            navigate={~p"/#{locale}/blog"}
+          >
+            <span class="hero-language w-10 h-10" />
+          </.link>
+        </li>
         <li class="order-299">
           <.link
             id="cookie-consent-preferences"

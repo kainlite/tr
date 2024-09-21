@@ -102,7 +102,7 @@ defmodule TrWeb.BeardLive do
             class="w-full h-56 object-cover"
           />
           <div class="p-6">
-            <h3 class="text-xl font-bold">Infrastructure as Code</h3>
+            <h3 class="text-xl font-bold"><%= gettext "Infrastructure as Code" %></h3>
             <p class="mt-2 text-gray-700 dark:text-gray-300">
               <%= gettext(
                 "Automate, Simplify, and Scale Your Infrastructure with Terraform, Pulumi, and Ansible."
@@ -141,7 +141,7 @@ defmodule TrWeb.BeardLive do
             class="w-full h-56 object-cover"
           />
           <div class="p-6">
-            <h3 class="text-xl font-bold">CI/CD Pipelines</h3>
+            <h3 class="text-xl font-bold"><%= gettext "CI/CD Pipelines" %></h3>
             <p class="mt-2 text-gray-700 dark:text-gray-300">
               <%= gettext(
                 "Accelerate Software Delivery with Automated CI/CD Solutions using GitHub Actions, GitLab, and
