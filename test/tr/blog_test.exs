@@ -25,7 +25,7 @@ defmodule Tr.BlogTest do
     end
 
     test "gets posts by tag" do
-      posts = Blog.by_tag(Enum.random(Blog.all_tags()))
+      posts = Blog.by_tag("en", Enum.random(Blog.all_tags()))
       assert Enum.count(posts) > 0
     end
 

@@ -10,7 +10,7 @@ defmodule TrWeb.PostComponent do
       border-l-gray-700 max-w-42 max-h-20">
       <span class="inline-flex items-center justify-center text-white bg-emerald-700 rounded-full w-8 h-8 text-sm
         font-semibold">
-        <%= Enum.count(Tr.Blog.by_tag(@tag)) %>
+        <%= Enum.count(Tr.Blog.by_tag(Gettext.get_locale(TrWeb.Gettext), @tag)) %>
       </span>
       <.link
         navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/tags/#{@tag}"}
@@ -73,7 +73,7 @@ defmodule TrWeb.PostComponent do
                 <.link navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/tags/#{tag}"}>
                   <span class="inline-flex items-center justify-center text-white bg-emerald-700 rounded-full w-8 h-8 text-sm
         font-semibold">
-                    <%= Enum.count(Tr.Blog.by_tag(tag)) %>
+                    <%= Enum.count(Tr.Blog.by_tag(Gettext.get_locale(TrWeb.Gettext), tag)) %>
                   </span>
                   <%= tag %>
                 </.link>

@@ -77,7 +77,7 @@ defmodule Tr.Blog do
   def all_slugs, do: @slugs
   def all_tags, do: @tags
 
-  def by_tag(tag), do: get_posts_by_tag!(tag)
+  def by_tag(locale, tag), do: get_posts_by_tag!(locale, tag)
   def recent_posts(num \\ 5, locale), do: Enum.take(posts(locale), num)
   def get_latest_post(num \\ 1, locale), do: Enum.at(Enum.take(posts(locale), num), 0)
 
@@ -92,8 +92,8 @@ defmodule Tr.Blog do
     Enum.find(all_posts(), &(&1.id == slug)) || nil
   end
 
-  def get_posts_by_tag!(tag) do
-    case Enum.filter(all_posts(), &(tag in &1.tags)) do
+  def get_posts_by_tag!(locale, tag) do
+    case Enum.filter(all_posts(), &(tag in &1.tags && &1.lang == locale)) do
       [] -> raise NotFoundError, "posts with tag=#{tag} not found"
       posts -> posts
     end

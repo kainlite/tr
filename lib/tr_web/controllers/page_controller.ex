@@ -84,7 +84,7 @@ defmodule TrWeb.PageController do
   end
 
   def by_tag(conn, %{"tag" => tag} = _params) do
-    render(conn, posts: Blog.by_tag(tag))
+    render(conn, posts: Blog.by_tag(Gettext.get_locale(TrWeb.Gettext), tag))
   end
 
   defp format_date(date) do
