@@ -95,6 +95,11 @@ window.addEventListener("toogle-darkmode", (e) => {
 
 initDarkMode();
 
+defaultLanguage = "en";
+if (window.location.href.indexOf("/es/") != -1) {
+  defaultLanguage = "es";
+}
+
 CookieConsent.run({
   guiOptions: {
     consentModal: {
@@ -119,9 +124,39 @@ CookieConsent.run({
     },
   },
   language: {
-    default: "en",
+    default: defaultLanguage,
     autoDetect: "browser",
     translations: {
+      es: {
+        consentModal: {
+          title: "Hola!",
+          description:
+            "Por favor acepta el uso de cookies para poder seguir navegando en nuestro sitio.",
+          acceptAllBtn: "Aceptar todo",
+          showPreferencesBtn: "Preferencias",
+          footer:
+            '<a href="https://redbeard.team/privacy">Politica de privacidad</a>',
+        },
+        preferencesModal: {
+          title: "Consentimiento de cookies",
+          acceptAllBtn: "Aceptar todo",
+          savePreferencesBtn: "Guardar",
+          closeIconLabel: "Cerrar",
+          serviceCounterLabel: "Servicio|Servicios",
+          sections: [
+            {
+              title: "Uso de cookies",
+              description:
+                "Utilizamos únicamente las cookies necesarias para garantizar el correcto funcionamiento del sitio web y para ejecutar 1 anuncio por página. Como el contenido es gratuito, esto es un incentivo para que todo siga funcionando. Solo hay tres cookies que puede ver: una es para mantener la información de su sesión (puramente funcional) y la segunda es una cookie seudoanónima creada por AdsTerra para ejecutar los anuncios en el sitio. La tercera cookie es cc_cookie, que se utiliza para guardar sus preferencias de cookies. Al utilizar este sitio, acepta los términos de privacidad de este sitio y mantener estas cookies mientras utilice el sitio",
+            },
+            {
+              title: "Mas informacion",
+              description:
+                'Por cualquier consulta relacionada al sitio o las cookies, por favor contactarnos aqui <a class="cc__link" href="mailto:gabriel@redbeard.team">gabriel@redbeard.team</a>.',
+            },
+          ],
+        },
+      },
       en: {
         consentModal: {
           title: "Hello blogger!",
@@ -129,8 +164,7 @@ CookieConsent.run({
             "Please accept the usage of cookies to be able to continue browsing our site.",
           acceptAllBtn: "Accept all",
           showPreferencesBtn: "Manage preferences",
-          footer:
-            '<a href="https://techsquad.rocks/privacy">Privacy Policy</a>',
+          footer: '<a href="https://redbeard.team/privacy">Privacy Policy</a>',
         },
         preferencesModal: {
           title: "Consent Preferences Center",
@@ -147,7 +181,7 @@ CookieConsent.run({
             {
               title: "More information",
               description:
-                'For any query in relation to my policy on cookies and your choices, please <a class="cc__link" href="mailto:support@techsquad.rocks">support@techsquad.rocks</a>.',
+                'For any query in relation to my policy on cookies and your choices, please <a class="cc__link" href="mailto:gabriel@redbeard.team">gabriel@redbeard.team</a>.',
             },
           ],
         },
