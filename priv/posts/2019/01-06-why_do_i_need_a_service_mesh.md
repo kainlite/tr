@@ -627,6 +627,7 @@ Como consejo general, revisa todas las configuraciones que ofrece Istio; prueba 
 * Puedes verificar el estado del balanceador de carga en: Manage -> Networking -> Load balancers. Si todo está bien, tu LB dirá "Healthy".
 * Grafana no está habilitado por defecto, pero lo habilitamos vía Helm con `--set grafana.enabled=true`. Si deseas revisar todas las opciones posibles, [ve aquí](https://istio.io/docs/reference/config/installation-options/). Si estás usando más de dos opciones `--set`, recomendaría crear un archivo `values.yaml` y usar eso en su lugar.
 * Istio es una gran herramienta y debe tratarse con cuidado; hay mucho más que aprender y probar. Aquí solo hemos rascado la superficie.
+
 <br />
 
 ### **Próximas publicaciones**
@@ -634,6 +635,7 @@ Como consejo general, revisa todas las configuraciones que ofrece Istio; prueba 
 * Linkerd.
 * Quizás algo de diversión con Golang.
 * Serverless o kubeless, esa es la cuestión.
+
 <br />
 
 ### **Errata**

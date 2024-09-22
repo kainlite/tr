@@ -560,11 +560,13 @@ serverless invoke -f tweet
 ```
 Esperá, ¿de dónde salió `tweet`? Si mirás el manifiesto de Serverless, verás que nuestra función se llama `tweet`. Si todo salió bien, vas a poder ver ese tweet en tu perfil, algo así:
 ![img](/images/twitter-tbo.png){:class="mx-auto"}
+
 <br />
 
 ### **Notas**
 * ¿Por qué TBO? ¿Qué es tbo? Bot mal escrito.
 * El framework Serverless está muy bueno y funciona en una variedad de entornos. Definitivamente te recomiendo darle un vistazo y al menos probarlo. Yo lo uso para algunos proyectos pequeños y me facilita mucho la vida.
+
 <br />
 
 ### **Errata**

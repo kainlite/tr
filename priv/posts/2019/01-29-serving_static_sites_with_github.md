@@ -188,6 +188,4 @@ Para sitios HTML estáticos es poco probable que veas un fallo, pero puede pasar
 ### **Errata**
 Si encontrás algún error o tenés alguna sugerencia, por favor enviame un mensaje para que lo corrija.
 
-Además, podés revisar el código fuente y los cambios en el [código generado](https://github.com/kainlite/kainlite.github.io) y las [fuentes aquí](https://github.com/kainlite/blog).
-
 <br />

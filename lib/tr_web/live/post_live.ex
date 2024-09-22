@@ -143,9 +143,27 @@ defmodule TrWeb.PostLive do
       <% @post.sponsored && @current_user && !Tr.SponsorsCache.sponsor?(@current_user.github_username) -> %>
         <br />
         <%= render_sponsors_banner(assigns) %>
+
+        <div class="mx-auto items-center justify-center">
+          <%= gettext("To see the full page, please visit the") %>
+          <.link href="https://github.com/sponsors/kainlite#sponsors" class="">
+            <%= gettext("sponsor's page.") %>
+          </.link>
+        </div>
+
+        <br />
       <% @post.sponsored && is_nil(@current_user) -> %>
         <br />
         <%= render_sponsors_banner(assigns) %>
+
+        <div class="mx-auto items-center justify-center">
+          <%= gettext("To see the full page, please visit the") %>
+          <.link href="https://github.com/sponsors/kainlite#sponsors" class="">
+            <%= gettext("sponsor's page.") %>
+          </.link>
+        </div>
+
+        <br />
       <% true -> %>
         <%= render_sponsors_banner(assigns) %>
     <% end %>
@@ -562,15 +580,6 @@ defmodule TrWeb.PostLive do
       <br />
 
       <%= raw(@post.body) %>
-
-      <br />
-
-      <div class="mx-auto items-center justify-center">
-        <%= gettext("To see the full page, please visit the") %>
-        <.link href="https://github.com/sponsors/kainlite#sponsors" class="">
-          <%= gettext("sponsor's page.") %>
-        </.link>
-      </div>
 
       <br />
     </div>

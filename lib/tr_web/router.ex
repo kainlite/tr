@@ -11,6 +11,7 @@ defmodule TrWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user
+    plug TrWeb.Plugs.Locale, "en"
   end
 
   pipeline :api do

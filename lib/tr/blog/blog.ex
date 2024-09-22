@@ -78,8 +78,8 @@ defmodule Tr.Blog do
   def all_tags, do: @tags
 
   def by_tag(locale, tag), do: get_posts_by_tag!(locale, tag)
-  def recent_posts(num \\ 5, locale), do: Enum.take(posts(locale), num)
-  def get_latest_post(num \\ 1, locale), do: Enum.at(Enum.take(posts(locale), num), 0)
+  def recent_posts(locale \\ "en", num \\ 5), do: Enum.take(posts(locale), num)
+  def get_latest_post(locale \\ "en", num \\ 1), do: Enum.at(Enum.take(posts(locale), num), 0)
 
   defmodule NotFoundError, do: defexception([:message, plug_status: 404])
 

@@ -499,7 +499,7 @@ Also, you can check the source code and changes in the [generated code](https://
 <br />
 ---lang---
 %{
-  title: "Kubernetes image policy webhook explained",
+  title: "Kubernetes image policy webhook explicado",
   author: "Gabriel Garrido",
   description: "Explorando recursos necesarios para rendir el examen CKS...",
   tags: ~w(kubernetes linux security),

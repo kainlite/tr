@@ -855,11 +855,10 @@ Algunos articulos que te pueden interesar:
 * [Getting started with Ksonnet and friends](/blog/getting_started_with_ksonnet)
 * [Getting started with Skaffold](/blog/getting_started_with_skaffold).
 * [Getting started with Gitkube](/blog/getting_started_with_gitkube).
+
 <br />
 
 ### Errata
 Si ves algun error por favor enviame un mensaje para poder corregirlo.
-
-El codigo y las fuentes estan disponibles en [github](https://github.com/kainlite/tr)
 
 <br />
