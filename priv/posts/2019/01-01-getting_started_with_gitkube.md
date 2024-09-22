@@ -281,9 +281,9 @@ Also, you can check the source code and changes in the [generated code](https://
 <br />
 ---lang---
 %{
-  title: "Getting started with gitkube",
+  title: "Primeros pasos con gitkube",
   author: "Gabriel Garrido",
-  description: "Exploring ksonnet with an echo bot made in Golang...",
+  description: "Seguimos explorando ksonnet y gitkube con un bot eco hecho en Go...",
   tags: ~w(git gitkube kubernetes cicd),
   published: true,
   image: "logo.png",
@@ -293,22 +293,21 @@ Also, you can check the source code and changes in the [generated code](https://
 }
 ---
 
-### Traduccion en proceso
-
 ### **Gitkube**
 
-This time we will see how to get started with [Gitkube](https://gitkube.sh/), it's a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it's just a [CRD](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle. You can find more [examples here](https://github.com/hasura/gitkube-example), also be sure to check their page and documentation if you like it or want to learn more.
+Esta vez veremos cómo comenzar con [Gitkube](https://gitkube.sh/). Es un proyecto joven, pero parece funcionar bien y tiene un enfoque interesante en comparación con otras alternativas, ya que solo depende de git y kubectl. Aparte de eso, es solo un [CRD](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) y un controlador, por lo que terminas con 2 pods en kube-system: uno para el controlador y otro para gitkubed. Gitkubed se encarga de clonar tus repositorios y también de construir las imágenes de Docker. Parece que la idea detrás de Gitkube es para el uso diario en un entorno de desarrollo/pruebas donde necesitas probar tus cambios rápidamente y sin complicaciones. Puedes encontrar más [ejemplos aquí](https://github.com/hasura/gitkube-example). Asegúrate también de revisar su página y documentación si te gusta o quieres aprender más.
 <br />
 
-In the examples I will be using [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube) or you can [check out this repo](https://github.com/kainlite/kainlite.github.io) that has a good overview of minikube, once installed and started (`minikube start`) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working, *but in this post be sure to use _minikube tunnel_* if you configure gitkube with a load balancer (or if you configure any service type as load balancer):
+En los ejemplos estaré usando [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube), o puedes [consultar este repositorio](https://github.com/kainlite/kainlite.github.io) que tiene una buena visión general de minikube. Una vez instalado y arrancado (`minikube start`), ese comando descargará y configurará el entorno local. Si has estado siguiendo las publicaciones anteriores, ya tienes minikube instalado y funcionando, *pero en este post asegúrate de usar _minikube tunnel_* si configuras Gitkube con un balanceador de carga (o si configuras cualquier servicio de tipo balanceador de carga):
 <br />
 
-### Let's get started
-We're going to deploy or re-deploy our echo bot one more time but this time using gitkube.
-You can find the chat bot: [article here](/blog/go-echobot), and the repo: [here](https://github.com/kainlite/echobot/tree/gitkube)
+### Empecemos
+
+Vamos a desplegar o re-desplegar nuestro bot de eco una vez más, pero esta vez usando Gitkube.
+Puedes encontrar el chat bot: [artículo aquí](/blog/go-echobot), y el repositorio: [aquí](https://github.com/kainlite/echobot/tree/gitkube)
 <br />
 
-First of all we need to install the gitkube binary in our machine and then the CRD in our kubernetes cluster:
+En primer lugar, necesitamos instalar el binario de Gitkube en nuestra máquina y luego el CRD en nuestro clúster de Kubernetes:
 ```elixir
 $ kubectl create -f https://storage.googleapis.com/gitkube/gitkube-setup-stable.yaml
 customresourcedefinition.apiextensions.k8s.io "remotes.gitkube.sh" created
@@ -321,17 +320,17 @@ deployment.extensions "gitkube-controller" created
 $ kubectl --namespace kube-system expose deployment gitkubed --type=LoadBalancer --name=gitkubed
 service "gitkubed" exposed
 ```
-Note that there are 2 ways to install gitkube into our cluster, using the manifests as displayed there or using the gitkube binary and doing `gitkube install`.
+Nota que hay 2 formas de instalar Gitkube en nuestro clúster: usando los manifiestos como se muestra ahí o usando el binario de Gitkube y ejecutando `gitkube install`.
 <br />
 
-To install the gitkube binary, the easiest way is to do:
+Para instalar el binario de Gitkube, la forma más sencilla es hacer:
 ```elixir
 curl https://raw.githubusercontent.com/hasura/gitkube/master/gimme.sh | sudo bash
 ```
-This will download and copy the binary into: `/usr/local/bin`, as a general rule I recommend reading whatever you are going to pipe into bash in your terminal to avoid potential dangers of _the internet_.
+Esto descargará y copiará el binario en: `/usr/local/bin`. Como regla general, recomiendo leer lo que vas a canalizar a bash en tu terminal para evitar posibles peligros de _internet_.
 
 <br />
-Then we need to generate (and then create it in the cluster) a file called `remote.yaml` (or any name you like), it's necessary in order to tell gitkube how to deploy our application once we `git push` it:
+Luego, necesitamos generar (y luego crearlo en el clúster) un archivo llamado `remote.yaml` (o cualquier nombre que prefieras). Es necesario para indicarle a Gitkube cómo desplegar nuestra aplicación una vez que hagamos `git push`:
 ```elixir
 $ gitkube remote generate -f remote.yaml
 Remote name: minikube
@@ -347,10 +346,10 @@ Build context path: ./
 Add another container? [y/N] Enter
 Add another deployment? [y/N] Enter
 ```
-And this will yield the following `remote.yaml` file that we then need to create in our cluster as it is a custom resource it might look a bit different from the default kubernetes resources.
+Y esto generará el siguiente archivo `remote.yaml` que luego necesitamos crear en nuestro clúster, ya que es un recurso personalizado y puede verse un poco diferente de los recursos predeterminados de Kubernetes.
 <br />
 
-The actual file `remote.yaml`:
+El archivo real `remote.yaml`:
 ```elixir
 apiVersion: gitkube.sh/v1alpha1
 kind: Remote
@@ -381,23 +380,23 @@ status:
   remoteUrl: ""
   remoteUrlDesc: ""
 ```
-There are a few details to have in mind here, the _deployment_ name because gitkube expects a deployment to be already present with that name in order to update/upgrade it, the path to the Dockerfile, or helm chart, credentials for the registry if any, I'm using a public image, so we don't need any of that. The _wizard_ will let you choose and customize a few options for your deployment.
+Hay algunos detalles a tener en cuenta aquí: el nombre del _deployment_ porque Gitkube espera que ya exista un deployment con ese nombre para poder actualizarlo/mejorarlo; la ruta al Dockerfile o al chart de Helm; credenciales para el registro si las hay. Estoy usando una imagen pública, así que no necesitamos nada de eso. El _asistente_ te permitirá elegir y personalizar algunas opciones para tu despliegue.
 <br />
 
-The last step would be to finally create the resource:
+El último paso sería finalmente crear el recurso:
 ```elixir
 $ gitkube remote create -f remote.yaml
 INFO[0000] remote minikube created
 INFO[0000] waiting for remote url
 INFO[0000] remote url: ssh://default-minikube@10.98.213.202/~/git/default-minikube
 
-  # add the remote to your git repo and push:
+  # añade el remoto a tu repositorio git y haz push:
   git remote add minikube ssh://default-minikube@10.98.213.202/~/git/default-minikube
   git push minikube master
 ```
 <br />
 
-After adding the new remote called _minikube_  we have everything ready to go, so let's test it and see what happens:
+Después de agregar el nuevo remoto llamado _minikube_, tenemos todo listo para comenzar, así que probémoslo y veamos qué sucede:
 ```elixir
 $ git push minikube master
 Enumerating objects: 10, done.
@@ -494,10 +493,10 @@ remote:
 To ssh://10.98.213.202/~/git/default-minikube
  * [new branch]      master -> master
 ```
-Quite a lot happened there, first of all gitkubed checked out the commit from the branch or HEAD that we pushed to `/home/default-minikube/build/default-minikube` and then started building and tagged the docker image with the corresponding SHA, after that it pushed the image to [docker hub](https://cloud.docker.com/u/kainlite/repository/docker/kainlite/default-minikube-default.echobot-echobot) and then updated the deployment that we already had in there for the echo bot.
+Pasaron muchas cosas allí. En primer lugar, gitkubed revisó el commit de la rama o HEAD que empujamos a `/home/default-minikube/build/default-minikube` y luego comenzó a construir y etiquetó la imagen de Docker con el SHA correspondiente. Después de eso, empujó la imagen a [Docker Hub](https://cloud.docker.com/u/kainlite/repository/docker/kainlite/default-minikube-default.echobot-echobot) y luego actualizó el deployment que ya teníamos allí para el bot de eco.
 <br />
 
-The last step would be to verify that the pod was actually updated, so we can inspect the pod configuration with `kubectl describe pod echobot-654cdbfb99-g4bwv`:
+El último paso sería verificar que el pod realmente se actualizó, por lo que podemos inspeccionar la configuración del pod con `kubectl describe pod echobot-654cdbfb99-g4bwv`:
 ```elixir
  $ kubectl describe pod echobot-654cdbfb99-g4bwv
 Name:               echobot-654cdbfb99-g4bwv
@@ -551,15 +550,14 @@ Events:
   Normal  Created    39m   kubelet, minikube  Created container
   Normal  Started    39m   kubelet, minikube  Started container
 ```
-As we can see the image is the one that got built from our `git push` and everything is working as expected.
+Como podemos ver, la imagen es la que se construyó a partir de nuestro `git push` y todo está funcionando como se esperaba.
 <br />
 
-And that's it for now, I think this tool has a lot of potential, it's simple, nice and fast.
+Y eso es todo por ahora. Creo que esta herramienta tiene mucho potencial; es simple, agradable y rápida.
 <br />
 
-### Errata
-If you spot any error or have any suggestion, please send me a message so it gets fixed.
+### Erratas
 
-Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+Si encuentras algún error o tienes alguna sugerencia, por favor envíame un mensaje para que pueda corregirlo.
 
 <br />

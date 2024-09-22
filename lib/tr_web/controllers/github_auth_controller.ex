@@ -10,7 +10,7 @@ defmodule TrWeb.GithubAuthController do
     if profile.email do
       conn
       |> TrWeb.UserAuth.log_in_github_user(profile)
-      |> redirect(to: ~p"/blog", profile: profile)
+      |> redirect(to: ~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog", profile: profile)
     else
       conn
       |> put_flash(:error, gettext("Email not verified"))

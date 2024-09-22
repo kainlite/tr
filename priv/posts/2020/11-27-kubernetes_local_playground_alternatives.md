@@ -623,9 +623,9 @@ Also, you can check the source code and changes in the [generated code](https://
 <br />
 ---lang---
 %{
-  title: "Kubernetes local playground alternatives",
+  title: "Kubernetes: alternativas locales",
   author: "Gabriel Garrido",
-  description: "In this article we will explore different alternatives for spinning up a cluster locally for testing, practicing or just developing an application...",
+  description: "Diferentes alternativas para tu cluster local...",
   tags: ~w(kubernetes vagrant linux),
   published: true,
   image: "kubernetes.png",
@@ -635,32 +635,30 @@ Also, you can check the source code and changes in the [generated code](https://
 }
 ---
 
-### Traduccion en proceso
-
 ![kubernetes](/images/kubernetes.png){:class="mx-auto"}
 
-##### **Introduction**
-In this article we will explore different alternatives for spinning up a cluster locally for testing, practicing or just developing an application.
+##### **Introducción**
+En este artículo exploraremos diferentes alternativas para levantar un clúster localmente para pruebas, práctica o simplemente desarrollar una aplicación.
 <br />
 
-The source code and/or documentation of the projects that we will be testing are listed here:
+El código fuente y/o la documentación de los proyectos que probaremos están listados aquí:
 * [minikube](https://minikube.sigs.k8s.io/docs/start/)
 * [kind](https://kind.sigs.k8s.io/docs/user/quick-start/)
-* [Kubernetes the hard way using vagrant](https://github.com/kainlite/kubernetes-the-easy-way-with-vagrant)
-* [Kubernetes with kubeadm using vagrant](https://github.com/kainlite/kubernetes-the-easy-way-with-vagrant-and-kubeadm)
+* [Kubernetes the hard way usando vagrant](https://github.com/kainlite/kubernetes-the-easy-way-with-vagrant)
+* [Kubernetes con kubeadm usando vagrant](https://github.com/kainlite/kubernetes-the-easy-way-with-vagrant-and-kubeadm)
 
 <br />
 
-There are more alternatives like [Microk8s](https://microk8s.io/) but I will leave that as an exercise for the reader.
+Existen más alternativas como [Microk8s](https://microk8s.io/), pero lo dejaré como ejercicio para quien quiera probarlo.
 <br />
 
-If you want to give it a try to each one make sure to follow their recommended way of install or your distro/system way.
+Si querés probar cada una de estas opciones, asegurate de seguir su forma recomendada de instalación o el método de tu distro/sistema.
 <br />
 
-The first two (minikube and kind) we will see how to configure a CNI plugin in order to be able to use [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/), in the other two environments you can customize everything and these are best for learning rather than for daily usage but if you have enough ram you could do that as well.
+En los dos primeros (minikube y kind) veremos cómo configurar un plugin CNI para poder usar [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/). En los otros dos entornos, podés personalizar todo y son ideales para aprender más que para uso diario, pero si tenés suficiente RAM, también podrías hacerlo.
 <br />
 
-We will be using the following pods and network policy to test that it works, we will create 3 pods, 1 client and 2 app backends, one backend will be listening in port TCP/1111 and the other in the port TCP/2222, in our netpolicy we will only allow our client to connect to app1:
+Usaremos los siguientes pods y una política de red para probar que funciona. Crearemos 3 pods: 1 cliente y 2 aplicaciones backend. Un backend estará escuchando en el puerto TCP/1111 y el otro en el puerto TCP/2222. En nuestra política de red, solo permitiremos que nuestro cliente se conecte a app1:
 ```elixir
 ---
 apiVersion: v1
@@ -771,11 +769,11 @@ spec:
 
 ```
 
-If you want to learn more about netcat and friends go to: [Cat and friends: netcat and socat](https://techsquad.rocks/blog/cat_and_friends_netcat_socat/)
+Si querés aprender más sobre netcat y similares, podés visitar: [Cat and friends: netcat y socat](https://techsquad.rocks/blog/cat_and_friends_netcat_socat/)
 <br />
 
 ##### Minikube
-Minikube is heavily used but it can be too heavy sometimes, in any case we will see an example of making it work with network policies, the good thing is that it has a lot of documentation because a lot of people use it and it is updated often:
+Minikube es muy utilizado, pero a veces puede ser un poco pesado. De cualquier manera, veremos un ejemplo de cómo hacerlo funcionar con políticas de red. Lo bueno es que tiene mucha documentación, ya que mucha gente lo usa, y se actualiza con frecuencia:
 ```elixir
 ❯ minikube start --cni=cilium --memory=4096
 😄  minikube v1.15.1 on Arch rolling
@@ -792,7 +790,7 @@ Minikube is heavily used but it can be too heavy sometimes, in any case we will 
 ```
 <br />
 
-###### Give it a couple of minutes to start, for new versions of minikube you can install it like this, otherwise you can specify that you will install the CNI plugin and then just install the manifests.
+###### Dale un par de minutos para que inicie. Para versiones nuevas de Minikube, podés instalarlo de esta manera. De lo contrario, podés especificar que vas a instalar el plugin de CNI y luego simplemente instalar los manifiestos.
 ```elixir
 ❯ kubectl get pods -A
 NAMESPACE     NAME                               READY   STATUS     RESTARTS   AGE
@@ -805,7 +803,7 @@ kube-system   etcd-minikube                      1/1     Running    0          3
 ```
 <br />
 
-###### Then let's validate that it works
+###### Validando
 ```elixir
 ❯ kubectl apply -f netpol-example.yaml
 pod/client configured
@@ -827,13 +825,11 @@ nc: app2 (10.97.248.246:2222): Connection timed out
 command terminated with exit code 1
 ```
 
-Note that we add the timeout command with 5 seconds wait so we don't have to really wait for nc timeout which by default is no timeout, we also tested with nc timeout.
-<br />
+Tené en cuenta que agregamos el comando `timeout` con un tiempo de espera de 5 segundos, para que no tengamos que esperar al timeout de `nc`, que por defecto no tiene un timeout. También probamos con el timeout de `nc`.
 
-You can get more info for minikube using Cilium on their [docs](https://docs.cilium.io/en/v1.9/gettingstarted/minikube/)
-<br />
+Podés obtener más información sobre cómo usar Cilium con Minikube en su [documentación oficial](https://docs.cilium.io/en/v1.9/gettingstarted/minikube/).
 
-###### Remember to clean up
+###### Recordá limpiar todo al finalizar.
 ```elixir
 ❯ minikube delete
 🔥  Deleting "minikube" in docker ...
@@ -845,7 +841,7 @@ You can get more info for minikube using Cilium on their [docs](https://docs.cil
 <br />
 
 ##### KIND
-KIND is really lightweight and fast, I usually test and develop using KIND the main reason is that almost everything works like in a real cluster but it has no overhead, it's simple to install and easy to run, first we need to put this config in place to tell kind not to use it's default CNI.
+KIND es realmente liviano y rápido, suelo usarlo para testear y desarrollar. La principal razón es que casi todo funciona como en un clúster real, pero sin el overhead. Es simple de instalar y fácil de ejecutar. Primero, necesitamos poner esta configuración en su lugar para indicarle a KIND que no use su CNI predeterminado.
 ```elixir
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
@@ -866,7 +862,7 @@ nodes:
 ```
 <br />
 
-Then we can create the cluster and install calico (there is a small gotcha here, you need to check that the calico node pods come up if not kill them and they should come up and everything will start working normally, this is due to the environment variable that gets added after the deployment for it to work with KIND):
+Luego podemos crear el clúster e instalar Calico (hay un pequeño detalle aquí: debes verificar que los pods de Calico node se inicien correctamente. Si no es así, matalos y deberían reiniciarse correctamente. Esto se debe a que la variable de entorno que se agrega después del despliegue hace que funcione con KIND):
 ```elixir
 ❯ kind create cluster --config kind-calico.yaml
 Creating cluster "kind" ...
@@ -915,9 +911,9 @@ daemonset.apps/calico-node env updated
 ```
 <br />
 
-You can check for more config options for KIND [here](https://kind.sigs.k8s.io/docs/user/configuration/#networking)
+Para ver mas opciones de configurar ve [aqui](https://kind.sigs.k8s.io/docs/user/configuration/#networking)
 
-###### Validation
+###### Validando
 ```elixir
 ❯ kubectl get pods -A
 NAMESPACE            NAME                                         READY   STATUS    RESTARTS   AGE
@@ -949,7 +945,7 @@ networkpolicy.networking.k8s.io/default-network-policy created
 ```
 <br />
 
-###### Testing again:
+###### Probamos:
 ```elixir
 ❯ kubectl exec pod/client -- nc -v -z app1 1111 -w 5
 app1 (10.96.126.52:1111) open
@@ -962,8 +958,8 @@ command terminated with exit code 1
 ```
 <br />
 
-##### Kubeadm and vagrant
-This is an interesting scenario and it's great to understand how clusters are configured using kubeadm also to practice things such as adding/removing/upgrading the nodes, backup and restore etcd, etc. if you want to test this one clone this repo: [Kubernetes with kubeadm using vagrant](https://github.com/kainlite/kubernetes-the-easy-way-with-vagrant-and-kubeadm)
+##### Kubeadm y vagrant
+Este es un escenario interesante y es excelente para entender cómo se configuran los clústeres usando kubeadm, además de practicar cosas como agregar/eliminar/actualizar los nodos, hacer backup y restaurar etcd, entre otras. Si querés probar este ejemplo, cloná este repo: [Kubernetes with kubeadm using vagrant](https://github.com/kainlite/kubernetes-the-easy-way-with-vagrant-and-kubeadm)
 ```elixir
 ❯ ./up.sh
 Bringing machine 'cluster1-master1' up with 'virtualbox' provider...
@@ -1007,7 +1003,7 @@ Connection to 127.0.0.1 closed.
 ```
 <br />
 
-###### Next, lets copy the kubeconfig and deploy our resources then test (this deployment is using weave)
+###### Copiemos la configuracion y probemos (este cluster usa weave)
 ```elixir
 ❯ vagrant ssh cluster1-master1 -c "sudo cat /root/.kube/config" > vagrant-kubeconfig
 Connection to 127.0.0.1 closed.
@@ -1032,7 +1028,7 @@ web-test-2-594487698d-vnltx   1/1     Running             0          2m33s
 ```
 <br />
 
-###### Test it (wait until the pods are in ready state)
+###### Probando (hay que esperar que todos los pods esten en ready)
 ```elixir
 ❯ kubectl exec pod/client -- nc -v -z app1 1111
 app1 (10.97.203.229:1111) open
@@ -1044,7 +1040,7 @@ command terminated with exit code 1
 ```
 <br />
 
-###### For more info refer to the readme in the repo and the scripts in there, it should be straight forward to follow and reproduce, remember to clean up:
+###### Si queres usar estos scripts, lee el readme del repositorio, y siempre recorda limpiar antes de cerrar:
 ```elixir
 ❯ ./down.sh
 ==> cluster1-worker2: Forcing shutdown of VM...
@@ -1057,8 +1053,8 @@ command terminated with exit code 1
 ```
 
 <br />
-##### Kubernetes the hard way and vagrant
-This is probably the most complex scenario and it's purely educational you get to generate all the certificates by hand basically and configure everything by yourself (see the original repo for instructions in how to do that in gcloud if you are interested), if you want to test this one clone this repo: [Kubernetes the hard way using vagrant](https://github.com/kainlite/kubernetes-the-easy-way-with-vagrant), but be patient and ready to debug if something doesn't go well.
+##### Kubernetes the hard way y vagrant
+Este es probablemente el escenario más complejo y es puramente educativo. Acá vas a generar todos los certificados manualmente y configurar todo por tu cuenta (si te interesa, podés ver el repo original para instrucciones sobre cómo hacerlo en gcloud). Si querés probar este ejemplo, cloná este repo: [Kubernetes the hard way usando vagrant](https://github.com/kainlite/kubernetes-the-easy-way-with-vagrant), pero tené paciencia y preparate para depurar si algo no sale como esperabas.
 ```elixir
 ❯ ./up.sh
 ...
@@ -1110,7 +1106,7 @@ VM, run `vagrant status NAME`.
 ```
 <br />
 
-###### Validation:
+###### Validando
 ```elixir
 ❯ vagrant ssh controller-0
 Welcome to Ubuntu 18.04.5 LTS (GNU/Linux 4.15.0-124-generic x86_64)
@@ -1197,7 +1193,7 @@ networkpolicy.networking.k8s.io/default-network-policy   app=client     112s
 <br />
 
 
-###### Install the manifests and test it:
+###### Instalando y probando:
 ```elixir
 root@controller-0:~# kubectl get pods -A -o wide
 NAMESPACE     NAME                       READY   STATUS    RESTARTS   AGE     IP           NODE       NOMINATED NODE   READINESS GATES
@@ -1215,7 +1211,7 @@ command terminated with exit code 1
 ```
 <br />
 
-###### Clean up
+###### Limpiando
 ```elixir
 ❯ ./down.sh
 ==> worker-2: Forcing shutdown of VM...
@@ -1235,15 +1231,17 @@ command terminated with exit code 1
 <br />
 
 ##### Wrap up
-Each alternative has its use case, test each one and pick the one that best fit your needs.
+
+Cada alternativa tiene su caso de uso, probá cada una y elegí la que mejor se adapte a tus necesidades.
 <br />
 
 ##### Clean up
-Remember to clean up to recover some resources in your machine.
+
+Acordate de limpiar los recursos para liberar espacio en tu máquina.
+<br />
 
 ### Errata
-If you spot any error or have any suggestion, please send me a message so it gets fixed.
 
-Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+Si encontrás algún error o tenés alguna sugerencia, mandame un mensaje para que se pueda corregir.
 
 <br />

@@ -186,10 +186,10 @@ Also, you can check the source code and changes in the [generated code](https://
 <br />
 ---lang---
 %{
-  title: "Go continuous integration with Travis CI and Docker",
+  title: "Integracion continue con Travis CI y Docker",
   author: "Gabriel Garrido",
-  description: "In this article we will see how to create a simple continuous integration process using github,
-  travis-ci and docker...",
+  description: "En este articulo vamos a ver como crear un proceso de integracion continue simple con github,
+  travis-ci y docker...",
   tags: ~w(golang travis cicd),
   published: true,
   image: "travis-ci-docker.png",
@@ -199,17 +199,15 @@ Also, you can check the source code and changes in the [generated code](https://
 }
 ---
 
-### Traduccion en proceso
-
 ![travis](/images/travis-ci-docker.png){:class="mx-auto"}
 
-##### **Introduction**
-In this article we will see how to create a simple continuous integration process using [Github](https://github.com), [Travis-CI](https://travis-ci.org) and [Docker HUB](https://cloud.docker.com), the files used here can be found [HERE](https://github.com/kainlite/whatismyip-go), in the next article we will continue with what we have here to provide continuous deployment possibly using Jenkins or maybe Travis, let me know which one you would prefer to see.
+##### **Introducción**
+En este artículo veremos cómo crear un proceso simple de integración continua utilizando [Github](https://github.com), [Travis-CI](https://travis-ci.org) y [Docker HUB](https://cloud.docker.com). Los archivos utilizados aquí se pueden encontrar [AQUÍ](https://github.com/kainlite/whatismyip-go). En el próximo artículo continuaremos con lo que tenemos aquí para proporcionar despliegue continuo, posiblemente usando Jenkins o quizás Travis. Hazme saber cuál prefieres ver.
 <br />
 
-##### **First thing first**
-##### App
-We will review the docker file, the app code and the travis-ci file, so let's start with the app `main.go`:
+##### **Primero lo primero**
+##### Aplicación
+Revisaremos el archivo docker, el código de la aplicación y el archivo travis-ci, así que comencemos con la aplicación `main.go`:
 ```elixir
 package main
 
@@ -240,10 +238,10 @@ func main() {
 }
 
 ```
-Let's quickly check what this code does, first we check for the port to use, then convert it to a number, register the handler for our HTTP function and listen for requests, this code should print our ip address as you would expect by the name.
+Revisemos rápidamente lo que hace este código. Primero verificamos el puerto a utilizar, luego lo convertimos en un número, registramos el manejador para nuestra función HTTP y escuchamos las solicitudes. Este código imprimirá nuestra dirección IP como se esperaría por el nombre.
 <br />
 
-Then the `main_test.go` code:
+Luego el código de `main_test.go`:
 ```elixir
 package main
 
@@ -277,11 +275,11 @@ func TestHandler(t *testing.T) {
 }
 
 ```
-The test is fairly simple it just checks that the web server works by trying to fetch `/` and checking for an empty body and `200` status code.
+La prueba es bastante simple, solo verifica que el servidor web funcione al intentar acceder a `/` y comprobando que el cuerpo esté vacío y el código de estado sea `200`.
 <br />
 
 ##### Docker
-Next the `Dockerfile`:
+A continuación, el `Dockerfile`:
 ```elixir
 FROM golang:1.12-alpine
 
@@ -312,10 +310,10 @@ USER nobody:nobody
 CMD ["whatismyip-go"]
 
 ```
-We set the working directory to please go, then fetch dependencies and install our binary, we also generate a test binary, expose the port that we want to use and set the user as nobody in case someone can exploit our app and jump into our container, then just set the command to execute on `docker run`.
+Configuramos el directorio de trabajo para satisfacer a go, luego obtenemos las dependencias e instalamos nuestro binario. También generamos un binario de prueba, exponemos el puerto que queremos utilizar y configuramos el usuario como `nobody` en caso de que alguien pueda explotar nuestra aplicación y acceder al contenedor. Finalmente, establecemos el comando a ejecutar en `docker run`.
 
 ##### Travis
-And last but not least the `.travis.yml` file:
+Y por último, pero no menos importante, el archivo `.travis.yml`:
 ```elixir
 language: go
 
@@ -333,43 +331,41 @@ script:
   - docker push ${TRAVIS_REPO_SLUG}:${TRAVIS_COMMIT}
 
 ```
-We let travis know that we will be running some go code and also docker, then build the image, run the tests and then the app as initialization, after that we validate that the app works and lastly login to dockerhub and push the image, the important things to have in mind here is that we use variables for example the repo name, the commit SHA, and the docker username and password in a secure way, since travis-ci hides the values that we tell them to.
+Le indicamos a Travis que ejecutaremos código Go y Docker. Luego, construimos la imagen, ejecutamos las pruebas y después la aplicación como parte de la inicialización. Después de eso, validamos que la aplicación funcione y, por último, iniciamos sesión en Docker Hub y subimos la imagen. Las cosas importantes a tener en cuenta aquí son que usamos variables, por ejemplo, el nombre del repositorio, el SHA del commit, y el nombre de usuario y contraseña de Docker de manera segura, ya que Travis-CI oculta los valores que le indicamos.
 <br />
 
-##### **Putting everything together**
-So far we got the [repo](https://github.com/kainlite/whatismyip-go) going, the configuration for travis, the dockerfile, the app, but now we need to make use of it, so you will need to create a travis account for this to work then link your github account to it, then you will be able to sync your repositories and you should see something like this:
+##### **Juntando todo**
+Hasta ahora, tenemos el [repositorio](https://github.com/kainlite/whatismyip-go) funcionando, la configuración de Travis, el Dockerfile y la aplicación, pero ahora necesitamos usarlo. Necesitarás crear una cuenta de Travis para que esto funcione, luego vincula tu cuenta de GitHub con Travis. Podrás sincronizar tus repositorios y deberías ver algo como esto:
 ![image](/images/whatismyip-go-travis-list.png){:class="mx-auto"}
-Once you have your account linked you will be able to sync and enable repositories to be built.
+Una vez que tu cuenta esté vinculada, podrás sincronizar y habilitar los repositorios para que se construyan.
 <br />
 
-After enabling the repository you can configure some details like environment variables, here we will set the credentials for dockerhub.
+Después de habilitar el repositorio, puedes configurar algunos detalles como variables de entorno. Aquí estableceremos las credenciales para Docker Hub.
 ![image](/images/whatismyip-go-travis-settings.png){:class="mx-auto"}
 <br />
 
-And now we will create the repository in dockerhub:
+Y ahora crearemos el repositorio en Docker Hub:
 ![image](/images/whatismyip-go-docker-repo.png){:class="mx-auto"}
-After the repository is created we can trigger a build from travis or push a commit to the repo in order to trigger a build and to validate that everything works.
+Después de que se crea el repositorio, podemos activar una compilación desde Travis o enviar un commit al repositorio para activar una compilación y validar que todo funciona.
 <br />
 
-You should see something like this in travis if everything went well:
+Deberías ver algo como esto en Travis si todo salió bien:
 ![image](/images/whatismyip-go-travis-log-1.png){:class="mx-auto"}
-You can validate that everything went well by checking the commit SHA that triggered the build.
+Puedes validar que todo salió bien revisando el SHA del commit que activó la compilación.
 <br />
 
-And dockerhub:
+Y en Docker Hub:
 ![image](/images/whatismyip-go-travis-log-2.png){:class="mx-auto"}
-The same SHA will be used to tag the image.
+El mismo SHA se utilizará para etiquetar la imagen.
 <br />
 
-##### **Closing notes**
-I will be posting some articles about CI and CD and good practices that DevOps/SREs should have in mind, tips, tricks, and full deployment examples, this is the first part of a possible series of two or three articles with a complete but basic example of CI first and then CD. This can of course change and any feedback would be greatly appreciated :).
+##### **Notas finales**
+Publicaré algunos artículos sobre CI y CD, y buenas prácticas que los DevOps/SRE deberían tener en cuenta: consejos, trucos y ejemplos completos de despliegue. Esta es la primera parte de una posible serie de dos o tres artículos con un ejemplo básico pero completo de CI primero y luego CD. Esto, por supuesto, puede cambiar, y cualquier comentario será muy apreciado :).
 
-Some useful links for travis and [docker](https://docs.travis-ci.com/user/docker/) and the [environment variables list](https://docs.travis-ci.com/user/environment-variables/) that can be used.
+Algunos enlaces útiles para [Travis y Docker](https://docs.travis-ci.com/user/docker/) y la [lista de variables de entorno](https://docs.travis-ci.com/user/environment-variables/) que se pueden usar.
 <br />
 
 ### Errata
-If you spot any error or have any suggestion, please send me a message so it gets fixed.
-
-Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+Si encuentras algún error o tienes alguna sugerencia, por favor envíame un mensaje para que se corrija.
 
 <br />

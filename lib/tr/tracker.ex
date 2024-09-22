@@ -80,7 +80,7 @@ defmodule Tr.Tracker do
     notifiable_users = Tr.Accounts.get_all_notifiable_users()
 
     if length(unanounced_posts) > 1 do
-      url = TrWeb.Endpoint.url() <> "/blog/"
+      url = TrWeb.Endpoint.url() <> "/en/blog/"
       subject = "This is what you have missed so far..."
       titles = Enum.map(unanounced_posts, fn p -> p.slug end)
 
@@ -110,7 +110,7 @@ defmodule Tr.Tracker do
     else
       unannounced_post = hd(unanounced_posts)
       post = Tr.Blog.get_post_by_slug(unannounced_post.slug)
-      url = TrWeb.Endpoint.url() <> "/blog/" <> post.id
+      url = TrWeb.Endpoint.url() <> "/en/blog/" <> post.id
       subject = post.title
       body = post.title <> "\n" <> post.description <> "\n" <> url
 

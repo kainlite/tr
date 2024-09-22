@@ -509,10 +509,9 @@ and the [sources here](https://github.com/kainlite/blog)
 <br />
 ---lang---
 %{
-  title: "Running Rust on ARM32v7 via QEMU",
+  title: "Corriendo Rust en ARM32v7 via QEMU",
   author: "Gabriel Garrido",
-  description: "In this article we will explore how to use QEMU to run emulating the ARM32v7 architecture to build and
-  run a rust project...",
+  description: "Vemos como usar QEMU para construir imagenes para otras arquitecturas...",
   tags: ~w(rust arm linux),
   published: true,
   image: "rust.png",
@@ -522,31 +521,23 @@ and the [sources here](https://github.com/kainlite/blog)
 }
 ---
 
-### Traduccion en proceso
-
 ![rust](/images/rust.jpg"){:class="mx-auto"}
 
-#### **Introduction**
+#### **Introducción**
 
-In this article we will explore how to use [QEMU](https://www.qemu.org/download/#linux) to run emulating the ARM32v7 
-architecture to build and run [Rust](https://www.rust-lang.org/) code like if it was a native 
-[ARM32v7 architecture](https://github.com/docker-library/official-images#architectures-other-than-amd64).
+En este artículo, vamos a explorar cómo usar [QEMU](https://www.qemu.org/download/#linux) para emular la arquitectura ARM32v7 y compilar y ejecutar código en [Rust](https://www.rust-lang.org/) como si fuese nativo para la arquitectura [ARM32v7](https://github.com/docker-library/official-images#architectures-other-than-amd64).
 <br />
 
-There are some drawbacks and performance considerations when using this approach, it can be simpler but way slower for
-big projects.
+Existen algunas desventajas y consideraciones de rendimiento al usar este enfoque; puede ser más simple pero mucho más lento para proyectos grandes.
 <br />
 
-The source for this article is here [RCV](https://github.com/kainlite/rcv/) and the docker image is 
-[here](https://hub.docker.com/repository/docker/kainlite/rcv).
+El código fuente de este artículo está [aquí](https://github.com/kainlite/rcv/) y la imagen de Docker está [aquí](https://hub.docker.com/repository/docker/kainlite/rcv).
 <br />
 
-This article can be considered a part 2 of 
-[Running rust on ARM32v7K3S Oracle cluster](https://techsquad.rocks/blog/rust_on_arm32v7/) 
-so we will not be creating the rust project and all that here, but focusing on building and running the project.
+Este artículo puede considerarse una parte 2 de [Running Rust on ARM32v7K3S Oracle Cluster](https://techsquad.rocks/blog/rust_on_arm32v7/), por lo que no vamos a crear el proyecto de Rust desde cero aquí, sino que nos enfocaremos en compilar y ejecutar el proyecto.
 <br />
 
-##### **Prerequisites**
+##### **Requisitos previos**
 
 - [Docker](https://hub.docker.com/?overlay=onboarding)
 - [Buildah](https://github.com/containers/buildah/blob/main/install.md)
@@ -555,14 +546,10 @@ so we will not be creating the rust project and all that here, but focusing on b
 
 <br />
 
-### Let's jump to the example
+### Vamos directo al ejemplo
 
-#### The new Dockerfile
-You will notice that this [Dockerfile](https://raw.githubusercontent.com/kainlite/rcv/master/Dockerfile.armv7v2) 
-is way simpler than the ones from the previous article, since it runs natively
-as ARM32v7, the main difference is the base image being `arm32v7/rust:1.63.0`, this can be further extended for more
-architectures, see this [article](https://devopstales.github.io/home/running_and_building_multi_arch_containers/) for 
-more information.
+#### El nuevo Dockerfile
+Vas a notar que este [Dockerfile](https://raw.githubusercontent.com/kainlite/rcv/master/Dockerfile.armv7v2) es mucho más simple que los de artículos anteriores, ya que se ejecuta de manera nativa como ARM32v7. La principal diferencia es que usa la imagen base `arm32v7/rust:1.63.0`, y este enfoque puede ser extendido para más arquitecturas. Consultá este [artículo](https://devopstales.github.io/home/running_and_building_multi_arch_containers/) para más información.
 ```elixir
 ## builder
 FROM arm32v7/rust:1.63.0 as builder
@@ -588,10 +575,18 @@ CMD ["/usr/src/app/rcv"]
 ```
 <br />
 
-#### Last steps for QEMU/Docker
-After installing the required packages you will still need to perform some simple steps in order for it to work with
-docker and buildah, the first command is needed for docker to be able to use the required QEMU emulation and the second
-is just to validate that everything works fine
+#### Últimos pasos para QEMU/Docker
+Después de instalar los paquetes necesarios, todavía necesitarás realizar algunos pasos simples para que funcione con Docker y Buildah. El primer comando es necesario para que Docker pueda utilizar la emulación de QEMU requerida, y el segundo es solo para validar que todo esté funcionando correctamente:
+
+```bash
+# Habilitar la emulación QEMU en Docker
+docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+
+# Validar que todo esté funcionando correctamente
+docker run --rm -t arm32v7/ubuntu uname -m
+```
+
+Si ves que el sistema te devuelve algo como `armv7l`, entonces todo está configurado correctamente para emular la arquitectura ARM32v7 usando Docker.
 ```elixir
 ❯ docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 Setting /usr/bin/qemu-alpha-static as binfmt interpreter for alpha
@@ -638,17 +633,16 @@ armv7l
 ```
 <br />
 
-##### Short names error
-If you get an error about short names when pulling images add the following line to your `/etc/containers/registries.conf`
-file
+##### Error de nombres cortos
+Si recibes un error sobre nombres cortos al intentar descargar imágenes, agrega la siguiente línea a tu archivo `/etc/containers/registries.conf`:
 ```elixir
 unqualified-search-registries = ["docker.io"]
-
 ```
 <br />
 
-#### Lets build it
-For the build we will use buildah because it is smarter than docker for this kind of scenarios.
+#### Vamos a construirlo
+Para la compilación utilizaremos **Buildah**, ya que es más inteligente que Docker para este tipo de escenarios.
+
 ```elixir
 ❯ buildah build -f Dockerfile.armv7v2 .
 [1/2] STEP 1/5: FROM arm32v7/rust:1.63.0 AS builder
@@ -966,8 +960,8 @@ f9fe5e59b8d124fe147ef045ceb9195421a2613e48df91f48875ed11c1d9f5de
 ```
 <br />
 
-#### Lets test it
-After building it, we can push it to the docker daemon and then run it and test it from another terminal
+#### Probando
+Una vez la imagen esta lista la podemos copiar al docker daemon para poder usarla
 ```elixir
 ❯ buildah push f9fe5e59b8d docker-daemon:rcv:f9fe5e59b8d
 Getting image source signatures
@@ -988,34 +982,27 @@ WARNING: The requested image's platform (linux/arm/v7) does not match the detect
 
 ```
 
-Notice: you will see some warnings about the architecture, that's fine as we are emulating things.
+NOTA: la advertencia de la plataforma es por que estamos emulando con QEMU, nada de que preocuparse.
 <br />
 
-#### Performance considerations
-This project build with the rust toolchain and then copied to an ARM32v7 image took 2 minutes, but using QEMU and the
-given emulation it took around 8 minutes and a half, so it is something to be aware since the difference is quite big.
+#### Consideraciones de rendimiento
+Este proyecto, construido con la cadena de herramientas de Rust y luego copiado a una imagen ARM32v7, tomó 2 minutos. Sin embargo, utilizando QEMU y la emulación proporcionada, tomó alrededor de 8 minutos y medio. Es importante tener en cuenta esta diferencia, ya que el tiempo es considerablemente mayor.
 <br />
 
 #### Extra
+Puedes verlo funcionando [aquí](http://rcv.techsquad.rocks/), es un currículum vitae en HTML muy básico.
 
-You can see it running [here](http://rcv.techsquad.rocks/), a very basic HTML Curriculum vitae.
-
-For more details and to see how everything fits together I encourage you to clone the repo, test it, and modify it to
-make your own.
+Para más detalles y para ver cómo encajan todas las piezas, te animo a clonar el repositorio, probarlo y modificarlo para crear tu propia versión.
 <br />
 
-#### **Closing notes**
-Be sure to check the links if you want to learn more about the examples, I hope you enjoyed it, 
-see you on [twitter](https://twitter.com/kainlite) or [github](https://github.com/kainlite)!
+#### **Notas finales**
+No olvides revisar los enlaces si quieres aprender más sobre los ejemplos. ¡Espero que te haya gustado!
+Nos vemos en [twitter](https://twitter.com/kainlite) o [github](https://github.com/kainlite).
 
-The source for this article is [here](https://github.com/kainlite/rcv/)
+El código fuente de este artículo está disponible [aquí](https://github.com/kainlite/rcv/).
 <br />
 
 ### Errata
-
-If you spot any error or have any suggestion, please send me a message so it gets fixed.
-
-Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io)
-and the [sources here](https://github.com/kainlite/blog)
+Si encuentras algún error o tienes alguna sugerencia, por favor mándame un mensaje para corregirlo.
 
 <br />

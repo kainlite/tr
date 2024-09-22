@@ -11,7 +11,7 @@ defmodule TrWeb.GoogleAuthController do
     if profile.email_verified do
       conn
       |> TrWeb.UserAuth.log_in_google_user(profile)
-      |> redirect(to: ~p"/blog", profile: profile)
+      |> redirect(to: ~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog", profile: profile)
     else
       conn
       |> put_flash(:error, gettext("Email not verified"))

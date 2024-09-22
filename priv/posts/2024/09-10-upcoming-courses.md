@@ -201,10 +201,9 @@ leave a comment 👇
 <br />
 ---lang---
 %{
-  title: "Upcoming courses: docker, kubernetes, terraform, github actions",
+  title: "Proximos cursos: docker, kubernetes, terraform, github actions",
   author: "Gabriel Garrido",
-  description: "In this article I want to explain what the courses will be covering at a high level so you know what to
-  expect",
+  description: "En este articulo vemos los proximos cursos que estaran disponibles en la pagina",
   tags: ~w(courses),
   published: true,
   image: "logo-beard-bg.png",
@@ -215,57 +214,42 @@ leave a comment 👇
 }
 ---
 
-### Traduccion en proceso
-
-### **Introduction**
+### **Introducción**
 <br />
 
-Hello there,
+Hola,
 
-I will be working in some courses that will be available here through GitHub Sponsors, but I wanted to explain what you
-will get by sponsoring me and also how it works on a high level, by becoming a sponsor you will get lifetime access to
-the courses, these courses will be highly practical with explanations and enough theory to understand the topic at hand, 
-everything else will be open source (code examples, etc), by supporting me you will receive more content in return
-😄 
+Voy a estar trabajando en algunos cursos que estarán disponibles aquí a través de GitHub Sponsors, pero quería explicar qué obtendrás al patrocinarme y cómo funciona a un nivel alto. Al convertirte en patrocinador, obtendrás acceso de por vida a los cursos. Estos cursos serán altamente prácticos con explicaciones y la teoría necesaria para entender el tema en cuestión. Todo lo demás será de código abierto (ejemplos de código, etc.). Al apoyarme, recibirás más contenido a cambio 😄 
 <br />
 
-Upcoming courses:
-* Docker: Understand docker from scratch.
-* Kubernetes: Deploy your apps and manage clusters, autoscale your apps and best practices.
-* Terraform: Code your infrastructure and automate it through GitHub and Atlantis.
-* GitHub Actions: Configure your pipelines to build, test and deploy your applications in Kubernetes.
-* Observability: Learn how to deploy and use Prometheus and Grafana to observe and monitor your apps, create dashboards
-  and also meaningful alerts.
+Próximos cursos:
+* Docker: Comprende Docker desde cero.
+* Kubernetes: Despliega tus aplicaciones y gestiona clústeres, autoescala tus apps y mejores prácticas.
+* Terraform: Codifica tu infraestructura y automatízala a través de GitHub y Atlantis.
+* GitHub Actions: Configura tus pipelines para construir, probar y desplegar tus aplicaciones en Kubernetes.
+* Observabilidad: Aprende a desplegar y usar Prometheus y Grafana para observar y monitorear tus aplicaciones, crear dashboards y también alertas significativas.
 
-I expect to officially launch the Docker course in about a month from now, the other courses might start after that,
-also by joining you will receive an invite to Discord/Slack (to be defined) so you can connect with me and ask me any
-question that you might have. 
+Espero lanzar oficialmente el curso de Docker en aproximadamente un mes. Los demás cursos comenzarán después de eso. Además, al unirte, recibirás una invitación para Discord/Slack (por definir) para que puedas conectarte conmigo y hacerme cualquier pregunta que puedas tener.
 
 <br />
 
-Thank you 💥
+Gracias 💥
 
 <br />
 
-### **But wait... how does it work?**
+### **Pero espera... ¿cómo funciona?**
 
-I mentioned everything was going to be open-source even this blog or learning platform, wouldn't we be able to just read
-the articles since they are plaintext in the repository? [tr](https://github.com/kainlite/tr), and that would be a fair
-question, introducing "Cloak", the sponsored content will be in fact in the repository readable by anyone, but encrypted
-and only rendered to those who sign in via GitHub (because I need to know your username) and also make sure you are in
-fact a sponsor 🥲. 
+Mencioné que todo iba a ser de código abierto, incluso este blog o plataforma de aprendizaje. ¿No podríamos simplemente leer los artículos ya que están en texto plano en el repositorio? [tr](https://github.com/kainlite/tr), y sería una pregunta justa. Presentando "Cloak", el contenido patrocinado estará, de hecho, en el repositorio, legible por cualquiera, pero encriptado y solo será renderizado para aquellos que inicien sesión a través de GitHub (porque necesito conocer tu nombre de usuario) y también para asegurarme de que, de hecho, eres un patrocinador 🥲. 
 
-With just a few calls to this module we can safely encrypt and decrypt the content of a given page, for example this is
-what it looks like:
+Con solo algunas llamadas a este módulo, podemos encriptar y desencriptar el contenido de una página dada. Por ejemplo, así es como se ve:
 <br />
 
 ```elixir
 %{
-  title: "Master Docker from scratch (coming soon...)",
+  title: "Domina Docker desde cero (próximamente...)",
   author: "Gabriel Garrido",
-  description: "This will be a short course to master docker on linux, it will consist of 3 parts and the first
-  sponsored content posted here (video and text)",
-  tags: ~w(docker courses),
+  description: "Este será un curso corto para dominar Docker en Linux. Consistirá en 3 partes y será el primer contenido patrocinado publicado aquí (video y texto)",
+  tags: ~w(docker cursos),
   published: true,
   image: "docker-logo.svg",
   sponsored: true,
@@ -277,11 +261,11 @@ what it looks like:
 
 <br />
 
-Then we have our vault configured (it is just a Genserver giving us encrypt/decrypt capabilities given a particular key), that will be this particular module:
+Luego tenemos nuestro vault configurado (es solo un Genserver que nos da capacidades de encriptar/desencriptar dada una clave particular), que será este módulo en particular:
 ```elixir
 defmodule Tr.Vault do
   @moduledoc """
-  This module is responsible for interfacing with the vault
+  Este módulo se encarga de interactuar con el vault
   """
   use Cloak.Vault, otp_app: :tr
 
@@ -306,12 +290,11 @@ defmodule Tr.Vault do
 end
 ```
 
-Then to keep rate-limits at hand every 5 minutes I'm polling GitHub GraphQL API to fetch the list of sponsors and
-caching that in the local DB:
+Para mantener los límites de tasa bajo control, cada 5 minutos hago polling a la API GraphQL de GitHub para obtener la lista de patrocinadores y almacenarla en la DB local:
 ```elixir
 defmodule Tr.Sponsors do
   @moduledoc """
-  Basic task to fetch the list of sponsors from GitHub
+  Tarea básica para obtener la lista de patrocinadores desde GitHub
   """
   @app :tr
 
@@ -329,7 +312,7 @@ defmodule Tr.Sponsors do
   def start do
     start_app()
 
-    # account for more than a 100 sponsors
+    # contemplar más de 100 patrocinadores
     sponsors = get_sponsors(100)
 
     Enum.each(get_in(sponsors, ["data", "user", "sponsors", "nodes"]), fn sponsor ->
@@ -338,7 +321,7 @@ defmodule Tr.Sponsors do
   end
 
   @doc """
-    # Example output:
+    # Ejemplo de salida:
 
     %Neuron.Response{
       body: %{
@@ -375,7 +358,7 @@ end
 ```
 <br />
 
-The last step would be to just decrypt and render the content:
+El último paso sería simplemente desencriptar y renderizar el contenido:
 ```elixir
     <%= cond do %>
       <% @post.sponsored && @current_user && Tr.SponsorsCache.sponsor?(@current_user.github_username) -> %>
@@ -399,7 +382,6 @@ The last step would be to just decrypt and render the content:
 ```
 <br />
 
-At a high level that's what it looks like, are you interested in learning more about this or the approach taken here?
-leave a comment 👇
+A alto nivel, así es como funciona. ¿Te interesa aprender más sobre esto o el enfoque adoptado aquí? Dejá un comentario 👇
 
 <br />

@@ -53,7 +53,7 @@ defmodule TrWeb.PageController do
         for post <- posts do
           %{
             id: post.id,
-            url: url(~p"/blog/#{post.id}"),
+            url: url(~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{post.id}"),
             title: post.title,
             content_html: post.body,
             date_published: post.date |> format_date,

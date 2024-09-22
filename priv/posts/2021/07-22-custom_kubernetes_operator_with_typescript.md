@@ -46,7 +46,9 @@ The source for this article is here [TypeScript Operator](https://github.com/kai
 #### Creating the cluster
 
 We will need a cluster to run and test our operator, so kind is pretty straight forward and lightweight enough to run anywhere.
-```elixir=system('gist -r ' . submatch(1))```
+```elixir
+...
+```
 <br />
 
 #### Creating our operator
@@ -513,9 +515,9 @@ Also, you can check the source code and changes in the [generated code](https://
 <br />
 ---lang---
 %{
-  title: "Custom Kubernetes Operator With TypeScript (Typed JavaScript)",
+  title: "Como crear un operador de Kubernetes con TypeScript",
   author: "Gabriel Garrido",
-  description: "In this article we will explore how to create a sample operator using typescript and to deploy it to our cluster, the operator will be pretty dummy...",
+  description: "Operador simple de kubernetes usando typescript...",
   tags: ~w(kubernetes typescript operator),
   published: true,
   image: "kubernetes-ts.png",
@@ -525,29 +527,30 @@ Also, you can check the source code and changes in the [generated code](https://
 }
 ---
 
-### Traduccion en proceso
-
 ![operator](/images/kubernetes-ts.png){:class="mx-auto"}
 
-#### **Introduction**
+#### **Introducción**
 
-In this article we will explore how to create a sample operator using typescript and to deploy it to our cluster, the operator will be pretty dummy in the sense that it will only deploy some resources based in a CRD, but you can customize it to do whatever you might need or want, the idea is to get an idea of all that it takes to do an operator outside of the magic land of [Go](https://golang.org/) and [kubebuilder](https://github.com/kubernetes-sigs/kubebuilder).
-<br />
-
-If you want to check past articles that explore other alternative frameworks and languages go to:
-
-- [Cloud native applications with kubebuilder and kind aka kubernetes operators](/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/).
-- [Testing the Operator SDK and making a prefetch mechanism for Kubernetes](/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/).
+En este artículo vamos a explorar cómo crear un operador de ejemplo usando TypeScript y cómo desplegarlo en nuestro clúster. El operador será bastante básico en el sentido de que solo desplegará algunos recursos basados en un CRD, pero podés personalizarlo para que haga lo que necesites o quieras. La idea es obtener una idea de lo que implica crear un operador fuera del mundo mágico de [Go](https://golang.org/) y [kubebuilder](https://github.com/kubernetes-sigs/kubebuilder).
 
 <br />
 
-You will notice that both are very similar and it is because the operator-sdk uses kubebuilder.
+Si querés revisar artículos anteriores que exploran otros marcos y lenguajes alternativos, podés ir a:
+
+- [Aplicaciones cloud native con kubebuilder y kind, también conocidos como operadores de Kubernetes](/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/).
+- [Probando el Operator SDK y creando un mecanismo de prefetch para Kubernetes](/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/).
+
 <br />
 
-The source for this article is here [TypeScript Operator](https://github.com/kainlite/ts-operator/) and the docker image is [here](https://github.com/kainlite/ts-operator/pkgs/container/ts-operator), also this article is based in this example from Nodeshift's [Operator in JavaScript](https://github.com/nodeshift-blog-examples/operator-in-JavaScript).
+Notarás que ambos son muy similares, y esto se debe a que operator-sdk usa kubebuilder.
+
 <br />
 
-##### **Prerequisites**
+El código fuente para este artículo está aquí [TypeScript Operator](https://github.com/kainlite/ts-operator/) y la imagen docker está [aquí](https://github.com/kainlite/ts-operator/pkgs/container/ts-operator). Además, este artículo se basa en este ejemplo de Nodeshift: [Operator in JavaScript](https://github.com/nodeshift-blog-examples/operator-in-JavaScript).
+
+<br />
+
+##### **Requisitos previos**
 
 - [Kind](https://github.com/kubernetes-sigs/kind)
 - [Docker](https://hub.docker.com/?overlay=onboarding)
@@ -557,17 +560,19 @@ The source for this article is here [TypeScript Operator](https://github.com/kai
 
 <br />
 
-### Let's jump to the example
+### Vamos al ejemplo
 
-#### Creating the cluster
+#### Creando el clúster
 
-We will need a cluster to run and test our operator, so kind is pretty straight forward and lightweight enough to run anywhere.
-```elixir=system('gist -r ' . submatch(1))```
+Vamos a necesitar un clúster para ejecutar y probar nuestro operador, así que kind es una opción muy simple y liviana para correr en cualquier lugar.
+```elixir
+
+```
 <br />
 
-#### Creating our operator
+#### Creando nuestro operador
 
-Creating all necessary resources for our operator to work
+Creando todos los recursos necesarios para que nuestro operador funcione.
 ```elixir
 ❯ kustomize build resources/ | kubectl apply -f -
 namespace/ts-operator created
@@ -593,9 +598,8 @@ ts-operator          ts-operator-86dbcd9f9c-xwgdt                 0/1     Contai
 ```
 <br />
 
-#### Deploying our operator
-
-Creating our custom resource to see the operator in action
+#### Desplegando nuestro operador
+Creando nuestro recurso para ver el operador en accion:
 ```elixir
 ❯ kubectl apply -f resources/mycustomresource-sample.yaml
 mycustomresource.custom.example.com/mycustomresource-sample created
@@ -625,9 +629,9 @@ mycustomresource.custom.example.com "mycustomresource-sample" deleted
 ```
 <br />
 
-#### Logs from the operator
+#### Logs 
 
-Example logs based in the creation, update and deletion of our custom resource
+Lo que pasa en la API a medida que nuestro operador trabaja
 ```elixir
 ❯ node_modules/ts-node/dist/bin.js src/index.ts
 7/22/2021, 8:51:54 PM: Watching API
@@ -643,19 +647,20 @@ Example logs based in the creation, update and deletion of our custom resource
 ```
 <br />
 
-#### Brief comparison operator-sdk vs custom operator?
+#### Breve comparación entre operator-sdk vs operador personalizado
 
-There are some main differences to have in mind, in Go you:
+Hay algunas diferencias clave que tener en cuenta. En Go, vos:
 
-- Have code generation from the framework for RBAC, controllers, etc.
-- Out of the box tooling to build, deploy and manage your operator.
+- Tenés generación de código desde el framework para RBAC, controladores, etc.
+- Herramientas listas para usar que permiten construir, desplegar y gestionar tu operador.
 
-In TypeScript or JavaScript you have to handle more things which can be easily done from a CI system, In this example I used github actions to build the image and the example already had everything else configured to make typescript usable with kubernetes as an example.
+En TypeScript o JavaScript tenés que manejar más cosas, aunque estas pueden ser fácilmente gestionadas desde un sistema de CI. En este ejemplo, utilicé Github Actions para construir la imagen, y el ejemplo ya tenía todo lo demás configurado para hacer que TypeScript funcione con Kubernetes como ejemplo.
+
 <br />
 
-#### Building and pushing (docker image)
+#### Compilación y push (imagen docker)
 
-In this case we don't have to do that it will be managed by actions using the free container registry that they provide, it will build and push the image matching the branch name, notice that it is fully transparent, you don't need to configure anything on the repo, you can see the result [here](https://github.com/kainlite/ts-operator/pkgs/container/ts-operator).
+En este caso, no tenemos que hacerlo manualmente, ya que será gestionado por las acciones de Github usando el registro de contenedores gratuito que proporcionan. Se encargará de construir y hacer push de la imagen coincidiendo con el nombre de la branch. Notá que es completamente transparente; no necesitás configurar nada adicional en el repositorio. Podés ver el resultado [aquí](https://github.com/kainlite/ts-operator/pkgs/container/ts-operator).
 ```elixir
 name: Create and publish a Docker image
 
@@ -706,9 +711,11 @@ jobs:
 ```
 <br />
 
-#### Local development
+#### Ambiente local
 
-Bonus: if you want to run the operator locally when developing or debugging you can do so easily with `ts-node`, like this:
+### Bonus: Ejecutando el operador localmente para desarrollo o depuración
+
+Si querés ejecutar el operador localmente mientras desarrollás o depurás, podés hacerlo fácilmente con `ts-node`, de esta manera:
 ```elixir
 ❯ node_modules/ts-node/dist/bin.js src/index.ts
 7/22/2021, 8:51:54 PM: Watching API
@@ -716,16 +723,16 @@ Bonus: if you want to run the operator locally when developing or debugging you 
 7/22/2021, 8:52:04 PM: Received event in phase MODIFIED.
 7/22/2021, 8:52:10 PM: Received event in phase DELETED.
 ....
-
 ```
-The reason I used it like this was mostly to assume zero configuration, and it is possible because ts-node is listed as a development dependency, also the docker image could have been used with a bit of configuration.
 
-Note that I did not add all the code from the resources folder or the setup for the typescript project, I recommend you to check that directly in the repo to understand all the missing pieces.
+La razón por la que lo ejecuté de esta manera fue principalmente para asumir cero configuración, y es posible porque `ts-node` está listado como dependencia de desarrollo. También podría haberse utilizado la imagen de Docker con un poco de configuración.
+
+Notá que no incluí todo el código de la carpeta `resources` o la configuración del proyecto TypeScript. Te recomiendo que revises eso directamente en el repo para entender todas las piezas faltantes.
 <br />
 
-### Now let's see the code
+### Ahora veamos el código
 
-Enough words, let's see code, I have added comments and changed the original code a bit
+Suficiente texto, ¡vamos a ver código! He agregado comentarios y cambiado un poco el código original.
 ```elixir
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
@@ -923,9 +930,9 @@ main();
 ```
 <br />
 
-#### The `deployment.json` file
+#### El archivo `deployment.json` 
 
-This file basically is what gets deployed when we create our custom resource
+Esto es lo que se despliega en Kubernetes cuando usamos nuestro nuevo recurso
 ```elixir
 {
   "apiVersion": "apps/v1",
@@ -962,9 +969,9 @@ This file basically is what gets deployed when we create our custom resource
 ```
 <br />
 
-#### And finally our custom resource
+#### Y finalmente nuestro recurso personalizado
 
-This is how we tell our operator that we need our operator to create some resources for a given task
+Así es como le indicamos a nuestro operador que necesitamos que cree algunos recursos para una tarea específica:
 ```elixir
 apiVersion: custom.example.com/v1
 kind: MyCustomResource
@@ -973,17 +980,16 @@ metadata:
   namespace: workers
 spec:
   size: 2
-
 ```
 <br />
 
 #### Extra
 
-For more details and to see how everything fits together I encourage you to clone the repo, test it, and modify it yourself.
+Para más detalles y para ver cómo todo encaja, te animo a clonar el repositorio, probarlo y modificarlo por tu cuenta.
 
-### Cleaning up
+### Limpieza
 
-To clean up the operator from the cluster you can do this
+Para eliminar el operador del clúster podés hacer lo siguiente:
 ```elixir
 ❯ kubectl delete -f resources/mycustomresource-sample.yaml
 ❯ kustomize build resources/ | kubectl delete -f -
@@ -1005,25 +1011,22 @@ kube-system          kube-controller-manager-kind-control-plane   1/1     Runnin
 kube-system          kube-proxy-d2gkx                             1/1     Running   0          10h
 kube-system          kube-scheduler-kind-control-plane            1/1     Running   0          10h
 local-path-storage   local-path-provisioner-547f784dff-tp6cq      1/1     Running   0          10h
-
 ```
 <br />
 
-#### **Closing notes**
+#### **Notas finales**
 
-Be sure to check the links if you want to learn more about the examples from Nodeshift and I hope you enjoyed it, see you on [twitter](https://twitter.com/kainlite) or [github](https://github.com/kainlite)!
+Asegurate de revisar los enlaces si querés aprender más sobre los ejemplos de Nodeshift. ¡Espero que lo hayas disfrutado! Nos vemos en [twitter](https://twitter.com/kainlite) o [github](https://github.com/kainlite).
 
 - https://github.com/nodeshift/nodeshift
 
-The source for this article is [here](https://github.com/kainlite/ts-operator/)
+La fuente de este artículo está [aquí](https://github.com/kainlite/ts-operator/)
 
-DISCLAIMER: I'm not using OpenShift, but all examples are easily translatables to a vanilla cluster.
+DISCLAIMER: No estoy usando OpenShift, pero todos los ejemplos son fácilmente traducibles a un clúster vanilla.
 <br />
 
 ### Errata
 
-If you spot any error or have any suggestion, please send me a message so it gets fixed.
-
-Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+Si encontrás algún error o tenés sugerencias, mandame un mensaje para que pueda corregirse.
 
 <br />

@@ -451,9 +451,9 @@ Also, you can check the source code and changes in the [generated code](https://
 <br />
 ---lang---
 %{
-  title: "Go continuous delivery with Terraform and Kubernetes",
+  title: "Despliegue continuo con Terraform y Kubernetes",
   author: "Gabriel Garrido",
-  description: "In this article we will continue where we left off the last time: Go continuous integration with Travis CI and Docker...",
+  description: "Vamos a seguir donde lo dejamos la ultima vez: Go continuous integration with Travis CI and Docker...",
   tags: ~w(golang travis terraform cicd),
   published: true,
   image: "travis-ci-docker.png",
@@ -463,33 +463,31 @@ Also, you can check the source code and changes in the [generated code](https://
 }
 ---
 
-### Traduccion en proceso
-
 ![travis](/images/travis-ci-docker.png){:class="mx-auto"}
 
-##### **Introduction**
-In this article we will continue where we left off the last time [Go continuous integration with Travis CI and Docker](/blog/go_continuous_integration_with_travis_ci_and_docker), the files used here can be found [HERE](https://github.com/kainlite/whatismyip-go/tree/continuos-delivery), and we will be creating our terraform cluster with a load balancer and generating our kubeconfig file based on the certs provided by terraform on travis and then finally creating a basic deployment and validate that everything works.
+##### **Introducción**
+En este artículo continuaremos donde lo dejamos la última vez [Integración continua con Go usando Travis CI y Docker](/blog/go_continuous_integration_with_travis_ci_and_docker). Los archivos utilizados aquí pueden encontrarse [AQUÍ](https://github.com/kainlite/whatismyip-go/tree/continuos-delivery). Crearemos nuestro clúster en DigitalOcean con un balanceador de carga, generaremos el archivo `kubeconfig` basado en los certificados proporcionados por Terraform en Travis, y finalmente crearemos un despliegue básico para validar que todo funciona.
 <br />
 
 ##### **DigitalOcean**
-We need to create a token so terraform can create resources using DO API. Go to your account then in the menu on the left click API, then you should see something like this:
+Necesitamos crear un token para que Terraform pueda crear recursos utilizando la API de DO. Dirígete a tu cuenta, luego en el menú de la izquierda haz clic en API, deberías ver algo como esto:
 ![image](/images/terraform-do-token-1.png){:class="mx-auto"}
-Once there click generate token (give it a meaningful name to you), and make sure it can write.
+Una vez allí, haz clic en "generate token" (dale un nombre significativo para ti), y asegúrate de que tenga permisos de escritura.
 ![image](/images/terraform-do-token-2.png){:class="mx-auto"}
 <br />
 
 ##### **Terraform**
-As the next step it would be good to set the token for terraform, so let's examine all files and see what they are going to do, but first we're going to provide the secrets to our app via environment variables, and I've found quite useful to use `direnv` on many projects, so the content of the first file `.envrc` would look something like:
+El siguiente paso es configurar el token para Terraform. Examinemos todos los archivos y veamos qué harán, pero primero proporcionaremos los secretos a nuestra aplicación a través de variables de entorno. Yo he encontrado útil usar `direnv` en muchos proyectos, por lo que el contenido del primer archivo `.envrc` se vería algo así:
 ```elixir
-export TF_VAR_DO_TOKEN=insert_your_token_here
+export TF_VAR_DO_TOKEN=insertar_tu_token_aquí
 
 ```
-and after that you will need to allow it's execution by running `direnv allow`.
+Después de eso, necesitarás permitir su ejecución ejecutando `direnv allow`.
 <br />
 
-The first terraform file that we are going to check is `provider.tf`:
+El primer archivo de Terraform que vamos a revisar es `provider.tf`:
 ```elixir
-# Configure the digitalocean provider with it's token
+# Configura el proveedor de DigitalOcean con su token
 variable "DO_TOKEN" {}
 
 provider "digitalocean" {
@@ -497,12 +495,12 @@ provider "digitalocean" {
 }
 
 ```
-As we're using environment variables we need to declare it and then set it in the provider, for now we only need the token.
+Como estamos utilizando variables de entorno, necesitamos declararlo y luego establecerlo en el proveedor. Por ahora, solo necesitamos el token.
 <br />
 
-Then the `kubernetes.tf` file:
+Luego, el archivo `kubernetes.tf`:
 ```elixir
-# Create the cluster
+# Crear el clúster
 resource "digitalocean_kubernetes_cluster" "dev-k8s" {
   name    = "dev-k8s"
   region  = "nyc1"
@@ -517,12 +515,12 @@ resource "digitalocean_kubernetes_cluster" "dev-k8s" {
 }
 
 ```
-This file will be the responsible of creating the kubernetes cluster, as it's our development cluster we only need one node.
+Este archivo será el responsable de crear el clúster de Kubernetes. Como es nuestro clúster de desarrollo, solo necesitamos un nodo.
 <br />
 
-Next the file `lb.tf`:
+El siguiente archivo es `lb.tf`:
 ```elixir
-# Create a load balancer associated with our cluster
+# Crear un balanceador de carga asociado a nuestro clúster
 resource "digitalocean_loadbalancer" "public" {
   name   = "loadbalancer-1"
   region = "nyc1"
@@ -544,161 +542,43 @@ resource "digitalocean_loadbalancer" "public" {
 }
 
 ```
-This one is particularly interesting because it will provide a point of access to our applications (port 80 on it's public IP address), and it also uses a basic health check.
+Este archivo es particularmente interesante porque proporcionará un punto de acceso a nuestras aplicaciones (puerto 80 en su dirección IP pública), y también usa una verificación de estado básica.
 <br />
 
-And last but not least the `output.tf` file:
+Y finalmente, el archivo `output.tf`:
 ```elixir
-# Export the kubectl configuration file
+# Exportar el archivo de configuración de kubectl
 resource "local_file" "kubernetes_config" {
   content  = "${digitalocean_kubernetes_cluster.dev-k8s.kube_config.0.raw_config}"
   filename = "kubeconfig.yaml"
 }
 
-# Print the load balancer ip
+# Imprimir la IP del balanceador de carga
 output "digitalocean_loadbalancer" {
   value       = "${digitalocean_loadbalancer.public.ip}"
-  description = "The public IP address of the load balancer."
+  description = "La dirección IP pública del balanceador de carga."
 }
 
 ```
-This file will print the kubernetes config file that we need to be able to use `kubectl`, and also the IP address of our load balancer.
+Este archivo imprimirá el archivo de configuración de Kubernetes que necesitamos para poder usar `kubectl`, y también la dirección IP del balanceador de carga.
 <br />
 
-So what do we do with all of this?, first you will need to run `terraform init` inside the terraform folder to download plugins and providers, once that is done you can run `terraform plan` to see what changes terraform wants to make or `terraform apply` to do the changes. How is that going to look?:
+¿Qué hacemos con todo esto? Primero necesitarás ejecutar `terraform init` dentro de la carpeta de terraform para descargar los plugins y proveedores. Una vez hecho esto, puedes ejecutar `terraform plan` para ver qué cambios desea hacer terraform o `terraform apply` para aplicarlos. ¿Cómo se verá esto?:
 ```elixir
-# Initialize terraform
-$ terraform init                                                                                                                                                                                             
-                                                                                                                                                                                                                                                                                 
-Initializing provider plugins...                                                                                                                                                                                                                                                 
-- Checking for available provider plugins on https://releases.hashicorp.com...                                                                                                                                                                                                   
-- Downloading plugin for provider "local" (1.2.2)...                                                                                                                                                                                                                             
-- Downloading plugin for provider "digitalocean" (1.2.0)...                                                                                                                                                                                                                      
-                                                                                                                                                                                                                                                                                 
-The following providers do not have any version constraints in configuration,                                                                                                                                                                                                    
-so the latest version was installed.                                                                                                                                                                                                                                             
-                                                                                                                                                                                                                                                                                 
-To prevent automatic upgrades to new major versions that may contain breaking                                                                                                                                                                                                    
-changes, it is recommended to add version = "..." constraints to the                                                                                                                                                                                                             
-corresponding provider blocks in configuration, with the constraint strings                                                                                                                                                                                                      
-suggested below.                                                                                                                                                                                                                                                                 
-                                                                                                                                                                                                                                                                                 
-* provider.digitalocean: version = "~> 1.2"                                                                                                                                                                                                                                      
-* provider.local: version = "~> 1.2"                                                                                                                                                                                                                                             
-                                                                                                                                                                                                                                                                                 
-Terraform has been successfully initialized!                                                                                                                                                                                                                                     
-                                                                                                                                                                                                                                                                                 
-You may now begin working with Terraform. Try running "terraform plan" to see                                                                                                                                                                                                    
-any changes that are required for your infrastructure. All Terraform commands                                                                                                                                                                                                    
-should now work.                                                                                                                                                                                                                                                                 
-                                                                                                                                                                                                                                                                                 
-If you ever set or change modules or backend configuration for Terraform,                                                                                                                                                                                                        
-rerun this command to reinitialize your working directory. If you forget, other                                                                                                                                                                                                  
-commands will detect it and remind you to do so if necessary.                 
+# Inicializar terraform
+$ terraform init
+...
 
-# Apply
+# Aplicar
 $ terraform apply
-digitalocean_kubernetes_cluster.dev-k8s: Creating...
-  cluster_subnet:              "" => "<computed>"
-  created_at:                  "" => "<computed>"
-  endpoint:                    "" => "<computed>"
-  ipv4_address:                "" => "<computed>"
-  kube_config.#:               "" => "<computed>"
-  name:                        "" => "dev-k8s"
-  node_pool.#:                 "" => "1"
-  node_pool.0.id:              "" => "<computed>"
-  node_pool.0.name:            "" => "dev-k8s-nodes"
-  node_pool.0.node_count:      "" => "1"
-  node_pool.0.nodes.#:         "" => "<computed>"
-  node_pool.0.size:            "" => "s-1vcpu-2gb"
-  node_pool.0.tags.#:          "" => "1"
-  node_pool.0.tags.3897066636: "" => "dev-k8s-nodes"
-  region:                      "" => "nyc1"
-  service_subnet:              "" => "<computed>"
-  status:                      "" => "<computed>"
-  updated_at:                  "" => "<computed>"
-  version:                     "" => "1.14.1-do.2"
-digitalocean_loadbalancer.public: Creating...
-  algorithm:                              "" => "round_robin"
-  droplet_ids.#:                          "" => "<computed>"
-  droplet_tag:                            "" => "dev-k8s-nodes"
-  enable_proxy_protocol:                  "" => "false"
-  forwarding_rule.#:                      "" => "1"
-  forwarding_rule.0.entry_port:           "" => "8000"
-  forwarding_rule.0.entry_protocol:       "" => "http"
-  forwarding_rule.0.target_port:          "" => "30000"
-  forwarding_rule.0.target_protocol:      "" => "http"
-  forwarding_rule.0.tls_passthrough:      "" => "false"
-  healthcheck.#:                          "" => "1"
-  healthcheck.0.check_interval_seconds:   "" => "10"
-  healthcheck.0.healthy_threshold:        "" => "5"
-  healthcheck.0.port:                     "" => "30000"
-  healthcheck.0.protocol:                 "" => "tcp"
-  healthcheck.0.response_timeout_seconds: "" => "5"
-  healthcheck.0.unhealthy_threshold:      "" => "3"
-  ip:                                     "" => "<computed>"
-  name:                                   "" => "loadbalancer-1"
-  redirect_http_to_https:                 "" => "false"
-  region:                                 "" => "nyc1"
-  status:                                 "" => "<computed>"
-  sticky_sessions.#:                      "" => "<computed>"
-  urn:                                    "" => "<computed>"
-digitalocean_kubernetes_cluster.dev-k8s: Still creating... (10s elapsed)
-digitalocean_loadbalancer.public: Still creating... (10s elapsed)
-digitalocean_kubernetes_cluster.dev-k8s: Still creating... (20s elapsed)
-digitalocean_loadbalancer.public: Still creating... (20s elapsed)
-digitalocean_kubernetes_cluster.dev-k8s: Still creating... (30s elapsed)
-digitalocean_loadbalancer.public: Still creating... (30s elapsed)
-digitalocean_kubernetes_cluster.dev-k8s: Still creating... (40s elapsed)
-digitalocean_loadbalancer.public: Still creating... (40s elapsed)
-digitalocean_kubernetes_cluster.dev-k8s: Still creating... (50s elapsed)
-digitalocean_loadbalancer.public: Still creating... (50s elapsed)
-digitalocean_kubernetes_cluster.dev-k8s: Still creating... (1m0s elapsed)
-digitalocean_loadbalancer.public: Still creating... (1m0s elapsed)
-digitalocean_loadbalancer.public: Creation complete after 1m1s (ID: e1e75c4c-94f8-481f-bd44-f2883849e4af)
-digitalocean_kubernetes_cluster.dev-k8s: Still creating... (1m10s elapsed)
-digitalocean_kubernetes_cluster.dev-k8s: Still creating... (1m20s elapsed)
-digitalocean_kubernetes_cluster.dev-k8s: Still creating... (1m30s elapsed)
-digitalocean_kubernetes_cluster.dev-k8s: Still creating... (1m40s elapsed)
-digitalocean_kubernetes_cluster.dev-k8s: Still creating... (1m50s elapsed)
-digitalocean_kubernetes_cluster.dev-k8s: Still creating... (2m0s elapsed)
-digitalocean_kubernetes_cluster.dev-k8s: Still creating... (2m10s elapsed)
-digitalocean_kubernetes_cluster.dev-k8s: Still creating... (2m20s elapsed)
-digitalocean_kubernetes_cluster.dev-k8s: Still creating... (2m30s elapsed)
-digitalocean_kubernetes_cluster.dev-k8s: Still creating... (2m40s elapsed)
-digitalocean_kubernetes_cluster.dev-k8s: Creation complete after 2m43s (ID: 592d58c9-98c1-4285-b098-cbc9378e9f89)
-local_file.kubernetes_config: Creating...
-  content:  "" => "apiVersion: v1
-clusters:
-- cluster:
-    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURKekNDQWcrZ0F3SUJBZ0lDQm5Vd0RRWUpLb1pJaHZjTkFRRUxCUUF3TXpFVk1CTUdBMVVFQ2hNTVJHbG4KYVhSaGJFOWpaV0Z1TVJvd0dBWURWUVFERXhGck9ITmhZWE1nUTJ4MWMzUmxjaUJEUVRBZUZ3MHhPVEExTURVeQpNREUwTWpkYUZ3MHpPVEExTURVeU1ERTBNamRhTURNeEZUQVRCZ05WQkFvVERFUnBaMmwwWVd4UFkyVmhiakVhCk1CZ0dBMVVFQXhNUmF6aHpZV0Z6SUVOc2RYTjBaWElnUTBFd2dnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUIKRHdBd2dnRUtBb0lCQVFEZWdIRnpBd3o1dlVTWngrOHJqQktmcGt0SS9SLzQ4dG01eE50VE9NcmsvWEx3bDczRApXa01ZWFNzdjJOOTVOdFhIb3B5VUNobGppa2NOSEpJdFdzV0xsVU1lY0UrYlBWY054djR0YVlMRWJVbTNVSW4zCnFxalN0dmN6NU0wSFpNYlU3UVFHM2F5VFFKeE1FUTVzQWpFYkN1MEZuWERvdkpQR3cwczhHUTlWOXBBaVFDcE4KZnVMQUpTQTBZZ2RpVDJBN3RUNkV4N1ZzY256VUFWbllRRGE4VG00cHR5RXlpTHpJTzB6NFdJMTBRK1RKV2VkeQpQa2JwVjBQMklQQlhmb3Ntd2k3N0JFT3NFYUZLdmNSQzBrUm9oT1pqM3E0T1lPTDJRMkNkTnV0dElWL1MzckllCmc2RjFWRXNEdEhKajhRUHA1U0NZUXdOekNLcnlMSjNGRXJ4NUFnTUJBQUdqUlRCRE1BNEdBMVVkRHdFQi93UUUKQXdJQmhqQVNCZ05WSFJNQkFmOEVDREFHQVFIL0FnRUFNQjBHQTFVZERnUVdCQlRFQS9PVG9qRUk1bGVnemlFRwpRLzFyNlltZFFqQU5CZ2txaGtpRzl3MEJBUXNGQUFPQ0FRRUFSK3piZjcyOVJLUDVuQlJsQ2hPMEE5R3p6bXl4Cm1GSnc3WlYyc3hvdmwzUmUvR3NCR0FKS1ZkNkVjYWZSUklZWDgybUZWeENrQXNab1BSWFM1MlRVcXVxcWJqT0cKUWp3dXoyc3NiKzArK1lJVDhUek84MDJiZThqNFVrbG9FeFRyVkI0aFIwcjFILysxbFlYKys2cDBGK21KTG9EKwpIVDVkeCtvM1JiREVBUC82T1lkaWFIYnNIMFEyQXFsRk5uU0doeTVrSC82a3RqV3JwdUR4VVp2NUxMTTdCdDlHCjMvMGozcU0xSnpTNXBrNkhsU1lwcitYY09ybDlrYlVKZ1VvZzJmWGhITUVWL0dXNW1ldTUyV2xhRzJkdWpnM2sKQUhLTlRPNkxnWEs3UEVOQjdYeTFFL2UrOHBDOXc5MjNsUVdHclBvSGdZdkwzZzUvcXNBdEZtNDN6dz09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
-    server: https://592d58c9-98c1-4285-b098-cbc9378e9f89.k8s.ondigitalocean.com
-  name: do-nyc1-dev-k8s
-contexts:
-- context:
-    cluster: do-nyc1-dev-k8s
-    user: do-nyc1-dev-k8s-admin
-  name: do-nyc1-dev-k8s
-current-context: do-nyc1-dev-k8s
-kind: Config
-preferences: {}
-users:
-- name: do-nyc1-dev-k8s-admin
-  user:
-    client-certificate-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURyVENDQXBXZ0F3SUJBZ0lDQm5Vd0RRWUpLb1pJaHZjTkFRRUxCUUF3TXpFVk1CTUdBMVVFQ2hNTVJHbG4KYVhSaGJFOWpaV0Z1TVJvd0dBWURWUVFERXhGck9ITmhZWE1nUTJ4MWMzUmxjaUJEUVRBZUZ3MHhPVEExTURVeQpNREUzTURoYUZ3MHhPVEExTVRJeU1ERTNNRGhhTUg4eEN6QUpCZ05WQkFZVEFsVlRNUXN3Q1FZRFZRUUlFd0pPCldURVJNQThHQTFVRUJ4TUlUbVYzSUZsdmNtc3hIVEFiQmdOVkJBb1RGR3M0YzJGaGN6cGhkWFJvWlc1MGFXTmgKZEdWa01URXdMd1lEVlFRREV5ZzJaVFE0TjJVNU5ESXlaV0kyWTJFek5tWXpNek5oT0dSak5URXpNamt4TUdSbApNbU0wTm1JM01JSUJJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBUThBTUlJQkNnS0NBUUVBemxodzg0QzR4dnlBCnVGWWNFb1M5VEY2L09FOXd5WWwvNnhZbzI5Nzc3QU9pSHp4clo2RUE2dHh5YkI0VHUyMnM5bWR3SGNhSE40OXMKYTd4YmZ2NnA1Z0l3R1FTRUx5ZVZJUVp1NjVQSzFEQUtVN3ZINVloc2FsNnByN202WTZ4YktJeDNsVDFYeGVpSApFVHhWUW5IU0hITngyZ2lJRVJmbEt4dnFnL0g1M1Ntd3I3WlFsWHlNb3huQ3Uxd3ZXMGsyNnJzVnBJQzBCa0NNClBlTGdzQkswc01EalUvTXBzUElkRm4vSzF1dWRNYWhGTnJIdng5NkJ5bmlsaFFFMDBQaGwrNDNnWEFhRFhtNVMKRFJ4UWc3TzFpNW04dVRmUDRIWjFGU0kxUlZPWVRkQjZtSHdEV2lTVE9xZDc2TGJEWlFyT1djNURBanc1R3JjKwpIMThrcnNzQlV3SURBUUFCbzM4d2ZUQU9CZ05WSFE4QkFmOEVCQU1DQmFBd0hRWURWUjBsQkJZd0ZBWUlLd1lCCkJRVUhBd0lHQ0NzR0FRVUZCd01CTUF3R0ExVWRFd0VCL3dRQ01BQXdIUVlEVlIwT0JCWUVGUGtkWTN0SmNRQzMKa01LbGhNZU1aTzhRR3RQVU1COEdBMVVkSXdRWU1CYUFGTVFEODVPaU1Ram1WNkRPSVFaRC9XdnBpWjFDTUEwRwpDU3FHU0liM0RRRUJDd1VBQTRJQkFRQW5aNXFtTlBEYWMyNTNnNkl1NkcrSjdna2o5NUhiOVFlNE5VNG5ib0NVCjJQRmF0K3pPelF6NlhPTVRWUk9ESlJrQlJvU2pyK2gvTFFBZFFBcWk5V244bkducG9SaHRad0s0eXozS1czUlAKSXRaaURsdXpyeVZScFVQSUMxbDh1TVBzTVEveDUzaFVvYUZzODFiTExVMVE0NWJLUDRHQUgybGo4OE5HKzNMcwpQVUQxUGQ3b1Z5K0QvZUJBdDZYYnYrNms5SGxwNHovNzE4WjJjVUFnSWphNFRGSExaNmpuM2R2TWg3SnlDLzZnCm0vL0tpb1o3WGo4Zm96YS93U3B2ZlhiSkkzUjd1RHRZMmhLbmZ6VE1iZFY5RjdkM0UxREE5aUlheEx6V2o1TzgKNktTVDlBbXV4WDU1Q2VFMGhpT1ptQ2dGS1NFazVsQXFFNDNqL3VDT1MyYTQKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
-    client-key-data: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBemxodzg0QzR4dnlBdUZZY0VvUzlURjYvT0U5d3lZbC82eFlvMjk3NzdBT2lIenhyClo2RUE2dHh5YkI0VHUyMnM5bWR3SGNhSE40OXNhN3hiZnY2cDVnSXdHUVNFTHllVklRWnU2NVBLMURBS1U3dkgKNVloc2FsNnByN202WTZ4YktJeDNsVDFYeGVpSEVUeFZRbkhTSEhOeDJnaUlFUmZsS3h2cWcvSDUzU213cjdaUQpsWHlNb3huQ3Uxd3ZXMGsyNnJzVnBJQzBCa0NNUGVMZ3NCSzBzTURqVS9NcHNQSWRGbi9LMXV1ZE1haEZOckh2Cng5NkJ5bmlsaFFFMDBQaGwrNDNnWEFhRFhtNVNEUnhRZzdPMWk1bTh1VGZQNEhaMUZTSTFSVk9ZVGRCNm1Id0QKV2lTVE9xZDc2TGJEWlFyT1djNURBanc1R3JjK0gxOGtyc3NCVXdJREFRQUJBb0lCQUVpaS9XL2FXakZCNVpYKwpTZmVDM3BncHFpcUtYR3UxaVdBWjl0d2ZUSk15WERtZXJUaFhodGttTE9rK1ZUZmZUY21YYy9JblZxWUtTT0pMCjlmRm9lQ3BOanR6ZnFDQnBVS2ZGZWZwWGxrakhlSHN0V1JyRndWUllhbWMvZkF0bU90aTFTY3N4UXRxYUZpSE4KR1Q1QWp2UVE5MzBIRDg3a21IbHFaRTE2T3JqTk4vZXJYMGc3NGRnUDdVVDdoRU94R04zY1B6L2JzUTVZVXlkTwp5SE1WdlpUZG9UUzhpQnROWUQwV1VhSFVqaHRkdDRLQUJBbzZNMzJoeFVxVzV3cU1USmpjeFNxYTRvMWg3OVZVCmxmYVFqQjlBNGo0cndCaXBjd1VOL0lKTzZuUElyaml0dHYvS00xaXdSSHJXQ3pBa1pCLzU2Q1cyR1NpK3dQbGwKYUoyWVNTRUNnWUVBOXZ3Q0xNTTZoWHJaT2NlcWkvOUpYanlWaWRVNEhoR1Q3MG9FNThBbmtXdExqQUZvNTVVTwo5OXZwZW4xeEJEdHVIUHVVakx1b0c2WXJlMElVb3gzUGZ1VzNEVU8vaG5jcXk3VGU3QkFjd203bjdpSExlU2VQCmc4TkR1Z1NJcEZML28ra1kySGd1eThyTUNWa3c3VXMwakxYMVRzeEFHallFQlByTVFmeDBtUXNDZ1lFQTFlQ3MKdDRBRXk3T3gvcUlPNFhGZzc1NFdxZzdiWW13bDFxNTRJVU9RSTBPOGJPOUZzWlo5TEJUYU1mekdlaWlLbVNYcwo2U01YVk5yazQvNU0yUTYyN1dBVk5hODhXQzU2Q2xCM3JnM1QzTnE1anR6ZHZtSDUxU3hPaWxkZXFkTDNXQTZlCm9JTkZJVGlrL29zNzBrSnBON2N0Y1V2MEdXYjUwc050NlV5U05ka0NnWUVBcFZ3WWdLdTlOTDBKVHh3VlhXSHcKVnoyc3lQbU9kdU5CN29YYVB1ZHlGblNGd2hqM2lZVk0zam5JV2hBK2FKejVua0g2TlRjMjJEd3JCSDA3bi9KSAppQ2g0cEZMbG1qdVMxWXdsYkZ0bFJmQkhMREpJTHJlRDZLNEZYRGZJM0d3TmFFcWFMZVJaUUd4b3F5R2lGbDJ4CnN6dm9IM2UwdTFmSzNTS2xPdEN4cC8wQ2dZQmZFK2YwRXpjT2p5MmJjdE9HcU81YzF6eGdFUWE1OURYRi8vMXIKWEN1aFlhVk1EL285ZmhiYkY5SC8wczB3MVFENElBSDNpaC8vR3VnUjZxU2pBWVdVZE5nNDYxTzZKNzhkQXJTUgpiWmczWUF5SlUrcEhqaXFQOTRoYXU0aGJtbXRXZS9sTWhjNmZmQnp0QTF4dWxoTk1MMlJHTDJ1dU56YnIyUER0CmU1cXIwUUtCZ0V3UjBCTi9UaVpCVVZYbWFlUXhuck1hamlIRDRzd1BHQklpWldJWEpMZGEySmNCZFRsbmZaL1cKY05KaU1nY0dXZlUyZktUMEZBd0NjWE5QK3lXRXdJNTBWQUoreWR5WWZBL2tsbUxxTFR1QVNldXRiVTc4aWlrUQpoclFuMXc3cUZuVFJZYklCOElueVRpZ1EwZVQwUUlXOEtnNzJlUFVNZzhZUjEzMmtiSmhYCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
-"
-  filename: "" => "kubeconfig.yaml"
-local_file.kubernetes_config: Creation complete after 0s (ID: 134e8fecc682966cfc21b46a96afbfb88f85dc2a)
-
-Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
+...
 
 ```
-This will create our cluster in DigitalOcean, remember to destroy it after you're done using it with `terraform destroy`, if you don't use a plan you will be prompted for a confirmation when you do `terraform apply`, review and say `yes`.
+Esto creará nuestro clúster en DigitalOcean. Recuerda destruirlo después de usarlo con `terraform destroy`. Si no usas un plan, se te pedirá confirmación cuando ejecutes `terraform apply`; revisa y di `sí`.
 <br />
 
 ##### **Travis**
-We did some additions to our `.travis.yml` file, which are mostly to prepare `kubectl` and to also trigger a deployment if the build succeeded.
+Hicimos algunas adiciones a nuestro archivo `.travis.yml`, que son principalmente para preparar `kubectl` y también para desencadenar un despliegue si la compilación tiene éxito.
 ```elixir
 language: go
 
@@ -729,59 +609,43 @@ after_success:
   - ./kubectl apply -f ./kubernetes/manifest.yml
 
 ```
-As shown in the screenshot we took the base64 encoded certificates and loaded them into travis as environment variables (KUBERNETES_CA, KUBERNETES_CLIENT_CA, KUBERNETES_CLIENT_KEY, KUBERNETES_ENDPOINT), then we decode that into files, create the configuration using kubectl and set it as active and then we apply the deployment with the newly rendered hash.
+Como se muestra en la imagen, tomamos los certificados codificados en base64 y los cargamos en Travis como variables de entorno (KUBERNETES_CA, KUBERNETES_CLIENT_CA, KUBERNETES_CLIENT_KEY, KUBERNETES_ENDPOINT), luego los decodificamos en archivos, creamos la configuración usando `kubectl` y la activamos, y luego aplicamos el despliegue con el hash generado.
 <br />
 
-This is how it should look in travis:
+Así es como debería verse en Travis:
 ![image](/images/terraform-do-environment-variables.png){:class="mx-auto"}
 
-Let's take a look at the generated kubernetes configuration and what values you should take into account:
+Veamos la configuración generada de Kubernetes y qué valores debes tener en cuenta:
 ```elixir
-apiVersion: v1                                                                                                                                                                                                                                                                   
-clusters:                                                                                                                                                                                                                                                                        
-- cluster:                                                                                                                                                                                                                                                                       
-    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURKekNDQWcrZ0F3SUJBZ0lDQm5Vd0RRWUpLb1pJaHZjTkFRRUxCUUF3TXpFVk1CTUdBMVVFQ2hNTVJHbG4KYVhSaGJFOWpaV0Z1TVJvd0dBWURWUVFERXhGck9ITmhZWE1nUTJ4MWMzUmxjaUJEUVRBZUZ3MHhPVEExTURVeQpNREUwTWpkYUZ3MHpPVEExTURVeU1ER
-TBNamRhTURNeEZUQVRCZ05WQkFvVERFUnBaMmwwWVd4UFkyVmhiakVhCk1CZ0dBMVVFQXhNUmF6aHpZV0Z6SUVOc2RYTjBaWElnUTBFd2dnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUIKRHdBd2dnRUtBb0lCQVFEZWdIRnpBd3o1dlVTWngrOHJqQktmcGt0SS9SLzQ4dG01eE50VE9NcmsvWEx3bDczRApXa01ZWFNzdjJOOTVOdFhIb3B5VUNobGppa2NOSEpJdF
-dzV0xsVU1lY0UrYlBWY054djR0YVlMRWJVbTNVSW4zCnFxalN0dmN6NU0wSFpNYlU3UVFHM2F5VFFKeE1FUTVzQWpFYkN1MEZuWERvdkpQR3cwczhHUTlWOXBBaVFDcE4KZnVMQUpTQTBZZ2RpVDJBN3RUNkV4N1ZzY256VUFWbllRRGE4VG00cHR5RXlpTHpJTzB6NFdJMTBRK1RKV2VkeQpQa2JwVjBQMklQQlhmb3Ntd2k3N0JFT3NFYUZLdmNSQzBrUm9oT1pqM3E
-0T1lPTDJRMkNkTnV0dElWL1MzckllCmc2RjFWRXNEdEhKajhRUHA1U0NZUXdOekNLcnlMSjNGRXJ4NUFnTUJBQUdqUlRCRE1BNEdBMVVkRHdFQi93UUUKQXdJQmhqQVNCZ05WSFJNQkFmOEVDREFHQVFIL0FnRUFNQjBHQTFVZERnUVdCQlRFQS9PVG9qRUk1bGVnemlFRwpRLzFyNlltZFFqQU5CZ2txaGtpRzl3MEJBUXNGQUFPQ0FRRUFSK3piZjcyOVJLUDVuQlJs
-Q2hPMEE5R3p6bXl4Cm1GSnc3WlYyc3hvdmwzUmUvR3NCR0FKS1ZkNkVjYWZSUklZWDgybUZWeENrQXNab1BSWFM1MlRVcXVxcWJqT0cKUWp3dXoyc3NiKzArK1lJVDhUek84MDJiZThqNFVrbG9FeFRyVkI0aFIwcjFILysxbFlYKys2cDBGK21KTG9EKwpIVDVkeCtvM1JiREVBUC82T1lkaWFIYnNIMFEyQXFsRk5uU0doeTVrSC82a3RqV3JwdUR4VVp2NUxMTTdCd
-DlHCjMvMGozcU0xSnpTNXBrNkhsU1lwcitYY09ybDlrYlVKZ1VvZzJmWGhITUVWL0dXNW1ldTUyV2xhRzJkdWpnM2sKQUhLTlRPNkxnWEs3UEVOQjdYeTFFL2UrOHBDOXc5MjNsUVdHclBvSGdZdkwzZzUvcXNBdEZtNDN6dz09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K                                                                  
-    server: https://592d58c9-98c1-4285-b098-cbc9378e9f89.k8s.ondigitalocean.com                                                                                                                                                                                                  
-  name: do-nyc1-dev-k8s                                                                                                                                                                                                                                                          
-contexts:                                                                                                                                                                                                                                                                        
-- context:                                                                                                                                                                                                                                                                       
-    cluster: do-nyc1-dev-k8s                                                                                                                                                                                                                                                     
-    user: do-nyc1-dev-k8s-admin                                                                                                                                                                                                                                                  
-  name: do-nyc1-dev-k8s                                                                                                                                                                                                                                                          
-current-context: do-nyc1-dev-k8s                                                                                                                                                                                                                                                 
-kind: Config                                                                                                                                                                                                                                                                     
-preferences: {}                                                                                                                                                                                                                                                                  
-users:                                                                                                                                                                                                                                                                           
-- name: do-nyc1-dev-k8s-admin                                                                                                                                                                                                                                                    
-  user:                                                                                                                                                                                                                                                                          
-    client-certificate-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURyVENDQXBXZ0F3SUJBZ0lDQm5Vd0RRWUpLb1pJaHZjTkFRRUxCUUF3TXpFVk1CTUdBMVVFQ2hNTVJHbG4KYVhSaGJFOWpaV0Z1TVJvd0dBWURWUVFERXhGck9ITmhZWE1nUTJ4MWMzUmxjaUJEUVRBZUZ3MHhPVEExTURVeQpNREUzTURoYUZ3MHhPVEExTVRJeU1ERTNN
-RGhhTUg4eEN6QUpCZ05WQkFZVEFsVlRNUXN3Q1FZRFZRUUlFd0pPCldURVJNQThHQTFVRUJ4TUlUbVYzSUZsdmNtc3hIVEFiQmdOVkJBb1RGR3M0YzJGaGN6cGhkWFJvWlc1MGFXTmgKZEdWa01URXdMd1lEVlFRREV5ZzJaVFE0TjJVNU5ESXlaV0kyWTJFek5tWXpNek5oT0dSak5URXpNamt4TUdSbApNbU0wTm1JM01JSUJJakFOQmdrcWhraUc5dzBCQVFFRkFBT
-0NBUThBTUlJQkNnS0NBUUVBemxodzg0QzR4dnlBCnVGWWNFb1M5VEY2L09FOXd5WWwvNnhZbzI5Nzc3QU9pSHp4clo2RUE2dHh5YkI0VHUyMnM5bWR3SGNhSE40OXMKYTd4YmZ2NnA1Z0l3R1FTRUx5ZVZJUVp1NjVQSzFEQUtVN3ZINVloc2FsNnByN202WTZ4YktJeDNsVDFYeGVpSApFVHhWUW5IU0hITngyZ2lJRVJmbEt4dnFnL0g1M1Ntd3I3WlFsWHlNb3huQ3
-Uxd3ZXMGsyNnJzVnBJQzBCa0NNClBlTGdzQkswc01EalUvTXBzUElkRm4vSzF1dWRNYWhGTnJIdng5NkJ5bmlsaFFFMDBQaGwrNDNnWEFhRFhtNVMKRFJ4UWc3TzFpNW04dVRmUDRIWjFGU0kxUlZPWVRkQjZtSHdEV2lTVE9xZDc2TGJEWlFyT1djNURBanc1R3JjKwpIMThrcnNzQlV3SURBUUFCbzM4d2ZUQU9CZ05WSFE4QkFmOEVCQU1DQmFBd0hRWURWUjBsQkJ
-Zd0ZBWUlLd1lCCkJRVUhBd0lHQ0NzR0FRVUZCd01CTUF3R0ExVWRFd0VCL3dRQ01BQXdIUVlEVlIwT0JCWUVGUGtkWTN0SmNRQzMKa01LbGhNZU1aTzhRR3RQVU1COEdBMVVkSXdRWU1CYUFGTVFEODVPaU1Ram1WNkRPSVFaRC9XdnBpWjFDTUEwRwpDU3FHU0liM0RRRUJDd1VBQTRJQkFRQW5aNXFtTlBEYWMyNTNnNkl1NkcrSjdna2o5NUhiOVFlNE5VNG5ib0NV
-CjJQRmF0K3pPelF6NlhPTVRWUk9ESlJrQlJvU2pyK2gvTFFBZFFBcWk5V244bkducG9SaHRad0s0eXozS1czUlAKSXRaaURsdXpyeVZScFVQSUMxbDh1TVBzTVEveDUzaFVvYUZzODFiTExVMVE0NWJLUDRHQUgybGo4OE5HKzNMcwpQVUQxUGQ3b1Z5K0QvZUJBdDZYYnYrNms5SGxwNHovNzE4WjJjVUFnSWphNFRGSExaNmpuM2R2TWg3SnlDLzZnCm0vL0tpb1o3W
-Go4Zm96YS93U3B2ZlhiSkkzUjd1RHRZMmhLbmZ6VE1iZFY5RjdkM0UxREE5aUlheEx6V2o1TzgKNktTVDlBbXV4WDU1Q2VFMGhpT1ptQ2dGS1NFazVsQXFFNDNqL3VDT1MyYTQKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=                                                                                                      
-    client-key-data: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBemxodzg0QzR4dnlBdUZZY0VvUzlURjYvT0U5d3lZbC82eFlvMjk3NzdBT2lIenhyClo2RUE2dHh5YkI0VHUyMnM5bWR3SGNhSE40OXNhN3hiZnY2cDVnSXdHUVNFTHllVklRWnU2NVBLMURBS1U3dkgKNVloc2FsNnByN202WTZ4YktJeDNsVDFYeGVp
-SEVUeFZRbkhTSEhOeDJnaUlFUmZsS3h2cWcvSDUzU213cjdaUQpsWHlNb3huQ3Uxd3ZXMGsyNnJzVnBJQzBCa0NNUGVMZ3NCSzBzTURqVS9NcHNQSWRGbi9LMXV1ZE1haEZOckh2Cng5NkJ5bmlsaFFFMDBQaGwrNDNnWEFhRFhtNVNEUnhRZzdPMWk1bTh1VGZQNEhaMUZTSTFSVk9ZVGRCNm1Id0QKV2lTVE9xZDc2TGJEWlFyT1djNURBanc1R3JjK0gxOGtyc3NCV
-XdJREFRQUJBb0lCQUVpaS9XL2FXakZCNVpYKwpTZmVDM3BncHFpcUtYR3UxaVdBWjl0d2ZUSk15WERtZXJUaFhodGttTE9rK1ZUZmZUY21YYy9JblZxWUtTT0pMCjlmRm9lQ3BOanR6ZnFDQnBVS2ZGZWZwWGxrakhlSHN0V1JyRndWUllhbWMvZkF0bU90aTFTY3N4UXRxYUZpSE4KR1Q1QWp2UVE5MzBIRDg3a21IbHFaRTE2T3JqTk4vZXJYMGc3NGRnUDdVVDdoRU
-94R04zY1B6L2JzUTVZVXlkTwp5SE1WdlpUZG9UUzhpQnROWUQwV1VhSFVqaHRkdDRLQUJBbzZNMzJoeFVxVzV3cU1USmpjeFNxYTRvMWg3OVZVCmxmYVFqQjlBNGo0cndCaXBjd1VOL0lKTzZuUElyaml0dHYvS00xaXdSSHJXQ3pBa1pCLzU2Q1cyR1NpK3dQbGwKYUoyWVNTRUNnWUVBOXZ3Q0xNTTZoWHJaT2NlcWkvOUpYanlWaWRVNEhoR1Q3MG9FNThBbmtXdEx
-qQUZvNTVVTwo5OXZwZW4xeEJEdHVIUHVVakx1b0c2WXJlMElVb3gzUGZ1VzNEVU8vaG5jcXk3VGU3QkFjd203bjdpSExlU2VQCmc4TkR1Z1NJcEZML28ra1kySGd1eThyTUNWa3c3VXMwakxYMVRzeEFHallFQlByTVFmeDBtUXNDZ1lFQTFlQ3MKdDRBRXk3T3gvcUlPNFhGZzc1NFdxZzdiWW13bDFxNTRJVU9RSTBPOGJPOUZzWlo5TEJUYU1mekdlaWlLbVNYcwo2
-U01YVk5yazQvNU0yUTYyN1dBVk5hODhXQzU2Q2xCM3JnM1QzTnE1anR6ZHZtSDUxU3hPaWxkZXFkTDNXQTZlCm9JTkZJVGlrL29zNzBrSnBON2N0Y1V2MEdXYjUwc050NlV5U05ka0NnWUVBcFZ3WWdLdTlOTDBKVHh3VlhXSHcKVnoyc3lQbU9kdU5CN29YYVB1ZHlGblNGd2hqM2lZVk0zam5JV2hBK2FKejVua0g2TlRjMjJEd3JCSDA3bi9KSAppQ2g0cEZMbG1qd
-VMxWXdsYkZ0bFJmQkhMREpJTHJlRDZLNEZYRGZJM0d3TmFFcWFMZVJaUUd4b3F5R2lGbDJ4CnN6dm9IM2UwdTFmSzNTS2xPdEN4cC8wQ2dZQmZFK2YwRXpjT2p5MmJjdE9HcU81YzF6eGdFUWE1OURYRi8vMXIKWEN1aFlhVk1EL285ZmhiYkY5SC8wczB3MVFENElBSDNpaC8vR3VnUjZxU2pBWVdVZE5nNDYxTzZKNzhkQXJTUgpiWmczWUF5SlUrcEhqaXFQOTRoYX
-U0aGJtbXRXZS9sTWhjNmZmQnp0QTF4dWxoTk1MMlJHTDJ1dU56YnIyUER0CmU1cXIwUUtCZ0V3UjBCTi9UaVpCVVZYbWFlUXhuck1hamlIRDRzd1BHQklpWldJWEpMZGEySmNCZFRsbmZaL1cKY05KaU1nY0dXZlUyZktUMEZBd0NjWE5QK3lXRXdJNTBWQUoreWR5WWZBL2tsbUxxTFR1QVNldXRiVTc4aWlrUQpoclFuMXc3cUZuVFJZYklCOElueVRpZ1EwZVQwUUl
-XOEtnNzJlUFVNZzhZUjEzMmtiSmhYCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==    
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0t...
+...
+  server: https://592d58c9-98c1-4285-b098-cbc9378e9f89.k8s.ondigitalocean.com
+  name: do-nyc1-dev-k8s
+contexts:
+- context:
+    cluster: do-nyc1-dev-k8s
+    user: do-nyc1-dev-k8s-admin
+  name: do-nyc1-dev-k8s
+current-context: do-nyc1-dev-k8s
+kind: Config
+preferences: {}
+users:
+- name: do-nyc1-dev-k8s-admin
+  user:
+    client-certificate-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0t...
+...
 
 ```
-Never do that, don't share your configuration or anybody will be able to use your cluster, also be careful not to commit it to your repo, in this example it's no longer valid because after running the examples I destroyed the cluster with `terraform destroy`. Now there are four values of interest for us: certificate-authority-data: KUBERNETES_CA, client-certificate-data: KUBERNETES_CLIENT_CA, client-key-data: KUBERNETES_CLIENT_KEY and server: KUBERNETES_ENDPOINT, with these variables we can re-create our kubernetes configuration easily using kubectl, be aware that we're not decoding to save it in travis, we do that in the travis configuration file (`.travis.yml`).
+Nunca hagas esto, no compartas tu configuración o cualquiera podrá usar tu clúster. También ten cuidado de no comprometerlo en tu repositorio. En este ejemplo ya no es válido porque, después de ejecutar los ejemplos, destruí el clúster con `terraform destroy`. Ahora, hay cuatro valores de interés para nosotros: `certificate-authority-data: KUBERNETES_CA`, `client-certificate-data: KUBERNETES_CLIENT_CA`, `client-key-data: KUBERNETES_CLIENT_KEY`, y `server: KUBERNETES_ENDPOINT`. Con estas variables, podemos recrear fácilmente nuestra configuración de Kubernetes usando `kubectl`. Ten en cuenta que no estamos dec
+
+odificando para guardarlo en Travis; lo hacemos en el archivo de configuración de Travis (`.travis.yml`).
 <br />
 
 ##### **Kubernetes**
-So after all that, we still need to have a deployment template to deploy our application, and it's a template because we need to replace the SHA of the current build in the manifest before committing it to the Kubernetes API, so let's check it `manifest.yml.template`:
+Después de todo eso, aún necesitamos tener una plantilla de despliegue para desplegar nuestra aplicación, y es una plantilla porque necesitamos reemplazar el SHA de la compilación actual en el manifiesto antes de enviarlo a la API de Kubernetes. Revisemos el archivo `manifest.yml.template`:
 ```elixir
 ---
 apiVersion: v1
@@ -822,84 +686,82 @@ spec:
               name: http
 
 ```
-Here we expose our service in the port 30000 as a NodePort, and deploy the current SHA (replaced during execution by travis)
+Aquí exponemos nuestro servicio en el puerto 30000 como un NodePort y desplegamos el SHA actual (reemplazado durante la ejecución por Travis).
 
 <br />
-##### **Testing everything**
-Validate that the deployment went well by checking our kubernetes cluster:
+##### **Probando todo**
+Valida que el despliegue se haya realizado correctamente verificando nuestro clúster de Kubernetes:
 ```elixir
-$ kubectl get pods --kubeconfig=./kubeconfig.yaml                                                                                                                                                
-NAME                                        READY   STATUS    RESTARTS   AGE                                                                                                                                                                                                     
-whatismyip-go-deployment-5ff9894d8c-f48nx   1/1     Running   0          9s     
+$ kubectl get pods --kubeconfig=./kubeconfig.yaml
+NAME                                        READY   STATUS    RESTARTS   AGE
+whatismyip-go-deployment-5ff9894d8c-f48nx   1/1     Running   0          9s
 
 ```
 <br />
 
-First we test the load balancer, and as we will see the ip is not right, it's the internal ip of the load balancer and not our public ip address.
+Primero probamos el balanceador de carga, y como veremos, la IP no es correcta, es la IP interna del balanceador de carga y no nuestra dirección IP pública.
 ```elixir
 $ curl -v 159.203.156.153
-*   Trying 159.203.156.153...                                                                                                                                                                                                                                                    
-* TCP_NODELAY set                                                                                                                                                                                                                                                                
-* Connected to 159.203.156.153 (159.203.156.153) port 80 (#0)                                                                                                                                                                                                                    
-> GET / HTTP/1.1                                                                                                                                                                                                                                                                 
-> Host: 159.203.156.153                                                                                                                                                                                                                                                          
-> User-Agent: curl/7.64.1                                                                                                                                                                                                                                                        
-> Accept: */*                                                                                                                                                                                                                                                                    
->                                                                                                                                                                                                                                                                                
-< HTTP/1.1 200 OK                                                                                                                                                                                                                                                                
-< Date: Sun, 05 May 2019 21:14:28 GMT                                                                                                                                                                                                                                            
-< Content-Length: 12                                                                                                                                                                                                                                                             
-< Content-Type: text/plain; charset=utf-8                                                                                                                                                                                                                                        
-<                                                                                                                                                                                                                                                                                
-* Connection #0 to host 159.203.156.153 left intact                                                                                                                                                                                                                              
+*   Trying 159.203.156.153...
+* TCP_NODELAY set
+* Connected to 159.203.156.153 (159.203.156.153) port 80 (#0)
+> GET / HTTP/1.1
+> Host: 159.203.156.153
+> User-Agent: curl/7.64.1
+> Accept: */*
+>
+< HTTP/1.1 200 OK
+< Date: Sun, 05 May 2019 21:14:28 GMT
+< Content-Length: 12
+< Content-Type: text/plain; charset=utf-8
+<
+* Connection #0 to host 159.203.156.153 left intact
 10.136.5.237* Closing connection 0 
 
 ```
 <br />
 
-But if we hit our service directly we can see the correct IP address, this could be improved but it's left as an exercise for the avid reader ◕_◕.
+Pero si accedemos directamente a nuestro servicio, podemos ver la dirección IP correcta, esto podría mejorarse pero lo dejamos como ejercicio para el lector ◕_◕.
 ```elixir
-$ curl -v 142.93.207.200:30000                                                                                                                                                                   
-*   Trying 142.93.207.200...                                                                                                                                                                                                                                                     
-* TCP_NODELAY set                                                                                                                                                                                                                                                                
-* Connected to 142.93.207.200 (142.93.207.200) port 30000 (#0)                                                                                                                                                                                                                   
-> GET / HTTP/1.1                                                                                                                                                                                                                                                                 
-> Host: 142.93.207.200:30000                                                                                                                                                                                                                                                     
-> User-Agent: curl/7.64.1                                                                                                                                                                                                                                                        
-> Accept: */*                                                                                                                                                                                                                                                                    
->                                                                                                                                                                                                                                                                                
-< HTTP/1.1 200 OK                                                                                                                                                                                                                                                                
-< Date: Sun, 05 May 2019 21:35:13 GMT                                                                                                                                                                                                                                            
-< Content-Length: 12                                                                                                                                                                                                                                                             
-< Content-Type: text/plain; charset=utf-8                                                                                                                                                                                                                                        
-<                                                                                                                                                                                                                                                                                
-* Connection #0 to host 142.93.207.200 left intact                                                                                                                                                                                                                               
+$ curl -v 142.93.207.200:30000
+*   Trying 142.93.207.200...
+* TCP_NODELAY set
+* Connected to 142.93.207.200 (142.93.207.200) port 30000 (#0)
+> GET / HTTP/1.1
+> Host: 142.93.207.200:30000
+> User-Agent: curl/7.64.1
+> Accept: */*
+>
+< HTTP/1.1 200 OK
+< Date: Sun, 05 May 2019 21:35:13 GMT
+< Content-Length: 12
+< Content-Type: text/plain; charset=utf-8
+<
+* Connection #0 to host 142.93.207.200 left intact
 111.138.53.63* Closing connection 0  
 
 ```
 <br />
 
-Finally let's check what we should see in travis:
+Finalmente, verifiquemos lo que deberíamos ver en Travis:
 ![image](/images/terraform-do-travis-result-1.png){:class="mx-auto"}
 <br />
 
-As we can see everything went well and our deployment applied successfully in our cluster
+Como podemos ver, todo salió bien y nuestro despliegue se aplicó con éxito en nuestro clúster.
 ![image](/images/terraform-do-travis-result-2.png){:class="mx-auto"}
 <br />
 
-##### **Closing notes**
-I will be posting some articles about CI and CD and good practices that DevOps/SREs should have in mind, tips, tricks, and full deployment examples, this is the second part of a possible series of three articles (Next one should be about the same but using Jenkins) with a complete but basic example of CI first and then CD. This can of course change and any feedback would be greatly appreciated :).
+##### **Notas finales**
+Publicaré algunos artículos sobre CI y CD y buenas prácticas que los DevOps/SRE deben tener en cuenta, consejos, trucos y ejemplos completos de despliegue. Este es la segunda parte de una posible serie de tres artículos (el siguiente debería tratar lo mismo pero usando Jenkins) con un ejemplo básico pero completo de CI y luego CD. Esto, por supuesto, puede cambiar y cualquier comentario será muy apreciado :).
 
-In this example many things could be improved, for example we use a node port and there is no firewall so we can hit our app directly via nodeport or using the load balancer, we should add some firewall rules so only the load balancer is able to talk to the node port range (30000-32767).
+En este ejemplo, muchas cosas podrían mejorarse. Por ejemplo, usamos un puerto de nodo y no hay un firewall, por lo que podemos acceder a nuestra aplicación directamente a través del NodePort o usando el balanceador de carga. Deberíamos agregar algunas reglas de firewall para que solo el balanceador de carga pueda comunicarse con el rango de puertos del NodePort (30000-32767).
 
-Also be aware that for production this setup will not be sufficient but for a development environment would suffice initially.
+También ten en cuenta que para producción, esta configuración no será suficiente, pero para un entorno de desarrollo sería suficiente inicialmente.
 
-Some useful links for [travis](https://docs.travis-ci.com/user/job-lifecycle/) and [terraform](https://www.terraform.io/docs/providers/do/r/kubernetes_cluster.html).
+Algunos enlaces útiles para [travis](https://docs.travis-ci.com/user/job-lifecycle/) y [terraform](https://www.terraform.io/docs/providers/do/r/kubernetes_cluster.html).
 <br />
 
 ### Errata
-If you spot any error or have any suggestion, please send me a message so it gets fixed.
-
-Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+Si encuentras algún error o tienes alguna sugerencia, por favor envíame un mensaje para que se corrija.
 
 <br />

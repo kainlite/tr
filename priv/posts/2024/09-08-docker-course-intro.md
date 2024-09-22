@@ -31,10 +31,9 @@ deploy it in any project.
 Coming soon: Video and notes for this first part.
 ---lang---
 %{
-  title: "What exactly is a container?",
+  title: "Que es exactamente un contenedor?",
   author: "Gabriel Garrido",
-  description: "This will be a short course to master docker on linux, check the high level overview to learn more and
-  be the first to sponsor this content",
+  description: "En este curso pago vamos a ver docker en detalle, empezando por entender que es un contenedor.",
   tags: ~w(docker docker-course),
   published: true,
   image: "docker-logo.svg",
@@ -45,21 +44,19 @@ Coming soon: Video and notes for this first part.
 }
 ---
 
-### Traduccion en proceso
+### Introducción y agenda
 
-### Introduction and agenda
+Este curso te ayudará a entender y desmitificar Docker, de manera que tengas la confianza necesaria para usarlo y
+desplegarlo en cualquier proyecto.
 
-This course will help you understand and demistify docker, so you will have the confidence necessary to use it and
-deploy it in any project. 
+#### Descripción general a alto nivel
 
-#### High level overview
+* ¿Qué es exactamente un contenedor?
+* Redes de contenedores
+* ¿Qué es exactamente una imagen?
+* Creación y trabajo con imágenes
+* Trabajo con volúmenes y datos persistentes
+* Docker Compose y configuraciones multi-contenedor
+* Ejemplo del mundo real
 
-* What exactly is a container?
-* Container netwoking
-* What exactly is an image?
-* Building and working with images
-* Working with volumes and persistent data
-* Docker compose and multi-container setups
-* Real-world example
-
-Coming soon: Video and notes for this first part.
+Próximamente: Video y notas de esta primera parte.

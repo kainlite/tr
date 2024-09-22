@@ -49,7 +49,7 @@ defmodule TrWeb.UserAuth do
     |> renew_session()
     |> put_token_in_session(token)
     |> maybe_write_remember_me_cookie(token, params)
-    |> redirect(to: user_return_to || ~p"/blog")
+    |> redirect(to: user_return_to || ~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog")
   end
 
   def log_in_github_user(conn, profile, params \\ %{}) do
@@ -63,7 +63,7 @@ defmodule TrWeb.UserAuth do
     |> renew_session()
     |> put_token_in_session(token)
     |> maybe_write_remember_me_cookie(token, params)
-    |> redirect(to: user_return_to || ~p"/blog")
+    |> redirect(to: user_return_to || ~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog")
   end
 
   defp maybe_write_remember_me_cookie(conn, token, %{"remember_me" => "true"}) do

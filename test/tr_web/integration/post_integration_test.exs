@@ -19,7 +19,7 @@ defmodule TrWeb.Integration.PostIntegrationTest do
     end
 
     test "has a big hero section", %{session: session} do
-      post = Tr.Blog.get_latest_post("en")
+      post = Tr.Blog.get_latest_post(1, "en")
 
       session
       |> visit("/")

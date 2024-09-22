@@ -620,9 +620,9 @@ Also, you can check the source code and changes in the [generated code](https://
 <br />
 ---lang---
 %{
-  title: "Serverless authentication with Cognito",
+  title: "Autentication serverless con Cognito",
   author: "Gabriel Garrido",
-  description: "In this article we will see how to use Terraform and Go to create a serverless API using API Gateway, Lambda, and Go, and we will also handle authentication with AWS Cognito...",
+  description: "En este articulo vamos a usar Terraform y Go para crear una API serverless usando API Gateway, Lambda, y Go, y autenticacion con AWS Cognito...",
   tags: ~w(golang serverless aws lambda),
   published: true,
   image: "serverless-cognito.png",
@@ -632,16 +632,14 @@ Also, you can check the source code and changes in the [generated code](https://
 }
 ---
 
-### Traduccion en proceso
-
 ![serverless](/images/serverless-cognito.png){:class="mx-auto"}
 
-##### **Introduction**
-In this article we will see how to use Terraform and Go to create a serverless API using API Gateway, Lambda, and Go, and we will also handle authentication with AWS Cognito, the repo with the files can be found [here](https://github.com/kainlite/serverless-cognito).
+##### **Introducción**
+En este artículo vamos a ver cómo utilizar Terraform y Go para crear una API serverless usando API Gateway, Lambda y Go. También manejaremos la autenticación con AWS Cognito. El repositorio con los archivos lo podés encontrar [aquí](https://github.com/kainlite/serverless-cognito).
 <br />
 
 ##### **Terraform**
-In this example I used terraform 0.12, and I kind of liked the new changes, it feels more like coding and a more natural way to describe things, however I think there are more bugs than usual in this version, but I really like the new output for the plan, apply, etc, getting back to the article since there is a lot of code I will gradually update the post with more notes and content or maybe another post explaining another section, but the initial version will only show the cognito part and the code to make it work and how to test it.
+En este ejemplo utilicé Terraform 0.12, y me gustaron bastante los nuevos cambios. Se siente más natural a la hora de describir las configuraciones, como si estuvieras programando. Sin embargo, creo que esta versión tiene más bugs de lo habitual, pero me gusta mucho el nuevo formato de salida para los comandos `plan`, `apply`, etc. Volviendo al artículo, como hay mucho código, iré actualizando el post gradualmente con más notas y contenido. Es posible que haga otro post explicando otra sección, pero esta versión inicial solo va a mostrar la parte de Cognito, cómo hacerlo funcionar y cómo probarlo.
 <br />
 
 ##### Cognito
@@ -674,11 +672,11 @@ data "aws_cognito_user_pools" "this" {
 }
 
 ```
-As we can see it's really simple to have a cognito user pool working, the most important part here is the `auto_verified_attributes` because that is what makes cognito to actually send an email or an sms with the confirmation code, the rest is self-describing, it creates a pool and a client, since what we need to be able to interact with out pool is the client that part is of considerable importance even that we have most things with default values. As you might have noticed we defined two `explicit_auth_flows` and that is to be able to interact with this user pool using user and password.
+Como podemos ver, es realmente simple tener un pool de usuarios de Cognito funcionando. La parte más importante aquí es `auto_verified_attributes`, ya que eso es lo que hace que Cognito realmente envíe un correo electrónico o un SMS con el código de confirmación. El resto es bastante autoexplicativo: se crea un pool y un cliente. Lo que necesitamos para poder interactuar con nuestro pool es el cliente, por lo que esa parte es de considerable importancia, incluso si la mayoría de las cosas están con valores predeterminados. Como habrás notado, definimos dos `explicit_auth_flows`, y eso es para poder interactuar con este pool de usuarios usando usuario y contraseña.
 <br />
 
 ##### ACM
-Next let's see how we manage the certificate creation using ACM.
+Ahora, veamos cómo gestionamos la creación del certificado utilizando ACM.
 ```elixir
 #####################
 # SSL custom domain #
@@ -705,11 +703,11 @@ resource "aws_api_gateway_domain_name" "api" {
 }
 
 ```
-Here basically we create the certificate using `aws_acm_certificate` and validate it automatically using the `DNS` method and the resource `aws_acm_certificate_validation`, the other resources in the file are just there because they are kind of associated but not necessarily need to be there.
+Aquí, básicamente, creamos el certificado utilizando `aws_acm_certificate` y lo validamos automáticamente usando el método `DNS` y el recurso `aws_acm_certificate_validation`. Los otros recursos en el archivo están ahí porque están algo asociados, pero no necesariamente tienen que estar presentes.
 <br />
 
 ##### Route53
-Here we just create an alias record for the API Gateway and the validation record.
+En esta sección simplemente creamos un registro alias para el API Gateway y el registro de validación.
 ```elixir
 data "aws_route53_zone" "zone" {
   name = substr(var.domain_name, 4, -1)
@@ -739,7 +737,7 @@ resource "aws_route53_record" "cert_validation" {
 <br />
 
 ##### API Gateway
-While this file might seem relatively simple, the API Gateway has many features and can get really complex really fast, basically what we are doing here is creating an API with a resource that accepts all method types and proxy that as it is to our lambda function.
+Aunque este archivo puede parecer relativamente simple, el API Gateway tiene muchas funcionalidades y puede volverse realmente complejo rápidamente. Básicamente, lo que estamos haciendo aquí es crear una API con un recurso que acepta todos los tipos de métodos y los envía tal cual a nuestra función Lambda.
 ```elixir
 # https://www.terraform.io/docs/providers/aws/guides/serverless-with-aws-lambda-and-api-gateway.html
 
@@ -796,7 +794,7 @@ resource "aws_lambda_permission" "lambda_permission" {
 <br />
 
 ##### Lambda
-This file has the lambda function definition, the policy and the roles needed, basically the policy is to be able to log to CloudWatch and to inspect with X-Ray, then the log group to store the logs will set the retention period by default 7 days.
+Este archivo contiene la definición de la función Lambda, la política y los roles necesarios. Básicamente, la política permite registrar en CloudWatch y realizar inspecciones con X-Ray. Luego, el grupo de logs se encarga de almacenar los registros, configurando el período de retención, que por defecto es de 7 días.
 ```elixir
 resource "aws_lambda_function" "api" {
   filename      = "../src/main.zip"
@@ -860,8 +858,8 @@ resource "aws_cloudwatch_log_group" "lambda-api" {
 ```
 <br />
 
-##### Variables and locals
-First the variables file with the default values
+##### Variables 
+Algunas variables necesarias
 ```elixir
 variable "profile_name" {
   default = "default"
@@ -908,7 +906,7 @@ variable "environment_variables" {
 ```
 <br />
 
-And last the locals file, in this small snippet we are just making a map with a computed value and the values that can come from a variable which can be quite useful in many scenarios where you don't know all the information in advance or something is dynamically assigned:
+Y por último, el archivo de locales. En este pequeño fragmento, simplemente estamos creando un mapa con un valor calculado y los valores que pueden provenir de una variable, lo cual puede ser muy útil en muchos escenarios donde no se tiene toda la información de antemano o algo se asigna dinámicamente:
 ```elixir
 locals {
   computed_environment_variables = {
@@ -920,8 +918,8 @@ locals {
 ```
 <br />
 
-##### Deployment scripts
-There is a small bash script to make it easier to run the deployment, AKA as compiling the code, zipping it, and running terraform to update our function or whatever we changed.
+##### Scripts de despliegue
+Hay un pequeño script en bash para facilitar la ejecución del despliegue, también conocido como compilar el código, comprimirlo en un zip y ejecutar terraform para actualizar nuestra función o lo que sea que hayamos modificado.
 ```elixir
 #!/bin/bash
 set -u
@@ -955,7 +953,7 @@ cd ..
 <br />
 
 ##### **Go**
-The good thing is that everything is code, but we don't have to manage any server, we just consume services from AWS completely from code, isn't that amazing?, I apologize for the length of the file, but you will notice that it's very repetitive, in most functions we load the AWS configuration, we make a request and return a response, we're also using Gin as a router, which is pretty straight-forward and easy to use, we have only one authenticated path (`/user/profile`), and we also have another unauthenticated path which is a health check (`/app/health`), the other two paths (`/user` and `/user/validate`) are exclusively for the user creation process with cognito.
+Lo bueno es que todo es código, pero no tenemos que gestionar ningún servidor, simplemente consumimos los servicios de AWS directamente desde el código, ¿no es increíble? Disculpen la longitud del archivo, pero van a notar que es muy repetitivo. En la mayoría de las funciones, cargamos la configuración de AWS, hacemos una solicitud y devolvemos una respuesta. También estamos usando Gin como enrutador, que es bastante directo y fácil de usar. Tenemos solo un endpoint autenticado (`/user/profile`), y otro sin autenticación que es un chequeo de salud (`/app/health`). Los otros dos paths (`/user` y `/user/validate`) son exclusivamente para el proceso de creación de usuario con cognito.
 ```elixir
 package main
 
@@ -1141,11 +1139,11 @@ func main() {
 }
 
 ```
-All logs go to CloudWatch and you can also use X-Ray to diagnose issues.
+Todos los logs se envían a CloudWatch y también podés usar X-Ray para diagnosticar problemas.
 <br />
 
-##### **Testing it**
-So we're going to hit the API to create, validate, and query the empty profile of the user from the terminal using curl.
+##### **Probándolo**
+Vamos a usar el terminal con `curl` para crear, validar y consultar el perfil vacío del usuario en la API.
 ```elixir
 # Create the account
 $ curl https://api.skynetng.pw/user -X POST -d '{ "username": "kainlite+test@gmail.com", "password": "Testing123@"  }'
@@ -1226,18 +1224,16 @@ OUTPUT:
 }
 
 ```
-I have added most info in as comments in the snippet, note that I also used my test domain `skynetng.pw` with the subdomain `api` for all tests.
+He añadido la mayor parte de la información como comentarios en el snippet, ten en cuenta que también usé mi dominio de prueba `skynetng.pw` con el subdominio `api` para todas las pruebas.
 <br />
 
-##### **Closing notes**
-This post was heavily inspired by [this post](https://a.l3x.in/2018/07/25/lambda-api-custom-domain-tutorial.html) from Alexander, kudos to him for the great work!, this post expands on that and adds the certificate with ACM, it also handles a basic AWS Cognito configuration and the necessary go code to make it work, there are other ways to accomplish the same, but what I like about this approach is that you can have some endpoints or paths without authentication and you can use authentication, etc on-demand. This article is a bit different but I will try to re-shape it in the following weeks, and also cover more of the content displayed here, let me know if you have any comments or suggestions!
+##### **Notas finales**
+Este artículo fue fuertemente inspirado por [este post](https://a.l3x.in/2018/07/25/lambda-api-custom-domain-tutorial.html) de Alexander, ¡gracias a él por el excelente trabajo! Este post expande sobre ese y agrega el certificado con ACM, además de manejar una configuración básica de AWS Cognito y el código en Go necesario para hacerlo funcionar. Hay otras formas de lograr lo mismo, pero lo que me gusta de este enfoque es que podés tener algunos endpoints o paths sin autenticación, y usarla según lo necesites, bajo demanda. Este artículo es un poco diferente, pero intentaré reorganizarlo en las próximas semanas y también cubrir más del contenido mostrado aquí. ¡Dejame saber si tenés comentarios o sugerencias!
 
-In some near future I will build upon this article in another article adding a few cool things, for example to allow an user to upload an image to an S3 bucket and fetch that with a friendly name using Cloudfront (In a secure manner, and only able to upload/update his/her profile picture, while being able to fetch anyone profile pic), the idea is to have a fully functional small API using AWS services and serverless facilities with common tasks that you can find in any functional website.
+En un futuro cercano, planeo ampliar este artículo en otro agregando algunas cosas interesantes, por ejemplo, permitir que un usuario suba una imagen a un bucket de S3 y la obtenga con un nombre amigable usando CloudFront (de manera segura, y permitiendo que el usuario sólo pueda subir/actualizar su foto de perfil, pero que pueda ver la foto de perfil de cualquiera). La idea es tener una pequeña API totalmente funcional utilizando servicios de AWS y capacidades serverless con tareas comunes que se encuentran en cualquier sitio web funcional.
 <br />
 
 ### Errata
-If you spot any error or have any suggestion, please send me a message so it gets fixed.
-
-Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+Si encontrás algún error o tenés alguna sugerencia, por favor enviame un mensaje para que lo pueda corregir.
 
 <br />

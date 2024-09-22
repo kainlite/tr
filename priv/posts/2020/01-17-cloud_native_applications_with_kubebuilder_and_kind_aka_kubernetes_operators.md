@@ -512,24 +512,18 @@ Also, you can check the source code and changes in the [generated code](https://
 }
 ---
 
-### Traduccion en proceso
-
 ![forward](/images/forward.png){:class="mx-auto"}
 
-##### **Introduction**
-In this article we will see how to use [kubebuilder](https://github.com/kubernetes-sigs/kubebuilder) and [Kind](https://github.com/kubernetes-sigs/kind) to create a local test cluster and an operator, then deploy that operator in the cluster and test it, the repository with the files can be found here, also if you want to learn more about the idea and the project go: [forward](https://github.com/kainlite/forward).
-<br />
+##### **Introducción**
+En este artículo vamos a ver cómo usar [kubebuilder](https://github.com/kubernetes-sigs/kubebuilder) y [Kind](https://github.com/kubernetes-sigs/kind) para crear un clúster local de prueba y un operador. Luego vamos a desplegar ese operador en el clúster y probarlo. El repositorio con los archivos se puede encontrar [aquí](https://github.com/kainlite/forward), y si querés aprender más sobre la idea y el proyecto, podés seguir este enlace: [forward](https://github.com/kainlite/forward).
 
-Basically what the code does is create an alpine/socat pod and you can specify the host, port and protocol and it will make a tunnel for you, so then you can use port-forward or a service or ingress or whatever to expose things that are in another private subnet, while this might not sound like a good idea it has some use cases, so check your security constraints before doing any of that in a normal scenario it should be safe, it can be useful for testing or for reaching a DB while doing some debugging or test, but well, that is for another discussion, the tools used here is what makes this so interesting, this is a cloud native application, since it native to kubernetes and that's what we will explore here.
-<br />
+Básicamente, lo que hace el código es crear un pod de Alpine/Socat donde podés especificar el host, puerto y protocolo, y te hará un túnel. De esta manera, podés usar port-forward, un servicio, un ingress o lo que necesites para exponer cosas que están en otra subred privada. Si bien esto puede no sonar como la mejor idea, tiene algunos casos de uso específicos, por lo que es importante que revises tus restricciones de seguridad antes de hacer algo así en un escenario normal. Aun así, debería ser seguro. Puede ser útil para pruebas o para acceder a una base de datos mientras hacés debugging o testeo. Pero bueno, esa es otra discusión. Las herramientas que usamos acá son lo que hace que esto sea tan interesante: esta es una aplicación nativa de la nube, ya que es nativa de Kubernetes, y eso es lo que vamos a explorar acá.
 
-While Kind is not actually a requirement I used that for testing and really liked it, it's faster and simpler than minikube.
-<br />
+Aunque Kind no es un requisito indispensable, lo usé para hacer pruebas y me gustó mucho, ya que es más rápido y simple que Minikube.
 
-Also if you are interested how I got the idea to make this operator check this [github issue](https://github.com/kubernetes/kubernetes/issues/72597).
-<br />
+Además, si te interesa saber cómo surgió la idea de hacer este operador, podés chequear este [issue de GitHub](https://github.com/kubernetes/kubernetes/issues/72597).
 
-##### **Prerequisites**
+##### **Requisitos**
 * [kubebuilder](https://github.com/kubernetes-sigs/kubebuilder)
 * [kustomize](https://github.com/kubernetes-sigs/kustomize)
 * [Go 1.13](https://golang.org/dl/)
@@ -538,8 +532,8 @@ Also if you are interested how I got the idea to make this operator check this [
 
 <br />
 
-##### Create the project
-In this step we need to create the kubebuilder project, so in an empty folder we run:
+##### Crear el proyecto
+En este paso, necesitamos crear el proyecto con kubebuilder. Así que, en una carpeta vacía, ejecutamos:
 ```elixir
 $ go mod init techsquad.rocks
 go: creating new go.mod: module techsquad.rocks
@@ -558,8 +552,8 @@ $ kubebuilder create api
 ```
 <br />
 
-##### Create the API
-Next let's create an API, something for us to have control of (our controller).
+##### Creamos la API
+Creamos la API, el corazon de nuestro controlador.
 ```elixir
 $ kubebuilder create api --group forward --version v1beta1 --kind Map
 Create Resource [y/n]
@@ -592,12 +586,12 @@ go fmt ./...
 go vet ./...
 go build -o bin/manager main.go
 ```
+Hasta acá solo tenemos algo de código base y un proyecto básico o vacío con valores por defecto. Si lo probás ahora, va a funcionar, pero no va a hacer nada interesante. Sin embargo, cubre bastante terreno, y deberíamos estar agradecidos de que exista una herramienta como esta. 
 
-Right until here we only have some boilerplate and basic or empty project with defaults, if you test it now it will work, but it won't do anything interesting, but it covers a lot of ground and we should be grateful that such a tool exists.
 <br />
 
-##### Add our code to the mix
-First we will add it to `api/v1beta1/map_types.go`, which will add our fields to our type.
+##### Empecemos...
+Primero agregamos los tipos `api/v1beta1/map_types.go`.
 ```elixir
 /*
 
@@ -670,10 +664,10 @@ func init() {
 	SchemeBuilder.Register(&Map{}, &MapList{})
 }
 ```
-Basically we just edited the `MapSpec` and the `MapStatus` struct.
+Editamos `MapSpec` y `MapStatus`.
 <br />
 
-Now we need to add the code to our controller in `controllers/map_controller.go`
+Ahora necesitamos darle vida a nuestro controlador `controllers/map_controller.go`
 ```elixir
 /*
 
@@ -846,11 +840,12 @@ func (r *MapReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		Complete(r)
 }
 ```
-In this controller we added two functions one to create a pod and modified basically the entire Reconcile function (this one takes care of checking the status and make the transitions in other words makes a controller work like a controller), also notice the kubebuilder annotations which will generate the rbac config for us, pretty handy! right?
+
+En este controlador, agregamos dos funciones: una para crear un pod y modificamos básicamente toda la función **Reconcile** (esta se encarga de verificar el estado y hacer las transiciones, en otras palabras, hace que un controlador funcione como un controlador). ¡También notá las anotaciones de **kubebuilder** que generarán la configuración de **RBAC** por nosotros, bastante útil, ¿no?
 <br />
 
-##### Starting the cluster
-Now we will use [Kind](https://github.com/kubernetes-sigs/kind) to create a local cluster to test
+##### **Iniciando el cluster**
+Ahora vamos a usar [Kind](https://github.com/kubernetes-sigs/kind) para crear un cluster local para pruebas
 ```elixir
 $ kind create cluster --name test-cluster-1
 Creating cluster "test-cluster-1" ...
@@ -868,11 +863,11 @@ kubectl cluster-info --context kind-test-cluster-1
 Thanks for using kind! 😊
 
 ```
-it could be that easy!?!?! yes, it is!
+¿Podría ser tan fácil? ¡Sí, lo es!
 <br />
 
-##### Running our operator locally
-For testing you can run your operator locally like this:
+##### **Ejecutando nuestro operador localmente**
+Para pruebas, podés correr tu operador localmente así:
 ```elixir
 $ make run
 /home/kainlite/Webs/go/bin/controller-gen object:headerFile=./hack/boilerplate.go.txt paths="./..."
@@ -890,8 +885,8 @@ go run ./main.go
 ```
 <br />
 
-##### Testing it
-First we spin up a pod, and launch `nc -l -p 8000`
+##### **Probándolo**
+Primero levantamos un pod y lanzamos `nc -l -p 8000`
 ```elixir
 $ kubectl run -it --rm --restart=Never alpine --image=alpine sh
 If you don't see a command prompt, try pressing enter.
@@ -920,8 +915,8 @@ test
 ```
 <br />
 
-Then we edit our manifest and apply it, check that everything is in place, and do the port-forward and launch another `nc localhost 8000` to test if everything went well.
-First the manifest
+Luego editamos nuestro manifest y lo aplicamos. Verificamos que todo esté en orden, hacemos el port-forward y lanzamos otro `nc localhost 8000` para probar si todo salió bien.
+Primero el manifest:
 ```elixir
 $ cat config/samples/forward_v1beta1_map.yaml 
 apiVersion: forward.techsquad.rocks/v1beta1
@@ -936,12 +931,12 @@ spec:
 
 ```
 <br />
-Then the port-forward and test
+Luego hacemos el port-forward y la prueba:
 ```elixir
 $ kubectl apply -f config/samples/forward_v1beta1_map.yaml
 map.forward.techsquad.rocks/mapsample configured
 
-# Logs in the controller
+# Logs en el controlador
 2020-01-17T23:38:27.650Z        INFO    controllers.Map === Reconciling Forward Map     {"namespace": "default", "MapForward": "mapsample"}
 2020-01-17T23:38:27.691Z        INFO    controllers.Map Phase: RUNNING  {"namespace": "default", "MapForward": "mapsample"}
 2020-01-17T23:38:27.698Z        DEBUG   controller-runtime.controller   Successfully Reconciled {"controller": "map", "request": "default/mapsample"}
@@ -950,15 +945,15 @@ $ kubectl port-forward forward-mapsample-pod 8000:8000
 Forwarding from 127.0.0.1:8000 -> 8000                                                                                                                                                                                                                                           
 Handling connection for 8000                                               
 
-# In another terminal or tab or split
+# En otra terminal o pestaña
 $ nc localhost 8000
 test
 
 ```
 <br />
 
-##### Making it publicly ready
-Here we just build and push the docker image to dockerhub or our favorite public registry.
+##### **Haciéndolo público**
+Ahora simplemente construimos y subimos la imagen de Docker a DockerHub o a nuestro registro público favorito.
 ```elixir
 $ make docker-build docker-push IMG=kainlite/forward:0.0.1
 /home/kainlite/Webs/go/bin/controller-gen object:headerFile=./hack/boilerplate.go.txt paths="./..."
@@ -988,16 +983,14 @@ The push refers to repository [docker.io/kainlite/forward]
 0.0.1: digest: sha256:b4479e4721aa9ec9e92d35ac7ad5c4c0898986d9d2c9559c4085d4c98d2e4ae3 size: 945
 
 ```
-Then you can install it with `make deploy IMG=kainlite/forward:0.0.1` and uninstall it with `make uninstall`
+Luego lo podés instalar con `make deploy IMG=kainlite/forward:0.0.1` y desinstalarlo con `make uninstall`.
 <br />
 
-##### **Closing notes**
-Be sure to check the [kubebuilder book](https://book.kubebuilder.io/) if you want to learn more and the [kind docs](https://kind.sigs.k8s.io/docs/user/quick-start), I hope you enjoyed it and hope to see you on [twitter](https://twitter.com/kainlite) or [github](https://github.com/kainlite)!
+##### **Notas finales**
+Asegurate de revisar el [libro de kubebuilder](https://book.kubebuilder.io/) si querés aprender más y la [documentación de kind](https://kind.sigs.k8s.io/docs/user/quick-start). ¡Espero que lo hayas disfrutado y te veo en [twitter](https://twitter.com/kainlite) o [github](https://github.com/kainlite)!
 <br />
 
-### Errata
-If you spot any error or have any suggestion, please send me a message so it gets fixed.
-
-Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+### Erratas
+Si ves algún error o tenés alguna sugerencia, por favor mandame un mensaje así lo arreglo.
 
 <br />

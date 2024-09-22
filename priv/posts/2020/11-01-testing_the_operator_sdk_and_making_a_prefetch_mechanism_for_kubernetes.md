@@ -814,9 +814,10 @@ Also, you can check the source code and changes in the [generated code](https://
 <br />
 ---lang---
 %{
-  title: "Testing the Operator SDK and making a prefetch mechanism for Kubernetes",
+  title: "Probando el Operator SDK y creando un mecanismo de prefetch para Kubernetes",
   author: "Gabriel Garrido",
-  description: "In this article we will explore how to create an operator that can prefetch our images (from our deployments to all nodes) using the Operator SDK, you might be wondering why...",
+  description: "Probando el Operator SDK, la idea es crear una forma de forzar a los nodos a bajar una imagen aunque no
+  la necesiten...",
   tags: ~w(golang kubernetes),
   published: true,
   image: "operator-sdk.png",
@@ -826,21 +827,19 @@ Also, you can check the source code and changes in the [generated code](https://
 }
 ---
 
-### Traduccion en proceso
-
 ![operator](/images/operator-sdk.png){:class="mx-auto"}
 
-#### **Introduction**
-In this article we will explore how to create an operator that can prefetch our images (from our deployments to all nodes) using the Operator SDK, you might be wondering why would you want to do this? the main idea is to get the images in advance so you don't have to pull them when the pod actually needs to start running in a given node, this can speed up things a bit and it's also an interesting exercise.
+#### **Introducción**
+En este artículo exploraremos cómo crear un operador que pueda prefetchar nuestras imágenes (de nuestros deployments en todos los nodos) utilizando el Operator SDK. Tal vez te preguntes, ¿por qué querrías hacer esto? La idea principal es obtener las imágenes por adelantado para que no tengas que descargarlas cuando el pod realmente necesite comenzar a ejecutarse en un nodo determinado. Esto puede acelerar un poco las cosas y también es un ejercicio interesante.
 <br />
 
-If you have read the article [Cloud native applications with kubebuilder and kind aka kubernetes operators](/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/) you will note that the commands are really similar between each other, since now the operator-sdk uses kubebuilder, you can read more [here](https://github.com/operator-framework/operator-sdk/issues/3558#issuecomment-664206538).
+Si has leído el artículo [Aplicaciones nativas en la nube con kubebuilder y kind, también conocidos como operadores de kubernetes](/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/), notarás que los comandos son muy similares entre sí, ya que ahora el operator-sdk usa kubebuilder. Puedes leer más sobre ello [aquí](https://github.com/operator-framework/operator-sdk/issues/3558#issuecomment-664206538).
 <br />
 
-The source for this article is [here](https://github.com/kainlite/kubernetes-prefetch-operator/)
+El código fuente para este artículo está [aquí](https://github.com/kainlite/kubernetes-prefetch-operator/)
 <br />
 
-##### **Prerequisites**
+##### **Requisitos previos**
 * [Operator SDK](https://sdk.operatorframework.io/docs/installation/install-operator-sdk/)
 * [Go](https://golang.org/dl/)
 * [Kind](https://github.com/kubernetes-sigs/kind)
@@ -849,9 +848,9 @@ The source for this article is [here](https://github.com/kainlite/kubernetes-pre
 
 <br />
 
-#### Creating our local cluster
-##### Kind config for multi-cluster
-This is the kind config necessary to have a multi-node setup locally: `kind create cluster --config kind.yaml`
+#### Creando nuestro clúster local
+##### Configuración de Kind para multi-nodo
+Esta es la configuración de kind necesaria para tener un setup de múltiples nodos localmente: `kind create cluster --config kind.yaml`
 ```elixir
 # kind create cluster --config kind.yaml
 kind: Cluster
@@ -865,8 +864,8 @@ nodes:
 ```
 <br />
 
-##### Creating the cluster
-We will need a cluster to run and test our operator, so kind is pretty straight forward and lightweight enough to run anywhere.
+##### Creando el clúster
+Necesitaremos un clúster para ejecutar y probar nuestro operador. Kind es bastante sencillo y lo suficientemente liviano como para ejecutarse en cualquier lugar.
 ```elixir
 ❯ kind create cluster --config kind.yaml
 Creating cluster "kind" ...
@@ -887,8 +886,8 @@ Have a nice day! 👋
 ```
 <br />
 
-#### Creating our operator
-Here we bootstrap our go project aka as kubernetes operator
+#### Creando nuestro operador o controlador
+Empecemos por crear el proyecto
 ```elixir
 $ operator-sdk init --domain=techsquad.rocks --repo=github.com/kainlite/kubernetes-prefetch-operator
 Writing scaffold for you to edit...
@@ -939,8 +938,8 @@ $ operator-sdk create api
 ```
 <br />
 
-#### Creating our API
-This will be the object that it will hold all the important information for a given image, the files that we need to modify at first hand are in: `controllers/*_controller.go` and `api/v1/*_types.go`
+#### Creamos nuestra API
+Este será el objeto que contendrá toda la información importante para una imagen dada. Los archivos que necesitamos modificar en primera instancia están en: `controllers/*_controller.go` y `api/v1/*_types.go`.
 ```elixir
 $ operator-sdk init --domain=techsquad.rocks --repo=github.com/kainlite/kubernetes-prefetch-operator
 Writing scaffold for you to edit...
@@ -991,8 +990,8 @@ $ operator-sdk create api
 ```
 <br />
 
-#### Building and pushing (docker image)
-Basic build and push of the operator image with the projects helper
+#### Construcción y publicación (imagen de Docker)
+Construcción básica y publicación de la imagen del operador con la ayuda del proyecto.
 ```elixir
 $ make docker-build docker-push IMG=kainlite/kubernetes-prefetch-operator:latest
 /home/kainlite/Webs/go/bin/controller-gen object:headerFile="hack/boilerplate.go.txt" paths="./..."
@@ -1060,8 +1059,8 @@ latest: digest: sha256:f0519419c8c4bfdcd4a9b2d3f0e7d0086f3654659058de62447f373fd
 ```
 <br />
 
-#### Deploying
-Now that we have the project built into a docker image and stored in dockerhub then we can install our CRD and then deploy the operator
+#### Desplegando
+Ahora que tenemos el proyecto construido en una imagen de Docker y almacenado en DockerHub, podemos instalar nuestro CRD y luego desplegar el operador.
 ```elixir
 $ make install
 /home/kainlite/Webs/go/bin/controller-gen "crd:trivialVersions=true" rbac:roleName=manager-role webhook paths="./..." output:crd:artifacts:config=config/crd/bases
@@ -1071,8 +1070,7 @@ customresourcedefinition.apiextensions.k8s.io/prefetches.cache.techsquad.rocks c
 ```
 <br />
 
-##### Deploy the operator
-Then we can deploy our operator
+##### Desplegando el operador
 ```elixir
 $ make deploy IMG=kainlite/kubernetes-prefetch-operator:latest
 /home/kainlite/Webs/go/bin/controller-gen "crd:trivialVersions=true" rbac:roleName=manager-role webhook paths="./..." output:crd:artifacts:config=config/crd/bases
@@ -1093,8 +1091,8 @@ deployment.apps/kubernetes-prefetch-operator-controller-manager created
 ```
 <br />
 
-##### Validate that our operator was deployed
-Check that our pods are running
+##### Validando
+Verificamos que el pod esta ejecutandose.
 ```elixir
 $ kubectl get pods -n kubernetes-prefetch-operator-system
 NAME                                                             READY   STATUS    RESTARTS   AGE
@@ -1102,14 +1100,15 @@ kubernetes-prefetch-operator-controller-manager-59d8bc86-2z2sq   2/2     Running
 
 ```
 
-So far everything is peachy but our operator is kind of useless at the moment, so let's drop some code to make it do what we want...
+#### Hasta ahora todo está perfecto, pero nuestro operador es un poco inútil en este momento, así que vamos a agregar algo de código para que haga lo que queremos...
 
-#### Our code
-A lot of what we use is generated however we need to give it some specific permissions and behaviour to our operator so it does what we want when we create an object in kubernetes
+#### Nuestro código
+Gran parte de lo que usamos está generado, sin embargo, necesitamos darle permisos y comportamientos específicos a nuestro operador para que haga lo que queremos cuando creamos un objeto en Kubernetes.
 <br />
 
-##### Our manifest
-This will be the manifest that we will be using to tell our operator which deployments we want to prefetch images for
+##### Nuestro manifiesto
+Este será el manifiesto que utilizaremos para decirle a nuestro operador para qué implementaciones queremos precargar imágenes.
+
 ```elixir
 apiVersion: cache.techsquad.rocks/v1
 kind: Prefetch
@@ -1129,8 +1128,8 @@ spec:
 ```
 <br />
 
-##### Sample nginx deployment
-This nginx deployment will be used to validate that the images are fetched in all nodes
+##### Ejemplo de despliegue de nginx
+Este despliegue de nginx se usará para validar que las imágenes se precargan en todos los nodos.
 ```elixir
 apiVersion: apps/v1
 kind: Deployment
@@ -1169,11 +1168,12 @@ spec:
         - containerPort: 80
 
 ```
-We don't actually need to do this, but this way it's easy to make sure that a pod won't be scheduled if the label is not present: `kubectl label nodes kind-worker3 nginx-schedulable="true"`
+No necesitamos hacer esto realmente, pero de esta manera es fácil asegurarse de que no se programe un pod si la etiqueta no está presente: `kubectl label nodes kind-worker3 nginx-schedulable="true"`
 
 <br />
-##### Our actual logic (this made me chuckle so much bootstrap just to get here, but imagine having to do all that by yourself)
-This is where things actually happen, first we get our Spec updated:
+
+##### Nuestra lógica real (esto me hizo reír, tanto bootstrap solo para llegar aquí, pero imagina tener que hacer todo eso por ti mismo)
+Aquí es donde realmente sucede todo, primero actualizamos nuestro Spec:
 ```elixir
 /*
 
@@ -1252,10 +1252,10 @@ func init() {
 }
 
 ```
-You can find this file [here](https://github.com/kainlite/kubernetes-prefetch-operator/blob/master/api/v1/prefetch_types.go)
+Este archivo se encuentra [aqui](https://github.com/kainlite/kubernetes-prefetch-operator/blob/master/api/v1/prefetch_types.go)
 <br />
 
-Then we can put some code, I will add more comments later in the code to explain what everything does:
+Ahora al comportamiento:
 ```elixir
 /*
 
@@ -1547,11 +1547,11 @@ func (r *PrefetchReconciler) SetupWithManager(mgr ctrl.Manager) error {
 }
 
 ```
-Basically what we do is set a timer to create a pod in each node to force it fetch the image that the deployments (that we filter by labels) needs or is going to use, by doing this if the node already has the image nothing happens and it will be removed in the next run, however if the image is not there it will be fetched so if anything happens and a pod needs to be actually scheduled there it won't need to download everything so it should be relatively faster.
-You can find this file [here](https://github.com/kainlite/kubernetes-prefetch-operator/blob/master/controllers/prefetch_controller.go)
+Básicamente, lo que hacemos es configurar un temporizador para crear un pod en cada nodo con el fin de forzar que se obtenga la imagen que los despliegues (filtrados por etiquetas) necesitan o van a usar. Al hacer esto, si el nodo ya tiene la imagen, no sucede nada y el pod será eliminado en la próxima ejecución. Sin embargo, si la imagen no está presente, será descargada, por lo que si algo sucede y se necesita programar un pod, no será necesario descargar todo, lo que debería hacer que el proceso sea relativamente más rápido.
+Podés encontrar este archivo [aquí](https://github.com/kainlite/kubernetes-prefetch-operator/blob/master/controllers/prefetch_controller.go)
 <br />
 
-##### What we should be seeing in our cluster
+##### Lo que deberíamos estar viendo en nuestro clúster
 ```elixir
 $ kubectl get pods -A -o wide
 NAMESPACE                             NAME                                                              READY   STATUS      RESTARTS   AGE     IP            NODE                 NOMINATED NODE   READINESS GATES
@@ -1567,8 +1567,8 @@ kube-system                           coredns-66bff467f8-tsrtp                  
 ```
 <br />
 
-#### Cleaning up
-To clean up the operator from the cluster you can do, and also remember to clean up your clusters or whatever you are using if it's in the cloud to avoid unexpected bills
+#### Limpieza
+Para limpiar el operador del clúster podés hacer lo siguiente, y también recordá limpiar tus clústeres o lo que estés usando si está en la nube para evitar facturas inesperadas:
 ```elixir
 $ kubectl delete -f config/samples/cache_v1_prefetch.yaml
 prefetch.cache.techsquad.rocks "prefetch-sample" deleted
@@ -1613,19 +1613,17 @@ Deleting cluster "kind" ...
 ```
 <br />
 
-##### **Closing notes**
-Be sure to check the links if you want to learn more about the project and I hope you enjoyed it, see you on [twitter](https://twitter.com/kainlite) or [github](https://github.com/kainlite)!
+##### **Notas finales**
+Asegurate de revisar los enlaces si querés aprender más sobre el proyecto. ¡Espero que lo hayas disfrutado! Nos vemos en [twitter](https://twitter.com/kainlite) o [github](https://github.com/kainlite)!
 
 * https://sdk.operatorframework.io/docs/building-operators/golang/tutorial/
 * https://sdk.operatorframework.io/docs/building-operators/golang/operator-scope/
 * https://opensource.com/article/20/3/kubernetes-operator-sdk
 
-The source for this article is [here](https://github.com/kainlite/kubernetes-prefetch-operator/)
+El código fuente para este artículo está [aquí](https://github.com/kainlite/kubernetes-prefetch-operator/)
 <br />
 
 ### Errata
-If you spot any error or have any suggestion, please send me a message so it gets fixed.
-
-Also, you can check the source code and changes in the [generated code](https://github.com/kainlite/kainlite.github.io) and the [sources here](https://github.com/kainlite/blog)
+Si encontrás algún error o tenés alguna sugerencia, mandame un mensaje para que lo pueda corregir.
 
 <br />

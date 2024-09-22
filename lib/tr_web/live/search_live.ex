@@ -27,7 +27,7 @@ defmodule TrWeb.SearchLive do
       <div class="flex flex-col space-y-8">
         <div :for={post <- @posts} class="flex flex-col space-y-1">
           <h2 class="text-4xl font-medium text-gray-900">
-            <.link navigate={~p"/blog/#{post.id}"}>
+            <.link navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{post.id}"}>
               <%= post.title %>
             </.link>
           </h2>
