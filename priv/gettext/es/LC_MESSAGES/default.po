@@ -32,7 +32,7 @@ msgstr "Estas listo para elevar tu infraestructura?"
 msgid "A link to confirm your email change has been sent to the new address."
 msgstr "Un enlace para confirmar el cambio de correo electrónico ha sido enviado a la nueva dirección."
 
-#: lib/tr_web/live/beard_live.ex:146
+#: lib/tr_web/live/beard_live.ex:159
 #, elixir-autogen, elixir-format
 msgid "Accelerate Software Delivery with Automated CI/CD Solutions using GitHub Actions, GitLab, and\n          ArgoCD."
 msgstr "Acelele la entrega de software con soluciones CI/CD automatizadas utilizando GitHub Actions, GitLab y ArgoCD."
@@ -57,19 +57,19 @@ msgstr "Panel de administración"
 msgid "All comments"
 msgstr "Todos los comentarios"
 
-#: lib/tr_web/live/post_live.ex:161
+#: lib/tr_web/live/post_live.ex:179
 #: lib/tr_web/live/user_registration_live.ex:13
 #, elixir-autogen, elixir-format
 msgid "Already registered?"
 msgstr "Ya registrado?"
 
-#: lib/tr_web/live/beard_live.ex:107
+#: lib/tr_web/live/beard_live.ex:120
 #, elixir-autogen, elixir-format
 msgid "Automate, Simplify, and Scale Your Infrastructure with Terraform, Pulumi, and Ansible."
 msgstr "Automatice, simplifique y escale su infraestructura con Terraform, Pulumi y Ansible."
 
-#: lib/tr_web/live/beard_live.ex:140
-#: lib/tr_web/live/beard_live.ex:144
+#: lib/tr_web/live/beard_live.ex:153
+#: lib/tr_web/live/beard_live.ex:157
 #, elixir-autogen, elixir-format
 msgid "CI/CD Pipelines"
 msgstr "Integración continua/Despliegue continuo"
@@ -94,8 +94,8 @@ msgstr "Cambiar contraseña"
 msgid "Change display name"
 msgstr "Cambiar nombre"
 
-#: lib/tr_web/live/beard_live.ex:82
-#: lib/tr_web/live/beard_live.ex:86
+#: lib/tr_web/live/beard_live.ex:95
+#: lib/tr_web/live/beard_live.ex:99
 #, elixir-autogen, elixir-format
 msgid "Cloud Architecture"
 msgstr "Arquitectura en la nube"
@@ -105,12 +105,12 @@ msgstr "Arquitectura en la nube"
 msgid "Comment hidden, awaiting moderation..."
 msgstr "Comentario oculto, esperando moderación..."
 
-#: lib/tr_web/live/post_live.ex:388
+#: lib/tr_web/live/post_live.ex:406
 #, elixir-autogen, elixir-format
 msgid "Comment saved successfully."
 msgstr "Comentario guardado con éxito."
 
-#: lib/tr_web/live/post_live.ex:243
+#: lib/tr_web/live/post_live.ex:261
 #, elixir-autogen, elixir-format
 msgid "Comments"
 msgstr "Comentarios"
@@ -145,18 +145,18 @@ msgstr "Usuarios conectados:"
 msgid "Contact us"
 msgstr "Contáctenos"
 
-#: lib/tr_web/live/beard_live.ex:120
-#: lib/tr_web/live/beard_live.ex:125
+#: lib/tr_web/live/beard_live.ex:133
+#: lib/tr_web/live/beard_live.ex:138
 #, elixir-autogen, elixir-format
 msgid "Containerization and Orchestration"
 msgstr "Contenerización y orquestación"
 
-#: lib/tr_web/components/layouts/app.html.heex:57
+#: lib/tr_web/components/layouts/app.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Dashboard"
 msgstr "Panel de control"
 
-#: lib/tr_web/live/beard_live.ex:88
+#: lib/tr_web/live/beard_live.ex:101
 #, elixir-autogen, elixir-format
 msgid "Designing Robust, Scalable, and Secure Cloud Infrastructures for optimized performance across AWS and Azure."
 msgstr "Diseñamos infraestructuras en la nube robustas, escalables y seguras para un rendimiento optimizado en AWS y Azure."
@@ -202,7 +202,7 @@ msgstr "Correo electrónico cambiado con éxito."
 msgid "Email not verified"
 msgstr "Correo electrónico no verificado"
 
-#: lib/tr_web/live/beard_live.ex:186
+#: lib/tr_web/live/beard_live.ex:199
 #, elixir-autogen, elixir-format
 msgid "Embed robust security throughout your infrastructure with secure architecture, IaC, and\n          compliance solutions."
 msgstr "Incorpore seguridad robusta en toda su infraestructura con arquitectura segura, IaC y soluciones de cumplimiento."
@@ -212,7 +212,7 @@ msgstr "Incorpore seguridad robusta en toda su infraestructura con arquitectura 
 msgid "Expert Support on Your Cloud Journey — from Innovative Architecture to Robust Security —\n      Specializing in Automation and Best Practices."
 msgstr "Apoyo experto en su viaje a la nube, desde arquitectura innovadora hasta seguridad robusta, especializándonos en automatización y mejores prácticas."
 
-#: lib/tr_web/live/beard_live.ex:53
+#: lib/tr_web/live/beard_live.ex:54
 #, elixir-autogen, elixir-format
 msgid "Flexible Engagement Models Tailored to Your Needs"
 msgstr "Modelos de trabajo flexibles adaptados a sus necesidades"
@@ -223,17 +223,17 @@ msgstr "Modelos de trabajo flexibles adaptados a sus necesidades"
 msgid "Forgot your password?"
 msgstr "Olvídaste tu contraseña?"
 
-#: lib/tr_web/live/beard_live.ex:57
+#: lib/tr_web/live/beard_live.ex:58
 #, elixir-autogen, elixir-format
 msgid "Fractional Services: Access high-level expertise without the full-time cost."
 msgstr "Servicios fraccionados: acceda a experiencia de alto nivel sin el costo a tiempo completo."
 
-#: lib/tr_web/live/beard_live.ex:70
+#: lib/tr_web/live/beard_live.ex:71
 #, elixir-autogen, elixir-format
 msgid "Full-Time Consulting: Dedicated support for your team."
 msgstr "Tiempos completos de consultoría: soporte dedicado para su equipo."
 
-#: lib/tr_web/live/beard_live.ex:166
+#: lib/tr_web/live/beard_live.ex:179
 #, elixir-autogen, elixir-format
 msgid "Gain full visibility with comprehensive monitoring tools like Datadog, Prometheus, and\n          Grafana."
 msgstr "Gane visibilidad completa con herramientas de monitoreo completas como Datadog, Prometheus y Grafana."
@@ -248,14 +248,14 @@ msgstr "Consiga una evaluación gratuita de DevOps de 2 horas. ¡Acelere su tran
 msgid "If your email is in our system, you will receive instructions to reset your password shortly."
 msgstr "Si su correo electrónico está en nuestro sistema, recibirá instrucciones para restablecer su contraseña en breve."
 
-#: lib/tr_web/live/beard_live.ex:101
-#: lib/tr_web/live/beard_live.ex:105
+#: lib/tr_web/live/beard_live.ex:114
+#: lib/tr_web/live/beard_live.ex:118
 #, elixir-autogen, elixir-format
 msgid "Infrastructure as Code"
 msgstr "Infraestructura como código"
 
-#: lib/tr_web/live/beard_live.ex:180
-#: lib/tr_web/live/beard_live.ex:184
+#: lib/tr_web/live/beard_live.ex:193
+#: lib/tr_web/live/beard_live.ex:197
 #, elixir-autogen, elixir-format
 msgid "Integrated Security"
 msgstr "Seguridad integrada"
@@ -271,7 +271,7 @@ msgstr "Correo electrónico o contraseña no válidos"
 msgid "It seems we cannot find the page you are looking for, but please check out the following tags and latest\n  articles..."
 msgstr "Parace que no podemos encontrar la página que buscas, pero por favor revisa las siguientes etiquetas y los últimos artículos..."
 
-#: lib/tr_web/components/layouts/app.html.heex:84
+#: lib/tr_web/components/layouts/app.html.heex:81
 #: lib/tr_web/live/user_confirmation_live.ex:22
 #: lib/tr_web/live/user_forgot_password_live.ex:24
 #: lib/tr_web/live/user_reset_password_live.ex:37
@@ -279,7 +279,7 @@ msgstr "Parace que no podemos encontrar la página que buscas, pero por favor re
 msgid "Log in"
 msgstr "Iniciar sesión"
 
-#: lib/tr_web/components/layouts/app.html.heex:75
+#: lib/tr_web/components/layouts/app.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Log out"
 msgstr "Salir"
@@ -294,13 +294,13 @@ msgstr "Sesión cerrada con éxito."
 msgid "More..."
 msgstr "Mas..."
 
-#: lib/tr_web/live/post_live.ex:156
+#: lib/tr_web/live/post_live.ex:174
 #, elixir-autogen, elixir-format
 msgid "No account? Register"
 msgstr "No tienes cuenta? Regístrate"
 
-#: lib/tr_web/live/beard_live.ex:160
-#: lib/tr_web/live/beard_live.ex:164
+#: lib/tr_web/live/beard_live.ex:173
+#: lib/tr_web/live/beard_live.ex:177
 #, elixir-autogen, elixir-format
 msgid "Observability and Monitoring"
 msgstr "Observabilidad y monitoreo"
@@ -312,7 +312,7 @@ msgstr "Observabilidad y monitoreo"
 msgid "Oops, something went wrong! Please check the errors below."
 msgstr "Ups, algo salió mal! Por favor revise los errores a continuación."
 
-#: lib/tr_web/live/beard_live.ex:65
+#: lib/tr_web/live/beard_live.ex:66
 #, elixir-autogen, elixir-format
 msgid "Part-Time Consulting: Expertise on a part-time basis fixed hours per day dedicated\n        exclusively to you."
 msgstr "Medio tiempo de consultoría: experiencia a tiempo parcial horas fijas por día dedicadas exclusivamente a usted."
@@ -327,7 +327,7 @@ msgstr "Reinicio de contraseña exitoso."
 msgid "Password updated successfully!"
 msgstr "Contraseña actualizada con éxito!"
 
-#: lib/tr_web/live/post_live.ex:297
+#: lib/tr_web/live/post_live.ex:315
 #, elixir-autogen, elixir-format
 msgid "Please sign in to be able to write comments."
 msgstr "Por favor inicie sesión para poder escribir comentarios."
@@ -337,7 +337,7 @@ msgstr "Por favor inicie sesión para poder escribir comentarios."
 msgid "Please verify your account"
 msgstr "Por favor verifique su cuenta"
 
-#: lib/tr_web/live/beard_live.ex:62
+#: lib/tr_web/live/beard_live.ex:63
 #, elixir-autogen, elixir-format
 msgid "Project-Based Contracts: Define objectives and outcomes upfront."
 msgstr "Por proyectos: defina objetivos y resultados por adelantado."
@@ -367,7 +367,7 @@ msgstr "Red Beard Team ofrece servicios expertos de DevOps fraccionados especial
 msgid "Red Beard logo"
 msgstr "Red Beard logo"
 
-#: lib/tr_web/components/layouts/app.html.heex:92
+#: lib/tr_web/components/layouts/app.html.heex:89
 #: lib/tr_web/live/user_confirmation_live.ex:21
 #: lib/tr_web/live/user_forgot_password_live.ex:23
 #: lib/tr_web/live/user_reset_password_live.ex:36
@@ -400,11 +400,6 @@ msgstr "El enlace de restablecimiento de contraseña no es válido o ha caducado
 msgid "Saving..."
 msgstr "Guardando..."
 
-#: lib/tr_web/live/beard_live.ex:37
-#, elixir-autogen, elixir-format
-msgid "Schedule a Consultation Now!"
-msgstr "Agenda una reunion ahora!"
-
 #: lib/tr_web/live/home_live.ex:119
 #, elixir-autogen, elixir-format
 msgid "Schedule time with us"
@@ -415,7 +410,7 @@ msgstr "Agenda tiempo con nosotros"
 msgid "Send password reset instructions"
 msgstr "Enviar instrucciones de restablecimiento de contraseña"
 
-#: lib/tr_web/live/post_live.ex:163
+#: lib/tr_web/live/post_live.ex:181
 #: lib/tr_web/live/user_login_live.ex:30
 #: lib/tr_web/live/user_registration_live.ex:18
 #, elixir-autogen, elixir-format
@@ -429,14 +424,14 @@ msgstr "Iniciar session"
 
 #: lib/tr_web/live/blog_live.ex:68
 #: lib/tr_web/live/home_live.ex:53
-#: lib/tr_web/live/post_live.ex:192
+#: lib/tr_web/live/post_live.ex:210
 #, elixir-autogen, elixir-format
 msgid "Sign in with GitHub"
 msgstr "Iniciar session con GitHub"
 
 #: lib/tr_web/live/blog_live.ex:112
 #: lib/tr_web/live/home_live.ex:94
-#: lib/tr_web/live/post_live.ex:234
+#: lib/tr_web/live/post_live.ex:252
 #, elixir-autogen, elixir-format
 msgid "Sign in with Google"
 msgstr "Iniciar sesion con Google"
@@ -446,22 +441,22 @@ msgstr "Iniciar sesion con Google"
 msgid "Sign up"
 msgstr "Registrate"
 
-#: lib/tr_web/live/beard_live.ex:127
+#: lib/tr_web/live/beard_live.ex:140
 #, elixir-autogen, elixir-format
 msgid "Streamline Application Deployment with Docker and Kubernetes for scalable, portable solutions."
 msgstr "Mejorar la implementación de aplicaciones con Docker y Kubernetes para soluciones escalables y portables."
 
-#: lib/tr_web/live/post_live.ex:333
+#: lib/tr_web/live/post_live.ex:351
 #, elixir-autogen, elixir-format
 msgid "There is been an error removing your reaction."
 msgstr "Hubo un error al eliminar tu reacción."
 
-#: lib/tr_web/live/post_live.ex:395
+#: lib/tr_web/live/post_live.ex:413
 #, elixir-autogen, elixir-format
 msgid "There is been an error saving your comment."
 msgstr "Hubo un error al guardar tu comentario."
 
-#: lib/tr_web/live/post_live.ex:345
+#: lib/tr_web/live/post_live.ex:363
 #, elixir-autogen, elixir-format
 msgid "There is been an error saving your reaction."
 msgstr "Hubo un error al guardar tu reacción."
@@ -501,12 +496,12 @@ msgstr "Bienvenido de nuevo!"
 msgid "Welcome to the Techsquad and Red Beard blog! This page is dedicated to documenting and exploring various\n               technologies. Our blog is hosted on a k3s cluster in OCI, powered by Elixir and Phoenix. Dive in to\n               discover insights, tutorials, and experiments across the tech landscape."
 msgstr "Bienvenido al blog de Red Beard! Esta página está dedicada a documentar y explorar varias tecnologías. Nuestro blog está alojado en un clúster k3s en OCI, impulsado por Elixir y Phoenix. Sumérgete para descubrir ideas, tutoriales y experimentos."
 
-#: lib/tr_web/live/post_live.ex:311
+#: lib/tr_web/live/post_live.ex:329
 #, elixir-autogen, elixir-format
 msgid "You need to be logged in to react."
 msgstr "Necestias iniciar sesión para reaccionar."
 
-#: lib/tr_web/live/post_live.ex:398
+#: lib/tr_web/live/post_live.ex:416
 #, elixir-autogen, elixir-format
 msgid "You need to validate your account"
 msgstr "Necestias validar tu cuenta"
@@ -516,17 +511,18 @@ msgstr "Necestias validar tu cuenta"
 msgid "for an account now."
 msgstr "para una cuenta ahora."
 
-#: lib/tr_web/live/post_live.ex:158
+#: lib/tr_web/live/post_live.ex:176
 #, elixir-autogen, elixir-format
 msgid "here"
 msgstr "aqui"
 
-#: lib/tr_web/live/post_live.ex:571
+#: lib/tr_web/live/post_live.ex:150
+#: lib/tr_web/live/post_live.ex:162
 #, elixir-autogen, elixir-format
 msgid "sponsor's page."
 msgstr "la pagina de auspiciantes."
 
-#: lib/tr_web/live/post_live.ex:165
+#: lib/tr_web/live/post_live.ex:183
 #: lib/tr_web/live/user_registration_live.ex:20
 #, elixir-autogen, elixir-format
 msgid "to your account now."
@@ -548,7 +544,8 @@ msgstr "Servicios fraccionados de DevOps | Expertos en Linux, Kubernetes, AWS | 
 msgid "Manage your account email address and password settings"
 msgstr "Configuracion"
 
-#: lib/tr_web/live/post_live.ex:569
+#: lib/tr_web/live/post_live.ex:148
+#: lib/tr_web/live/post_live.ex:160
 #, elixir-autogen, elixir-format, fuzzy
 msgid "To see the full page, please visit the"
 msgstr "Para ver la página completa, visite"
@@ -587,3 +584,28 @@ msgstr "Contraseña"
 #, elixir-autogen, elixir-format
 msgid "Signing in..."
 msgstr "Iniciando sesión..."
+
+#: lib/tr_web/live/beard_live.ex:37
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Schedule a call Now!"
+msgstr "Agenda una reunion ahora!"
+
+#: lib/tr_web/live/beard_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "Looking for the "
+msgstr "Estas buscando la version en "
+
+#: lib/tr_web/live/beard_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "Or the "
+msgstr "o el "
+
+#: lib/tr_web/live/beard_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "spanish"
+msgstr "ingles"
+
+#: lib/tr_web/live/beard_live.ex:81
+#, elixir-autogen, elixir-format
+msgid "version?"
+msgstr "?"

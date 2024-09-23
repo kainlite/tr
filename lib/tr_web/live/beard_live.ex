@@ -30,11 +30,11 @@ defmodule TrWeb.BeardLive do
           </a>
           or
           <a
-            href=""
-            onclick="Calendly.initPopupWidget({url: 'https://calendly.com/kainlite/45min'});return false;"
+            href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0YS6qO3d2Aj9SpjMGPnxHFXZmXMj8YRgE5VO_aRaqUb23J2qS8ISCJK0dAzmWZa7fW-WJe1OCU?gv=true"
             class="text-blue-500 underline"
+            target="_blank"
           >
-            <%= gettext("Schedule a Consultation Now!") %>
+            <%= gettext("Schedule a call Now!") %>
           </a>
         </p>
         <p class="text-lg mt-4">
@@ -50,6 +50,7 @@ defmodule TrWeb.BeardLive do
           ) %>
         </p>
         <br />
+
         <h4 class="mx-auto"><%= gettext("Flexible Engagement Models Tailored to Your Needs") %></h4>
         <p class="text-lg mt-2">
           <ul class="list-outside mt-2 text-left inline-block ml-60">
@@ -70,6 +71,19 @@ defmodule TrWeb.BeardLive do
             <li><%= gettext("Full-Time Consulting: Dedicated support for your team.") %></li>
           </ul>
         </p>
+
+        <br>
+        <h3 class="text-xl font-bold">
+          <% locale = if Gettext.get_locale(TrWeb.Gettext) == "en", do: "es", else: "en" %>
+          <%= gettext("Looking for the ") %>
+            <.link aria-label="language-toggle" navigate={~p"/#{locale}"}>
+             <%= gettext "spanish" %>
+            </.link>
+          <%= gettext "version?" %>
+
+          <%= gettext("Or the ") %><a href={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog"}>blog?</a>
+        </h3>
+
       </section>
 
       <section class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-8">
