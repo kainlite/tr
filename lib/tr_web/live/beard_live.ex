@@ -76,17 +76,21 @@ defmodule TrWeb.BeardLive do
         <p class="text-lg mt-2">
           <ul class="list-outside mt-2 text-left inline-block ml-60">
             <li>
-            <%= gettext("Audit and validate your architecture, ask yourself:") %>
+              <%= gettext("Audit and validate your architecture, ask yourself:") %>
               <ul>
                 <li>
-                  <%= gettext("is our infrastructure secure? do we have the right security groups, access control lists,
-                  policies? encryption in place?") %>
+                  <%= gettext(
+                    "is our infrastructure secure? do we have the right security groups, access control lists,
+                  policies? encryption in place?"
+                  ) %>
                 </li>
                 <li>
-                <%= gettext("Does our network have the capacity to grow and connect to other environments?") %>
+                  <%= gettext(
+                    "Does our network have the capacity to grow and connect to other environments?"
+                  ) %>
                 </li>
                 <li>
-                <%= gettext("is our infrastructure cost efficient?") %>
+                  <%= gettext("is our infrastructure cost efficient?") %>
                 </li>
               </ul>
             </li>
@@ -94,28 +98,34 @@ defmodule TrWeb.BeardLive do
               <%= gettext("Migrate projects to the cloud or back on-premises") %>
             </li>
             <li>
-              <%= gettext("Optimize and automate processes to free your team from repetitive, time-consuming tasks") %>
+              <%= gettext(
+                "Optimize and automate processes to free your team from repetitive, time-consuming tasks"
+              ) %>
             </li>
             <li>
-             <%= gettext("Establish conventions and best practices to ensure consistency and scalability") %>
-             </li>
+              <%= gettext(
+                "Establish conventions and best practices to ensure consistency and scalability"
+              ) %>
+            </li>
             <li>
-             <%= gettext("Set up observability and monitoring") %>
+              <%= gettext("Set up observability and monitoring") %>
               <ul>
                 <li>
                   <%= gettext("is our app fast and reliable?") %>
                 </li>
                 <li>
-                <%= gettext("are we caching data efficiently (or at all)?") %>
+                  <%= gettext("are we caching data efficiently (or at all)?") %>
                 </li>
                 <li>
-                <%= gettext("Is the database properly sized? Do we have working backups?") %>
+                  <%= gettext("Is the database properly sized? Do we have working backups?") %>
                 </li>
               </ul>
-             </li>
+            </li>
             <li>
-             <%= gettext("We can help you find answers to these questions and so much more. Schedule a call and let’s get started!") %>
-             </li>
+              <%= gettext(
+                "We can help you find answers to these questions and so much more. Schedule a call and let’s get started!"
+              ) %>
+            </li>
           </ul>
         </p>
 

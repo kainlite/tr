@@ -45,4 +45,4 @@ config :opentelemetry,
 
 config :opentelemetry_exporter,
   otlp_protocol: :http_protobuf,
-  otlp_endpoint: "http://opentelemetrycollector.monitoring.svc:4318"
+  otlp_endpoint: "http://opentelemetrycollector.monitoring.svc:4317"

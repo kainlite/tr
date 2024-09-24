@@ -21,7 +21,7 @@ defmodule Tr.MixProject do
         tr: [
           applications: [opentelemetry: :temporary]
         ]
-      ],
+      ]
     ]
   end
 

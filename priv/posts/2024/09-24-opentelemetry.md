@@ -2,7 +2,7 @@
   title: "Installing and configuring OpenTelemetry and Prometheus",
   author: "Gabriel Garrido",
   description: "Introduction to OpenTelemetry, how to install and configure it for your cluster and app",
-  tags: ~w(courses),
+  tags: ~w(opentelemetry kubernetes elixir),
   published: false,
   image: "opentelemetry.png",
   sponsored: false,
@@ -15,6 +15,8 @@
 ### **Introduction**
 <br />
 
+Work in progress: it will be available soon, thanks for coming by!
+
 <br />
 
 <br />
@@ -23,8 +25,8 @@
   title: "Arrancando con OpenTelemetry",
   author: "Gabriel Garrido",
   description: "En este articulo vemos como instalar e instrumentar nuestra app con opentelemetry y prometheus...",
-  tags: ~w(courses),
-  published: true,
+  tags: ~w(opentelemetry kubernetes elixir),
+  published: false,
   image: "opentelemetry.png",
   sponsored: false,
   video: "",
@@ -34,6 +36,8 @@
 ---
 
 <br />
+
+En progreso, estara disponible pronto, gracias por pasar por aqui!
 
 <br />
 

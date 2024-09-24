@@ -12,7 +12,7 @@ defmodule TrWeb.PostLive do
 
   @impl true
   def mount(params, _session, socket) do
-    Tracer.with_span("post") do
+    Tracer.with_span "post" do
       changeset = Tr.Post.change_comment(%Tr.Post.Comment{})
       post_id = Map.get(params, "id")
 
