@@ -44,5 +44,5 @@ config :opentelemetry,
   traces_exporter: :otlp
 
 config :opentelemetry_exporter,
-  otlp_protocol: :http_protobuf,
+  otlp_protocol: :grpc,
   otlp_endpoint: "http://opentelemetrycollector.monitoring.svc:4317"
