@@ -118,3 +118,5 @@ config :git_hooks,
       ]
     ]
   ]
+
+config :opentelemetry, traces_exporter: {:otel_exporter_stdout, []}

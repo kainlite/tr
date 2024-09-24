@@ -9,6 +9,10 @@ defmodule Tr.Application do
   def start(_type, _args) do
     topologies = Application.get_env(:libcluster, :topologies, [])
 
+    :opentelemetry_cowboy.setup()
+    OpentelemetryPhoenix.setup(adapter: :cowboy2)
+    OpentelemetryEcto.setup([:dice_game, :repo])
+
     children = [
       # Start the Cluster supervisor for libcluster
       {Cluster.Supervisor, [topologies, [name: Tr.ClusterSupervisor]]},

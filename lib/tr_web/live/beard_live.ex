@@ -72,18 +72,64 @@ defmodule TrWeb.BeardLive do
           </ul>
         </p>
 
-        <br>
+        <h4 class="mx-auto"><%= gettext("Wondering how we can help you?") %></h4>
+        <p class="text-lg mt-2">
+          <ul class="list-outside mt-2 text-left inline-block ml-60">
+            <li>
+            <%= gettext("Audit and validate your architecture, ask yourself:") %>
+              <ul>
+                <li>
+                  <%= gettext("is our infrastructure secure? do we have the right security groups, access control lists,
+                  policies? encryption in place?") %>
+                </li>
+                <li>
+                <%= gettext("Does our network have the capacity to grow and connect to other environments?") %>
+                </li>
+                <li>
+                <%= gettext("is our infrastructure cost efficient?") %>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <%= gettext("Migrate projects to the cloud or back on-premises") %>
+            </li>
+            <li>
+              <%= gettext("Optimize and automate processes to free your team from repetitive, time-consuming tasks") %>
+            </li>
+            <li>
+             <%= gettext("Establish conventions and best practices to ensure consistency and scalability") %>
+             </li>
+            <li>
+             <%= gettext("Set up observability and monitoring") %>
+              <ul>
+                <li>
+                  <%= gettext("is our app fast and reliable?") %>
+                </li>
+                <li>
+                <%= gettext("are we caching data efficiently (or at all)?") %>
+                </li>
+                <li>
+                <%= gettext("Is the database properly sized? Do we have working backups?") %>
+                </li>
+              </ul>
+             </li>
+            <li>
+             <%= gettext("We can help you find answers to these questions and so much more. Schedule a call and let’s get started!") %>
+             </li>
+          </ul>
+        </p>
+
+        <br />
         <h3 class="text-xl font-bold">
           <% locale = if Gettext.get_locale(TrWeb.Gettext) == "en", do: "es", else: "en" %>
           <%= gettext("Looking for the ") %>
-            <.link aria-label="language-toggle" navigate={~p"/#{locale}"}>
-             <%= gettext "spanish" %>
-            </.link>
-          <%= gettext "version?" %>
+          <.link aria-label="language-toggle" navigate={~p"/#{locale}"}>
+            <%= gettext("spanish") %>
+          </.link>
+          <%= gettext("version?") %>
 
           <%= gettext("Or the ") %><a href={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog"}>blog?</a>
         </h3>
-
       </section>
 
       <section class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-8">

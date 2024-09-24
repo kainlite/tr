@@ -37,3 +37,12 @@ config :libcluster,
       ]
     ]
   ]
+
+config :opentelemetry,
+  resource: %{service: %{name: "tr_app"}},
+  span_processor: :batch,
+  traces_exporter: :otlp
+
+config :opentelemetry_exporter,
+  otlp_protocol: :http_protobuf,
+  otlp_endpoint: "http://opentelemetrycollector.monitoring.svc:4318"

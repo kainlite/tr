@@ -1,5 +1,8 @@
 defmodule TrWeb.PostLive do
   use TrWeb, :live_view
+
+  require OpenTelemetry.Tracer, as: Tracer
+
   alias Tr.Blog
   alias Tr.Post
   alias TrWeb.CommentComponent
@@ -9,60 +12,63 @@ defmodule TrWeb.PostLive do
 
   @impl true
   def mount(params, _session, socket) do
-    changeset = Tr.Post.change_comment(%Tr.Post.Comment{})
-    post_id = Map.get(params, "id")
+    Tracer.with_span("post") do
+      changeset = Tr.Post.change_comment(%Tr.Post.Comment{})
+      post_id = Map.get(params, "id")
 
-    if connected?(socket) do
-      # Comments PubSub
-      Post.subscribe(post_id)
+      if connected?(socket) do
+        # Comments PubSub
+        Post.subscribe(post_id)
 
-      # Presence PubSub
-      Phoenix.PubSub.subscribe(Tr.PubSub, post_id)
+        # Presence PubSub
+        Phoenix.PubSub.subscribe(Tr.PubSub, post_id)
 
-      # Track browser session
-      {:ok, _} =
-        Presence.track(self(), post_id, @topic, %{})
+        # Track browser session
+        {:ok, _} =
+          Presence.track(self(), post_id, @topic, %{})
+      end
+
+      connected_users = calculate_connected_users(post_id)
+
+      post = Blog.get_post_by_id!(Gettext.get_locale(TrWeb.Gettext), post_id)
+
+      socket =
+        socket
+        |> assign(:page_title, post.title)
+        |> assign(:params, params)
+        |> assign(:post, post)
+        |> assign(check_errors: false)
+        |> assign_form(changeset)
+        |> assign(:comments, Tr.Post.get_parent_comments_for_post(post_id))
+        |> assign(:children, Tr.Post.get_children_comments_for_post(post_id))
+        |> assign(:parent_comment_id, nil)
+        |> assign(:connected_users, connected_users)
+        |> assign(:diff, nil)
+        |> assign(:reactions, Tr.Post.get_reactions(post_id))
+        |> assign(
+          :rocket_launch,
+          get_styled_reaction(post.id, "rocket-launch", socket.assigns.current_user)
+        )
+        |> assign(
+          :hand_thumb_up,
+          get_styled_reaction(post.id, "hand-thumb-up", socket.assigns.current_user)
+        )
+        |> assign(
+          :heart,
+          get_styled_reaction(post.id, "heart", socket.assigns.current_user)
+        )
+        |> assign(
+          :oauth_google_url,
+          ElixirAuthGoogle.generate_oauth_url(TrWeb.Endpoint.url())
+        )
+        |> assign(
+          :oauth_github_url,
+          ElixirAuthGithub.login_url(%{scopes: ["user:email"]})
+        )
+
+      Tracer.set_attribute(:post, post.id)
+      {:ok, socket, temporary_assigns: [form: nil]}
     end
-
-    connected_users = calculate_connected_users(post_id)
-
-    post = Blog.get_post_by_id!(Gettext.get_locale(TrWeb.Gettext), post_id)
-
-    socket =
-      socket
-      |> assign(:page_title, post.title)
-      |> assign(:params, params)
-      |> assign(:post, post)
-      |> assign(check_errors: false)
-      |> assign_form(changeset)
-      |> assign(:comments, Tr.Post.get_parent_comments_for_post(post_id))
-      |> assign(:children, Tr.Post.get_children_comments_for_post(post_id))
-      |> assign(:parent_comment_id, nil)
-      |> assign(:connected_users, connected_users)
-      |> assign(:diff, nil)
-      |> assign(:reactions, Tr.Post.get_reactions(post_id))
-      |> assign(
-        :rocket_launch,
-        get_styled_reaction(post.id, "rocket-launch", socket.assigns.current_user)
-      )
-      |> assign(
-        :hand_thumb_up,
-        get_styled_reaction(post.id, "hand-thumb-up", socket.assigns.current_user)
-      )
-      |> assign(
-        :heart,
-        get_styled_reaction(post.id, "heart", socket.assigns.current_user)
-      )
-      |> assign(
-        :oauth_google_url,
-        ElixirAuthGoogle.generate_oauth_url(TrWeb.Endpoint.url())
-      )
-      |> assign(
-        :oauth_github_url,
-        ElixirAuthGithub.login_url(%{scopes: ["user:email"]})
-      )
-
-    {:ok, socket, temporary_assigns: [form: nil]}
   end
 
   @impl true

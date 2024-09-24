@@ -1,6 +1,8 @@
 defmodule TrWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :tr
 
+  plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
+
   if Application.compile_env(:tr, :sql_sandbox) do
     plug Phoenix.Ecto.SQL.Sandbox
   end

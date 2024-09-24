@@ -16,7 +16,12 @@ defmodule Tr.MixProject do
         "coveralls.detail": :test,
         "coveralls.post": :test,
         "coveralls.html": :test
-      ]
+      ],
+      releases: [
+        tr: [
+          applications: [opentelemetry: :temporary]
+        ]
+      ],
     ]
   end
 
@@ -86,7 +91,13 @@ defmodule Tr.MixProject do
       {:elixir_auth_google, "~> 1.6"},
       {:elixir_auth_github, "~> 1.6"},
       {:neuron, "~> 5.1.0"},
-      {:cloak, "1.1.1"}
+      {:cloak, "1.1.1"},
+      {:opentelemetry, "~> 1.3"},
+      {:opentelemetry_api, "~> 1.2"},
+      {:opentelemetry_exporter, "~> 1.6"},
+      {:opentelemetry_phoenix, "~> 1.1"},
+      {:opentelemetry_cowboy, "~> 0.2"},
+      {:opentelemetry_ecto, "~> 1.2"}
     ]
   end
 
