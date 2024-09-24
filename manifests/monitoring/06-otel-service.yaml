@@ -9,6 +9,10 @@ spec:
     port: 4317
     protocol: TCP
     targetPort: 4317
+  - name: otlp-http
+    port: 4318
+    protocol: TCP
+    targetPort: 4318
   - name: metrics
     port: 9090
     protocol: TCP

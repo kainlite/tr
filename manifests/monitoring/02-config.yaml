@@ -25,6 +25,7 @@ data:
       otlp:
         protocols: 
           grpc:
+          http:
     processors:
       batch:
         send_batch_size: 10000
