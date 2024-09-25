@@ -2,6 +2,8 @@ defmodule TrWeb.Telemetry do
   use Supervisor
   import Telemetry.Metrics
 
+  @metrics_port Application.compile_env(:tr, :metrics_port)
+
   def start_link(arg) do
     Supervisor.start_link(__MODULE__, arg, name: __MODULE__)
   end
@@ -15,7 +17,7 @@ defmodule TrWeb.Telemetry do
       # Add reporters as children of your supervision tree.
       # {Telemetry.Metrics.ConsoleReporter, metrics: metrics()}
       {Peep, name: TrWebPeep, metrics: metrics()},
-      {Bandit, plug: TrWeb.Telemetry.PeepPlug, port: 9091}
+      {Bandit, plug: TrWeb.Telemetry.PeepPlug, port: @metrics_port}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

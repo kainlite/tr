@@ -44,3 +44,5 @@ config :wallaby,
   chromedriver: [headless: true, binary: "/usr/bin/google-chrome-stable"]
 
 config :floki, :encode_raw_html, false
+
+config :tr, metrics_port: 9092

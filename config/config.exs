@@ -82,6 +82,8 @@ config :tr, Tr.Scheduler,
     {"*/5 * * * *", {Tr.Sponsors, :start, []}}
   ]
 
+config :tr, metrics_port: 9091
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
