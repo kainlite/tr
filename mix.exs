@@ -92,12 +92,7 @@ defmodule Tr.MixProject do
       {:elixir_auth_github, "~> 1.6"},
       {:neuron, "~> 5.1.0"},
       {:cloak, "1.1.1"},
-      {:opentelemetry, "~> 1.3"},
-      {:opentelemetry_api, "~> 1.2"},
-      {:opentelemetry_exporter, "~> 1.6"},
-      {:opentelemetry_phoenix, "~> 1.1"},
-      {:opentelemetry_cowboy, "~> 0.2"},
-      {:opentelemetry_ecto, "~> 1.2"}
+      {:peep, "~> 2.1"}
     ]
   end
 
