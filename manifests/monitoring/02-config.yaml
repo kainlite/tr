@@ -12,7 +12,7 @@ data:
     scrape_configs:
     - job_name: 'monitoring-job'
       static_configs:
-      - targets: ['tr.tr.svc.cluster.local:9091']
+      - targets: ['tr-metrics.tr.svc.cluster.local:9091']
 ---
 apiVersion: v1
 kind: ConfigMap

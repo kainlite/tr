@@ -16,11 +16,6 @@ defmodule Tr.MixProject do
         "coveralls.detail": :test,
         "coveralls.post": :test,
         "coveralls.html": :test
-      ],
-      releases: [
-        tr: [
-          applications: [opentelemetry: :temporary]
-        ]
       ]
     ]
   end
