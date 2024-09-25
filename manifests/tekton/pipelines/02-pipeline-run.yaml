@@ -33,4 +33,4 @@ spec:
   - name: repo-url
     value: https://github.com/kainlite/tr.git
   - name: image-reference
-    value: kainlite/tr:latest
+    value: kainlite/tr:master
