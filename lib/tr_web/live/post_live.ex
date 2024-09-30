@@ -146,7 +146,7 @@ defmodule TrWeb.PostLive do
         </p>
         <br />
         <%= @post.encrypted_content
-        |> decrypt
+        |> decrypt_by_path(@post.id)
         |> Earmark.as_html!()
         |> NimblePublisher.highlight()
         |> raw %>
@@ -568,10 +568,18 @@ defmodule TrWeb.PostLive do
   end
 
   defp decrypt(b64cipher) do
-    {:ok, b64dec} = Base.decode64(b64cipher)
+    {:ok, b64dec} = Base.decode64(b64cipher, ignore: :whitespace)
     {:ok, dec} = Tr.Vault.decrypt(b64dec)
 
     dec
+  end
+
+  defp decrypt_by_path(_, slug) do
+    path = Path.join(["./priv/encrypted/#{Gettext.get_locale(TrWeb.Gettext)}", "#{slug}.md"])
+       
+    file = File.read!(path)
+
+    decrypt(file)
   end
 
   defp render_sponsors_banner(assigns) do

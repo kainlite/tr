@@ -38,3 +38,6 @@ npm-debug.log
 /manifests/tekton/triggers/03-secret.yaml
 
 tags
+
+/priv/decrypted
+/priv/decrypted/**
