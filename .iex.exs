@@ -13,8 +13,11 @@ defmodule Helpers do
   end
 
   def save_decrypted(locale, slug) do
-    encrypted_path = Path.join(["./priv/encrypted/#{locale}", "#{slug}.md"])
-    decrypted_path = Path.join(["./priv/decrypted/#{locale}", "#{slug}.md"])
+    encrypted_path =
+      Path.join([Application.app_dir(:tr), "./priv/encrypted/#{locale}", "#{slug}.md"])
+
+    decrypted_path =
+      Path.join([Application.app_dir(:tr), "./priv/decrypted/#{locale}", "#{slug}.md"])
 
     decrypted = decrypt_by_path(encrypted_path)
 
@@ -22,8 +25,11 @@ defmodule Helpers do
   end
 
   def save_encrypted(locale, slug) do
-    encrypted_path = Path.join(["./priv/encrypted/#{locale}", "#{slug}.md"])
-    decrypted_path = Path.join(["./priv/decrypted/#{locale}", "#{slug}.md"])
+    encrypted_path =
+      Path.join([Application.app_dir(:tr), "./priv/encrypted/#{locale}", "#{slug}.md"])
+
+    decrypted_path =
+      Path.join([Application.app_dir(:tr), "./priv/decrypted/#{locale}", "#{slug}.md"])
 
     decrypted = File.read!(decrypted_path)
 
