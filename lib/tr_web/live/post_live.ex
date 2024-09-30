@@ -145,7 +145,11 @@ defmodule TrWeb.PostLive do
           </iframe>
         </p>
         <br />
-        <%= raw(NimblePublisher.highlight(Earmark.as_html!(decrypt(@post.encrypted_content)))) %>
+        <%= @post.encrypted_content
+        |> decrypt
+        |> Earmark.as_html!()
+        |> NimblePublisher.highlight()
+        |> raw %>
       <% @post.sponsored && @current_user && !Tr.SponsorsCache.sponsor?(@current_user.github_username) -> %>
         <br />
         <%= render_sponsors_banner(assigns) %>
