@@ -320,6 +320,7 @@
     @apply rounded-lg;
     @apply mx-auto w-[99%];
     @apply my-2;
+    position: relative;
   }
 
   pre > code {
@@ -327,7 +328,33 @@
     display: block;
     white-space: pre;
     padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
+
+  pre > button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+
+    align-self: end;
+    border: none;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    color: var(--color-text);
+    font-weight: var(--fw-bold);
+    cursor: pointer;
+    justify-self: end;
+    margin-bottom: 0rem;
+    display: inline-block;
+    font-size: 10px;
+    width: 85px;
+    height: 20px;
+    text-align: center;
+    padding: 0px;
+    line-height: 0px;
+  }
+
   hr {
     border: 0;
     border-top: 0.1rem solid #f4f5f6;
@@ -547,7 +574,6 @@
   }
 
   @media (min-width: 40rem) {
-    /* Small devices (landscape phones, 576px and up) */
     header section {
       flex-direction: row;
     }

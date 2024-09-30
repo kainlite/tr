@@ -123,6 +123,8 @@ defmodule TrWeb.PostLive do
 
     <%= TrWeb.AdsComponent.render_large_ad(assigns) %>
 
+    <pre class="hidden" phx-hook="CopyToClipboard" id="hidden-code-block"><code></code></pre>
+
     <%= cond do %>
       <% @post.sponsored && @current_user && Tr.SponsorsCache.sponsor?(@current_user.github_username) -> %>
         <%= raw(@post.body) %>
