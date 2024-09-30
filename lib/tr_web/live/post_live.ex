@@ -576,7 +576,7 @@ defmodule TrWeb.PostLive do
 
   defp decrypt_by_path(_, slug) do
     path = Path.join(["./priv/encrypted/#{Gettext.get_locale(TrWeb.Gettext)}", "#{slug}.md"])
-       
+
     file = File.read!(path)
 
     decrypt(file)
