@@ -123,7 +123,10 @@ defmodule TrWeb.PostLive do
 
     <%= TrWeb.AdsComponent.render_large_ad(assigns) %>
 
-    <pre class="hidden" phx-hook="CopyToClipboard" id="hidden-code-block"><code></code></pre>
+    <pre class="hidden" phx-hook="CopyToClipboard" id="hidden-code-block">
+      <code class="hidden">
+      </code>
+    </pre>
 
     <%= cond do %>
       <% @post.sponsored && @current_user && Tr.SponsorsCache.sponsor?(@current_user.github_username) -> %>
@@ -142,7 +145,7 @@ defmodule TrWeb.PostLive do
           </iframe>
         </p>
         <br />
-        <%= raw(Earmark.as_html!(decrypt(@post.encrypted_content))) %>
+        <%= raw(NimblePublisher.highlight(Earmark.as_html!(decrypt(@post.encrypted_content)))) %>
       <% @post.sponsored && @current_user && !Tr.SponsorsCache.sponsor?(@current_user.github_username) -> %>
         <br />
         <%= render_sponsors_banner(assigns) %>

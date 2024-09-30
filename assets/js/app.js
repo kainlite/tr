@@ -42,7 +42,6 @@ Hooks.CopyToClipboard = {
 
     blocks.forEach((block) => {
       // only add button if browser supports Clipboard API
-      console.log(block);
       if (navigator.clipboard) {
         let button = document.createElement("button");
 
