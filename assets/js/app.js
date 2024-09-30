@@ -59,14 +59,23 @@ Hooks.CopyToClipboard = {
       let code = block.querySelector("code");
       let text = code.innerText;
 
-      await navigator.clipboard.writeText(text);
+      try {
+        await navigator.clipboard.writeText(text);
+        
+        // visual feedback that task is completed
+        button.innerText = "Code Copied";
 
-      // visual feedback that task is completed
-      button.innerText = "Code Copied";
-
-      setTimeout(() => {
-        button.innerText = copyButtonLabel;
-      }, 700);
+        setTimeout(() => {
+          button.innerText = copyButtonLabel;
+        }, 700);
+      } catch (err) {
+        console.error('Failed to copy text: ', err);
+        button.innerText = "Copy failed";
+        
+        setTimeout(() => {
+          button.innerText = copyButtonLabel;
+        }, 700);
+      }
     }
   },
 };
