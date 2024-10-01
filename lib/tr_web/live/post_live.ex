@@ -145,8 +145,8 @@ defmodule TrWeb.PostLive do
           </iframe>
         </p>
         <br />
-        <%= @post.encrypted_content
-        |> decrypt_by_path(@post.id)
+        <%= @post.id
+        |> decrypt_by_path()
         |> Earmark.as_html!()
         |> NimblePublisher.highlight()
         |> raw %>
@@ -574,7 +574,7 @@ defmodule TrWeb.PostLive do
     dec
   end
 
-  defp decrypt_by_path(_, slug) do
+  defp decrypt_by_path(slug) do
     path =
       Path.join([
         Application.app_dir(:tr),

@@ -27,7 +27,7 @@ import * as CookieConsent from "../vendor/cookieconsent.esm";
 let Hooks = {};
 Hooks.Scroll = {
   mounted() {
-    this.el.addEventListener("click", (e) => {
+    this.el.addEventListener("click", () => {
       document.getElementById("comment_form").scrollIntoView();
     });
   },
@@ -60,7 +60,7 @@ Hooks.CopyToClipboard = {
 
       try {
         await navigator.clipboard.writeText(text);
-        
+
         // visual feedback that task is completed
         button.innerText = "Code Copied";
 
@@ -68,9 +68,9 @@ Hooks.CopyToClipboard = {
           button.innerText = copyButtonLabel;
         }, 700);
       } catch (err) {
-        console.error('Failed to copy text: ', err);
+        console.error("Failed to copy text: ", err);
         button.innerText = "Copy failed";
-        
+
         setTimeout(() => {
           button.innerText = copyButtonLabel;
         }, 700);

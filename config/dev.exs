@@ -59,9 +59,10 @@ config :tr, TrWeb.Endpoint,
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/tr_web/(controllers|live|components)/.*(ex|heex)$",
-      ~r"posts/*/.*(md)$"
+      ~r"posts/*/.*(md)$",
+      ~r"encrypted/*/.*(md)$"
     ],
-    web_console_logger: true
+    web_console_logger: false
   ]
 
 # Enable dev routes for dashboard and mailbox

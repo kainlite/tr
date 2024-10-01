@@ -1,4 +1,7 @@
-defmodule Helpers do
+defmodule Tr.CryptUtils do
+  @moduledoc """
+    This module contains utility functions for encrypting and decrypting files.
+  """
   defp decrypt(b64cipher) do
     {:ok, b64dec} = Base.decode64(b64cipher, ignore: :whitespace)
     {:ok, dec} = Tr.Vault.decrypt(b64dec)

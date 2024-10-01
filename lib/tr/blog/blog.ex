@@ -81,6 +81,9 @@ defmodule Tr.Blog do
   def recent_posts(locale \\ "en", num \\ 5), do: Enum.take(posts(locale), num)
   def get_latest_post(locale \\ "en", num \\ 1), do: Enum.at(Enum.take(posts(locale), num), 0)
 
+  def encrypted_posts(locale),
+    do: Enum.filter(all_posts(), &(&1.encrypted_content == true && &1.lang == locale))
+
   defmodule NotFoundError, do: defexception([:message, plug_status: 404])
 
   def get_post_by_id!(id) do
