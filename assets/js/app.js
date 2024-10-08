@@ -35,6 +35,12 @@ Hooks.Scroll = {
 
 Hooks.CopyToClipboard = {
   mounted() {
+    this.run();
+  },
+  reconnected() {
+    this.run();
+  },
+  run() {
     const copyButtonLabel = "Copy Code";
 
     // use a class selector if available
