@@ -7,7 +7,7 @@
   published: true,
   image: "docker-logo.svg",
   sponsored: true,
-  video: "AQpBRVMuR0NNLlYxTJxSRfOfhl7jf3JuF/iCr59Ft4wVtu0td5HG//On8X1qfAwkUvdCST8aXPtgFedBaVfkKIATz1TgZNoe9R17SdiB066J",
+  video: "AQpBRVMuR0NNLlYxr3Oe7hVldg5uA8JYE8xaibEkXvpftYwwajjIk05yhtnMmXmLZWzDhME7f9Au3E/QTZm5v3h90mI2lSIGKSJhIHc=",
   encrypted_content: true,
   lang: "en"
 }
@@ -51,7 +51,7 @@ This page will only cover chapter 1.
   published: true,
   image: "docker-logo.svg",
   sponsored: true,
-  video: "AQpBRVMuR0NNLlYxTJxSRfOfhl7jf3JuF/iCr59Ft4wVtu0td5HG//On8X1qfAwkUvdCST8aXPtgFedBaVfkKIATz1TgZNoe9R17SdiB066J",
+  video: "AQpBRVMuR0NNLlYxa9rICtZPw9eAY88DExAv1hUQqI2TzLg9KTbLELcpnvGQfy6bbJuKd+eoVckZ3lN1SkSEJovTM3p+tFVP/cHbmEE=",
   encrypted_content: true,
   lang: "es"
 }

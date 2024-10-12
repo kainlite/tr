@@ -11,11 +11,13 @@ defmodule TrWeb.BeardLive do
     ~H"""
     <div class="flex flex-col bg-gray-100 dark:bg-gray-900 min-h-screen">
       <div class="w-72 mt-12 h-[21rem] m-auto justify-center">
-        <img
-          src={~p"/images/logo-beard.webp"}
-          alt={gettext("Red Beard logo")}
-          class="max-h-72 max-w-72 rounded-full scale-125"
-        />
+        <a href="https://www.linkedin.com/in/gabrielgarrido/" target="_blank">
+          <img
+            src={~p"/images/logo-beard.webp"}
+            alt={gettext("Red Beard logo")}
+            class="max-h-72 max-w-72 rounded-full scale-125"
+          />
+        </a>
       </div>
 
       <section class="text-center mt-8">
