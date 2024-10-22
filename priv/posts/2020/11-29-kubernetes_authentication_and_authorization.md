@@ -68,7 +68,7 @@ spec: {}
 status: {}
 ```
 
-You can see more [here](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
+You can read more [here](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
 
 <br />
 
@@ -93,7 +93,7 @@ metadata:
   name: myuser
 ```
 
-You can see more [here](https://kubernetes.io/docs/reference/access-authn-authz/authentication/)
+You can read more [here](https://kubernetes.io/docs/reference/access-authn-authz/authentication/)
 
 <br />
 
@@ -123,7 +123,7 @@ rules:
   - '*'
 ```
 
-You can see more [here](https://kubernetes.io/docs/reference/access-authn-authz/authorization/#determine-the-request-verb)
+You can read more [here](https://kubernetes.io/docs/reference/access-authn-authz/authorization/#determine-the-request-verb)
 and [here](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#clusterrole-example)
 
 <br />
@@ -157,7 +157,7 @@ subjects:
   namespace: mynamespace
 ```
 
-You can see more [here](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#clusterrolebinding-example)
+You can read more [here](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#clusterrolebinding-example)
 
 <br />
 
@@ -475,7 +475,7 @@ works because we created the role binding for our extra user and for the pod ser
 
 <br />
 
-You can see more [here](http://docs.shippable.com/deploy/tutorial/create-kubeconfig-for-self-hosted-kubernetes-cluster/)
+You can read more [here](http://docs.shippable.com/deploy/tutorial/create-kubeconfig-for-self-hosted-kubernetes-cluster/)
 and [here](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/)
 
 <br />
