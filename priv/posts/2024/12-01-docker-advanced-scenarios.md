@@ -1,13 +1,12 @@
 %{
-  title: "What exactly is a container?",
+  title: "Docker advanced scenarios",
   author: "Gabriel Garrido",
-  description: "This will be a short course to master docker on linux, check the high level overview to learn more and
-  be the first to sponsor this content",
+  description: "In this chapter we will learn a bit more about some advanced scenarios and where to continue learning...",
   tags: ~w(docker docker-course),
   published: true,
-  image: "docker-logo.svg",
+  image: "advanceddocker.webp",
   sponsored: true,
-  video: "AQpBRVMuR0NNLlYxr3Oe7hVldg5uA8JYE8xaibEkXvpftYwwajjIk05yhtnMmXmLZWzDhME7f9Au3E/QTZm5v3h90mI2lSIGKSJhIHc=",
+  video: "AQpBRVMuR0NNLlYxTJxSRfOfhl7jf3JuF/iCr59Ft4wVtu0td5HG//On8X1qfAwkUvdCST8aXPtgFedBaVfkKIATz1TgZNoe9R17SdiB066J",
   encrypted_content: true,
   lang: "en"
 }
@@ -18,10 +17,12 @@
 This course will help you understand and demistify docker, so you will have the confidence necessary to use it and
 deploy it in any project. Having a strong foundation will help you understand and manage containers at any scale.
 
+<br>
+
 #### High level overview
 
 <ul>
-    <li class="font-bold">
+    <li>
       Chapter 1: What exactly is a container (Basic network, namespaces, docker)?
     </li>
     <li>
@@ -30,14 +31,10 @@ deploy it in any project. Having a strong foundation will help you understand an
     <li>
       Chapter 3: What exactly is a volume (working with persistent data)?
     </li>
-    <li>
+    <li class="font-bold">
       Chapter 4: Advanced scenarios, Security, rootless containers and more.
     </li>
 </ul>
-
-<br>
-
-This page will only cover chapter 1.
 
 <br>
 
@@ -47,14 +44,14 @@ Follow me on [LinkedIn](https://www.linkedin.com/in/gabrielgarrido/) and watch t
 
 ---lang---
 %{
-  title: "Que es exactamente un contenedor?",
+  title: "Que es una imagen de un contenedor?",
   author: "Gabriel Garrido",
-  description: "En este curso pago vamos a ver docker en detalle, empezando por entender que es un contenedor.",
+  description: "En este capitulo vamos a ver imagenes y como usarlas",
   tags: ~w(docker docker-course),
   published: true,
-  image: "docker-logo.svg",
+  image: "overlay_constructs.webp",
   sponsored: true,
-  video: "AQpBRVMuR0NNLlYxa9rICtZPw9eAY88DExAv1hUQqI2TzLg9KTbLELcpnvGQfy6bbJuKd+eoVckZ3lN1SkSEJovTM3p+tFVP/cHbmEE=",
+  video: "AQpBRVMuR0NNLlYxTJxSRfOfhl7jf3JuF/iCr59Ft4wVtu0td5HG//On8X1qfAwkUvdCST8aXPtgFedBaVfkKIATz1TgZNoe9R17SdiB066J",
   encrypted_content: true,
   lang: "es"
 }
@@ -67,7 +64,7 @@ Este curso te ayudará a entender y desmitificar Docker, para que tengas la conf
 #### Descripción general
 
 <ul>
-    <li class="font-bold">
+    <li>
       Capítulo 1: ¿Qué es exactamente un contenedor? (Redes, namespaces, docker).
     </li>
     <li>
@@ -76,15 +73,13 @@ Este curso te ayudará a entender y desmitificar Docker, para que tengas la conf
     <li>
       Capítulo 3: ¿Qué es exactamente un volumen? (Trabajo con datos persistentes).
     </li>
-    <li>
+    <li class="font-bold">
       Capítulo 4: Escenarios avanzados, Seguridad, contenedores rootless y mas.
     </li>
 </ul>
 
-Esta pagina solo cubre el capitulo 1.
-
 <br>
 
-Seguime en [LinkedIn](https://www.linkedin.com/in/gabrielgarrido/) para ver el video gratis
+Seguime en [LinkedIn](https://www.linkedin.com/in/gabrielgarrido/) y mira el video gratis
 
 <br>
