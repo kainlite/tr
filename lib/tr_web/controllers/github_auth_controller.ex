@@ -1,5 +1,4 @@
 defmodule TrWeb.GithubAuthController do
-  require Logger
 
   use TrWeb, :controller
 
@@ -8,8 +7,6 @@ defmodule TrWeb.GithubAuthController do
   """
   def index(conn, %{"code" => code}) do
     {:ok, profile} = ElixirAuthGithub.github_auth(code)
-
-    Logger.info("Github profile: #{inspect(profile)}")
 
     if profile.email do
       conn

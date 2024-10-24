@@ -406,7 +406,7 @@ defmodule Tr.Accounts do
   def update_user_github_username(user, github_username) do
     changeset =
       user
-      |> User.github_username_changeset(github_username)
+      |> User.github_username_changeset(%{github_username: github_username})
       |> User.confirm_changeset()
 
     Ecto.Multi.new()
