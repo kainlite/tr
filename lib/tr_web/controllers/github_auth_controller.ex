@@ -1,5 +1,4 @@
 defmodule TrWeb.GithubAuthController do
-
   use TrWeb, :controller
 
   @doc """

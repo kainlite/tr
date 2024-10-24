@@ -22,16 +22,24 @@ deploy it in any project. Having a strong foundation will help you understand an
 
 <ul>
     <li class="font-bold">
-      Chapter 1: What exactly is a container (Basic network, namespaces, docker)?
+      <a href="/en/blog/docker-course-intro">
+        Chapter 1: What exactly is a container (Basic network, namespaces, docker)?
+      </a>
     </li>
     <li>
-      Chapter 2: What exactly is an image (Building and working with images)?
+      <a href="/en/blog/what-is-a-container-image">
+        Chapter 2: What exactly is an image (Building and working with images)?
+      </a>
     </li>
     <li>
-      Chapter 3: What exactly is a volume (working with persistent data)?
+      <a href="/en/blog/what-exactly-is-a-volume">
+        Chapter 3: What exactly is a volume (working with persistent data)?
+      </a>
     </li>
     <li>
-      Chapter 4: Advanced scenarios, Security, rootless containers and more.
+      <a href="/en/blog/docker-advanced-scenarios">
+        Chapter 4: Advanced scenarios, Security, rootless containers and more.
+      </a>
     </li>
 </ul>
 
@@ -68,16 +76,24 @@ Este curso te ayudará a entender y desmitificar Docker, para que tengas la conf
 
 <ul>
     <li class="font-bold">
-      Capítulo 1: ¿Qué es exactamente un contenedor? (Redes, namespaces, docker).
+      <a href="/es/blog/docker-course-intro">
+        Capítulo 1: ¿Qué es exactamente un contenedor? (Redes, namespaces, docker)
+      </a>
     </li>
     <li>
-      Capítulo 2: ¿Qué es exactamente una imagen? (Creación y trabajo con imágenes).
+      <a href="/es/blog/what-is-a-container-image">
+        Capítulo 2: ¿Qué es exactamente una imagen? (Creación y trabajo con imágenes)
+      </a>
     </li>
     <li>
-      Capítulo 3: ¿Qué es exactamente un volumen? (Trabajo con datos persistentes).
+      <a href="/es/blog/what-exactly-is-a-volume">
+        Capítulo 3: ¿Qué es exactamente un volumen? (Trabajo con datos persistentes)
+      </a>
     </li>
     <li>
-      Capítulo 4: Escenarios avanzados, Seguridad, contenedores rootless y mas.
+      <a href="/es/blog/docker-advanced-scenarios">
+        Capítulo 4: Escenarios avanzados, Seguridad, contenedores rootless y mas
+      </a>
     </li>
 </ul>
 
