@@ -136,6 +136,21 @@ defmodule Tr.Accounts do
   end
 
   @doc """
+  Get last n users 
+
+  ## Examples
+
+      iex> get_users(n)
+      [%User{}, %User{}]
+  """
+  def get_users(n) do
+    query =
+      from(t in Tr.Accounts.User, order_by: [desc: t.id], limit: ^n)
+
+    Repo.all(query)
+  end
+
+  @doc """
   Get all users that can be notified of new posts
 
   ## Examples

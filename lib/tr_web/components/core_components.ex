@@ -489,7 +489,7 @@ defmodule TrWeb.CoreComponents do
 
     ~H"""
     <div class="overflow-y-auto px-4 sm:overflow-visible sm:px-0">
-      <table class="mt-11 w-[40rem] sm:w-full">
+      <table class="mt-11 w-[40rem] sm:w-full" id={@id}>
         <thead class="text-left text-[0.8125rem] leading-6 text-zinc-500">
           <tr>
             <th :for={col <- @col} class="p-0 pb-4 pr-6 font-normal"><%= col[:label] %></th>
@@ -497,7 +497,7 @@ defmodule TrWeb.CoreComponents do
           </tr>
         </thead>
         <tbody
-          id={@id}
+          id={"tbody-#{@id}"}
           phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
           class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700"
         >

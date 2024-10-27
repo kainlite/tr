@@ -32,12 +32,12 @@ defmodule TrWeb.Integration.AdminIntegrationTest do
     session
     |> visit("/admin/dashboard")
     |> assert_has(css("h2", text: "Admin Dashboard"))
-    |> assert_has(css("table"))
-    |> assert_has(css("th", text: "id"))
-    |> assert_has(css("th", text: "email"))
-    |> assert_has(css("th", text: "slug"))
-    |> assert_has(css("th", text: "body"))
-    |> assert_has(css("th", text: "actions"))
+    |> assert_has(css("table#comments"))
+    |> assert_has(css("table#comments th", text: "id"))
+    |> assert_has(css("table#comments th", text: "email"))
+    |> assert_has(css("table#comments th", text: "slug"))
+    |> assert_has(css("table#comments th", text: "body"))
+    |> assert_has(css("table#comments th", text: "actions"))
   end
 
   test "an admin user can approve a comment", %{session: session} do
@@ -48,7 +48,7 @@ defmodule TrWeb.Integration.AdminIntegrationTest do
     session
     |> visit("/admin/dashboard")
     |> assert_has(css("h2", text: "Admin Dashboard"))
-    |> assert_has(css("table"))
+    |> assert_has(css("table#comments"))
     |> accept_confirm(fn s ->
       click(s, css("a", text: "✔️"))
     end)
@@ -65,7 +65,7 @@ defmodule TrWeb.Integration.AdminIntegrationTest do
     session
     |> visit("/admin/dashboard")
     |> assert_has(css("h2", text: "Admin Dashboard"))
-    |> assert_has(css("table"))
+    |> assert_has(css("table#comments"))
     |> accept_confirm(fn s ->
       click(s, css("a", text: "❌"))
     end)

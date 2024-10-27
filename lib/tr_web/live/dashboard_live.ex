@@ -14,7 +14,8 @@ defmodule TrWeb.DashboardLive do
     {:ok,
      socket
      |> assign(:comments, Tr.Post.list_comments())
-     |> assign(:user_stats, TrWeb.Presence.list_connected_users())}
+     |> assign(:user_stats, TrWeb.Presence.list_connected_users())
+     |> assign(:users, Tr.Accounts.get_users(5))}
   end
 
   @impl true
@@ -28,7 +29,8 @@ defmodule TrWeb.DashboardLive do
     {:ok,
      socket
      |> assign(:comments, Tr.Post.get_unapproved_comments())
-     |> assign(:user_stats, TrWeb.Presence.list_connected_users())}
+     |> assign(:user_stats, TrWeb.Presence.list_connected_users())
+     |> assign(:users, Tr.Accounts.get_users(5))}
   end
 
   @impl true
@@ -89,6 +91,14 @@ defmodule TrWeb.DashboardLive do
             ❌
           </.link>
         </:col>
+      </.table>
+
+      <br />
+
+      <.table id="users" rows={@users}>
+        <:col :let={user} label="id"><%= user.id %></:col>
+        <:col :let={user} label="email"><%= user.email %></:col>
+        <:col :let={user} label="github_username"><%= user.github_username %></:col>
       </.table>
     </div>
     """
