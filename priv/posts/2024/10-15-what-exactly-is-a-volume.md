@@ -6,7 +6,7 @@
   published: true,
   image: "types-of-mounts-volume.webp",
   sponsored: true,
-  video: "AQpBRVMuR0NNLlYxTJxSRfOfhl7jf3JuF/iCr59Ft4wVtu0td5HG//On8X1qfAwkUvdCST8aXPtgFedBaVfkKIATz1TgZNoe9R17SdiB066J",
+  video: "AQpBRVMuR0NNLlYxx4bGUxcF1NwiUJFr4laF5Zk885wz2OBC69mCsDGehmMKqZCJ6IhhIWZGE8t0+HX6iD9PlUI9jcwW7AcA5Cmu8Ul8qWYt",
   encrypted_content: true,
   lang: "en"
 }
@@ -59,7 +59,7 @@ Follow me on [LinkedIn](https://www.linkedin.com/in/gabrielgarrido/) and watch t
   published: true,
   image: "types-of-mounts-volume.webp",
   sponsored: true,
-  video: "AQpBRVMuR0NNLlYxTJxSRfOfhl7jf3JuF/iCr59Ft4wVtu0td5HG//On8X1qfAwkUvdCST8aXPtgFedBaVfkKIATz1TgZNoe9R17SdiB066J",
+  video: "AQpBRVMuR0NNLlYxYFLXQeSHca503vv+eEyd4xst99e0qF+gEIwwiNASdlEjdDBAZhyt7g3JHLTVs1OOcmUH3gwBdwDD3+7+1vT8abTbrpt8",
   encrypted_content: true,
   lang: "es"
 }
