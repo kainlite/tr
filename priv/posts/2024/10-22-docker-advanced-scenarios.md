@@ -6,7 +6,7 @@
   published: true,
   image: "buildah.png",
   sponsored: true,
-  video: "AQpBRVMuR0NNLlYxTJxSRfOfhl7jf3JuF/iCr59Ft4wVtu0td5HG//On8X1qfAwkUvdCST8aXPtgFedBaVfkKIATz1TgZNoe9R17SdiB066J",
+  video: "AQpBRVMuR0NNLlYxhCMkOX7eKx9FA7Z9vVDy2Ey1vzzWavI8C7cxsjOMkH4nNFPTbc4SnKCcBo9Oy2Owik8lZSPdMxeSslutA9NzZ08QVLoV",
   encrypted_content: true,
   lang: "en"
 }
@@ -59,7 +59,7 @@ Follow me on [LinkedIn](https://www.linkedin.com/in/gabrielgarrido/) and watch t
   published: true,
   image: "buildah.png",
   sponsored: true,
-  video: "AQpBRVMuR0NNLlYxTJxSRfOfhl7jf3JuF/iCr59Ft4wVtu0td5HG//On8X1qfAwkUvdCST8aXPtgFedBaVfkKIATz1TgZNoe9R17SdiB066J",
+  video: "AQpBRVMuR0NNLlYxXci8Vjwy2ySZQJmSlDdq+IVUidGQH4TlrF/IIxQyWp3gY7kj7CD58pUOJdwmOvAbJLBxzxVJeMNhjgWsBmEYkjp8YwkM",
   encrypted_content: true,
   lang: "es"
 }
