@@ -43,25 +43,21 @@ defmodule Tr.Blog do
     highlighters: [:makeup_elixir, :makeup_erlang],
     parser: MultiParser
 
-  @published_posts @posts |> Enum.filter(
-      &(Date.before?(&1.date, Date.add(Date.utc_today(), 1)) && &1.published == true)
-    )
+  @published_posts @posts
+                   |> Enum.filter(
+                     &(Date.before?(&1.date, Date.add(Date.utc_today(), 1)) &&
+                         &1.published == true)
+                   )
 
   @en_posts Enum.sort_by(@published_posts, & &1.date, {:desc, Date})
-            |> Enum.filter(
-              &(&1.lang == "en")
-            )
+            |> Enum.filter(&(&1.lang == "en"))
 
   @es_posts Enum.sort_by(@published_posts, & &1.date, {:desc, Date})
-            |> Enum.filter(
-              &(&1.lang == "es")
-            )
+            |> Enum.filter(&(&1.lang == "es"))
 
   # Group all the ids or URL slugs
   @slugs @en_posts
-         |> Enum.filter(
-            &(&1.lang == "en")
-          )
+         |> Enum.filter(&(&1.lang == "en"))
          |> Enum.map(& &1.id)
          |> Enum.sort()
 

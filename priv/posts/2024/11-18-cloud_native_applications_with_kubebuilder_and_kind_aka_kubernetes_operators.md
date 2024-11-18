@@ -471,9 +471,9 @@ another `nc localhost 8000` to test if everything went well.
 
 First the manifest
 ```elixir
-$ cat config/samples/forward_v1beta1_map.yaml 
-apiVersion: forward.techsquad.rocks/v1beta1
-kind: Map
+$ cat config/samples/forward_v1alpha1_map.yaml 
+apiVersion: forward.techsquad.rocks/v1alpha1
+kind: MapPort
 metadata:
   name: mapsample
   namespace: default
@@ -481,19 +481,19 @@ spec:
   host: 10.244.0.8
   port: 8000
   protocol: tcp
-  liveness: false
+  liveness_probe: false
 ```
 
 <br />
 
 Then the port-forward and test
 ```elixir
-$ kubectl apply -f config/samples/forward_v1beta1_map.yaml
+$ kubectl apply -f config/samples/forward_v1alpha1_map.yaml
 map.forward.techsquad.rocks/mapsample configured
 
 # Logs in the controller
-2020-01-17T23:38:27.650Z        INFO    controllers.Map === Reconciling Forward Map     {"namespace": "default", "MapForward": "mapsample"}
-2020-01-17T23:38:27.691Z        INFO    controllers.Map Phase: RUNNING  {"namespace": "default", "MapForward": "mapsample"}
+2020-01-17T23:38:27.650Z        INFO    controllers.MapPort === Reconciling Forward MapPort     {"namespace": "default", "MapForward": "mapsample"}
+2020-01-17T23:38:27.691Z        INFO    controllers.MapPort Phase: RUNNING  {"namespace": "default", "MapForward": "mapsample"}
 2020-01-17T23:38:27.698Z        DEBUG   controller-runtime.controller   Successfully Reconciled {"controller": "map", "request": "default/mapsample"}
 
 $ kubectl port-forward forward-mapsample-pod 8000:8000                                                                                                                                                                       
@@ -707,7 +707,7 @@ de que exista una herramienta como esta.
 <br />
 
 ##### Empecemos...
-Primero agregamos los tipos `api/v1beta1/mapport_types.go`.
+Primero agregamos los tipos `api/v1alpha1/mapport_types.go`.
 ```elixir
 /*
 Copyright 2024.
@@ -1077,9 +1077,9 @@ test
 Luego editamos nuestro manifest y lo aplicamos. Verificamos que todo esté en orden, hacemos el port-forward y lanzamos otro `nc localhost 8000` para probar si todo salió bien.
 Primero el manifest:
 ```elixir
-$ cat config/samples/forward_v1beta1_map.yaml 
-apiVersion: forward.techsquad.rocks/v1beta1
-kind: Map
+$ cat config/samples/forward_v1alpha1_map.yaml 
+apiVersion: forward.techsquad.rocks/v1alpha1
+kind: MapPort
 metadata:
   name: mapsample
   namespace: default
@@ -1087,7 +1087,7 @@ spec:
   host: 10.244.0.8
   port: 8000
   protocol: tcp
-  liveness: false
+  liveness_probe: false
 ```
 <br />
 Luego hacemos el port-forward y la prueba:
@@ -1096,8 +1096,8 @@ $ kubectl apply -f config/samples/forward_v1beta1_map.yaml
 map.forward.techsquad.rocks/mapsample configured
 
 # Logs en el controlador
-2020-01-17T23:38:27.650Z        INFO    controllers.Map === Reconciling Forward Map     {"namespace": "default", "MapForward": "mapsample"}
-2020-01-17T23:38:27.691Z        INFO    controllers.Map Phase: RUNNING  {"namespace": "default", "MapForward": "mapsample"}
+2020-01-17T23:38:27.650Z        INFO    controllers.MapPort === Reconciling Forward MapPort     {"namespace": "default", "MapForward": "mapsample"}
+2020-01-17T23:38:27.691Z        INFO    controllers.MapPort Phase: RUNNING  {"namespace": "default", "MapForward": "mapsample"}
 2020-01-17T23:38:27.698Z        DEBUG   controller-runtime.controller   Successfully Reconciled {"controller": "map", "request": "default/mapsample"}
 
 $ kubectl port-forward forward-mapsample-pod 8000:8000                                                                                                                                                                       
