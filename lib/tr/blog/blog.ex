@@ -43,25 +43,25 @@ defmodule Tr.Blog do
     highlighters: [:makeup_elixir, :makeup_erlang],
     parser: MultiParser
 
-  # The @posts variable is first defined by NimblePublisher.
-  # Let's further modify it by sorting all posts by descending date.
-  # We add 1 day so the comparison returns true on the given release date
-  @en_posts Enum.sort_by(@posts, & &1.date, {:desc, Date})
+  @published_posts @posts |> Enum.filter(
+      &(Date.before?(&1.date, Date.add(Date.utc_today(), 1)) && &1.published == true)
+    )
+
+  @en_posts Enum.sort_by(@published_posts, & &1.date, {:desc, Date})
             |> Enum.filter(
-              &(Date.before?(&1.date, Date.add(Date.utc_today(), 1)) && &1.published == true &&
-                  &1.lang ==
-                    "en")
+              &(&1.lang == "en")
             )
 
-  @es_posts Enum.sort_by(@posts, & &1.date, {:desc, Date})
+  @es_posts Enum.sort_by(@published_posts, & &1.date, {:desc, Date})
             |> Enum.filter(
-              &(Date.before?(&1.date, Date.add(Date.utc_today(), 1)) && &1.published == true &&
-                  &1.lang ==
-                    "es")
+              &(&1.lang == "es")
             )
 
   # Group all the ids or URL slugs
   @slugs @en_posts
+         |> Enum.filter(
+            &(&1.lang == "en")
+          )
          |> Enum.map(& &1.id)
          |> Enum.sort()
 
@@ -73,7 +73,7 @@ defmodule Tr.Blog do
     if locale == "en", do: @en_posts, else: @es_posts
   end
 
-  def all_posts, do: @posts
+  def all_posts, do: @published_posts
   def all_slugs, do: @slugs
   def all_tags, do: @tags
 
