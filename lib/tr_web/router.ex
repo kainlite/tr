@@ -96,7 +96,8 @@ defmodule TrWeb.Router do
     scope "/", TrWeb, host: ["local.redbeard.team", "redbeard.team"] do
       pipe_through :browser
 
-      live "/", BeardLive, :index
+      # live "/", BeardLive, :index
+      live "/", BlogLive, :index
       live "/blog/search", SearchLive, :index
 
       live "/blog/", BlogLive, :index
