@@ -107,7 +107,8 @@ defmodule TrWeb.Router do
     scope "/", TrWeb do
       pipe_through :browser
 
-      live "/", HomeLive, :index
+      # live "/", HomeLive, :index
+      live "/", BlogLive, :index
 
       live "/blog/search", SearchLive, :index
 
@@ -118,7 +119,8 @@ defmodule TrWeb.Router do
     scope "/:locale", TrWeb, host: ["local.redbeard.team", "redbeard.team"] do
       pipe_through :browser
 
-      live "/", BeardLive, :index
+      # live "/", BeardLive, :index
+      live "/", BlogLive, :index
       live "/blog/search", SearchLive, :index
 
       live "/blog/", BlogLive, :index
@@ -128,7 +130,8 @@ defmodule TrWeb.Router do
     scope "/:locale", TrWeb do
       pipe_through :browser
 
-      live "/", HomeLive, :index
+      # live "/", HomeLive, :index
+      live "/", BlogLive, :index
 
       live "/blog/search", SearchLive, :index
 
