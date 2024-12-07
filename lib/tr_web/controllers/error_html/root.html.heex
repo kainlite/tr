@@ -13,7 +13,7 @@
     <meta name="description" content={description} />
     <meta property="og:title" content={assigns[:page_title] || "Red Beard Team"} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={url(~p"/images/logo-beard.webp")} />
+    <meta property="og:image" content={url(~p"/images/logo-tutorials.png")} />
 
     <.live_title>
       <%= assigns[:page_title] || "Red Beard Team" %>
@@ -29,7 +29,7 @@
           <li class="">
             <.link navigate="/#{Gettext.get_locale(TrWeb.Gettext)}/" class="">
               <img
-                src={~p"/images/logo-beard.webp"}
+                src={~p"/images/logo-tutorials.png"}
                 alt="Red Beard team logo"
                 class="max-h-24 max-w-24"
               />
