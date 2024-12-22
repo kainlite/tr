@@ -2,7 +2,7 @@
   title: "Testing the Operator SDK and making a prefetch mechanism for Kubernetes",
   author: "Gabriel Garrido",
   description: "In this article we will explore how to create an operator that can prefetch our images (from our deployments to all nodes) using the Operator SDK, you might be wondering why...",
-  tags: ~w(golang kubernetes),
+  tags: ~w(golang kubernetes operator),
   published: true,
   image: "operator-sdk.png",
   sponsored: false,
@@ -818,7 +818,7 @@ Also, you can check the source code and changes in the [generated code](https://
   author: "Gabriel Garrido",
   description: "Probando el Operator SDK, la idea es crear una forma de forzar a los nodos a bajar una imagen aunque no
   la necesiten...",
-  tags: ~w(golang kubernetes),
+  tags: ~w(golang kubernetes operator),
   published: true,
   image: "operator-sdk.png",
   sponsored: false,
