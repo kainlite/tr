@@ -3,7 +3,7 @@
   author: "Gabriel Garrido",
   description: "In this article we will see how to write an MVP/Basic gitops controller to help us automate our
   infrastructure deployments...",
-  tags: ~w(rust kubernetes argocd kind linux),
+  tags: ~w(rust kubernetes argocd kind linux operator),
   published: true,
   image: "gitops-operator.webp",
   sponsored: false,
