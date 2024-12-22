@@ -23,7 +23,7 @@ defmodule TrWeb.BlogLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <%= TrWeb.AdsComponent.render_large_ad(assigns) %>
+    {TrWeb.AdsComponent.render_large_ad(assigns)}
 
     <div class="flex flex-col">
       <div class="m-auto pb-[10px]">
@@ -65,7 +65,7 @@ defmodule TrWeb.BlogLive do
                       />
                     </svg>
                   </div>
-                  <div style="margin-left: 5px;"><%= gettext("Sign in with GitHub") %></div>
+                  <div style="margin-left: 5px;">{gettext("Sign in with GitHub")}</div>
                 </a>
               </div>
               <div
@@ -109,7 +109,7 @@ defmodule TrWeb.BlogLive do
                     </svg>
                   </div>
                   <div style="margin-left: 27px;">
-                    <%= gettext("Sign in with Google") %>
+                    {gettext("Sign in with Google")}
                   </div>
                 </a>
               </div>
@@ -120,7 +120,7 @@ defmodule TrWeb.BlogLive do
     </div>
     <div class="flex flex-row flex-wrap columns-3 text-center justify-center">
       <%= for post <- @posts do %>
-        <%= PostComponent.render_post_card(%{post: post}) %>
+        {PostComponent.render_post_card(%{post: post})}
       <% end %>
     </div>
     """

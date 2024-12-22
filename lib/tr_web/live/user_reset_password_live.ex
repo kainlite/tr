@@ -15,7 +15,7 @@ defmodule TrWeb.UserResetPasswordLive do
         phx-change="validate"
       >
         <.error :if={@form.errors != []}>
-          <%= gettext("Oops, something went wrong! Please check the errors below.") %>
+          {gettext("Oops, something went wrong! Please check the errors below.")}
         </.error>
 
         <.input field={@form[:password]} type="password" label="New password" required />
@@ -27,14 +27,14 @@ defmodule TrWeb.UserResetPasswordLive do
         />
         <:actions>
           <.button phx-disable-with="Resetting..." class="w-full">
-            <%= gettext("Reset Password") %>
+            {gettext("Reset Password")}
           </.button>
         </:actions>
       </.simple_form>
 
       <p class="text-center text-sm mt-4">
-        <.link href={~p"/users/register"}><%= gettext("Register") %></.link>
-        | <.link href={~p"/users/log_in"}><%= gettext("Log in") %></.link>
+        <.link href={~p"/users/register"}>{gettext("Register")}</.link>
+        | <.link href={~p"/users/log_in"}>{gettext("Log in")}</.link>
       </p>
     </div>
     """

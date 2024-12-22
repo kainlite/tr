@@ -1,18 +1,18 @@
 <h3 class="font-bold">
-  <%= gettext(
+  {gettext(
     "It seems we cannot find the page you are looking for, but please check out the following tags and latest
   articles..."
-  ) %>
+  )}
 </h3>
 <div class="mx-auto">
   <ul class="list-none flex flex-row flex-wrap">
     <%= for tag <- Tr.Blog.all_tags() do %>
-      <%= TrWeb.PostComponent.render_tag_card(%{tag: tag}) %>
+      {TrWeb.PostComponent.render_tag_card(%{tag: tag})}
     <% end %>
   </ul>
 </div>
 <div class="flex flex-row flex-wrap columns-3">
   <%= for post <- Tr.Blog.recent_posts(7) do %>
-    <%= TrWeb.PostComponent.render_post_card(%{post: post}) %>
+    {TrWeb.PostComponent.render_post_card(%{post: post})}
   <% end %>
 </div>

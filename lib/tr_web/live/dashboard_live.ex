@@ -39,38 +39,38 @@ defmodule TrWeb.DashboardLive do
     <div class="mx-auto">
       <div class="float-right">
         <div class="flex flex-col">
-          <span><%= gettext("Registered users:") %> <%= Tr.Accounts.get_users_count() %></span>
-          <span><%= gettext("Total comments:") %> <%= Tr.Post.get_comments_count() %></span>
-          <span><%= gettext("Connected users:") %> <%= @user_stats.total %></span>
+          <span>{gettext("Registered users:")} {Tr.Accounts.get_users_count()}</span>
+          <span>{gettext("Total comments:")} {Tr.Post.get_comments_count()}</span>
+          <span>{gettext("Connected users:")} {@user_stats.total}</span>
         </div>
         <ul class="list-none text-base bg-gray-100 rounded-lg p-4 shadow-md dark:invert">
           <%= for {room, count} <- @user_stats.per_room do %>
-            <li class="py-2 border-b border-gray-200 dark:invert"><%= room %>: <%= count %></li>
+            <li class="py-2 border-b border-gray-200 dark:invert">{room}: {count}</li>
           <% end %>
         </ul>
       </div>
 
-      <h2><%= gettext("Admin Dashboard") %></h2>
+      <h2>{gettext("Admin Dashboard")}</h2>
 
       <.link
         href={~p"/admin/dashboard?comments=all"}
         class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700 dark:invert"
       >
-        <%= gettext("All comments") %>
+        {gettext("All comments")}
       </.link>
       |
       <.link
         href={~p"/admin/dashboard?comments=unapproved"}
         class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700 dark:invert"
       >
-        <%= gettext("Unapproved comments") %>
+        {gettext("Unapproved comments")}
       </.link>
 
       <.table id="comments" rows={@comments}>
-        <:col :let={comment} label="id"><%= comment.id %></:col>
-        <:col :let={comment} label="slug"><%= comment.slug %></:col>
-        <:col :let={comment} label="email"><%= comment.user.email %></:col>
-        <:col :let={comment} label="body"><%= comment.body %></:col>
+        <:col :let={comment} label="id">{comment.id}</:col>
+        <:col :let={comment} label="slug">{comment.slug}</:col>
+        <:col :let={comment} label="email">{comment.user.email}</:col>
+        <:col :let={comment} label="body">{comment.body}</:col>
         <:col :let={comment} label="actions">
           <.link
             class="text-[1.25rem] leading-6 text-zinc-700 font-semibold hover:text-zinc-700"
@@ -96,9 +96,9 @@ defmodule TrWeb.DashboardLive do
       <br />
 
       <.table id="users" rows={@users}>
-        <:col :let={user} label="id"><%= user.id %></:col>
-        <:col :let={user} label="email"><%= user.email %></:col>
-        <:col :let={user} label="github_username"><%= user.github_username %></:col>
+        <:col :let={user} label="id">{user.id}</:col>
+        <:col :let={user} label="email">{user.email}</:col>
+        <:col :let={user} label="github_username">{user.github_username}</:col>
       </.table>
     </div>
     """

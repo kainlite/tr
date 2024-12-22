@@ -70,7 +70,7 @@ defmodule TrWeb.PostLive do
   def render(assigns) do
     ~H"""
     <div class="float-left">
-      <h2><%= @post.title %></h2>
+      <h2>{@post.title}</h2>
     </div>
     <div class="float-right dark:invert py-6">
       <.link
@@ -81,7 +81,7 @@ defmodule TrWeb.PostLive do
         id="hero-rocket-launch-link"
       >
         <.icon name={@rocket_launch} class="w-10 h-10 bg-black" />
-        <span class="font-semibold"><%= Map.get(@reactions, "rocket-launch", 0) %></span>
+        <span class="font-semibold">{Map.get(@reactions, "rocket-launch", 0)}</span>
       </.link>
       <.link
         phx-click="react"
@@ -92,7 +92,7 @@ defmodule TrWeb.PostLive do
       >
         <.icon name={@heart} class="w-10 h-10 bg-red-500 dark:bg-black" />
         <span class="font-semibold">
-          <%= Map.get(@reactions, "heart", 0) %>
+          {Map.get(@reactions, "heart", 0)}
         </span>
       </.link>
       <.link
@@ -103,7 +103,7 @@ defmodule TrWeb.PostLive do
         id="hero-hand-thumb-up-link"
       >
         <.icon name={@hand_thumb_up} class="w-10 h-10 bg-black" />
-        <span class="font-semibold"><%= Map.get(@reactions, "hand-thumb-up", 0) %></span>
+        <span class="font-semibold">{Map.get(@reactions, "hand-thumb-up", 0)}</span>
       </.link>
     </div>
 
@@ -113,7 +113,7 @@ defmodule TrWeb.PostLive do
       <ul class="space-y-6 list-none">
         <div class="flex flex-row flex-wrap">
           <%= for tag <- @post.tags do %>
-            <%= TrWeb.PostComponent.render_tag_card(%{tag: tag}) %>
+            {TrWeb.PostComponent.render_tag_card(%{tag: tag})}
           <% end %>
         </div>
       </ul>
@@ -121,7 +121,7 @@ defmodule TrWeb.PostLive do
 
     <p class="clear-both"></p>
 
-    <%= TrWeb.AdsComponent.render_large_ad(assigns) %>
+    {TrWeb.AdsComponent.render_large_ad(assigns)}
 
     <pre class="hidden" phx-hook="CopyToClipboard" id="hidden-code-block">
       <code class="hidden">
@@ -130,7 +130,7 @@ defmodule TrWeb.PostLive do
 
     <%= cond do %>
       <% @post.sponsored && @current_user && Tr.SponsorsCache.sponsor?(@current_user.github_username) -> %>
-        <%= raw(@post.body) %>
+        {raw(@post.body)}
         <br />
         <p>
           <iframe
@@ -145,52 +145,52 @@ defmodule TrWeb.PostLive do
           </iframe>
         </p>
         <br />
-        <%= @post.id
+        {@post.id
         |> decrypt_by_path()
         |> Earmark.as_html!()
         |> NimblePublisher.highlight()
-        |> raw %>
+        |> raw}
       <% @post.sponsored && @current_user && !Tr.SponsorsCache.sponsor?(@current_user.github_username) -> %>
         <br />
-        <%= render_sponsors_banner(assigns) %>
+        {render_sponsors_banner(assigns)}
 
         <div class="mx-auto items-center justify-center">
-          <%= gettext("To see the full page, please visit the") %>
+          {gettext("To see the full page, please visit the")}
           <.link href="https://github.com/sponsors/kainlite#sponsors" class="">
-            <%= gettext("sponsor's page.") %>
+            {gettext("sponsor's page.")}
           </.link>
         </div>
 
         <br />
       <% @post.sponsored && is_nil(@current_user) -> %>
         <br />
-        <%= render_sponsors_banner(assigns) %>
+        {render_sponsors_banner(assigns)}
 
         <div class="mx-auto items-center justify-center">
-          <%= gettext("To see the full page, please visit the") %>
+          {gettext("To see the full page, please visit the")}
           <.link href="https://github.com/sponsors/kainlite#sponsors" class="">
-            <%= gettext("sponsor's page.") %>
+            {gettext("sponsor's page.")}
           </.link>
         </div>
 
         <br />
       <% true -> %>
-        <%= render_sponsors_banner(assigns) %>
+        {render_sponsors_banner(assigns)}
     <% end %>
 
     <div class="mx-auto max-w-4xl">
       <%= unless @current_user do %>
         <.header class="text-center">
-          <%= gettext("No account? Register") %>
+          {gettext("No account? Register")}
           <.link navigate={~p"/users/register"} class="font-semibold text-brand hover:underline">
-            <%= gettext("here") %>
+            {gettext("here")}
           </.link>
           <:subtitle>
-            <%= gettext("Already registered?") %>
+            {gettext("Already registered?")}
             <.link navigate={~p"/users/log_in"} class="font-semibold text-brand hover:underline">
-              <%= gettext("Sign in") %>
+              {gettext("Sign in")}
             </.link>
-            <%= gettext("to your account now.") %>
+            {gettext("to your account now.")}
           </:subtitle>
         </.header>
 
@@ -217,7 +217,7 @@ defmodule TrWeb.PostLive do
                 />
               </svg>
             </div>
-            <div style="margin-left: 5px;"><%= gettext("Sign in with GitHub") %></div>
+            <div style="margin-left: 5px;">{gettext("Sign in with GitHub")}</div>
           </a>
         </div>
 
@@ -259,7 +259,7 @@ defmodule TrWeb.PostLive do
               </svg>
             </div>
             <div style="margin-left: 27px;">
-              <%= gettext("Sign in with Google") %>
+              {gettext("Sign in with Google")}
             </div>
           </a>
         </div>
@@ -268,9 +268,9 @@ defmodule TrWeb.PostLive do
       <div class="mx-auto">
         <ul class="list-none mb-0">
           <li class="px-1 mb-0">
-            <h4 class="font-bold  float-left"><%= gettext("Comments") %></h4>
+            <h4 class="font-bold  float-left">{gettext("Comments")}</h4>
             <p class="text-sm float-right mb-0 p-0 font-bold ">
-              Online: <%= @connected_users %>
+              Online: {@connected_users}
               <span class="flex w-3 h-3 me-3 bg-green-500 rounded-full float-right mr-[5px]"></span>
               <p class="clear-both my-0 mb-0 p-0"></p>
             </p>
@@ -322,12 +322,12 @@ defmodule TrWeb.PostLive do
         </CommentComponent.render_comment_input>
       <% else %>
         <p class="text-sm font-bold text-center">
-          <%= gettext("Please sign in to be able to write comments.") %>
+          {gettext("Please sign in to be able to write comments.")}
         </p>
       <% end %>
 
       <div class="text-center">
-        <time><%= @post.date %></time> by <%= @post.author %>
+        <time>{@post.date}</time> by {@post.author}
       </div>
     </div>
     """
@@ -602,7 +602,7 @@ defmodule TrWeb.PostLive do
 
       <br />
 
-      <%= raw(@post.body) %>
+      {raw(@post.body)}
 
       <br />
     </div>

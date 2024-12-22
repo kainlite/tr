@@ -6,20 +6,20 @@ defmodule TrWeb.UserConfirmationLive do
   def render(%{live_action: :edit} = assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
-      <.header class="text-center"><%= gettext("Confirm Account") %></.header>
+      <.header class="text-center">{gettext("Confirm Account")}</.header>
 
       <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
         <.input field={@form[:token]} type="hidden" />
         <:actions>
           <.button phx-disable-with={gettext("Confirming...")} class="w-full">
-            <%= gettext("Confirm my account") %>
+            {gettext("Confirm my account")}
           </.button>
         </:actions>
       </.simple_form>
 
       <p class="text-center mt-4">
-        <.link href={~p"/users/register"}><%= gettext("Register") %></.link>
-        | <.link href={~p"/users/log_in"}><%= gettext("Log in") %></.link>
+        <.link href={~p"/users/register"}>{gettext("Register")}</.link>
+        | <.link href={~p"/users/log_in"}>{gettext("Log in")}</.link>
       </p>
     </div>
     """

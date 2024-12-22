@@ -16,7 +16,7 @@
     <meta property="og:image" content={url(~p"/images/logo-tutorials.png")} />
 
     <.live_title>
-      <%= assigns[:page_title] || "Red Beard Team" %>
+      {assigns[:page_title] || "Red Beard Team"}
     </.live_title>
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
@@ -41,7 +41,7 @@
 
     <main class="sm:px-6 lg:px-8 min-h-[70vh]">
       <div class="mx-auto max-w-screen-2xl shadow-xl p-8 rounded-lg">
-        <%= @inner_content %>
+        {@inner_content}
       </div>
     </main>
   </body>

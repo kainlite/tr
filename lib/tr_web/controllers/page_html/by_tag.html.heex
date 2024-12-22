@@ -1,5 +1,5 @@
 <div class="flex flex-row flex-wrap columns-3">
   <%= for post <- @posts do %>
-    <%= TrWeb.PostComponent.render_post_card(%{post: post}) %>
+    {TrWeb.PostComponent.render_post_card(%{post: post})}
   <% end %>
 </div>

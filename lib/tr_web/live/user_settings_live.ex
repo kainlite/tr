@@ -6,8 +6,8 @@ defmodule TrWeb.UserSettingsLive do
   def render(assigns) do
     ~H"""
     <.header class="text-center  dark:invert">
-      <%= gettext("Account Settings") %>
-      <:subtitle><%= gettext("Manage your account email address and password settings") %></:subtitle>
+      {gettext("Account Settings")}
+      <:subtitle>{gettext("Manage your account email address and password settings")}</:subtitle>
     </.header>
 
     <div class="space-y-12 divide-y">
@@ -21,7 +21,7 @@ defmodule TrWeb.UserSettingsLive do
             required
           />
           <:actions>
-            <.button phx-disable-with="Changing..."><%= gettext("Change display name") %></.button>
+            <.button phx-disable-with="Changing...">{gettext("Change display name")}</.button>
           </:actions>
         </.simple_form>
       </div>
@@ -43,7 +43,7 @@ defmodule TrWeb.UserSettingsLive do
             required
           />
           <:actions>
-            <.button phx-disable-with="Changing..."><%= gettext("Change Email") %></.button>
+            <.button phx-disable-with="Changing...">{gettext("Change Email")}</.button>
           </:actions>
         </.simple_form>
       </div>
@@ -78,7 +78,7 @@ defmodule TrWeb.UserSettingsLive do
             required
           />
           <:actions>
-            <.button phx-disable-with="Changing..."><%= gettext("Change Password") %></.button>
+            <.button phx-disable-with="Changing...">{gettext("Change Password")}</.button>
           </:actions>
         </.simple_form>
       </div>
@@ -96,7 +96,7 @@ defmodule TrWeb.UserSettingsLive do
             checked={@current_user.accept_emails}
           />
           <:actions>
-            <.button phx-disable-with="Changing..."><%= gettext("Change Accept Emails") %></.button>
+            <.button phx-disable-with="Changing...">{gettext("Change Accept Emails")}</.button>
           </:actions>
         </.simple_form>
       </div>

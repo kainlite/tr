@@ -14,15 +14,15 @@ defmodule TrWeb.CommentComponent do
         <div class="flex-1 max-w[50-rem] min-h-24">
           <div class="flex justify-between items-center">
             <h2 class="text-lg font-semibold">
-              <%= @display_name %>
+              {@display_name}
             </h2>
             <span class="text-gray-500 text-sm">
-              #<%= @comment.id %> On <%= @comment.updated_at %>
+              #{@comment.id} On {@comment.updated_at}
             </span>
           </div>
           <p class="text-gray-800 dark:text-gray-200 mt-2 comment-text text-clip md:text-clip text-lg break-words line-clamp-1
           max-w-3xl min-h-24">
-            <%= body %>
+            {body}
           </p>
           <.link
             id={@link_id}
@@ -48,12 +48,12 @@ defmodule TrWeb.CommentComponent do
       </.link>
       <br />
       <p class="text-sm float-right mb-0">
-        Replying in thread #<%= @parent_comment_id %> with <%= @display_name %>
+        Replying in thread #{@parent_comment_id} with {@display_name}
       </p>
     <% end %>
     <.simple_form for={@form} id="comment_form" phx-submit="save">
       <.error :if={@check_errors}>
-        <%= gettext("Oops, something went wrong! Please check the errors below.") %>
+        {gettext("Oops, something went wrong! Please check the errors below.")}
       </.error>
 
       <.input field={@form[:body]} type="textarea" label="Message" required />

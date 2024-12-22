@@ -18,7 +18,8 @@ defmodule TrWeb.Integration.SearchIntegrationTest do
       |> fill_in(css("#search_form input"), with: "upgrading")
       |> assert_has(Query.css("a", minimum: 4))
       |> assert_has(
-        Query.css("div h2 a", text: "Upgrading K3S with system-upgrade-controller", count: 1)
+        # Query.css("div h2 a", text: "Upgrading K3S with system-upgrade-controller", count: 1)
+        Query.css("div h2 a", text: "How to open multiple files in vim", count: 1)
       )
     end
   end

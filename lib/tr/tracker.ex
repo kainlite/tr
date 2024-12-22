@@ -96,7 +96,7 @@ defmodule Tr.Tracker do
       # Create the body based in the title and descriptions
       body =
         Enum.join(
-          Enum.map(List.zip([titles, descriptions]), fn p ->
+          Enum.map(Enum.zip([titles, descriptions]), fn p ->
             elem(p, 0) <> "\n" <> elem(p, 1) <> "\n" <> url <> elem(p, 0) <> "\n\n"
           end)
         )

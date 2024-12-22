@@ -16,14 +16,14 @@
     <meta property="og:image" content={url(~p"/images/logo-tutorials.png")} />
 
     <.live_title>
-      <%= assigns[:page_title] || "Red Beard Team" %>
+      {assigns[:page_title] || "Red Beard Team"}
     </.live_title>
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
     </script>
   </head>
   <body class="bg-white dark:bg-zinc-900 dark:text-white antialiased">
-    <%= @inner_content %>
+    {@inner_content}
   </body>
 
   <footer class="bg-zinc-900 dark:bg-black text-white text-center py-4">

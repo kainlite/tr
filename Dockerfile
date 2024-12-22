@@ -9,11 +9,12 @@
 #   - https://hub.docker.com/r/hexpm/elixir/tags - for the build image
 #   - https://hub.docker.com/_/debian?tab=tags&page=1&name=buster-20240612-slim - for the release image
 #   - https://pkgs.org/ - resource for finding needed packages
-#   - Ex: hexpm/elixir:1.17.0-erlang-27.0-debian-buster-20240612-slim
+#   - Ex: hexpm/elixir:1.18.0-erlang-27.2-debian-bullseye-20241202-slim
+#   - https://hub.docker.com/layers/hexpm/elixir/1.18.0-erlang-27.2-debian-bullseye-20241202-slim/images/sha256-fcfe41da8332f73b011127ef9f3bdcb7d8ba5005e0e6484eed7c0bba9d60d747
 #
-ARG ELIXIR_VERSION=1.17.0
-ARG OTP_VERSION=27.0
-ARG DEBIAN_VERSION=buster-20240612-slim
+ARG ELIXIR_VERSION=1.18.0
+ARG OTP_VERSION=27.2
+ARG DEBIAN_VERSION=debian-bullseye-20241202-slim
 
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"

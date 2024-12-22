@@ -3,7 +3,7 @@
 
   <ul class="list-none flex flex-row flex-wrap">
     <%= for tag <- @tags do %>
-      <%= TrWeb.PostComponent.render_tag_card(%{tag: tag}) %>
+      {TrWeb.PostComponent.render_tag_card(%{tag: tag})}
     <% end %>
   </ul>
 </div>

@@ -51,7 +51,7 @@
                 href={~p"/admin/dashboard?comments=unapproved"}
                 class="text-[1.25rem] leading-6 text-[#0069d9] dark:text-[rgb(253 79 0 / var(--tw-text-opacity))] font-semibold hover:text-zinc-700"
               >
-                <%= gettext("Dashboard") %>
+                {gettext("Dashboard")}
               </.link>
             </li>
           <% end %>
@@ -60,7 +60,7 @@
               href={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/users/settings"}
               class="text-[1.25rem] leading-6 text-[#0069d9] dark:text-[rgb(253 79 0 / var(--tw-text-opacity))] font-semibold hover:text-zinc-700"
             >
-              <%= @current_user.email %>
+              {@current_user.email}
             </.link>
           </li>
           <li class="order-10">
@@ -69,7 +69,7 @@
               method="delete"
               class="text-[1.25rem] leading-6 text-[#0069d9] dark:text-[rgb(253 79 0 / var(--tw-text-opacity))] font-semibold hover:text-zinc-700"
             >
-              <%= gettext("Log out") %>
+              {gettext("Log out")}
             </.link>
           </li>
         <% else %>
@@ -78,7 +78,7 @@
               href={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/users/log_in"}
               class="text-[1.25rem] leading-6 text-[#0069d9] dark:text-[rgb(253 79 0 / var(--tw-text-opacity))] font-semibold hover:text-zinc-700"
             >
-              <%= gettext("Log in") %>
+              {gettext("Log in")}
             </.link>
           </li>
           <li class="order-60">
@@ -86,7 +86,7 @@
               href={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/users/register"}
               class="text-[1.25rem] leading-6 text-[#0069d9] dark:text-[rgb(253 79 0 / var(--tw-text-opacity))] font-semibold hover:text-zinc-700"
             >
-              <%= gettext("Register") %>
+              {gettext("Register")}
             </.link>
           </li>
         <% end %>
@@ -111,6 +111,6 @@
 <main class="sm:px-6 lg:px-8 min-h-[70vh]">
   <div class="mx-auto max-w-screen-2xl shadow-xl p-8 rounded-lg">
     <.flash_group flash={@flash} />
-    <%= @inner_content %>
+    {@inner_content}
   </div>
 </main>

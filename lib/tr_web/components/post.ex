@@ -10,13 +10,13 @@ defmodule TrWeb.PostComponent do
       border-l-gray-700 max-w-42 max-h-20">
       <span class="inline-flex items-center justify-center text-white bg-emerald-700 rounded-full w-8 h-8 text-sm
         font-semibold">
-        <%= Enum.count(Tr.Blog.by_tag(Gettext.get_locale(TrWeb.Gettext), @tag)) %>
+        {Enum.count(Tr.Blog.by_tag(Gettext.get_locale(TrWeb.Gettext), @tag))}
       </span>
       <.link
         navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/tags/#{@tag}"}
         class="inline-flex items-center justify-center text-lg font-semibold"
       >
-        <%= @tag %>
+        {@tag}
       </.link>
     </li>
     """
@@ -48,14 +48,14 @@ defmodule TrWeb.PostComponent do
                 navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{@post.id}"}
                 class="inline-block"
               >
-                <%= @post.title %>
+                {@post.title}
               </.link>
               <p class="text-sm float-right font-semibold">
-                <time><%= @post.date %></time>
+                <time>{@post.date}</time>
               </p>
             </h2>
             <p class="mx-auto text-sm sm:text-base sm:leading-7">
-              <%= raw(@post.description) %>
+              {raw(@post.description)}
             </p>
           </div>
           <div class="absolute bottom-3 right-6">
@@ -63,7 +63,7 @@ defmodule TrWeb.PostComponent do
               navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{@post.id}"}
               class="mt-4 inline-block text-blue-500 float-right text-base font-semibold"
             >
-              <%= gettext("Read more...") %>
+              {gettext("Read more...")}
             </.link>
           </div>
           <div class="absolute bottom-0 left-6">
@@ -73,9 +73,9 @@ defmodule TrWeb.PostComponent do
                 <.link navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/tags/#{tag}"}>
                   <span class="inline-flex items-center justify-center text-white bg-emerald-700 rounded-full w-8 h-8 text-sm
         font-semibold">
-                    <%= Enum.count(Tr.Blog.by_tag(Gettext.get_locale(TrWeb.Gettext), tag)) %>
+                    {Enum.count(Tr.Blog.by_tag(Gettext.get_locale(TrWeb.Gettext), tag))}
                   </span>
-                  <%= tag %>
+                  {tag}
                 </.link>
               </li>
             <% end %>

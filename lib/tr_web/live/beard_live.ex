@@ -22,13 +22,13 @@ defmodule TrWeb.BeardLive do
 
       <section class="text-center mt-8">
         <h2 class="text-2xl font-bold">
-          <%= gettext("Get a Free 2-Hour DevOps Assessment — Accelerate Your Cloud
-        Transformation Today!") %>
+          {gettext("Get a Free 2-Hour DevOps Assessment — Accelerate Your Cloud
+        Transformation Today!")}
         </h2>
         <p class="text-xl mt-4">
-          <%= gettext("Ready to Elevate Your Infrastructure?") %>
+          {gettext("Ready to Elevate Your Infrastructure?")}
           <a href="mailto:gabriel@redbeard.team" class="text-blue-500 underline">
-            <%= gettext("Contact us") %>
+            {gettext("Contact us")}
           </a>
           or
           <a
@@ -36,97 +36,95 @@ defmodule TrWeb.BeardLive do
             class="text-blue-500 underline"
             target="_blank"
           >
-            <%= gettext("Schedule a call Now!") %>
+            {gettext("Schedule a call Now!")}
           </a>
         </p>
         <p class="text-lg mt-4">
-          <%= gettext(
+          {gettext(
             "Expert Support on Your Cloud Journey — from Innovative Architecture to Robust Security —
           Specializing in Automation and Best Practices."
-          ) %>
+          )}
         </p>
 
         <p class="text-lg mt-4">
-          <%= gettext(
+          {gettext(
             "DevOps on demand, need help with linux, CI/CD, Docker, Kubernetes, AWS, send us a message."
-          ) %>
+          )}
         </p>
         <br />
 
-        <h4 class="mx-auto"><%= gettext("Flexible Engagement Models Tailored to Your Needs") %></h4>
+        <h4 class="mx-auto">{gettext("Flexible Engagement Models Tailored to Your Needs")}</h4>
         <p class="text-lg mt-2">
           <ul class="list-outside mt-2 text-left inline-block ml-60">
             <li>
-              <%= gettext(
-                "Fractional Services: Access high-level expertise without the full-time cost."
-              ) %>
+              {gettext("Fractional Services: Access high-level expertise without the full-time cost.")}
             </li>
             <li>
-              <%= gettext("Project-Based Contracts: Define objectives and outcomes upfront.") %>
+              {gettext("Project-Based Contracts: Define objectives and outcomes upfront.")}
             </li>
             <li>
-              <%= gettext(
+              {gettext(
                 "Part-Time Consulting: Expertise on a part-time basis fixed hours per day dedicated
             exclusively to you."
-              ) %>
+              )}
             </li>
-            <li><%= gettext("Full-Time Consulting: Dedicated support for your team.") %></li>
+            <li>{gettext("Full-Time Consulting: Dedicated support for your team.")}</li>
           </ul>
         </p>
 
-        <h4 class="mx-auto"><%= gettext("Wondering how we can help you?") %></h4>
+        <h4 class="mx-auto">{gettext("Wondering how we can help you?")}</h4>
         <p class="text-lg mt-2">
           <ul class="list-outside mt-2 text-left inline-block ml-60">
             <li>
-              <%= gettext("Audit and validate your architecture, ask yourself:") %>
+              {gettext("Audit and validate your architecture, ask yourself:")}
               <ul>
                 <li>
-                  <%= gettext(
+                  {gettext(
                     "is our infrastructure secure? do we have the right security groups, access control lists,
                   policies? encryption in place?"
-                  ) %>
+                  )}
                 </li>
                 <li>
-                  <%= gettext(
+                  {gettext(
                     "Does our network have the capacity to grow and connect to other environments?"
-                  ) %>
+                  )}
                 </li>
                 <li>
-                  <%= gettext("is our infrastructure cost efficient?") %>
+                  {gettext("is our infrastructure cost efficient?")}
                 </li>
               </ul>
             </li>
             <li>
-              <%= gettext("Migrate projects to the cloud or back on-premises") %>
+              {gettext("Migrate projects to the cloud or back on-premises")}
             </li>
             <li>
-              <%= gettext(
+              {gettext(
                 "Optimize and automate processes to free your team from repetitive, time-consuming tasks"
-              ) %>
+              )}
             </li>
             <li>
-              <%= gettext(
+              {gettext(
                 "Establish conventions and best practices to ensure consistency and scalability"
-              ) %>
+              )}
             </li>
             <li>
-              <%= gettext("Set up observability and monitoring") %>
+              {gettext("Set up observability and monitoring")}
               <ul>
                 <li>
-                  <%= gettext("is our app fast and reliable?") %>
+                  {gettext("is our app fast and reliable?")}
                 </li>
                 <li>
-                  <%= gettext("are we caching data efficiently (or at all)?") %>
+                  {gettext("are we caching data efficiently (or at all)?")}
                 </li>
                 <li>
-                  <%= gettext("Is the database properly sized? Do we have working backups?") %>
+                  {gettext("Is the database properly sized? Do we have working backups?")}
                 </li>
               </ul>
             </li>
             <li>
-              <%= gettext(
+              {gettext(
                 "We can help you find answers to these questions and so much more. Schedule a call and let’s get started!"
-              ) %>
+              )}
             </li>
           </ul>
         </p>
@@ -134,13 +132,13 @@ defmodule TrWeb.BeardLive do
         <br />
         <h3 class="text-xl font-bold">
           <% locale = if Gettext.get_locale(TrWeb.Gettext) == "en", do: "es", else: "en" %>
-          <%= gettext("Looking for the ") %>
+          {gettext("Looking for the ")}
           <.link aria-label="language-toggle" navigate={~p"/#{locale}"}>
-            <%= gettext("spanish") %>
+            {gettext("spanish")}
           </.link>
-          <%= gettext("version?") %>
+          {gettext("version?")}
 
-          <%= gettext("Or the ") %><a href={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog"}>blog?</a>
+          {gettext("Or the ")}<a href={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog"}>blog?</a>
         </h3>
       </section>
 
@@ -155,11 +153,11 @@ defmodule TrWeb.BeardLive do
             class="w-full h-56 object-cover"
           />
           <div class="p-6">
-            <h3 class="text-xl font-bold"><%= gettext("Cloud Architecture") %></h3>
+            <h3 class="text-xl font-bold">{gettext("Cloud Architecture")}</h3>
             <p class="mt-2 text-gray-700 dark:text-gray-300">
-              <%= gettext(
+              {gettext(
                 "Designing Robust, Scalable, and Secure Cloud Infrastructures for optimized performance across AWS and Azure."
-              ) %>
+              )}
             </p>
           </div>
         </div>
@@ -174,11 +172,11 @@ defmodule TrWeb.BeardLive do
             class="w-full h-56 object-cover"
           />
           <div class="p-6">
-            <h3 class="text-xl font-bold"><%= gettext("Infrastructure as Code") %></h3>
+            <h3 class="text-xl font-bold">{gettext("Infrastructure as Code")}</h3>
             <p class="mt-2 text-gray-700 dark:text-gray-300">
-              <%= gettext(
+              {gettext(
                 "Automate, Simplify, and Scale Your Infrastructure with Terraform, Pulumi, and Ansible."
-              ) %>
+              )}
             </p>
           </div>
         </div>
@@ -194,11 +192,11 @@ defmodule TrWeb.BeardLive do
           object-fill"
           />
           <div class="p-6">
-            <h3 class="text-xl font-bold"><%= gettext("Containerization and Orchestration") %></h3>
+            <h3 class="text-xl font-bold">{gettext("Containerization and Orchestration")}</h3>
             <p class="mt-2 text-gray-700 dark:text-gray-300">
-              <%= gettext(
+              {gettext(
                 "Streamline Application Deployment with Docker and Kubernetes for scalable, portable solutions."
-              ) %>
+              )}
             </p>
           </div>
         </div>
@@ -213,12 +211,12 @@ defmodule TrWeb.BeardLive do
             class="w-full h-56 object-cover"
           />
           <div class="p-6">
-            <h3 class="text-xl font-bold"><%= gettext("CI/CD Pipelines") %></h3>
+            <h3 class="text-xl font-bold">{gettext("CI/CD Pipelines")}</h3>
             <p class="mt-2 text-gray-700 dark:text-gray-300">
-              <%= gettext(
+              {gettext(
                 "Accelerate Software Delivery with Automated CI/CD Solutions using GitHub Actions, GitLab, and
               ArgoCD."
-              ) %>
+              )}
             </p>
           </div>
         </div>
@@ -233,12 +231,12 @@ defmodule TrWeb.BeardLive do
             class="w-full h-56 object-cover"
           />
           <div class="p-6">
-            <h3 class="text-xl font-bold"><%= gettext("Observability and Monitoring") %></h3>
+            <h3 class="text-xl font-bold">{gettext("Observability and Monitoring")}</h3>
             <p class="mt-2 text-gray-700 dark:text-gray-300">
-              <%= gettext(
+              {gettext(
                 "Gain full visibility with comprehensive monitoring tools like Datadog, Prometheus, and
               Grafana."
-              ) %>
+              )}
             </p>
           </div>
         </div>
@@ -253,12 +251,12 @@ defmodule TrWeb.BeardLive do
             class="w-full h-56 object-cover"
           />
           <div class="p-6">
-            <h3 class="text-xl font-bold"><%= gettext("Integrated Security") %></h3>
+            <h3 class="text-xl font-bold">{gettext("Integrated Security")}</h3>
             <p class="mt-2 text-gray-700 dark:text-gray-300">
-              <%= gettext(
+              {gettext(
                 "Embed robust security throughout your infrastructure with secure architecture, IaC, and
               compliance solutions."
-              ) %>
+              )}
             </p>
           </div>
         </div>

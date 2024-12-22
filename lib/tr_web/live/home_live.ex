@@ -22,7 +22,7 @@ defmodule TrWeb.HomeLive do
   def render(assigns) do
     ~H"""
     <div class="flex flex-col">
-      <%= TrWeb.AdsComponent.render_large_ad(assigns) %>
+      {TrWeb.AdsComponent.render_large_ad(assigns)}
 
       <div class="flex flex-col">
         <div class="m-auto pb-[10px]">
@@ -50,7 +50,7 @@ defmodule TrWeb.HomeLive do
                       />
                     </svg>
                   </div>
-                  <div style="margin-left: 5px;"><%= gettext("Sign in with GitHub") %></div>
+                  <div style="margin-left: 5px;">{gettext("Sign in with GitHub")}</div>
                 </a>
               </div>
               <div style="display:flex; flex-direction:column; width:368px; text-center items-center justify-center">
@@ -91,7 +91,7 @@ defmodule TrWeb.HomeLive do
                     </svg>
                   </div>
                   <div style="margin-left: 27px;">
-                    <%= gettext("Sign in with Google") %>
+                    {gettext("Sign in with Google")}
                   </div>
                 </a>
               </div>
@@ -101,7 +101,7 @@ defmodule TrWeb.HomeLive do
 
         <div class="m-auto">
           <p class="text-[1.4rem] justify-center font-semibold">
-            <%= gettext("DevOps on demand, send us a message") %>
+            {gettext("DevOps on demand, send us a message")}
             <a href="mailto:gabriel@redbeard.team" class=" h-auto w-[217px]">
               Contact us
             </a>
@@ -116,7 +116,7 @@ defmodule TrWeb.HomeLive do
               href=""
               onclick="Calendly.initPopupWidget({url: 'https://calendly.com/kainlite/15min'});return false;"
             >
-              <%= gettext("Schedule time with us") %>
+              {gettext("Schedule time with us")}
             </a>
           </p>
 
@@ -134,7 +134,7 @@ defmodule TrWeb.HomeLive do
       </div>
       <div class="flex flex-row flex-wrap columns-3 text-center justify-center">
         <%= for post <- @posts do %>
-          <%= TrWeb.PostComponent.render_post_card(%{post: post}) %>
+          {TrWeb.PostComponent.render_post_card(%{post: post})}
         <% end %>
       </div>
       <.link
@@ -142,7 +142,7 @@ defmodule TrWeb.HomeLive do
         aria-label="blog"
         class="text-center items-center m-4 "
       >
-        <%= gettext("More...") %>
+        {gettext("More...")}
       </.link>
     </div>
     """
