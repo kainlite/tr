@@ -3,10 +3,7 @@
 [![github](https://github.com/kainlite/tr/actions/workflows/coverage.yaml/badge.svg)](https://github.com/kainlite/tr/actions/workflows/coverage.yaml)
 [![codecov](https://codecov.io/gh/kainlite/tr/branch/master/graph/badge.svg)](https://codecov.io/gh/kainlite/tr)
 
-Powering up my new blog or laboratory, you can see it live [here](https://techsquad.rocks/blog), I will cover how
-this is deployed to production in my [usual blog](https://techsquad.rocks) since there are many interesting things being
-used here (k3s on ARM64, argocd, tekton, etc), so you will also learn how to easily build and run your project in
-kubernetes...
+This is the source code for my blog, you can check it out [here](https://redbeard.team/blog)
 
 # Development
 
