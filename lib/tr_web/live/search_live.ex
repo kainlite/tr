@@ -41,10 +41,14 @@ defmodule TrWeb.SearchLive do
   @impl true
   def handle_event("search", %{"search" => %{"q" => q}}, socket) do
     posts =
-      q
-      |> Tr.Search.search()
-      |> Enum.map(& &1.ref)
-      |> Tr.Blog.take()
+      try do
+        q
+        |> Tr.Search.search()
+        |> Enum.map(& &1.ref)
+        |> Tr.Blog.take()
+      rescue
+        Haystack.Storage.NotFoundError -> []
+      end
 
     {:noreply, assign(socket, :posts, posts)}
   end

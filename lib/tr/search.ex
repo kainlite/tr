@@ -51,4 +51,34 @@ defmodule Tr.Search do
       Index.search(index, q)
     end)
   end
+
+  def ready? do
+    try do
+      # Try a simple search to verify the index is ready
+      search("test")
+      true
+    rescue
+      Haystack.Storage.NotFoundError -> false
+    end
+  end
+
+  def await_ready(timeout \\ 5000) do
+    start = System.monotonic_time(:millisecond)
+    do_await_ready(start, timeout)
+  end
+
+  defp do_await_ready(start, timeout) do
+    if ready?() do
+      :ok
+    else
+      elapsed = System.monotonic_time(:millisecond) - start
+
+      if elapsed > timeout do
+        {:error, :timeout}
+      else
+        Process.sleep(50)
+        do_await_ready(start, timeout)
+      end
+    end
+  end
 end

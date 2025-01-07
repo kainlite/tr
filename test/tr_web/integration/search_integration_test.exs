@@ -6,6 +6,11 @@ defmodule TrWeb.Integration.SearchIntegrationTest do
   import Wallaby.Query
 
   describe "Search page" do
+    setup do
+      assert :ok = Tr.Search.await_ready()
+      :ok
+    end
+
     test "has a big search input", %{session: session} do
       session
       |> visit("/blog/search")
