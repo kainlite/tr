@@ -40,12 +40,14 @@ defmodule TrWeb.PageController do
     |> json(%{
       version: "https://jsonfeed.org/version/1.1",
       title:
-        gettext("Fractional DevOps Services | Linux, Kubernetes, AWS Experts | Red Beard Team"),
+        gettext(
+          "Learn about DevOps, Linux, Containers, Kubernetes, CI/CD, AWS, Terraform | Red Beard Team"
+        ),
       home_page_url: "https://redbeard.team/",
       feed_url: "https://redbeard.team/index.json",
       description:
         gettext(
-          "Red Beard Team offers expert fractional DevOps services specializing in Linux, Kubernetes, AWS, Terraform, Docker, and more. Transform your infrastructure with our tailored solutions. Explore insights, tutorials, and experiments across the tech landscape."
+          "Learn about DevOps, Linux, Containers, Kubernetes, CI/CD, AWS, Terraform, Docker, and more."
         ),
       favicon: "https://redbeard.team/favicon.ico",
       language: Gettext.get_locale(TrWeb.Gettext),
