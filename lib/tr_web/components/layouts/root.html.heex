@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
     <% description =
-      gettext(
-        "Learn about DevOps, Linux, Containers, Kubernetes, CI/CD, AWS,
+      gettext("Learn about DevOps, Linux, Containers, Kubernetes, CI/CD, AWS,
        Terraform, Docker, and more. Explore insights,
-       tutorials, and experiments."
-      ) %>
+       tutorials, and experiments.") %>
     <meta name="description" content={description} />
     <meta property="og:title" content={assigns[:page_title] || "Red Beard Team"} />
     <meta property="og:description" content={description} />
