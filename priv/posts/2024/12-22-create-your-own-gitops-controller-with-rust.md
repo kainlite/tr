@@ -21,6 +21,8 @@ controller in the cluster and test it, the repository with the files can be foun
 and also the [manifests](https://github.com/kainlite/gitops-operator-manifests).
 <br />
 
+Video coming soon!
+
 ###### **High level overview**
 The controller simply automates updating our Kubernetes manifest (specifically a deployment manifest) based in some
 annotations.

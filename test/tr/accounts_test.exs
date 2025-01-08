@@ -325,7 +325,7 @@ defmodule Tr.AccountsTest do
       assert user_token = Repo.get_by(UserToken, token: token)
       assert user_token.context == "session"
 
-      # Creating the same token for another user should fail
+      # Creating the same token for another user should fail.
       assert_raise Ecto.ConstraintError, fn ->
         Repo.insert!(%UserToken{
           token: user_token.token,
