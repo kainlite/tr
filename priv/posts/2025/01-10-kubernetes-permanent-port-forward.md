@@ -4,7 +4,7 @@
   description: "We will see how to craft and use a tool to manage our Kubernetes port-forward...",
   tags: ~w(kubernetes rust),
   published: true,
-  image: "rust.png",
+  image: "kube-forward.png",
   sponsored: false,
   video: "",
   lang: "en"
@@ -20,7 +20,7 @@ check the releases page as there are already binaries pre-compiled via github ac
 let me know if you try the others and they work!
 
 A few notes, be sure that the ports you are using are free, also have the right Kubernetes configuration exported as the
-client will autodetect the default context.
+client will auto-detect the default context.
 
 <br />
 
@@ -92,7 +92,7 @@ port_forward_connected{service="kube-forward",forward="postgres"} 1
 <br />
 
 ##### **The code**
-At the moment of this writting the code looks something like this (I will put only 2 files, there are more types, etc
+At the moment of this writing the code looks something like this (I will put only 2 files, there are more types, etc
 but with these you will get the idea of what the code is doing and how), this is the `main.rs` file.
 ```elixir
 use anyhow::Result;
@@ -659,7 +659,7 @@ let me know how it goes! Until next time!
   description: "Vamos a ver como crear e usar una pequeña herramienta para manejar varios puertos redirigidos... ",
   tags: ~w(kubernetes rust),
   published: true,
-  image: "rust.png",
+  image: "kube-forward.png",
   sponsored: false,
   video: "",
   lang: "es"
