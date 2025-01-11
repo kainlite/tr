@@ -20,10 +20,10 @@ defmodule TrWeb.Integration.SearchIntegrationTest do
     test "can search some articles", %{session: session} do
       session
       |> visit("/blog/search")
-      |> fill_in(css("#search_form input"), with: "gitops")
+      |> fill_in(css("#search_form input"), with: "upgrading")
       |> assert_has(Query.css("a", minimum: 4))
       |> assert_has(
-        Query.css("div h2 a", text: "Create your own GitOps controller with Rust", count: 1)
+        Query.css("div h2 a", text: "Upgrading K3S with system-upgrade-controller", count: 1)
       )
     end
   end
