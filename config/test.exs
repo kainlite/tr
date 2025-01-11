@@ -41,7 +41,11 @@ config :wallaby,
   screenshot_on_failure: false,
   opt_app: :tr,
   driver: Wallaby.Chrome,
-  chromedriver: [headless: true, binary: "/usr/bin/google-chrome-stable"]
+  chromedriver: [
+    headless: false,
+    binary: "/usr/bin/google-chrome-stable",
+    javascriptEnabled: true
+  ]
 
 config :floki, :encode_raw_html, false
 

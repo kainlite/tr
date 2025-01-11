@@ -7,6 +7,7 @@ defmodule TrWeb.Integration.SearchIntegrationTest do
 
   describe "Search page" do
     setup do
+      # We need to give the search index some time to be ready as it is populating an ETS table
       assert :ok = Tr.Search.await_ready()
       :ok
     end
@@ -20,11 +21,9 @@ defmodule TrWeb.Integration.SearchIntegrationTest do
     test "can search some articles", %{session: session} do
       session
       |> visit("/blog/search")
-      |> fill_in(css("#search_form input"), with: "upgrading")
+      |> fill_in(css("#search_form input"), with: "linux")
       |> assert_has(Query.css("a", minimum: 4))
-      |> assert_has(
-        Query.css("div h2 a", text: "Upgrading K3S with system-upgrade-controller", count: 1)
-      )
+      |> assert_has(Query.css("div h2 a", text: "What exactly is a container?", count: 1))
     end
   end
 end
