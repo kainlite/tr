@@ -1,7 +1,7 @@
 %{
   title: "Kubernetes permanent port-forward (or close to that...)",
   author: "Gabriel Garrido",
-  description: "We will see how to craft and use a tool to manage our Kubernetes port-forward...",
+  description: "We will see how to craft and use a tool to manage our Kubernetes port-forward connections...",
   tags: ~w(kubernetes rust),
   published: true,
   image: "kube-forward.png",
