@@ -65,7 +65,7 @@ defmodule Tr.Search do
     end
   end
 
-  def await_ready(timeout \\ 10000) do
+  def await_ready(timeout \\ 10_000) do
     start = System.monotonic_time(:millisecond)
     do_await_ready(start, timeout)
   end
