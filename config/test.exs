@@ -42,7 +42,7 @@ config :wallaby,
   opt_app: :tr,
   driver: Wallaby.Chrome,
   chromedriver: [
-    headless: false,
+    headless: true,
     binary: "/usr/bin/google-chrome-stable",
     javascriptEnabled: true
   ]
