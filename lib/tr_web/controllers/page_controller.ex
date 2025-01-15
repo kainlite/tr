@@ -41,15 +41,15 @@ defmodule TrWeb.PageController do
       version: "https://jsonfeed.org/version/1.1",
       title:
         gettext(
-          "Learn about DevOps, Linux, Containers, Kubernetes, CI/CD, AWS, Terraform | Red Beard Team"
+          "Learn about DevOps, Linux, Containers, Kubernetes, CI/CD, AWS, Terraform | SegFault"
         ),
-      home_page_url: "https://redbeard.team/",
-      feed_url: "https://redbeard.team/index.json",
+      home_page_url: "https://segfault.pw/",
+      feed_url: "https://segfault.pw/index.json",
       description:
         gettext(
           "Learn about DevOps, Linux, Containers, Kubernetes, CI/CD, AWS, Terraform, Docker, and more."
         ),
-      favicon: "https://redbeard.team/favicon.ico",
+      favicon: "https://segfault.pw/favicon.ico",
       language: Gettext.get_locale(TrWeb.Gettext),
       items:
         for post <- posts do

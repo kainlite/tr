@@ -48,7 +48,7 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
-  host = System.get_env("PHX_HOST") || "redbeard.team"
+  host = System.get_env("PHX_HOST") || "segfault.pw"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
   config :tr, TrWeb.Endpoint,
@@ -65,7 +65,9 @@ if config_env() == :prod do
       "//techsquad.rocks",
       "//www.techsquad.rocks",
       "//redbeard.team",
-      "//www.redbeard.team"
+      "//www.redbeard.team",
+      "//segfault.pw",
+      "//www.segfault.pw"
     ],
     secret_key_base: secret_key_base,
     force_ssl: [host: nil]

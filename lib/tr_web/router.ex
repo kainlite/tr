@@ -93,16 +93,16 @@ defmodule TrWeb.Router do
 
   live_session :default,
     on_mount: [{TrWeb.Hooks.AllowEctoSandbox, :default}, {TrWeb.UserAuth, :mount_current_user}] do
-    scope "/", TrWeb, host: ["local.redbeard.team", "redbeard.team"] do
-      pipe_through :browser
+    # scope "/", TrWeb, host: ["local.redbeard.team", "redbeard.team"] do
+    #   pipe_through :browser
 
-      # live "/", BeardLive, :index
-      live "/", BlogLive, :index
-      live "/blog/search", SearchLive, :index
+    #   # live "/", BeardLive, :index
+    #   live "/", BlogLive, :index
+    #   live "/blog/search", SearchLive, :index
 
-      live "/blog/", BlogLive, :index
-      live "/blog/:id", PostLive, :show
-    end
+    #   live "/blog/", BlogLive, :index
+    #   live "/blog/:id", PostLive, :show
+    # end
 
     scope "/", TrWeb do
       pipe_through :browser
@@ -116,16 +116,16 @@ defmodule TrWeb.Router do
       live "/blog/:id", PostLive, :show
     end
 
-    scope "/:locale", TrWeb, host: ["local.redbeard.team", "redbeard.team"] do
-      pipe_through :browser
+    # scope "/:locale", TrWeb, host: ["local.redbeard.team", "redbeard.team"] do
+    #   pipe_through :browser
 
-      # live "/", BeardLive, :index
-      live "/", BlogLive, :index
-      live "/blog/search", SearchLive, :index
+    #   # live "/", BeardLive, :index
+    #   live "/", BlogLive, :index
+    #   live "/blog/search", SearchLive, :index
 
-      live "/blog/", BlogLive, :index
-      live "/blog/:id", PostLive, :show
-    end
+    #   live "/blog/", BlogLive, :index
+    #   live "/blog/:id", PostLive, :show
+    # end
 
     scope "/:locale", TrWeb do
       pipe_through :browser

@@ -9,9 +9,9 @@
        Terraform, Docker, and more. Explore insights,
        tutorials, and experiments.") %>
     <meta name="description" content={description} />
-    <meta property="og:title" content={assigns[:page_title] || "Red Beard Team"} />
+    <meta property="og:title" content={assigns[:page_title] || "SegFault"} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={url(~p"/images/logo-tutorials.png")} />
+    <meta property="og:image" content={url(~p"/images/segfault.web")} />
 
     <.live_title>
       {assigns[:page_title] || "Red Beard Team"}
@@ -28,7 +28,7 @@
     <article class="column text-sm">
       <ul>
         <li>
-          <a href={"https://redbeard.team/#{Gettext.get_locale(TrWeb.Gettext)}/blog"}>Blog</a>
+          <a href={"https://segfault.pw/#{Gettext.get_locale(TrWeb.Gettext)}/blog"}>Blog</a>
         </li>
         <li>
           <a href="https://www.linkedin.com/in/gabrielgarrido/">Linkedin</a>
@@ -56,6 +56,6 @@
         </li>
       </ul>
     </article>
-    <p class="text-base">© 2021 RedBeard.Team</p>
+    <p class="text-base">© 2021 SegFault</p>
   </footer>
 </html>
