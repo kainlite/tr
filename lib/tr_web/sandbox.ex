@@ -16,6 +16,6 @@ defmodule TrWeb.Hooks.AllowEctoSandbox do
         if connected?(socket), do: get_connect_info(socket, :user_agent)
       end)
 
-    Phoenix.Ecto.SQL.Sandbox.allow(metadata, Application.get_env(:your_app, :sandbox))
+    Phoenix.Ecto.SQL.Sandbox.allow(metadata, Ecto.Adapters.SQL.Sandbox)
   end
 end
