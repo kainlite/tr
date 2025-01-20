@@ -17,6 +17,19 @@ defmodule Tr.AccountsTest do
     end
   end
 
+  describe "get_user_by_email_or_create/1" do
+    test "creates a user if the email does not exist" do
+      email = unique_user_email()
+      assert %User{} = Accounts.get_user_by_email_or_create(email)
+      assert %User{} = Accounts.get_user_by_email(email)
+    end
+
+    test "returns the user if the email exists" do
+      %{id: id} = user = user_fixture()
+      assert %User{id: ^id} = Accounts.get_user_by_email_or_create(user.email)
+    end
+  end
+
   describe "get_user_by_email_and_password/2" do
     test "does not return the user if the email does not exist" do
       assert {:error, :bad_username_or_password} ==
