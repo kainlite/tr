@@ -41,4 +41,16 @@ defmodule TrWeb.PageControllerTest do
                "The examples, code snippets, and blog articles provided herein are offered for educational or illustrative purposes\n    only."
     end
   end
+
+  describe "GET /index.json" do
+    test "accesses the sitemap in format json", %{conn: conn} do
+      conn = get(conn, "/en/index.json")
+      assert response_content_type(conn, :json)
+
+      assert String.match?(
+               response(conn, 200),
+               ~r/{\"version\":\"https\:\/\/jsonfeed.org\/version\/1\.1\"\,\"description\"\:\"Learn about DevOps\, Linux\,/
+             )
+    end
+  end
 end
