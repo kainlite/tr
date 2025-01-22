@@ -6,7 +6,7 @@
   general enough, there are some interesting things to learn about the elixir ecosystem as well.",
   tags: ~w(elixir kubernetes phoenix tips-and-tricks),
   published: true,
-  image: "trickster-cool.png",
+  image: "trickster-cool.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -15,7 +15,7 @@
 
 ### **Introduction**
 
-![trickster](/images/trickster-cool.png){:class="mx-auto" style="max-height: 450px;"}
+![trickster](/images/trickster-cool.webp){:class="mx-auto" style="max-height: 450px;"}
 In case you are wondering about the image, it is intended to represent the trickster, as I plan to do many posts about
 tips and tricks.
 <br/> 
@@ -245,7 +245,7 @@ Also, you can check the source code and changes in the [sources here](https://gi
   description: "Tareas programadas en Elixir/Erlang.",
   tags: ~w(elixir kubernetes phoenix tips-and-tricks),
   published: true,
-  image: "trickster-cool.png",
+  image: "trickster-cool.webp",
   sponsored: false,
   video: "",
   lang: "es"
@@ -254,7 +254,7 @@ Also, you can check the source code and changes in the [sources here](https://gi
 
 ### **Introducción**
 
-![trickster](/images/trickster-cool.png){:class="mx-auto" style="max-height: 450px;"}
+![trickster](/images/trickster-cool.webp){:class="mx-auto" style="max-height: 450px;"}
 Por si te lo preguntás, la imagen está pensada para representar al trickster, ya que planeo hacer muchas publicaciones sobre tips y trucos.
 <br/>
 

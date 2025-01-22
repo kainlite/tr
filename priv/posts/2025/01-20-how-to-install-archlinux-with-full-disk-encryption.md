@@ -4,7 +4,7 @@
   description: "We will see how to install Arch Linux using LVM on LUKS...",
   tags: ~w(linux),
   published: false,
-  image: "linux.png",
+  image: "linux.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -19,7 +19,7 @@
   description: "Vamos a ver como instalar Arch Linux y configurar LVM en LUKS... ",
   tags: ~w(linux),
   published: false,
-  image: "linux.png",
+  image: "linux.webp",
   sponsored: false,
   video: "",
   lang: "es"

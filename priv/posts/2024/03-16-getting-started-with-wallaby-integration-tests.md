@@ -6,14 +6,14 @@
   and also validate your application as a real user would do.",
   tags: ~w(elixir phoenix wallaby),
   published: true,
-  image: "wallaby.png",
+  image: "wallaby.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![Wallaby](/images/wallaby.png){:class="mx-auto"}
+![Wallaby](/images/wallaby.webp){:class="mx-auto"}
 
 ##### **Introduction**
 
@@ -386,14 +386,14 @@ Also, you can check the source code and changes in the [sources here](https://gi
   usuario.",
   tags: ~w(elixir phoenix wallaby),
   published: true,
-  image: "wallaby.png",
+  image: "wallaby.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![Wallaby](/images/wallaby.png){:class="mx-auto"}
+![Wallaby](/images/wallaby.webp){:class="mx-auto"}
 
 ##### **Introducción**
 

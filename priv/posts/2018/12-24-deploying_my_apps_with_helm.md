@@ -4,7 +4,7 @@
   description: "How to use helm from the cli...",
   tags: ~w(kubernetes helm),
   published: true,
-  image: "kubernetes.png",
+  image: "kubernetes.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -166,7 +166,7 @@ In the cloud or on premises this will indeed be different and you should have a 
 
 Sample screenshot:
 
-![img](/images/wordpress-example.png){:class="mx-auto"}
+![img](/images/wordpress-example.webp){:class="mx-auto"}
 
 ### Notes
 As long as we have the [persistent volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) our data should be preserved in this case the PV is used for tha database, but we could add another volume to preserve images, etc.
@@ -206,7 +206,7 @@ Also you can check the source code and changes in the [generated code](https://g
   description: "En este articulo vamos a ver como usar helm desde la terminal en mas detalle...",
   tags: ~w(kubernetes helm),
   published: true,
-  image: "kubernetes.png",
+  image: "kubernetes.webp",
   sponsored: false,
   video: "",
   lang: "es"
@@ -370,7 +370,7 @@ En la nube o en instalaciones locales, esto será diferente y deberías tener un
 
 Ejemplo:
 
-![img](/images/wordpress-example.png){:class="mx-auto"}
+![img](/images/wordpress-example.webp){:class="mx-auto"}
 
 ### Notes
 Mientras tengamos el volumen persistente, nuestros datos deberían preservarse. En este caso, el PV se usa para la base de datos, pero podríamos agregar otro volumen para preservar imágenes, etc.

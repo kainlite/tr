@@ -4,14 +4,14 @@
   description: "In this article we will explore how authentication and authorization works in kubernetes. But first what's the difference?",
   tags: ~w(kubernetes linux security networking),
   published: true,
-  image: "kubernetes.png",
+  image: "kubernetes.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![kubernetes](/images/kubernetes.jpg){:class="mx-auto"}
+![kubernetes](/images/kubernetes.webp){:class="mx-auto"}
 
 #### Introduction
 In this article we will explore how authentication and authorization works in kubernetes. But first what's the difference?
@@ -496,14 +496,14 @@ If you spot any error or have any suggestion, please send me a message so it get
   description: "En este articulo exploramos que son y como funcionan en kubernetes...",
   tags: ~w(kubernetes linux security networking),
   published: true,
-  image: "kubernetes.png",
+  image: "kubernetes.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![kubernetes](/images/kubernetes.jpg){:class="mx-auto"}
+![kubernetes](/images/kubernetes.webp){:class="mx-auto"}
 
 #### **Introducción**
 En este artículo vamos a explorar cómo funciona la autenticación y la autorización en Kubernetes. Pero primero, ¿cuál es la diferencia?

@@ -4,14 +4,14 @@
   description: "This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but...",
   tags: ~w(aws serverless),
   published: true,
-  image: "serve-s3-cloudfront.png",
+  image: "serve-s3-cloudfront.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![cloudfront](/images/serve-s3-cloudfront.png){:class="mx-auto"}
+![cloudfront](/images/serve-s3-cloudfront.webp){:class="mx-auto"}
 
 ### **Serverless series**
 Part I: [Serving static websites with s3 and cloudfront](/blog/serving_static_sites_with_s3_and_cloudfront), **You're here**.
@@ -351,14 +351,14 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "La idea es explorar como servir paginas estaticas, o adentrarse en el mundo serverless...",
   tags: ~w(aws serverless),
   published: true,
-  image: "serve-s3-cloudfront.png",
+  image: "serve-s3-cloudfront.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![cloudfront](/images/serve-s3-cloudfront.png){:class="mx-auto"}
+![cloudfront](/images/serve-s3-cloudfront.webp){:class="mx-auto"}
 
 ### **Serie sobre Serverless**
 Parte I: [Sirviendo sitios web estáticos con S3 y CloudFront](/blog/serving_static_sites_with_s3_and_cloudfront), **Estás aquí**.

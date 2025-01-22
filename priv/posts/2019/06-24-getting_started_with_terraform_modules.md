@@ -4,14 +4,14 @@
   description: "In this article we will see a subtle introduction to terraform modules, how to pass data into the module, get something from the module and create a resource (GKE cluster)...",
   tags: ~w(kubernetes gcp terraform),
   published: true,
-  image: "terraform.png",
+  image: "terraform.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![terraform](/images/terraform.png){:class="mx-auto"}
+![terraform](/images/terraform.webp){:class="mx-auto"}
 
 ##### **Introduction**
 In this article we will see a subtle introduction to terraform modules, how to pass data into the module, get something from the module and create a resource (GKE cluster), it's intended to be as simple as possible just to be aware of what a module is composed of, or how can you do your own modules, sometimes it makes sense to have modules to abstract implementations that you use over several projects, or things that are often repeated along the project. So let's see what it takes to create and use a module. The source code for this article can be found [here](https://github.com/kainlite/terraform-module-example). Note that in this example I'm using GCP since they give you $300 USD for a year to try their services and it looks pretty good so far, after sign-up you will need to go to IAM, then create a service account and after that export the the key (this is required for the terraform provider to talk to GCP).
@@ -390,14 +390,14 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "Este articulo es una introduccion a modulos en terraform...",
   tags: ~w(kubernetes gcp terraform),
   published: true,
-  image: "terraform.png",
+  image: "terraform.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![terraform](/images/terraform.png){:class="mx-auto"}
+![terraform](/images/terraform.webp){:class="mx-auto"}
 
 ##### **Introducción**
 En este artículo vamos a ver una introducción sutil a los módulos de Terraform, cómo pasar datos a un módulo, obtener algo del módulo y crear un recurso (un clúster GKE). La idea es que sea lo más simple posible para entender de qué está compuesto un módulo y cómo podés crear los tuyos. A veces tiene sentido usar módulos para abstraer implementaciones que usás en varios proyectos o cosas que se repiten frecuentemente dentro del proyecto. Así que veamos qué se necesita para crear y usar un módulo. El código fuente para este artículo lo podés encontrar [aquí](https://github.com/kainlite/terraform-module-example). En este ejemplo estoy usando GCP, ya que te dan $300 USD por un año para probar sus servicios, y hasta ahora parece bastante bueno. Después de registrarte, tenés que ir a IAM, crear una cuenta de servicio y exportar la clave (esto es necesario para que el proveedor de Terraform pueda hablar con GCP).

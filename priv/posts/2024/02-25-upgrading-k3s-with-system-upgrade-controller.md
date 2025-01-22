@@ -4,7 +4,7 @@
   description: "Upgrading K3S with system-upgrade-controller",
   tags: ~w(k3s kubernetes linux),
   published: true,
-  image: "kubernetes.png",
+  image: "kubernetes.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -129,7 +129,7 @@ Also, you can check the source code and changes in the [sources here](https://gi
   description: "Actualizando K3S con system-upgrade-controller",
   tags: ~w(k3s kubernetes linux),
   published: true,
-  image: "kubernetes.png",
+  image: "kubernetes.webp",
   sponsored: false,
   video: "",
   lang: "es"

@@ -4,7 +4,7 @@
   description: "Upgrading phoenix from 1.6 to 1.7...",
   tags: ~w(elixir phoenix),
   published: true,
-  image: "phoenix.png",
+  image: "phoenix.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -91,7 +91,7 @@ Also, you can check the source code and changes in the [sources here](https://gi
   description: "Actualizando a Phoenix 1.7 desde 1.6...",
   tags: ~w(elixir phoenix),
   published: true,
-  image: "phoenix.png",
+  image: "phoenix.webp",
   sponsored: false,
   video: "",
   lang: "es"

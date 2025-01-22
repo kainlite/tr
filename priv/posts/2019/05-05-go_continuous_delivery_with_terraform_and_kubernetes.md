@@ -4,14 +4,14 @@
   description: "In this article we will continue where we left off the last time: Go continuous integration with Travis CI and Docker...",
   tags: ~w(golang travis terraform cicd),
   published: true,
-  image: "travis-ci-docker.png",
+  image: "travis-ci-docker.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![travis](/images/travis-ci-docker.png){:class="mx-auto"}
+![travis](/images/travis-ci-docker.webp){:class="mx-auto"}
 
 ##### **Introduction**
 In this article we will continue where we left off the last time [Go continuous integration with Travis CI and Docker](/blog/go_continuous_integration_with_travis_ci_and_docker), the files used here can be found [HERE](https://github.com/kainlite/whatismyip-go/tree/continuos-delivery), and we will be creating our terraform cluster with a load balancer and generating our kubeconfig file based on the certs provided by terraform on travis and then finally creating a basic deployment and validate that everything works.
@@ -19,9 +19,9 @@ In this article we will continue where we left off the last time [Go continuous 
 
 ##### **DigitalOcean**
 We need to create a token so terraform can create resources using DO API. Go to your account then in the menu on the left click API, then you should see something like this:
-![image](/images/terraform-do-token-1.png){:class="mx-auto"}
+![image](/images/terraform-do-token-1.webp){:class="mx-auto"}
 Once there click generate token (give it a meaningful name to you), and make sure it can write.
-![image](/images/terraform-do-token-2.png){:class="mx-auto"}
+![image](/images/terraform-do-token-2.webp){:class="mx-auto"}
 <br />
 
 ##### **Terraform**
@@ -279,7 +279,7 @@ As shown in the screenshot we took the base64 encoded certificates and loaded th
 <br />
 
 This is how it should look in travis:
-![image](/images/terraform-do-environment-variables.png){:class="mx-auto"}
+![image](/images/terraform-do-environment-variables.webp){:class="mx-auto"}
 
 Let's take a look at the generated kubernetes configuration and what values you should take into account:
 ```elixir
@@ -426,11 +426,11 @@ $ curl -v 142.93.207.200:30000
 <br />
 
 Finally let's check what we should see in travis:
-![image](/images/terraform-do-travis-result-1.png){:class="mx-auto"}
+![image](/images/terraform-do-travis-result-1.webp){:class="mx-auto"}
 <br />
 
 As we can see everything went well and our deployment applied successfully in our cluster
-![image](/images/terraform-do-travis-result-2.png){:class="mx-auto"}
+![image](/images/terraform-do-travis-result-2.webp){:class="mx-auto"}
 <br />
 
 ##### **Closing notes**
@@ -456,14 +456,14 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "Vamos a seguir donde lo dejamos la ultima vez: Go continuous integration with Travis CI and Docker...",
   tags: ~w(golang travis terraform cicd),
   published: true,
-  image: "travis-ci-docker.png",
+  image: "travis-ci-docker.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![travis](/images/travis-ci-docker.png){:class="mx-auto"}
+![travis](/images/travis-ci-docker.webp){:class="mx-auto"}
 
 ##### **Introducción**
 En este artículo continuaremos donde lo dejamos la última vez [Integración continua con Go usando Travis CI y Docker](/blog/go_continuous_integration_with_travis_ci_and_docker). Los archivos utilizados aquí pueden encontrarse [AQUÍ](https://github.com/kainlite/whatismyip-go/tree/continuos-delivery). Crearemos nuestro clúster en DigitalOcean con un balanceador de carga, generaremos el archivo `kubeconfig` basado en los certificados proporcionados por Terraform en Travis, y finalmente crearemos un despliegue básico para validar que todo funciona.
@@ -471,9 +471,9 @@ En este artículo continuaremos donde lo dejamos la última vez [Integración co
 
 ##### **DigitalOcean**
 Necesitamos crear un token para que Terraform pueda crear recursos utilizando la API de DO. Dirígete a tu cuenta, luego en el menú de la izquierda haz clic en API, deberías ver algo como esto:
-![image](/images/terraform-do-token-1.png){:class="mx-auto"}
+![image](/images/terraform-do-token-1.webp){:class="mx-auto"}
 Una vez allí, haz clic en "generate token" (dale un nombre significativo para ti), y asegúrate de que tenga permisos de escritura.
-![image](/images/terraform-do-token-2.png){:class="mx-auto"}
+![image](/images/terraform-do-token-2.webp){:class="mx-auto"}
 <br />
 
 ##### **Terraform**
@@ -613,7 +613,7 @@ Como se muestra en la imagen, tomamos los certificados codificados en base64 y l
 <br />
 
 Así es como debería verse en Travis:
-![image](/images/terraform-do-environment-variables.png){:class="mx-auto"}
+![image](/images/terraform-do-environment-variables.webp){:class="mx-auto"}
 
 Veamos la configuración generada de Kubernetes y qué valores debes tener en cuenta:
 ```elixir
@@ -744,11 +744,11 @@ $ curl -v 142.93.207.200:30000
 <br />
 
 Finalmente, verifiquemos lo que deberíamos ver en Travis:
-![image](/images/terraform-do-travis-result-1.png){:class="mx-auto"}
+![image](/images/terraform-do-travis-result-1.webp){:class="mx-auto"}
 <br />
 
 Como podemos ver, todo salió bien y nuestro despliegue se aplicó con éxito en nuestro clúster.
-![image](/images/terraform-do-travis-result-2.png){:class="mx-auto"}
+![image](/images/terraform-do-travis-result-2.webp){:class="mx-auto"}
 <br />
 
 ##### **Notas finales**

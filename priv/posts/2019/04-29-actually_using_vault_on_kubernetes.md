@@ -4,14 +4,14 @@
   description: "In the previous article we configured Vault with Consul on our cluster, now it's time to go ahead and use it to provision secrets to our pods/applications...",
   tags: ~w(kubernetes vault security),
   published: true,
-  image: "vault-kubernetes.png",
+  image: "vault-kubernetes.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![vault](/images/vault-kubernetes.png){:class="mx-auto"}
+![vault](/images/vault-kubernetes.webp){:class="mx-auto"}
 
 ##### **Introduction**
 In the previous article we configured Vault with Consul on our cluster, now it's time to go ahead and use it to provision secrets to our pods/applications. If you don't remember about it or don't have your Vault already configured you can go to [Getting started with HashiCorp Vault on Kubernetes](/blog/getting_started_with_hashicorp_vault_on_kubernetes).
@@ -442,14 +442,14 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "En el articulo anterior vimos como instalar Vault en nuestro cluster, en este articulo vamos a ver como usarlo en nuestra app...",
   tags: ~w(kubernetes vault security),
   published: true,
-  image: "vault-kubernetes.png",
+  image: "vault-kubernetes.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![vault](/images/vault-kubernetes.png){:class="mx-auto"}
+![vault](/images/vault-kubernetes.webp){:class="mx-auto"}
 
 ##### **Introduction**
 In the previous article, we configured Vault with Consul on our Kubernetes cluster. Now, it's time to go further and use it to provision secrets to our pods/applications. If you don’t have Vault configured yet, please refer to [Getting started with HashiCorp Vault on Kubernetes](/blog/getting_started_with_hashicorp_vault_on_kubernetes).

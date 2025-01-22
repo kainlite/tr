@@ -4,7 +4,7 @@
   description: "In this article we will see how to add an RSS feed to your Phoenix application, and how to render XML.",
   tags: ~w(elixir phoenix),
   published: true,
-  image: "rss.png",
+  image: "rss.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -155,7 +155,7 @@ Also, you can check the source code and changes in the [sources here](https://gi
   description: "En este articulo vemos como funciona nuestro feed RSS.",
   tags: ~w(elixir phoenix),
   published: true,
-  image: "rss.png",
+  image: "rss.webp",
   sponsored: false,
   video: "",
   lang: "es"

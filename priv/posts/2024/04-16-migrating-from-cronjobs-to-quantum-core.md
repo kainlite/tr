@@ -6,7 +6,7 @@
   boot our entire app before running our task.",
   tags: ~w(elixir phoenix tips-and-tricks),
   published: true,
-  image: "trickster-clock.png",
+  image: "trickster-clock.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -15,7 +15,7 @@
 
 ### **Introduction**
 
-![trickster](/images/trickster-clock.png){:class="mx-auto" style="max-height: 450px;"}
+![trickster](/images/trickster-clock.webp){:class="mx-auto" style="max-height: 450px;"}
 In case you are wondering about the image, it is intended to represent the trickster, as I plan to do many posts about
 tips and tricks and thought this would be somewhat funny 😄.
 <br/> 
@@ -189,7 +189,7 @@ Also, you can check the source code and changes in the [sources here](https://gi
   description: "Veamos como migrar a quantum-core y dejar de depender de cronjobs.",
   tags: ~w(elixir phoenix tips-and-tricks),
   published: true,
-  image: "trickster-clock.png",
+  image: "trickster-clock.webp",
   sponsored: false,
   video: "",
   lang: "es"
@@ -198,7 +198,7 @@ Also, you can check the source code and changes in the [sources here](https://gi
 
 ### **Introducción**
 
-![trickster](/images/trickster-clock.png){:class="mx-auto" style="max-height: 450px;"}
+![trickster](/images/trickster-clock.webp){:class="mx-auto" style="max-height: 450px;"}
 Por si te lo preguntás, la imagen está pensada para representar al trickster, ya que planeo hacer muchas publicaciones sobre tips y trucos y pensé que sería algo gracioso 😄.
 <br/> 
 

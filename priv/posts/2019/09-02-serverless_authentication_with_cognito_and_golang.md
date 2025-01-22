@@ -4,14 +4,14 @@
   description: "In this article we will see how to use Terraform and Go to create a serverless API using API Gateway, Lambda, and Go, and we will also handle authentication with AWS Cognito...",
   tags: ~w(golang serverless aws lambda),
   published: true,
-  image: "serverless-cognito.png",
+  image: "serverless-cognito.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![serverless](/images/serverless-cognito.png){:class="mx-auto"}
+![serverless](/images/serverless-cognito.webp){:class="mx-auto"}
 
 ##### **Introduction**
 In this article we will see how to use Terraform and Go to create a serverless API using API Gateway, Lambda, and Go, and we will also handle authentication with AWS Cognito, the repo with the files can be found [here](https://github.com/kainlite/serverless-cognito).
@@ -625,14 +625,14 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "En este articulo vamos a usar Terraform y Go para crear una API serverless usando API Gateway, Lambda, y Go, y autenticacion con AWS Cognito...",
   tags: ~w(golang serverless aws lambda),
   published: true,
-  image: "serverless-cognito.png",
+  image: "serverless-cognito.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![serverless](/images/serverless-cognito.png){:class="mx-auto"}
+![serverless](/images/serverless-cognito.webp){:class="mx-auto"}
 
 ##### **Introducción**
 En este artículo vamos a ver cómo utilizar Terraform y Go para crear una API serverless usando API Gateway, Lambda y Go. También manejaremos la autenticación con AWS Cognito. El repositorio con los archivos lo podés encontrar [aquí](https://github.com/kainlite/serverless-cognito).

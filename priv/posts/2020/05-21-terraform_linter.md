@@ -5,14 +5,14 @@
   terraform code using reviewdog...",
   tags: ~w(github terraform),
   published: true,
-  image: "reviewdog.png",
+  image: "reviewdog.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![reviewdog](/images/reviewdog.png){:class="mx-auto"}
+![reviewdog](/images/reviewdog.webp){:class="mx-auto"}
 
 ##### **Introduction**
 In this article we will test how to lint and get automatic checks in our github pull requests for our terraform code using [reviewdog](https://github.com/reviewdog/reviewdog) and the [tflint github action](https://github.com/reviewdog/action-tflint), this is particularly useful to prevent unwanted changes or buggy commits to be merged into your principal branch whatever that is. In order for this to work you just need to configure a Github action in your repo and that's it, you don't need to generate any token or do any extra step.
@@ -77,12 +77,12 @@ jobs:
 
 ##### **Example PR**
 First we will run a PR with an issue to see it fail and how reporting works (To get here you can click in the checks tab in the PR and then the tflint step see [here](https://github.com/kainlite/reviewdog/pull/1/checks?check_run_id=793169790)).
-![img](/images/reviewdog-1.png){:class="mx-auto"}
+![img](/images/reviewdog-1.webp){:class="mx-auto"}
 <br />
 
 ##### **One that actually works**
 Since we already tested it and it failed as expected we can now fix it, and now that reviewdog and tflint are happy with our commit we can just merge it (just change t1 to t2 in the main.tf file).
-![img](/images/reviewdog-2.png){:class="mx-auto"}
+![img](/images/reviewdog-2.webp){:class="mx-auto"}
 <br />
 
 ##### **Closing notes**
@@ -102,14 +102,14 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "Automatizando deteccion de errores y buenas practicas en github con reviewdog...",
   tags: ~w(github terraform),
   published: true,
-  image: "reviewdog.png",
+  image: "reviewdog.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![reviewdog](/images/reviewdog.png){:class="mx-auto"}
+![reviewdog](/images/reviewdog.webp){:class="mx-auto"}
 
 ##### **Introducción**
 En este artículo vamos a probar cómo lintar y obtener chequeos automáticos en nuestros pull requests de Github para nuestro código de terraform usando [reviewdog](https://github.com/reviewdog/reviewdog) y la [acción tflint de github](https://github.com/reviewdog/action-tflint). Esto es particularmente útil para prevenir cambios no deseados o commits con errores que se mezclen en tu rama principal, sea cual sea. Para que esto funcione solo tenés que configurar una acción de Github en tu repo y listo, no necesitás generar ningún token ni hacer ningún paso extra.
@@ -174,12 +174,12 @@ jobs:
 
 ##### **Ejemplo de PR**
 Primero vamos a hacer un PR con un problema para ver cómo falla y cómo funciona el reporte (Para llegar acá podés hacer clic en la pestaña de checks en el PR y luego en el paso de tflint, mirá [aquí](https://github.com/kainlite/reviewdog/pull/1/checks?check_run_id=793169790)).
-![img](/images/reviewdog-1.png){:class="mx-auto"}
+![img](/images/reviewdog-1.webp){:class="mx-auto"}
 <br />
 
 ##### **Uno que realmente funciona**
 Ya que lo probamos y falló como esperábamos, ahora podemos arreglarlo, y ahora que reviewdog y tflint están contentos con nuestro commit, podemos simplemente mezclarlo (solo cambien de t1 a t2 en el archivo main.tf).
-![img](/images/reviewdog-2.png){:class="mx-auto"}
+![img](/images/reviewdog-2.webp){:class="mx-auto"}
 <br />
 
 ##### **Notas finales**

@@ -4,14 +4,14 @@
   description: "The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require. It's a CLI that offers structure...",
   tags: ~w(serverless golang),
   published: true,
-  image: "serverless.png",
+  image: "serverless.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![serveless](/images/serverless.png){:class="mx-auto"}
+![serveless](/images/serverless.webp){:class="mx-auto"}
 
 ### **Introduction**
 The [serverless framework](https://serverless.com/) is a nice tool to manage all your cloud functions. from their page:
@@ -265,7 +265,7 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "El Serverless Framework es imprescindible a la hora de crear, manejar y depurar tus funciones lambdas...",
   tags: ~w(serverless golang),
   published: true,
-  image: "serverless.png",
+  image: "serverless.webp",
   sponsored: false,
   video: "",
   lang: "es"
@@ -274,7 +274,7 @@ Also, you can check the source code and changes in the [generated code](https://
 
 ### Traduccion en proceso
 
-![serveless](/images/serverless.png){:class="mx-auto"}
+![serveless](/images/serverless.webp){:class="mx-auto"}
 
 ### **Introducción**
 El [framework serverless](https://serverless.com/) es una excelente herramienta para gestionar todas tus funciones en la nube. Desde su página:

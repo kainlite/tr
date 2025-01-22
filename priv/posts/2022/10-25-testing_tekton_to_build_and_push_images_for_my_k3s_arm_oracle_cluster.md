@@ -4,14 +4,14 @@
   description: "In this article we will explore how to deploy and configure tekton to build and push images to your registry to be consumed from your cluster, we will also see how these are deployed in another article...",
   tags: ~w(kubernetes arm linux tekton cicd),
   published: true,
-  image: "tekton-logo.png",
+  image: "tekton-logo.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![tekton](/images/tekton-logo.png){:class="mx-auto"}
+![tekton](/images/tekton-logo.webp){:class="mx-auto"}
 
 #### **Introduction**
 In this article we will explore how to deploy and configure tekton to build and push images to your registry to be
@@ -495,14 +495,14 @@ and the [sources here](https://github.com/kainlite/blog).
   description: "En este articulo vemos como construir y subir imagenes de docker desde nuestro cluster ARM...",
   tags: ~w(kubernetes arm linux tekton cicd),
   published: true,
-  image: "tekton-logo.png",
+  image: "tekton-logo.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![tekton](/images/tekton-logo.png){:class="mx-auto"}
+![tekton](/images/tekton-logo.webp){:class="mx-auto"}
 
 #### **Introducción**
 En este artículo exploraremos cómo desplegar y configurar Tekton para construir y enviar imágenes a tu registro, que luego serán consumidas por tu clúster. También veremos cómo estas imágenes se despliegan en otro artículo. En este, quiero mostrarte cómo preparar las imágenes listas para su uso, y además una solución útil para un sistema CI sin depender de factores externos. En mi caso, estaba teniendo problemas con Docker al construir imágenes de arquitectura cruzada, y después de configurar Tekton, todo fue más rápido y sencillo. Las imágenes de arquitectura cruzada son lentas por naturaleza y no siempre funcionan al 100% como esperarías. Al usar este enfoque, podemos olvidarnos de la arquitectura y simplemente construir donde ejecutamos las cosas, lo cual es definitivamente más rápido, y algunos de tus nodos ya tendrán las imágenes disponibles, lo que significa un menor consumo de ancho de banda a largo plazo.

@@ -5,7 +5,7 @@
   explore SSH Socks proxy and what it means, we also will explore SSH remote proxy...",
   tags: ~w(linux openssh networking),
   published: true,
-  image: "openssh.png",
+  image: "openssh.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -60,7 +60,7 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "En este articulo exploraremos como usar SSH como proxy Socks...",
   tags: ~w(linux openssh networking),
   published: true,
-  image: "openssh.png",
+  image: "openssh.webp",
   sponsored: false,
   video: "",
   lang: "es"

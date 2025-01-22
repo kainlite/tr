@@ -4,14 +4,14 @@
   description: "This post is a bit different from the others in the sense that it's a small tool I did to ease spam reporting to...",
   tags: ~w(golang linux),
   published: true,
-  image: "spam.png",
+  image: "spam.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![spam](/images/spam.png){:class="mx-auto"}
+![spam](/images/spam.webp){:class="mx-auto"}
 
 ##### **Introduction**
 This post is a bit different from the others in the sense that it's a small "tool" I did to ease spam reporting to [SpamCop.net](https://www.spamcop.net/), this helps to reduce the true Spam from unknown sources, since for some reason I started to get like 40 emails per day (all went to spam), but it is still somewhat annoying, so I started reporting it to spamcop, but the process was kind of slow and I got tired of that quickly, so I created this "script" to make things easier. Basically what it does is list all messages in the spam folders fetches them and then forwards each one as an attachment to spamcop, then you get an email with a link to confirm the submission and that's it.
@@ -288,14 +288,14 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "Exploramos una pequeña herramienta para reportar correos basura a spamcop...",
   tags: ~w(golang linux),
   published: true,
-  image: "spam.png",
+  image: "spam.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![spam](/images/spam.png){:class="mx-auto"}
+![spam](/images/spam.webp){:class="mx-auto"}
 
 ##### **Introducción**
 Este post es un poco diferente a los demás, ya que es una pequeña "herramienta" que hice para facilitar el reporte de spam a [SpamCop.net](https://www.spamcop.net/). Esto ayuda a reducir el verdadero spam de fuentes desconocidas. Por alguna razón, empecé a recibir como 40 correos al día (todos iban a la carpeta de spam), pero igual resultaba molesto. Así que comencé a reportarlos a SpamCop, pero el proceso era algo lento y me cansé rápido, así que creé este "script" para hacer todo más fácil. Básicamente, lo que hace es listar todos los mensajes en la carpeta de spam, los descarga y luego los reenvía como adjuntos a SpamCop. Después de eso, recibís un mail con un enlace para confirmar el envío, ¡y listo!

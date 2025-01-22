@@ -4,7 +4,7 @@
   description: "Why do I need a service mesh? Basically because in cloud environments you cannot trust that the network will be reliable 100% of the time, that the latency will be low, that the network is secure and the bandwidth is infinite, the service mesh is just an extra layer to help microservices communicate with each other safely and reliably.",
   tags: ~w(kubernetes istio),
   published: true,
-  image: "logo.png",
+  image: "logo.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -284,7 +284,7 @@ $ export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
 curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/productpage
 ```
 If the latest curl returns 200 then we're good, you can also browse the app `open http://${GATEWAY_URL}/productpage` and you will see something like the following image:
-![img](/images/productpage-example.png){:class="mx-auto"}
+![img](/images/productpage-example.webp){:class="mx-auto"}
 <br />
 
 Also you can use [Grafana](https://grafana.com/) to check some metrics about the service usage, etc. (You don't have to worry about prometheus since it's enabled by default). Spin up the port-forward so we don't have to expose grafana: to the world with: `kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000`, and then `open http://localhost:3000`.
@@ -321,7 +321,7 @@ Also, you can check the source code and changes in the [generated code](https://
   comunicacion entre distintos microservicios, en esto y mas podemos sacarle provecho a un service mesh.",
   tags: ~w(kubernetes istio),
   published: true,
-  image: "logo.png",
+  image: "logo.webp",
   sponsored: false,
   video: "",
   lang: "es"
@@ -613,7 +613,7 @@ $ export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
 curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/productpage
 ```
 Si el último comando `curl` devuelve 200, entonces estamos bien; también puedes navegar a la aplicación con `open http://${GATEWAY_URL}/productpage` y verás algo como la siguiente imagen:
-![img](/images/productpage-example.png){:class="mx-auto"}
+![img](/images/productpage-example.webp){:class="mx-auto"}
 <br />
 
 También puedes usar [Grafana](https://grafana.com/) para verificar algunas métricas sobre el uso del servicio, etc. (No tienes que preocuparte por Prometheus ya que está habilitado por defecto). Inicia el port-forward para que no tengamos que exponer Grafana al mundo con: `kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000`, y luego `open http://localhost:3000`.

@@ -4,7 +4,7 @@
   description: "We will see how to craft and use a tool to manage our Kubernetes port-forward connections...",
   tags: ~w(kubernetes rust),
   published: true,
-  image: "kube-forward.png",
+  image: "kube-forward.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -659,7 +659,7 @@ let me know how it goes! Until next time!
   description: "Vamos a ver como crear e usar una pequeña herramienta para manejar varios puertos redirigidos... ",
   tags: ~w(kubernetes rust),
   published: true,
-  image: "kube-forward.png",
+  image: "kube-forward.webp",
   sponsored: false,
   video: "",
   lang: "es"

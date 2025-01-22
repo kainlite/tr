@@ -4,7 +4,7 @@
   description: "In this article we will see the basics to have tests for your terraform code using a re-usable pattern, we will use the code from the last article...",
   tags: ~w(kubernetes terratest golang terraform),
   published: true,
-  image: "terraform.png",
+  image: "terraform.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -190,7 +190,7 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "Veremos como usar terratest para probar nuestro codigo hcl o terraform...",
   tags: ~w(kubernetes terratest golang terraform),
   published: true,
-  image: "terraform.png",
+  image: "terraform.webp",
   sponsored: false,
   video: "",
   lang: "es"

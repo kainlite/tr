@@ -4,7 +4,7 @@
   description: "Continue building on Istio and understand how can be used...",
   tags: ~w(kubernetes istio),
   published: true,
-  image: "kubernetes.png",
+  image: "kubernetes.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -173,11 +173,11 @@ What's going on here, how Istio knows what user is logged in?, well, the app add
 <br />
 
 Not jason:
-![img](/images/istio-servicev1.png){:class="mx-auto"}
+![img](/images/istio-servicev1.webp){:class="mx-auto"}
 <br />
 
 jason:
-![img](/images/istio-servicev2.png){:class="mx-auto"}
+![img](/images/istio-servicev2.webp){:class="mx-auto"}
 As you can see the difference in the v1 and v2 of the app are the stars below the reviews, but that is more than enough to indicate that it works, this is really nice for beta testers you don't need or have to complicate your code but just add a header.
 <br />
 
@@ -224,7 +224,7 @@ spec:
 ```
 
 So he decided to check the book reviews again and boom, the ratings service was not available but everything else works just fine, this only applies for _jason_ everyone else will see the version without stars or the error message.
-![img](/images/istio-servicev3.png){:class="mx-auto"}
+![img](/images/istio-servicev3.webp){:class="mx-auto"}
 <br />
 
 ### Notes
@@ -260,7 +260,7 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "Seguimos construyendo con Istio y entendiendo como usarlo...",
   tags: ~w(kubernetes istio),
   published: true,
-  image: "kubernetes.png",
+  image: "kubernetes.webp",
   sponsored: false,
   video: "",
   lang: "es"
@@ -442,13 +442,13 @@ spec:
 
 No jason:
 
-![img](/images/istio-servicev1.png){:class="mx-auto"}
+![img](/images/istio-servicev1.webp){:class="mx-auto"}
 
 <br />
 
 jason:
 
-![img](/images/istio-servicev2.png){:class="mx-auto"}
+![img](/images/istio-servicev2.webp){:class="mx-auto"}
 
 Como puedes ver, la diferencia entre la versión 1 y la versión 2 de la aplicación son las estrellas debajo de las reseñas, pero eso es más que suficiente para indicar que funciona. Esto es realmente útil para los beta testers; no necesitas complicar tu código, solo agregar un encabezado.
 
@@ -500,7 +500,7 @@ spec:
 
 Así que decidió revisar las reseñas de libros nuevamente y ¡boom!, el servicio de calificaciones no estaba disponible, pero todo lo demás funciona perfectamente. Esto solo se aplica a _jason_; todos los demás verán la versión sin estrellas o el mensaje de error.
 
-![img](/images/istio-servicev3.png){:class="mx-auto"}
+![img](/images/istio-servicev3.webp){:class="mx-auto"}
 
 <br />
 

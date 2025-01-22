@@ -6,7 +6,7 @@
   manual intervention.",
   tags: ~w(elixir shell phoenix tips-and-tricks),
   published: true,
-  image: "trickster.png",
+  image: "trickster.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -15,7 +15,7 @@
 
 ### **Introduction**
 
-![trickster](/images/trickster.png){:class="mx-auto"}
+![trickster](/images/trickster.webp){:class="mx-auto"}
 In case you are wondering about the image, it is intended to represent the trickster, as I plan to do many posts about
 tips and tricks.
 <br />
@@ -122,7 +122,7 @@ Also, you can check the source code and changes in the [sources here](https://gi
   description: "Como conectarnos a nuestro cluster Beam de manera remota.",
   tags: ~w(elixir shell phoenix tips-and-tricks),
   published: true,
-  image: "trickster.png",
+  image: "trickster.webp",
   sponsored: false,
   video: "",
   lang: "es"
@@ -132,7 +132,7 @@ Also, you can check the source code and changes in the [sources here](https://gi
 
 ##### **Introducción**
 
-![trickster](/images/trickster.png){:class="mx-auto"}
+![trickster](/images/trickster.webp){:class="mx-auto"}
 
 En caso de que te lo preguntes, la imagen está pensada para representar al trickster, ya que planeo hacer muchas publicaciones sobre tips y trucos.
 <br />

@@ -5,7 +5,7 @@
   navigate these, keep an eye out for the bonus section as it can get complex pretty quickly.",
   tags: ~w(vim tips-and-tricks),
   published: true,
-  image: "vim-tips.png",
+  image: "vim-tips.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -178,7 +178,7 @@ Also, you can check the source code and changes in the [sources here](https://gi
   description: "Manejo basico de buffers, tabs y ventanas en vim.",
   tags: ~w(vim tips-and-tricks),
   published: true,
-  image: "vim-tips.png",
+  image: "vim-tips.webp",
   sponsored: false,
   video: "",
   lang: "es"
@@ -187,7 +187,7 @@ Also, you can check the source code and changes in the [sources here](https://gi
 
 ### **Introducción**
 
-![trickster](/images/trickster-cool.png){:class="mx-auto" style="max-height: 450px;"}
+![trickster](/images/trickster-cool.webp){:class="mx-auto" style="max-height: 450px;"}
 Por si te lo preguntás, la imagen está pensada para representar al trickster, ya que planeo hacer muchas publicaciones sobre tips y trucos.
 <br/>
 

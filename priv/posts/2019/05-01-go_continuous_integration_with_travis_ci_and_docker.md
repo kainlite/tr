@@ -5,14 +5,14 @@
   travis-ci and docker...",
   tags: ~w(golang travis cicd),
   published: true,
-  image: "travis-ci-docker.png",
+  image: "travis-ci-docker.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![travis](/images/travis-ci-docker.png){:class="mx-auto"}
+![travis](/images/travis-ci-docker.webp){:class="mx-auto"}
 
 ##### **Introduction**
 In this article we will see how to create a simple continuous integration process using [Github](https://github.com), [Travis-CI](https://travis-ci.org) and [Docker HUB](https://cloud.docker.com), the files used here can be found [HERE](https://github.com/kainlite/whatismyip-go), in the next article we will continue with what we have here to provide continuous deployment possibly using Jenkins or maybe Travis, let me know which one you would prefer to see.
@@ -149,26 +149,26 @@ We let travis know that we will be running some go code and also docker, then bu
 
 ##### **Putting everything together**
 So far we got the [repo](https://github.com/kainlite/whatismyip-go) going, the configuration for travis, the dockerfile, the app, but now we need to make use of it, so you will need to create a travis account for this to work then link your github account to it, then you will be able to sync your repositories and you should see something like this:
-![image](/images/whatismyip-go-travis-list.png){:class="mx-auto"}
+![image](/images/whatismyip-go-travis-list.webp){:class="mx-auto"}
 Once you have your account linked you will be able to sync and enable repositories to be built.
 <br />
 
 After enabling the repository you can configure some details like environment variables, here we will set the credentials for dockerhub.
-![image](/images/whatismyip-go-travis-settings.png){:class="mx-auto"}
+![image](/images/whatismyip-go-travis-settings.webp){:class="mx-auto"}
 <br />
 
 And now we will create the repository in dockerhub:
-![image](/images/whatismyip-go-docker-repo.png){:class="mx-auto"}
+![image](/images/whatismyip-go-docker-repo.webp){:class="mx-auto"}
 After the repository is created we can trigger a build from travis or push a commit to the repo in order to trigger a build and to validate that everything works.
 <br />
 
 You should see something like this in travis if everything went well:
-![image](/images/whatismyip-go-travis-log-1.png){:class="mx-auto"}
+![image](/images/whatismyip-go-travis-log-1.webp){:class="mx-auto"}
 You can validate that everything went well by checking the commit SHA that triggered the build.
 <br />
 
 And dockerhub:
-![image](/images/whatismyip-go-travis-log-2.png){:class="mx-auto"}
+![image](/images/whatismyip-go-travis-log-2.webp){:class="mx-auto"}
 The same SHA will be used to tag the image.
 <br />
 
@@ -192,14 +192,14 @@ Also, you can check the source code and changes in the [generated code](https://
   travis-ci y docker...",
   tags: ~w(golang travis cicd),
   published: true,
-  image: "travis-ci-docker.png",
+  image: "travis-ci-docker.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![travis](/images/travis-ci-docker.png){:class="mx-auto"}
+![travis](/images/travis-ci-docker.webp){:class="mx-auto"}
 
 ##### **Introducción**
 En este artículo veremos cómo crear un proceso simple de integración continua utilizando [Github](https://github.com), [Travis-CI](https://travis-ci.org) y [Docker HUB](https://cloud.docker.com). Los archivos utilizados aquí se pueden encontrar [AQUÍ](https://github.com/kainlite/whatismyip-go). En el próximo artículo continuaremos con lo que tenemos aquí para proporcionar despliegue continuo, posiblemente usando Jenkins o quizás Travis. Hazme saber cuál prefieres ver.
@@ -336,26 +336,26 @@ Le indicamos a Travis que ejecutaremos código Go y Docker. Luego, construimos l
 
 ##### **Juntando todo**
 Hasta ahora, tenemos el [repositorio](https://github.com/kainlite/whatismyip-go) funcionando, la configuración de Travis, el Dockerfile y la aplicación, pero ahora necesitamos usarlo. Necesitarás crear una cuenta de Travis para que esto funcione, luego vincula tu cuenta de GitHub con Travis. Podrás sincronizar tus repositorios y deberías ver algo como esto:
-![image](/images/whatismyip-go-travis-list.png){:class="mx-auto"}
+![image](/images/whatismyip-go-travis-list.webp){:class="mx-auto"}
 Una vez que tu cuenta esté vinculada, podrás sincronizar y habilitar los repositorios para que se construyan.
 <br />
 
 Después de habilitar el repositorio, puedes configurar algunos detalles como variables de entorno. Aquí estableceremos las credenciales para Docker Hub.
-![image](/images/whatismyip-go-travis-settings.png){:class="mx-auto"}
+![image](/images/whatismyip-go-travis-settings.webp){:class="mx-auto"}
 <br />
 
 Y ahora crearemos el repositorio en Docker Hub:
-![image](/images/whatismyip-go-docker-repo.png){:class="mx-auto"}
+![image](/images/whatismyip-go-docker-repo.webp){:class="mx-auto"}
 Después de que se crea el repositorio, podemos activar una compilación desde Travis o enviar un commit al repositorio para activar una compilación y validar que todo funciona.
 <br />
 
 Deberías ver algo como esto en Travis si todo salió bien:
-![image](/images/whatismyip-go-travis-log-1.png){:class="mx-auto"}
+![image](/images/whatismyip-go-travis-log-1.webp){:class="mx-auto"}
 Puedes validar que todo salió bien revisando el SHA del commit que activó la compilación.
 <br />
 
 Y en Docker Hub:
-![image](/images/whatismyip-go-travis-log-2.png){:class="mx-auto"}
+![image](/images/whatismyip-go-travis-log-2.webp){:class="mx-auto"}
 El mismo SHA se utilizará para etiquetar la imagen.
 <br />
 

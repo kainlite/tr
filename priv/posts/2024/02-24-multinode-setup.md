@@ -4,7 +4,7 @@
   description: "Running a phoenix app in a multinode fashion in kubernetes",
   tags: ~w(elixir phoenix kubernetes),
   published: true,
-  image: "phoenix.png",
+  image: "phoenix.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -180,7 +180,7 @@ Also, you can check the source code and changes in the [sources here](https://gi
   description: "Aprovechemos las ventajas de clustering de BEAM, veamos como... ",
   tags: ~w(elixir phoenix kubernetes),
   published: true,
-  image: "phoenix.png",
+  image: "phoenix.webp",
   sponsored: false,
   video: "",
   lang: "es"

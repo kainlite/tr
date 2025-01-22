@@ -4,14 +4,14 @@
   description: "This article is about my current configuration, but I'm going to talk only about the terminal and my text editor because those will work in any linux distribution...",
   tags: ~w(linux vim tmux),
   published: true,
-  image: "urxvt.png",
+  image: "urxvt.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![terminal](/images/terminal.png"){:class="mx-auto"}
+![terminal](/images/terminal.webp"){:class="mx-auto"}
 
 ### Introduction
 This article is about my current configuration, but I'm going to talk only about the terminal and my text editor because those will work in any linux distribution, I'm currently using **Arch Linux** and **AwesomeWM** (I used Gnome Shell previously, and Gnome 2 before that), you can find my [dotfiles here](https://github.com/kainlite/dotfiles) with all my configurations.
@@ -22,7 +22,7 @@ While my terminal doesn't look exactly like the one from the picture you can get
 
 ### Terminal
 My current terminal is **rxvt-unicode** and I'm pretty happy with it, it's relatively easy to configure and use, it looks like this:
-![img](/images/urxvt.png){:class="mx-auto"}
+![img](/images/urxvt.webp){:class="mx-auto"}
 And the configuration file can be [found here](https://github.com/kainlite/dotfiles/blob/master/.Xresources), note that even if you don't like Ponys by any reason, it's useful to test colors in the terminal.
 <br />
 
@@ -56,7 +56,7 @@ As a plugin manager I use [Plug](https://github.com/kainlite/dotfiles/blob/maste
 <br />
 
 It looks something like this, as you can see I have a small tmux pane in the bottom with Hugo _compiling_ the site after every save and live reloading it in my browser:
-![img](/images/vim.png){:class="mx-auto"}
+![img](/images/vim.webp){:class="mx-auto"}
 <br />
 
 ### Notes
@@ -79,16 +79,16 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "Este articulo exploro las herramientas que uso diariamente para trabajar...",
   tags: ~w(linux vim tmux),
   published: true,
-  image: "urxvt.png",
+  image: "urxvt.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![terminal](/images/terminal.png"){:class="mx-auto"}
+![terminal](/images/terminal.webp"){:class="mx-auto"}
 
-![terminal](/images/terminal.png"){:class="mx-auto"}
+![terminal](/images/terminal.webp"){:class="mx-auto"}
 
 ### **Introducción**
 Este artículo trata sobre mi configuración actual, pero solo voy a hablar sobre el terminal y mi editor de texto porque funcionarán en cualquier distribución de Linux. Actualmente estoy usando **Arch Linux** y **AwesomeWM** (anteriormente usaba Gnome Shell y antes de eso Gnome 2). Puedes encontrar mis [dotfiles aquí](https://github.com/kainlite/dotfiles) con todas mis configuraciones.
@@ -99,7 +99,7 @@ Aunque mi terminal no se ve exactamente como el de la imagen, puedes obtener alg
 
 ### **Terminal**
 Mi terminal actual es **rxvt-unicode** y estoy bastante contento con él. Es relativamente fácil de configurar y usar, se ve así:
-![img](/images/urxvt.png){:class="mx-auto"}
+![img](/images/urxvt.webp){:class="mx-auto"}
 Y el archivo de configuración lo puedes [encontrar aquí](https://github.com/kainlite/dotfiles/blob/master/.Xresources). Ten en cuenta que incluso si no te gustan los ponis por alguna razón, es útil para probar colores en el terminal.
 <br />
 
@@ -133,7 +133,7 @@ Como gestor de complementos uso [Plug](https://github.com/kainlite/dotfiles/blob
 <br />
 
 Se ve algo como esto; como puedes ver, tengo un pequeño panel de tmux en la parte inferior con Hugo _compilando_ el sitio después de cada guardado y recargándolo en vivo en mi navegador:
-![img](/images/vim.png){:class="mx-auto"}
+![img](/images/vim.webp){:class="mx-auto"}
 <br />
 
 ### **Notas**

@@ -5,14 +5,14 @@
   explore SSH Local port forward and what it means, we also will explore SSH Remote port...",
   tags: ~w(openssh linux networking),
   published: true,
-  image: "openssh.png",
+  image: "openssh.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![openssh](/images/openssh.png){:class="mx-auto"}
+![openssh](/images/openssh.webp){:class="mx-auto"}
 
 ##### **Introduction**
 SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Local port forward and what it means, we also will explore [SSH Remote Port Forward](/blog/ssh_remote_port_forward) and [SSH Socks Proxy](/blog/ssh_socks_proxy) and how to use that functionality.
@@ -71,14 +71,14 @@ Also, you can check the source code and changes in the [generated code](https://
   puertos entre otras cosas...",
   tags: ~w(openssh linux networking),
   published: true,
-  image: "openssh.png",
+  image: "openssh.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![openssh](/images/openssh.png){:class="mx-auto"}
+![openssh](/images/openssh.webp){:class="mx-auto"}
 
 ### **Introducción**
 SSH es una excelente herramienta no solo para conectarte e interactuar con servidores remotos. En este artículo vamos a explorar el reenvío de puertos locales con SSH y qué significa. También exploraremos el [Reenvío de puertos remotos con SSH](/blog/ssh_remote_port_forward) y el [Proxy Socks con SSH](/blog/ssh_socks_proxy) y cómo usar estas funcionalidades.

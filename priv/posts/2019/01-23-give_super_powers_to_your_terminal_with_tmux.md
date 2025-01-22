@@ -4,14 +4,14 @@
   description: "In this article I want to introduce you to tmux, you might have used screen in the past or heard about it, what tmux and screen are is terminal multiplexers...",
   tags: ~w(vim tmux linux),
   published: true,
-  image: "tmux-terminal.png",
+  image: "tmux-terminal.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![tmux](/images/tmux-terminal.png){:class="mx-auto"}
+![tmux](/images/tmux-terminal.webp){:class="mx-auto"}
 
 ### **Introduction**
 In this article I want to introduce you to `tmux`, you might have used `screen` in the past or heard about it, what tmux and screen are is terminal multiplexers, what does that mean? That you can have many windows/tabs and splits/panes in just one terminal window, this can really make things easier when using it as a development environment for example, you can detach from the terminal and leave things running indefinitely, or share your terminal with a colleague over ssh, for the examples I will be explaining bits of my configuration and how do I use it. The full configuration can be found [here](https://github.com/kainlite/dotfiles/blob/master/.tmux.conf). I'm using ZSH as shell and Vim as text editor.
@@ -40,11 +40,11 @@ bind C-a send-prefix
 
 ##### **Example**
 You can print the numbers of the panes with `CTRL-a q`, and you can navigate windows and panes as a list with `CTRL-a w`.
-![img](/images/tmux-windows-panes.png){:class="mx-auto"}
+![img](/images/tmux-windows-panes.webp){:class="mx-auto"}
 <br />
 
 I usually like to have 3 panes, something like this:
-![img](/images/tmux-sample-usage.png){:class="mx-auto"}
+![img](/images/tmux-sample-usage.webp){:class="mx-auto"}
 I can edit the code or whatever in the pane 0, run commands if I need to in the pane 1, and have the webserver or code compiler, etc in the pane 2. This is very handy because I can write and test things at the same time without leaving the keyboard, or look at 2 different projects/files/etc side by side.
 <br />
 
@@ -147,7 +147,7 @@ set-window-option -g window-status-current-format '#[bg=yellow] #I#[bg=yellow] #
 <br />
 
 ##### **Copy/paste**
-![img](/images/tmux-vi-mode.png){:class="mx-auto"}
+![img](/images/tmux-vi-mode.webp){:class="mx-auto"}
 Tmux also supports the vi-copy mode, you can enter this mode with `CTRL-a ESC`, then pressing `v` for normal selection or `V` for line selection you can mark and copy with `Y` (by default is `ENTER` aka `<CR>`).
 <br />
 
@@ -197,14 +197,14 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "En este articulo vamos a ver como usar y configurar el multiplexor de terminales: tmux...",
   tags: ~w(vim tmux linux),
   published: true,
-  image: "tmux-terminal.png",
+  image: "tmux-terminal.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![tmux](/images/tmux-terminal.png){:class="mx-auto"}
+![tmux](/images/tmux-terminal.webp){:class="mx-auto"}
 
 ### **Introducción**
 En este artículo quiero presentarte `tmux`. Tal vez hayas usado `screen` en el pasado o escuchado hablar de él. Lo que tmux y screen son, básicamente, son multiplexores de terminal. ¿Qué significa eso? Que podés tener muchas ventanas/pestañas y divisiones/paneles en una sola ventana de terminal. Esto puede facilitar mucho las cosas cuando lo usás como entorno de desarrollo, por ejemplo, podés desconectarte de la terminal y dejar procesos corriendo indefinidamente o compartir tu terminal con un colega a través de ssh. En los ejemplos te voy a explicar partes de mi configuración y cómo la uso. La configuración completa la podés encontrar [aquí](https://github.com/kainlite/dotfiles/blob/master/.tmux.conf). Estoy usando ZSH como shell y Vim como editor de texto.
@@ -233,11 +233,11 @@ bind C-a send-prefix
 
 ##### **Ejemplo**
 Podés mostrar los números de los paneles con `CTRL-a q`, y podés navegar entre ventanas y paneles como una lista con `CTRL-a w`.
-![img](/images/tmux-windows-panes.png){:class="mx-auto"}
+![img](/images/tmux-windows-panes.webp){:class="mx-auto"}
 <br />
 
 Generalmente me gusta tener 3 paneles, algo así:
-![img](/images/tmux-sample-usage.png){:class="mx-auto"}
+![img](/images/tmux-sample-usage.webp){:class="mx-auto"}
 Puedo editar el código o lo que sea en el panel 0, ejecutar comandos si lo necesito en el panel 1, y tener el servidor web o el compilador de código, etc. en el panel 2. Esto es muy útil porque puedo escribir y probar cosas al mismo tiempo sin salir del teclado, o mirar dos proyectos/archivos diferentes uno al lado del otro.
 <br />
 
@@ -340,7 +340,7 @@ set-window-option -g window-status-current-format '#[bg=yellow] #I#[bg=yellow] #
 <br />
 
 ##### **Copiar/pegar**
-![img](/images/tmux-vi-mode.png){:class="mx-auto"}
+![img](/images/tmux-vi-mode.webp){:class="mx-auto"}
 Tmux también soporta el modo vi-copy, podés entrar en este modo con `CTRL-a ESC`. Luego, presionando `v` para selección normal o `V` para selección de líneas, podés marcar y copiar con `Y` (por defecto es `ENTER` o `<CR>`).
 <br />
 

@@ -5,14 +5,14 @@
   run a rust project...",
   tags: ~w(rust arm linux),
   published: true,
-  image: "rust.png",
+  image: "rust.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![rust](/images/rust.jpg"){:class="mx-auto"}
+![rust](/images/rust.webp"){:class="mx-auto"}
 
 #### **Introduction**
 
@@ -514,14 +514,14 @@ and the [sources here](https://github.com/kainlite/blog)
   description: "Vemos como usar QEMU para construir imagenes para otras arquitecturas...",
   tags: ~w(rust arm linux),
   published: true,
-  image: "rust.png",
+  image: "rust.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![rust](/images/rust.jpg"){:class="mx-auto"}
+![rust](/images/rust.webp"){:class="mx-auto"}
 
 #### **Introducción**
 

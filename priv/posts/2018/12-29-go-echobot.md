@@ -4,7 +4,7 @@
   description: "Exploring ksonnet with an echo bot made in Golang...",
   tags: ~w(golang kubernetes jsonnet ksonnet slack tooling),
   published: true,
-  image: "logo.png",
+  image: "logo.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -187,7 +187,7 @@ INFO Creating non-existent deployments echobot
 
 And now if we check our deployment and pod, we should see something like this:
 
-![echobot](/images/echobot.png)
+![echobot](/images/echobot.webp)
 <br />
 
 And in the logs:
@@ -225,7 +225,7 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "Seguimos jugando con ksonnet con un bot eco hecho en Go...",
   tags: ~w(golang kubernetes jsonnet ksonnet slack tooling),
   published: true,
-  image: "logo.png",
+  image: "logo.webp",
   sponsored: false,
   video: "",
   lang: "es"
@@ -412,7 +412,7 @@ INFO Creating non-existent deployments echobot
 
 Y ahora, si verificamos nuestro despliegue y pod, deberíamos ver algo como esto:
 
-![echobot](/images/echobot.png)
+![echobot](/images/echobot.webp)
 <br />
 
 Y en los logs:

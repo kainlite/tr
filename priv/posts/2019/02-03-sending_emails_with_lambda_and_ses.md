@@ -5,14 +5,14 @@
   function in AWS Lambda to send an email coming from the HTML form in the site...",
   tags: ~w(golang serverless),
   published: true,
-  image: "aws-lambda-ses.png",
+  image: "aws-lambda-ses.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![lambda](/images/aws-lambda-ses.png){:class="mx-auto"}
+![lambda](/images/aws-lambda-ses.webp){:class="mx-auto"}
 
 ##### **Serverless series**
 Part I: [Serving static websites with s3 and cloudfront](/blog/serving_static_sites_with_s3_and_cloudfront), so refer to that one before starting this one if you want to know how did we get here.
@@ -272,15 +272,15 @@ For this to work you will need to verify/validate your domain in SES.
 <br />
 
 Go to `SES->Domains->Verify a New Domain`.
-![image](/images/aws-ses-validate-domain.png){:class="mx-auto"}
+![image](/images/aws-ses-validate-domain.webp){:class="mx-auto"}
 <br />
 
 After putting your domain in, you will see something like this:
-![image](/images/aws-ses-validation-and-dkim.png){:class="mx-auto"}
+![image](/images/aws-ses-validation-and-dkim.webp){:class="mx-auto"}
 <br />
 
 As I don't have this domain in Route53 I don't have a button to add the records to it (which makes everything simpler and faster), but it's easy enough just create a few dns records and wait a few minutes until you get something like this:
-![image](/images/aws-ses-validation-ok.png){:class="mx-auto"}
+![image](/images/aws-ses-validation-ok.webp){:class="mx-auto"}
 <br />
 
 **After that just test it**
@@ -356,14 +356,14 @@ Also, you can check the source code and changes in the [generated code](https://
   el formulario del sitio estatico...",
   tags: ~w(golang serverless),
   published: true,
-  image: "aws-lambda-ses.png",
+  image: "aws-lambda-ses.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![lambda](/images/aws-lambda-ses.png){:class="mx-auto"}
+![lambda](/images/aws-lambda-ses.webp){:class="mx-auto"}
 
 ##### **Serie sobre Serverless**
 Parte I: [Sirviendo sitios web estáticos con S3 y CloudFront](/blog/serving_static_sites_with_s3_and_cloudfront), es recomendable revisar esa parte antes de empezar con esta para entender cómo llegamos hasta aquí.
@@ -603,15 +603,15 @@ Para que esto funcione, vas a necesitar verificar/validar tu dominio en SES.
 <br />
 
 Andá a `SES->Domains->Verify a New Domain`.
-![image](/images/aws-ses-validate-domain.png){:class="mx-auto"}
+![image](/images/aws-ses-validate-domain.webp){:class="mx-auto"}
 <br />
 
 Después de ingresar tu dominio, verás algo como esto:
-![image](/images/aws-ses-validation-and-dkim.png){:class="mx-auto"}
+![image](/images/aws-ses-validation-and-dkim.webp){:class="mx-auto"}
 <br />
 
 Como no tengo este dominio en Route53, no tengo el botón para agregar los registros (lo que lo haría más simple y rápido), pero es fácil, solo tenés que crear unos registros DNS y esperar unos minutos hasta que obtengas algo como esto:
-![image](/images/aws-ses-validation-ok.png){:class="mx-auto"}
+![image](/images/aws-ses-validation-ok.webp){:class="mx-auto"}
 <br />
 
 **Después de eso, probalo**

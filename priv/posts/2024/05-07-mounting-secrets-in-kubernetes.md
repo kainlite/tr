@@ -7,7 +7,7 @@
   can take advantage of",
   tags: ~w(kubernetes tips-and-tricks),
   published: true,
-  image: "kubernetes.png",
+  image: "kubernetes.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -344,7 +344,7 @@ Also, you can check the source code and changes in the [sources here](https://gi
   description: "Vamos a explorar distintas maneras de consumir secretos en Kubernetes",
   tags: ~w(kubernetes tips-and-tricks),
   published: true,
-  image: "kubernetes.png",
+  image: "kubernetes.webp",
   sponsored: false,
   video: "",
   lang: "es"

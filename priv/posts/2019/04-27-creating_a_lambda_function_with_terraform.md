@@ -4,14 +4,14 @@
   description: "Here we will see how to use terraform to manage lambda functions, it will be a simple hello world in node.js, available as gist...",
   tags: ~w(terraform lambda serverless aws),
   published: true,
-  image: "terraform.png",
+  image: "terraform.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![terraform](/images/terraform-lambda.png){:class="mx-auto"}
+![terraform](/images/terraform-lambda.webp){:class="mx-auto"}
 
 ##### **Introduction**
 Here we will see how to use terraform to manage lambda functions, it will be a simple hello world in node.js, available as a [gist here](https://gist.github.com/smithclay/e026b10980214cbe95600b82f67b4958), note that I did not create this example but it's really close to the official documentation but shorter, you can see another example with [python here](https://github.com/terraform-providers/terraform-provider-aws/tree/master/examples/lambda).
@@ -297,14 +297,14 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "En este articulo vemos como crear y manejar una funcion lambda desde terraform...",
   tags: ~w(terraform lambda serverless aws),
   published: true,
-  image: "terraform.png",
+  image: "terraform.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![terraform](/images/terraform-lambda.png){:class="mx-auto"}
+![terraform](/images/terraform-lambda.webp){:class="mx-auto"}
 
 ##### **Introducción**
 Aquí veremos cómo usar Terraform para gestionar funciones Lambda. Será un sencillo "Hello World" en **node.js**, disponible como [gist aquí](https://gist.github.com/smithclay/e026b10980214cbe95600b82f67b4958). Nota: no creé este ejemplo, pero está muy cerca de la documentación oficial, solo que más corto. También podés ver otro ejemplo con [python aquí](https://github.com/terraform-providers/terraform-provider-aws/tree/master/examples/lambda).

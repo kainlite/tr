@@ -4,14 +4,14 @@
   description: "This is an awesome tool to setup and maintain your clusters, currently only compatible with AWS and GCE...",
   tags: ~w(kubernetes kops aws),
   published: true,
-  image: "kubernetes-aws.png",
+  image: "kubernetes-aws.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![kubernetes](/images/kubernetes-aws.png){:class="mx-auto"}
+![kubernetes](/images/kubernetes-aws.webp){:class="mx-auto"}
 
 ### **Introduction**
 In this article we will create a cluster from scratch with [kops](https://github.com/kubernetes/kops) (K8s installation, upgrades and management) in [AWS](https://aws.amazon.com/), We will configure [aws-alb-ingress-controller](https://github.com/kubernetes-sigs/aws-alb-ingress-controller) (External traffic into our services/pods) and [external dns](https://github.com/kubernetes-incubator/external-dns) (Update the records based in the ingress rules) and also learn a bit about awscli in the process.
@@ -195,7 +195,7 @@ ID=$(uuidgen) && aws route53 create-hosted-zone --name ${NAME} --caller-referenc
 # ]
 ```
 As I'm already using this domain for the blog with github we can create a subdomain for it and add some NS records in our root zone for that subdomain, in this case k8s.techsquad.rocks. To make this easier I will show you how it should look like:
-![img](/images/kops-dns-subdomain.png){:class="mx-auto"}
+![img](/images/kops-dns-subdomain.webp){:class="mx-auto"}
 So with this change and our new zone in Route53 for the subdomain, we can freely manage it like if it was another domain, this means that everything that goes to \*.k8s.techsquad.rocks will be handled by our Route53 zone.
 <br />
 
@@ -648,15 +648,15 @@ Wait a few moments and verify.
 ### **Results**
 
 **The ALB**
-![img](/images/aws-alb-listeners.png){:class="mx-auto"}
+![img](/images/aws-alb-listeners.webp){:class="mx-auto"}
 <br />
 
 **The DNS records**
-![image](/images/aws-alb-route53-records.png){:class="mx-auto"}
+![image](/images/aws-alb-route53-records.webp){:class="mx-auto"}
 <br />
 
 **And the app**
-![img](/images/aws-alb-result.png){:class="mx-auto"}
+![img](/images/aws-alb-result.webp){:class="mx-auto"}
 <br />
 
 ### **Clean up**
@@ -702,14 +702,14 @@ Also, you can check the source code and changes in the [generated code](https://
   AWS...",
   tags: ~w(kubernetes kops aws),
   published: true,
-  image: "kubernetes-aws.png",
+  image: "kubernetes-aws.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![kubernetes](/images/kubernetes-aws.png){:class="mx-auto"}
+![kubernetes](/images/kubernetes-aws.webp){:class="mx-auto"}
 
 ### **Introducción**
 
@@ -898,7 +898,7 @@ ID=$(uuidgen) && aws route53 create-hosted-zone --name ${NAME} --caller-referenc
 # ]
 ```
 Como ya estoy utilizando este dominio para el blog con GitHub, podemos crear un subdominio y añadir algunos registros NS en nuestra zona raíz para ese subdominio, en este caso k8s.techsquad.rocks. Para que sea más fácil, te mostraré cómo debería verse:
-![img](/images/kops-dns-subdomain.png){:class="mx-auto"}
+![img](/images/kops-dns-subdomain.webp){:class="mx-auto"}
 Con este cambio y nuestra nueva zona en Route53 para el subdominio, podemos gestionarlo libremente como si fuera otro dominio. Esto significa que todo lo que vaya a \*.k8s.techsquad.rocks será manejado por nuestra zona en Route53.
 <br />
 
@@ -1353,15 +1353,15 @@ Espere unos momentos y verifique.
 ### **Resultados**
 
 **El ALB**
-![img](/images/aws-alb-listeners.png){:class="mx-auto"}
+![img](/images/aws-alb-listeners.webp){:class="mx-auto"}
 <br />
 
 **Los registros DNS**
-![image](/images/aws-alb-route53-records.png){:class="mx-auto"}
+![image](/images/aws-alb-route53-records.webp){:class="mx-auto"}
 <br />
 
 **Y la aplicación**
-![img](/images/aws-alb-result.png){:class="mx-auto"}
+![img](/images/aws-alb-result.webp){:class="mx-auto"}
 <br />
 
 ### **Clean up**

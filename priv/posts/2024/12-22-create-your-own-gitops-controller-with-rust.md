@@ -81,15 +81,15 @@ kubectl port-forward service/argocd-server 8080:443
 <br />
 
 Then you should add your key, that would look something like this (hit "Connect repo" and fill the information):
-![connect-repo](/images/gitops-operator-1.png){:class="mx-auto"}
+![connect-repo](/images/gitops-operator-1.webp){:class="mx-auto"}
 
 <br />
 
 We can create the ArgoCD application and enable Self-healing like so:
-![argocd](/images/gitops-operator-4.png){:class="mx-auto"}
+![argocd](/images/gitops-operator-4.webp){:class="mx-auto"}
 
 Everything should look something like this:
-![argocd-2](/images/gitops-operator-5.png){:class="mx-auto"}
+![argocd-2](/images/gitops-operator-5.webp){:class="mx-auto"}
 
 <br />
 
@@ -102,7 +102,7 @@ ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa_demo
 
 Then in the GitHub repository we need to allow that key (using the public key) to read and write to the manifests
 repository (Settings->Deploy Key->Fill the contents and check the box to give it write permissions):
-![github-rw](/images/gitops-operator-2.png){:class="mx-auto"}
+![github-rw](/images/gitops-operator-2.webp){:class="mx-auto"}
 
 <br />
 
@@ -825,7 +825,7 @@ jobs:
 <br />
 
 So whenever we make a change to the application we will automatically see a commit from the controller like this:
-![commits](/images/gitops-operator-3.png){:class="mx-auto"}
+![commits](/images/gitops-operator-3.webp){:class="mx-auto"}
 
 <br />
 
@@ -1004,15 +1004,15 @@ kubectl port-forward service/argocd-server 8080:443
 <br />
 
 Luego, debes agregar tu clave. Se verá algo así (haz clic en **"Connect repo"** y completa la información):  
-![connect-repo](/images/gitops-operator-1.png){:class="mx-auto"}  
+![connect-repo](/images/gitops-operator-1.webp){:class="mx-auto"}  
 
 <br />  
 
 Podemos crear la aplicación de **ArgoCD** y habilitar la **autocuración** de la siguiente manera:  
-![argocd](/images/gitops-operator-4.png){:class="mx-auto"}  
+![argocd](/images/gitops-operator-4.webp){:class="mx-auto"}  
 
 Todo debería verse algo así:  
-![argocd-2](/images/gitops-operator-5.png){:class="mx-auto"}  
+![argocd-2](/images/gitops-operator-5.webp){:class="mx-auto"}  
 
 <br />  
 
@@ -1025,7 +1025,7 @@ ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa_demo
 
 Luego, en el repositorio de **GitHub**, necesitamos permitir que esa clave (usando la clave pública) tenga permisos de lectura y escritura 
 en el repositorio de manifiestos (**Settings → Deploy Key → Rellena el contenido y marca la casilla para otorgar permisos de escritura**): 
-![github-rw](/images/gitops-operator-2.png){:class="mx-auto"} 
+![github-rw](/images/gitops-operator-2.webp){:class="mx-auto"} 
 
 <br />  
 
@@ -1747,7 +1747,7 @@ jobs:
 <br />
 
 Cada vez que realicemos un cambio en la aplicación, veremos automáticamente un commit del controlador, algo así: 
-![commits](/images/gitops-operator-3.png){:class="mx-auto"}
+![commits](/images/gitops-operator-3.webp){:class="mx-auto"}
 
 <br />
 

@@ -5,7 +5,7 @@
   any task within github actions",
   tags: ~w(git github tips-and-tricks),
   published: true,
-  image: "github-logo.png",
+  image: "github-logo.webp",
   sponsored: false,
   video: "https://youtu.be/sDjXY5RJX3c",
   lang: "en"
@@ -55,19 +55,19 @@ That's pretty straight-forward, if you are only going to use it from a specific 
 repository settings, here is an example, go to your repository, then actions, then runners, hit the green button to add
 a new runner, it should look something like this 👇.
 
-![img1](/images/github-selfhosted-1.png){:class="mx-auto"}
+![img1](/images/github-selfhosted-1.webp){:class="mx-auto"}
 
 The next step would be to configure it in your node, this of course is not the most reliable way to configure your
 runners specially when you need to consider auto-scaling or zero-scaling, or ephemeral runners, however to test things
 out or get started is enough.
 
-![img1](/images/github-selfhosted-console-1.png){:class="mx-auto"}
+![img1](/images/github-selfhosted-console-1.webp){:class="mx-auto"}
 
 If everything was done correctly, then you should see your node listed in there:
-![img1](/images/github-selfhosted-2.png){:class="mx-auto"}
+![img1](/images/github-selfhosted-2.webp){:class="mx-auto"}
 
 To remove the node just execute the script again as shown in the image.
-![img1](/images/github-selfhosted-3.png){:class="mx-auto"}
+![img1](/images/github-selfhosted-3.webp){:class="mx-auto"}
 
 And that's it, remember be very security concious and heavily restrict the actions that can be performed on your
 repository if it is a public repo.
@@ -85,7 +85,7 @@ Also, you can check the source code and changes in the [sources here](https://gi
   description: "La forma mas basica de configurar un agente para correr tareas desde GitHub Actions",
   tags: ~w(git github tips-and-tricks),
   published: true,
-  image: "github-logo.png",
+  image: "github-logo.webp",
   sponsored: false,
   video: "https://youtu.be/sDjXY5RJX3c",
   lang: "es"
@@ -129,17 +129,17 @@ Algunos módulos de terraform interesantes y alternativas:
 
 Es bastante simple. Si solo lo vas a usar desde un repositorio específico, podés agregarlo desde la configuración del repositorio. Aquí tenés un ejemplo: andá a tu repositorio, luego a "actions", luego a "runners", y hacé clic en el botón verde para agregar un nuevo runner. Debería verse algo así 👇.
 
-![img1](/images/github-selfhosted-1.png){:class="mx-auto"}
+![img1](/images/github-selfhosted-1.webp){:class="mx-auto"}
 
 El siguiente paso sería configurarlo en tu nodo. Esto, por supuesto, no es la forma más confiable de configurar tus runners, especialmente cuando necesitás considerar el auto-escalado, el escalado a cero, o runners efímeros. Sin embargo, para probar o comenzar es suficiente.
 
-![img1](/images/github-selfhosted-console-1.png){:class="mx-auto"}
+![img1](/images/github-selfhosted-console-1.webp){:class="mx-auto"}
 
 Si todo se hizo correctamente, deberías ver tu nodo listado allí:
-![img1](/images/github-selfhosted-2.png){:class="mx-auto"}
+![img1](/images/github-selfhosted-2.webp){:class="mx-auto"}
 
 Para eliminar el nodo, simplemente ejecutá el script nuevamente como se muestra en la imagen.
-![img1](/images/github-selfhosted-3.png){:class="mx-auto"}
+![img1](/images/github-selfhosted-3.webp){:class="mx-auto"}
 
 Y eso es todo. Recordá ser muy consciente de la seguridad y restringir fuertemente las acciones que se pueden realizar en tu repositorio si es un repositorio público.
 

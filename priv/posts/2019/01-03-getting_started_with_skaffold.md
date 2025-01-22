@@ -4,7 +4,7 @@
   description: "This time we will see how to get started with skaffold...",
   tags: ~w(kubernetes),
   published: true,
-  image: "kubernetes.png",
+  image: "kubernetes.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -312,7 +312,7 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "Probamos skaffold y como empezar a usarlo...",
   tags: ~w(kubernetes),
   published: true,
-  image: "kubernetes.png",
+  image: "kubernetes.webp",
   sponsored: false,
   video: "",
   lang: "es"

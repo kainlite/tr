@@ -4,14 +4,14 @@
   description: "In this article we will see how to use kubebuilder and kind to create and test an operator...",
   tags: ~w(golang kubernetes kubebuilder kind linux operator),
   published: true,
-  image: "forward.png",
+  image: "forward.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![forward](/images/forward.png){:class="mx-auto"}
+![forward](/images/forward.webp){:class="mx-auto"}
 
 ##### **Introduction**
 In this article we will see how to use [kubebuilder](https://github.com/kubernetes-sigs/kubebuilder) and [Kind](https://github.com/kubernetes-sigs/kind) to create a local test cluster and an operator, then deploy that operator in the cluster and test it, the repository with the files can be found here, also if you want to learn more about the idea and the project go: [forward](https://github.com/kainlite/forward).
@@ -622,14 +622,14 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "In this article we will see how to use kubebuilder and kind to create and test an operator...",
   tags: ~w(golang kubernetes kubebuilder kind linux operator),
   published: true,
-  image: "forward.png",
+  image: "forward.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![forward](/images/forward.png){:class="mx-auto"}
+![forward](/images/forward.webp){:class="mx-auto"}
 
 ##### **Introducción**
 En este artículo vamos a ver cómo usar [kubebuilder](https://github.com/kubernetes-sigs/kubebuilder) y [Kind](https://github.com/kubernetes-sigs/kind) para crear un clúster local de prueba y un operador. Luego vamos a desplegar ese operador en el clúster y probarlo. El repositorio con los archivos se puede encontrar [aquí](https://github.com/kainlite/forward), y si querés aprender más sobre la idea y el proyecto, podés seguir este enlace: [forward](https://github.com/kainlite/forward).

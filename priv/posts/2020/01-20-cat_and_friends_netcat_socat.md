@@ -4,14 +4,14 @@
   description: "In this article we will see how to use cat, netcat and socat at least some basic examples and why do we have so many cats...",
   tags: ~w(linux networking),
   published: true,
-  image: "linux.png",
+  image: "linux.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![linux](/images/linux.png){:class="mx-auto"}
+![linux](/images/linux.webp){:class="mx-auto"}
 
 #### **Introduction**
 In this article we will see how to use `cat`, `netcat` and `socat` at least some basic examples and why do we have so many cats...
@@ -191,14 +191,14 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "En este articulo vamos a aprender un poco de cat, netcat y socat y algunos ejemplos basicos de gatos, ehem digo cat...",
   tags: ~w(linux networking),
   published: true,
-  image: "linux.png",
+  image: "linux.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![linux](/images/linux.png){:class="mx-auto"}
+![linux](/images/linux.webp){:class="mx-auto"}
 
 #### **Introducción**
 En este artículo vamos a ver cómo usar `cat`, `netcat` y `socat`, al menos con algunos ejemplos básicos, y por qué tenemos tantos gatos...

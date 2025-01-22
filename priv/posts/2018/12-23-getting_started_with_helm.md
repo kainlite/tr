@@ -5,7 +5,7 @@
   helm...",
   tags: ~w(kubernetes helm),
   published: true,
-  image: "kubernetes.png",
+  image: "kubernetes.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -444,7 +444,7 @@ Also you can check the source code and changes in the [generated code](https://g
   description: "En este tutorial vamos a ver como crear un paquete de Helm...",
   tags: ~w(kubernetes helm),
   published: true,
-  image: "kubernetes.png",
+  image: "kubernetes.webp",
   sponsored: false,
   video: "",
   lang: "es"

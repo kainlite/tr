@@ -4,14 +4,14 @@
   description: "In this article we will explore how webhook works in kubernetes and more specifically about the ImagePolicyWebhook, the kubernetes documentation about it is kind of vague...",
   tags: ~w(kubernetes linux security),
   published: true,
-  image: "kubernetes-admission-phases.png",
+  image: "kubernetes-admission-phases.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![kubernetes](/images/kubernetes-admission-phases.png){:class="mx-auto"}
+![kubernetes](/images/kubernetes-admission-phases.webp){:class="mx-auto"}
 
 #### Introduction
 In this article we will explore how webhook works in kubernetes and more specifically about the ImagePolicyWebhook, the kubernetes documentation about it is kind of vague, since there is no real example or implementation that you can get out of it, so here we will break it down to the different alternatives, in a real world scenario I would prefer to rely in [OPA Gatekeeper](https://github.com/open-policy-agent/gatekeeper), I'm planning to make this trip worth by adding a database and make the webhook allow or disallow images based in the vulnerability scan, for example allow only medium or lower vulnerabilities in your containers, but that will be a post for another day, if you are interested you can help in this [repo](https://github.com/kainlite/kube-image-bouncer).
@@ -504,14 +504,14 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "Explorando recursos necesarios para rendir el examen CKS...",
   tags: ~w(kubernetes linux security),
   published: true,
-  image: "kubernetes-admission-phases.png",
+  image: "kubernetes-admission-phases.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![kubernetes](/images/kubernetes-admission-phases.png){:class="mx-auto"}
+![kubernetes](/images/kubernetes-admission-phases.webp){:class="mx-auto"}
 
 ### Introducción
 

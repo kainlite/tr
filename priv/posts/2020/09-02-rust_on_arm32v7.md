@@ -4,14 +4,14 @@
   description: "In this article we will explore how to create a sample rust project and Dockerfile to run it on ARM32v7...",
   tags: ~w(kubernetes rust arm),
   published: true,
-  image: "rust.png",
+  image: "rust.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![rust](/images/rust.png"){:class="mx-auto"}
+![rust](/images/rust.webp"){:class="mx-auto"}
 
 #### **Introduction**
 
@@ -596,14 +596,14 @@ and the [sources here](https://github.com/kainlite/blog)
   description: "Usando rust en ARM32v7...",
   tags: ~w(kubernetes rust arm),
   published: true,
-  image: "rust.png",
+  image: "rust.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![rust](/images/rust.png"){:class="mx-auto"}
+![rust](/images/rust.webp"){:class="mx-auto"}
 
 #### **Introducción**
 

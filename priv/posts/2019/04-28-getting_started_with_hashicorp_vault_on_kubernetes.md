@@ -4,14 +4,14 @@
   description: "Exploring how to install and use Vault on Kubernetes...",
   tags: ~w(kubernetes vault linux security),
   published: true,
-  image: "vault.png",
+  image: "vault.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![vault](/images/vault.png){:class="mx-auto"}
+![vault](/images/vault.webp){:class="mx-auto"}
 
 ##### **Introduction**
 Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. What this means is that you can safely store all your App secrets in Vault without having to worry anymore how to store, provide, and use those secrets, we will see how to install it on a running kubernetes cluster and save and read a secret by our application, in this page we will be using Vault version 1.1.1, we will be using dynamic secrets, that means that each pod will have a different secret and that secret will expire once the pod is killed.
@@ -230,14 +230,14 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "En este articulo vemos como instalar y usar Vault en kubernetes...",
   tags: ~w(kubernetes vault linux security),
   published: true,
-  image: "vault.png",
+  image: "vault.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![vault](/images/vault.png){:class="mx-auto"}
+![vault](/images/vault.webp){:class="mx-auto"}
 
 ##### **Introducción**
 Vault asegura, almacena y controla de manera estricta el acceso a tokens, contraseñas, certificados, claves API y otros secretos en la informática moderna. Esto significa que podés almacenar de forma segura todos los secretos de tu aplicación en Vault sin preocuparte más por cómo almacenarlos, proporcionarlos y utilizarlos. Vamos a ver cómo instalar Vault en un clúster de Kubernetes en ejecución, y cómo guardar y leer un secreto por parte de nuestra aplicación. En esta guía, usaremos Vault versión 1.1.1 con **secretos dinámicos**, lo que significa que cada pod tendrá un secreto diferente, y ese secreto expirará cuando se elimine el pod.

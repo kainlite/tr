@@ -5,14 +5,14 @@
   will use gitlab-ci...",
   tags: ~w(kubernetes golang linux kubebuilder cicd),
   published: true,
-  image: "gitlab.png",
+  image: "gitlab.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![gitlab](/images/gitlab.png){:class="mx-auto"}
+![gitlab](/images/gitlab.webp){:class="mx-auto"}
 
 ##### **Introduction**
 In this article we will continue where we left off the [forward](https://github.com/kainlite/forward) project last time, in this article we will use [gitlab-ci](https://gitlab.com) to test, build and push the image of our operator to [dockerhub](https://hub.docker.com/repository/docker/kainlite/forward).
@@ -33,39 +33,39 @@ If you want to check the previous article [go here](/blog/cloud_native_applicati
 
 ##### **Create the project**
 Once you have your accounts configured, let's create a project, the page should look something like this
-![img](/images/gitlab-1.png){:class="mx-auto"}
+![img](/images/gitlab-1.webp){:class="mx-auto"}
 We want to create a repo or sync a repo in this case, so we select `Create a project` and continue
 <br />
 
 ##### **Project type**
 In this step we have a few options and since we have our code in Github and we want to work there, we only want to sync it, so we need to choose `CI/CD for external repo`
-![img](/images/gitlab-2.png){:class="mx-auto"}
+![img](/images/gitlab-2.webp){:class="mx-auto"}
 Note that if the repo is public you can fetch/clone using the repo URL, but since I want to check also private repos I went for the github token alternative. Once you hit github it will ask you for the token then it will show you the full list of repos in your account
 <br />
 
 ##### **Github Token**
 I picked to use a personal token to fetch the repos to be able to grab private repos, etc, so you will need to go to your github account, `Settings->Developer settings` and then create a new token or [click here](https://github.com/settings/tokens)
-![img](/images/gitlab-3.png){:class="mx-auto"}
+![img](/images/gitlab-3.webp){:class="mx-auto"}
 <br />
 
 Now you only need to give it access to repo, and hit save or create new personal token
-![img](/images/gitlab-4.png){:class="mx-auto"}
+![img](/images/gitlab-4.webp){:class="mx-auto"}
 Make sure you don't expose or publish that token in any way, otherwise someone could gain access to your account
 <br />
 
 ##### (Back to gitlab) **Select the repository to sync**
 Here we need to select the repo that we want to sync and hit connect, it will automatically fetch everything periodically from github.
-![img](/images/gitlab-5.png){:class="mx-auto"}
+![img](/images/gitlab-5.webp){:class="mx-auto"}
 <br />
 
 ##### **Dockerhub token**
 Now we will need to create a token for dockerhub so we can push our image from the build runner, go to your dockerhub account and create a token
-![img](/images/gitlab-6.png){:class="mx-auto"}
+![img](/images/gitlab-6.webp){:class="mx-auto"}
 Basically you have to go to `Account settings->Security->New Access Token` or [click here](https://hub.docker.com/settings/security).
 <br />
 
 Then we need to save that token as `DOCKERHUB_TOKEN` in this case as an environment variable in the gitlab project, `Settings->CI/CD->Variables`
-![img](/images/gitlab-7.png){:class="mx-auto"}
+![img](/images/gitlab-7.webp){:class="mx-auto"}
 make sure masked is marked but not protected, protected is only used when you want to use that secret in specific branches
 <br />
 
@@ -134,12 +134,12 @@ basically we just install everything we need run the tests if everything goes we
 <br />
 
 Then we will see something like this in the `CI/CD->Pipelines` tab, after each commit it will trigger a test, build and push
-![img](/images/gitlab-8.png){:class="mx-auto"}
+![img](/images/gitlab-8.webp){:class="mx-auto"}
 <br />
 
 ##### **Checking the results**
 And we can validate that the images are in dockerhub
-![img](/images/gitlab-9.png){:class="mx-auto"}
+![img](/images/gitlab-9.webp){:class="mx-auto"}
 <br />
 
 ##### **Useful links**
@@ -167,14 +167,14 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "Usando gitlab-ci para deployar el proyecto forward...",
   tags: ~w(kubernetes golang linux kubebuilder cicd),
   published: true,
-  image: "gitlab.png",
+  image: "gitlab.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![gitlab](/images/gitlab.png){:class="mx-auto"}
+![gitlab](/images/gitlab.webp){:class="mx-auto"}
 
 ##### **Introducción**
 En este artículo vamos a continuar donde dejamos el proyecto [forward](https://github.com/kainlite/forward) la última vez. En este artículo vamos a usar [gitlab-ci](https://gitlab.com) para testear, construir y empujar la imagen de nuestro operador a [dockerhub](https://hub.docker.com/repository/docker/kainlite/forward).
@@ -195,39 +195,39 @@ Si querés revisar el artículo anterior [andá acá](/blog/cloud_native_applica
 
 ##### **Crear el proyecto**
 Una vez que tengas tus cuentas configuradas, vamos a crear un proyecto. La página debería verse algo así:
-![img](/images/gitlab-1.png){:class="mx-auto"}
+![img](/images/gitlab-1.webp){:class="mx-auto"}
 Queremos crear un repo o sincronizar uno en este caso, así que seleccionamos `Create a project` y continuamos.
 <br />
 
 ##### **Tipo de proyecto**
 En este paso tenemos algunas opciones y como tenemos nuestro código en Github y queremos trabajar ahí, solo queremos sincronizarlo, así que necesitamos elegir `CI/CD for external repo`.
-![img](/images/gitlab-2.png){:class="mx-auto"}
+![img](/images/gitlab-2.webp){:class="mx-auto"}
 Notá que si el repo es público, podés hacer fetch/clone usando la URL del repo, pero como también quiero probar con repos privados, elegí la alternativa del token de github. Una vez que seleccionás github, te pedirá el token y luego te mostrará la lista completa de repos en tu cuenta.
 <br />
 
 ##### **Token de Github**
 Elegí usar un token personal para poder obtener los repos privados, etc., así que tendrás que ir a tu cuenta de github, `Settings->Developer settings` y luego crear un nuevo token o [hacé clic acá](https://github.com/settings/tokens).
-![img](/images/gitlab-3.png){:class="mx-auto"}
+![img](/images/gitlab-3.webp){:class="mx-auto"}
 <br />
 
 Ahora solo necesitás darle acceso a los repos y hacer clic en guardar o crear nuevo token personal.
-![img](/images/gitlab-4.png){:class="mx-auto"}
+![img](/images/gitlab-4.webp){:class="mx-auto"}
 Asegurate de no exponer ni publicar ese token de ninguna manera, de lo contrario alguien podría obtener acceso a tu cuenta.
 <br />
 
 ##### (Volviendo a gitlab) **Seleccionar el repositorio a sincronizar**
 Acá necesitamos seleccionar el repo que queremos sincronizar y hacer clic en conectar, se sincronizará automáticamente todo desde github periódicamente.
-![img](/images/gitlab-5.png){:class="mx-auto"}
+![img](/images/gitlab-5.webp){:class="mx-auto"}
 <br />
 
 ##### **Token de Dockerhub**
 Ahora necesitaremos crear un token para dockerhub para poder empujar nuestra imagen desde el build runner. Vamos a tu cuenta de dockerhub y creamos un token.
-![img](/images/gitlab-6.png){:class="mx-auto"}
+![img](/images/gitlab-6.webp){:class="mx-auto"}
 Básicamente tenés que ir a `Account settings->Security->New Access Token` o [hacé clic acá](https://hub.docker.com/settings/security).
 <br />
 
 Luego necesitamos guardar ese token como `DOCKERHUB_TOKEN`, en este caso, como una variable de entorno en el proyecto de gitlab, `Settings->CI/CD->Variables`.
-![img](/images/gitlab-7.png){:class="mx-auto"}
+![img](/images/gitlab-7.webp){:class="mx-auto"}
 Asegurate de que esté marcado como "masked" pero no como "protected". "Protected" solo se usa cuando querés usar ese secreto en ramas específicas.
 <br />
 
@@ -296,12 +296,12 @@ Básicamente, solo instalamos todo lo que necesitamos, ejecutamos las pruebas y,
 <br />
 
 Entonces veremos algo como esto en la pestaña `CI/CD->Pipelines`. Después de cada commit, se disparará un test, build y push.
-![img](/images/gitlab-8.png){:class="mx-auto"}
+![img](/images/gitlab-8.webp){:class="mx-auto"}
 <br />
 
 ##### **Verificando los resultados**
 Y podemos validar que las imágenes están en dockerhub.
-![img](/images/gitlab-9.png){:class="mx-auto"}
+![img](/images/gitlab-9.webp){:class="mx-auto"}
 <br />
 
 ##### **Links útiles**

@@ -4,7 +4,7 @@
   description: "New blog to document and learn about the infamous Web3 world with a dynamic self-hosted blog...",
   tags: ~w(elixir phoenix),
   published: true,
-  image: "phoenix.png",
+  image: "phoenix.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -75,7 +75,7 @@ Also, you can check the source code and changes in the [sources here](https://gi
   description: "Nuevo blog corriendo en Kubernetes usando Phoenix / Elixir...",
   tags: ~w(elixir phoenix),
   published: true,
-  image: "phoenix.png",
+  image: "phoenix.webp",
   sponsored: false,
   video: "",
   lang: "es"

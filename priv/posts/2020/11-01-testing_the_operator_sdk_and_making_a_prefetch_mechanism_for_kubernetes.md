@@ -4,14 +4,14 @@
   description: "In this article we will explore how to create an operator that can prefetch our images (from our deployments to all nodes) using the Operator SDK, you might be wondering why...",
   tags: ~w(golang kubernetes operator),
   published: true,
-  image: "operator-sdk.png",
+  image: "operator-sdk.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![operator](/images/operator-sdk.png){:class="mx-auto"}
+![operator](/images/operator-sdk.webp){:class="mx-auto"}
 
 #### **Introduction**
 In this article we will explore how to create an operator that can prefetch our images (from our deployments to all nodes) using the Operator SDK, you might be wondering why would you want to do this? the main idea is to get the images in advance so you don't have to pull them when the pod actually needs to start running in a given node, this can speed up things a bit and it's also an interesting exercise.
@@ -820,14 +820,14 @@ Also, you can check the source code and changes in the [generated code](https://
   la necesiten...",
   tags: ~w(golang kubernetes operator),
   published: true,
-  image: "operator-sdk.png",
+  image: "operator-sdk.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![operator](/images/operator-sdk.png){:class="mx-auto"}
+![operator](/images/operator-sdk.webp){:class="mx-auto"}
 
 #### **Introducción**
 En este artículo exploraremos cómo crear un operador que pueda prefetchar nuestras imágenes (de nuestros deployments en todos los nodos) utilizando el Operator SDK. Tal vez te preguntes, ¿por qué querrías hacer esto? La idea principal es obtener las imágenes por adelantado para que no tengas que descargarlas cuando el pod realmente necesite comenzar a ejecutarse en un nodo determinado. Esto puede acelerar un poco las cosas y también es un ejercicio interesante.

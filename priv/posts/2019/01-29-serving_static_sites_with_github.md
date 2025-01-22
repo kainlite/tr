@@ -4,14 +4,14 @@
   description: "GitHub pages offers some great examples that are really easy to follow, but if you want to know how I configured everything for this blog continue reading...",
   tags: ~w(serverless git github),
   published: true,
-  image: "serve-github.png",
+  image: "serve-github.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![github](/images/serve-github.png){:class="mx-auto"}
+![github](/images/serve-github.webp){:class="mx-auto"}
 
 ### **Introduction**
 GitHub offers static web hosting for you and your apps this is called [GitHub Pages](https://pages.github.com/), you can use markdown ([jekyll](https://jekyllrb.com/) or just plain html), for example for this blog I generate all the files with [Hugo.io](https://gohugo.io/) and that gets deployed to GitHub Pages, the configuration is fairly simple as we will see in the following example (this blog setup).
@@ -22,11 +22,11 @@ GitHub pages offers some great examples that are really easy to follow, but if y
 
 ### **Pages**
 The first step in order to use GH Pages is to create a repo (assuming that you already have an account) with the following name: username.github.io in my case is kainlite.github.io, as we can see in the following screenshot:
-![img](/images/github-pages-repository.png){:class="mx-auto"}
+![img](/images/github-pages-repository.webp){:class="mx-auto"}
 This repo already has the blog files, but as with any github repo you will see the default commands to push something to it, the next step is to configure the pages itself, for that you need to go to [Settings](https://github.com/username/username.github.io/settings) (be sure to replace username in the link), then scroll down to the GitHub Pages section. It will look something like this:
 <br />
 
-![img](/images/github-pages-configuration.png){:class="mx-auto"}
+![img](/images/github-pages-configuration.webp){:class="mx-auto"}
 As you can see the configuration is fairly simple, you choose the branch that will be used to serve the site, you can even pick a theme if you are going to go with Jekyll, and you can also have a custom domain and https, in this case as I push the static html files to the master branch I selected that branch, you can have any branch you like but it's common to use gh-pages.
 <br />
 
@@ -83,7 +83,7 @@ And that's how this blog was configured, in the upcoming articles I will show yo
 
 ##### **Pages Environment**
 If you paid attention at the first screenshot you probably noticed that it says _1 Environment_ that means that GH Pages have been already configured and if we click it we can see something like this:
-![img](/images/github-pages-environment.png){:class="mx-auto"}
+![img](/images/github-pages-environment.webp){:class="mx-auto"}
 <br />
 For static html sites it would be unlikely to see a failure, but it can happen if you use Jekyll for example and there is any syntax error.
 <br />
@@ -101,14 +101,14 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "Como usar GitHub Pages para sitios estaticos...",
   tags: ~w(serverless git github),
   published: true,
-  image: "serve-github.png",
+  image: "serve-github.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![github](/images/serve-github.png){:class="mx-auto"}
+![github](/images/serve-github.webp){:class="mx-auto"}
 
 ### **Introducción**
 GitHub ofrece alojamiento web estático para vos y tus apps, esto se llama [GitHub Pages](https://pages.github.com/). Podés usar markdown ([jekyll](https://jekyllrb.com/)) o simplemente HTML. Por ejemplo, para este blog genero todos los archivos con [Hugo.io](https://gohugo.io/) y eso se despliega en GitHub Pages. La configuración es bastante simple como veremos en el siguiente ejemplo (la configuración de este blog).
@@ -119,11 +119,11 @@ GitHub Pages ofrece algunos ejemplos muy buenos que son fáciles de seguir, pero
 
 ### **Pages**
 El primer paso para usar GitHub Pages es crear un repositorio (suponiendo que ya tenés una cuenta) con el siguiente nombre: username.github.io, en mi caso es kainlite.github.io, como podés ver en la siguiente captura de pantalla:
-![img](/images/github-pages-repository.png){:class="mx-auto"}
+![img](/images/github-pages-repository.webp){:class="mx-auto"}
 Este repositorio ya tiene los archivos del blog, pero como con cualquier repositorio de GitHub, verás los comandos predeterminados para subir algo. El siguiente paso es configurar las páginas en sí. Para eso, tenés que ir a [Settings](https://github.com/username/username.github.io/settings) (asegurate de reemplazar *username* en el enlace), luego desplazate hasta la sección de GitHub Pages. Se verá algo así:
 <br />
 
-![img](/images/github-pages-configuration.png){:class="mx-auto"}
+![img](/images/github-pages-configuration.webp){:class="mx-auto"}
 Como podés ver, la configuración es bastante sencilla. Elegís la rama que se va a usar para servir el sitio. Incluso podés elegir un tema si vas a usar Jekyll, y también podés tener un dominio personalizado y https. En este caso, como subo los archivos HTML estáticos a la rama master, seleccioné esa rama. Podés usar cualquier rama que quieras, pero es común usar *gh-pages*.
 <br />
 
@@ -180,7 +180,7 @@ Y así es como se configuró este blog. En los próximos artículos te mostraré
 
 ##### **Entorno de Pages**
 Si prestaste atención a la primera captura de pantalla, probablemente notaste que dice _1 Environment_, eso significa que GitHub Pages ya ha sido configurado, y si hacemos clic en eso, podemos ver algo como esto:
-![img](/images/github-pages-environment.png){:class="mx-auto"}
+![img](/images/github-pages-environment.webp){:class="mx-auto"}
 <br />
 Para sitios HTML estáticos es poco probable que veas un fallo, pero puede pasar si usás Jekyll, por ejemplo, y hay algún error de sintaxis.
 <br />

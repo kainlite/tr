@@ -4,7 +4,7 @@
   description: "SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Remote port forward and what it means, we also will explore ...",
   tags: ~w(linux openssh networking),
   published: true,
-  image: "openssh.png",
+  image: "openssh.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -63,7 +63,7 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "SSH no es solo sirve para conectarse a servidores u otras maquinas, tambien se puede usar para redirigir puertos...",
   tags: ~w(linux openssh networking),
   published: true,
-  image: "openssh.png",
+  image: "openssh.webp",
   sponsored: false,
   video: "",
   lang: "es"

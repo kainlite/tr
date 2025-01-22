@@ -4,14 +4,14 @@
   description: "This article explains how to create a serverless tweet-bot, basically pulls articles from this blog and post them to twitter in a nice way. It uses cron as the trigger...",
   tags: ~w(golang serverless),
   published: true,
-  image: "logo.png",
+  image: "logo.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![logo](/images/logo.png){:class="mx-auto" style="max-height:300px;"}
+![logo](/images/logo.webp){:class="mx-auto" style="max-height:300px;"}
 
 ### **Introduction**
 This article explains how to create a serverless tweet-bot, basically pulls articles from this blog and post them to twitter in a nice way. It uses cron as the trigger so it should post a tweet every 12 hours, or you can invoke it manually.
@@ -457,7 +457,7 @@ serverless invoke -f tweet
 # null
 ```
 Wait, where did tweet came from?, if you look at the serverless manifest you will see that our function is called tweet. If everything went well you will be able to see that tweet in your profile, something like this:
-![img](/images/twitter-tbo.png){:class="mx-auto"}
+![img](/images/twitter-tbo.webp){:class="mx-auto"}
 <br />
 
 ### Notes
@@ -479,14 +479,14 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "This article explains how to create a serverless tweet-bot, basically pulls articles from this blog and post them to twitter in a nice way. It uses cron as the trigger...",
   tags: ~w(golang serverless),
   published: true,
-  image: "logo.png",
+  image: "logo.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![logo](/images/logo.png){:class="mx-auto" style="max-height:300px;"}
+![logo](/images/logo.webp){:class="mx-auto" style="max-height:300px;"}
 
 ### **Introducción**
 Este artículo explica cómo crear un bot de tweets sin servidor, básicamente toma artículos de este blog y los publica en Twitter de manera prolija. Utiliza un cron como disparador, por lo que debería publicar un tweet cada 12 horas, o también lo podés invocar manualmente.
@@ -559,7 +559,7 @@ serverless invoke -f tweet
 # null
 ```
 Esperá, ¿de dónde salió `tweet`? Si mirás el manifiesto de Serverless, verás que nuestra función se llama `tweet`. Si todo salió bien, vas a poder ver ese tweet en tu perfil, algo así:
-![img](/images/twitter-tbo.png){:class="mx-auto"}
+![img](/images/twitter-tbo.webp){:class="mx-auto"}
 
 <br />
 

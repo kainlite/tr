@@ -4,7 +4,7 @@
   description: "This tutorial will show you how to create a simple application and also how to deploy it to kubernetes using ksonnet...",
   tags: ~w(kubernetes jsonnet ksonnet tooling),
   published: true,
-  image: "kubernetes.png",
+  image: "kubernetes.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -533,7 +533,7 @@ Also you can check the source code and changes in the [generated code](https://g
   description: "En este tutorial vamos a ver como crear y desplegar una aplicacion en kubernetes usando ksonnet...",
   tags: ~w(kubernetes jsonnet ksonnet tooling),
   published: true,
-  image: "kubernetes.png",
+  image: "kubernetes.webp",
   sponsored: false,
   video: "",
   lang: "es"

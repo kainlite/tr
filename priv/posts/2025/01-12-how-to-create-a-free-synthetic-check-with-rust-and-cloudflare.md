@@ -4,7 +4,7 @@
   description: "We will see how to craft and use a super-simple synthetic check using a Cloudflare worker...",
   tags: ~w(networking rust cicd serverless slack),
   published: true,
-  image: "rust.png",
+  image: "rust.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -238,10 +238,10 @@ head_sampling_rate = 1
 
 ##### **The result**
 The logs should look something like this:
-![logs](/images/healthcheck-logs.png){:class="mx-auto"}
+![logs](/images/healthcheck-logs.webp){:class="mx-auto"}
 
 And when things don't go well, you should receive a Slack message wherever you configured the webhook.
-![logs](/images/healthcheck-slack.png){:class="mx-auto"}
+![logs](/images/healthcheck-slack.webp){:class="mx-auto"}
 
 I hope you liked it and found it useful, until next time!
 
@@ -252,7 +252,7 @@ I hope you liked it and found it useful, until next time!
   description: "Vamos a ver como crear una prueba sintetica super simple usando un Worker de Cloudflare... ",
   tags: ~w(networking rust cicd serverless slack),
   published: true,
-  image: "rust.png",
+  image: "rust.webp",
   sponsored: false,
   video: "",
   lang: "es"
@@ -484,9 +484,9 @@ head_sampling_rate = 1
 ##### **El resultado**
 
 Los logs deberían verse algo así:
-![logs](/images/healthcheck-logs.png){:class="mx-auto"}
+![logs](/images/healthcheck-logs.webp){:class="mx-auto"}
 
 Y cuando las cosas no van bien, deberías recibir un mensaje de Slack donde sea que hayas configurado el webhook.
-![logs](/images/healthcheck-slack.png){:class="mx-auto"}
+![logs](/images/healthcheck-slack.webp){:class="mx-auto"}
 
 ¡Espero que te haya gustado y te sea útil\! ¡Hasta la próxima\!

@@ -4,7 +4,7 @@
   description: "Exploring ksonnet with an echo bot made in Golang...",
   tags: ~w(git gitkube kubernetes cicd),
   published: true,
-  image: "logo.png",
+  image: "logo.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -286,7 +286,7 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "Seguimos explorando ksonnet y gitkube con un bot eco hecho en Go...",
   tags: ~w(git gitkube kubernetes cicd),
   published: true,
-  image: "logo.png",
+  image: "logo.webp",
   sponsored: false,
   video: "",
   lang: "es"

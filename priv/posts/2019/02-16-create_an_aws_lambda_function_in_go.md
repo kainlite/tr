@@ -4,7 +4,7 @@
   description: "In this article we will create a lambda function and an API Gateway route like we did with the serverless framework but only using AWS tools, we will be using the same generated...",
   tags: ~w(golang serverless terraform),
   published: true,
-  image: "lambda-helloworld-example.png",
+  image: "lambda-helloworld-example.webp",
   sponsored: false,
   video: "",
   lang: "en"
@@ -153,11 +153,11 @@ To make this step simpler I decided to use the AWS Console instead of the CLI it
 **Now we need to create the API Gateway endpoint**
 
 Note that you only have to go to Lambda->Functions->helloworld->Add triggers->API Gateway. And then complete as shown in the image, when you save this new trigger you will get the resource that then can be used to test the API Gateway integration.
-![img](/images/lambda-helloworld-example.png){:class="mx-auto"}
+![img](/images/lambda-helloworld-example.webp){:class="mx-auto"}
 <br />
 
 The endpoint will show as follows (Click on API Gateway):
-![image](/images/lambda-helloworld-example-endpoint.png){:class="mx-auto"}
+    ![image](/images/lambda-helloworld-example-endpoint.webp){:class="mx-auto"}
 <br />
 
 **Test the API**
@@ -233,7 +233,7 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "En este articulo creamos una funcion lambda y un API Gateway como hicimos con el serverless framework pero solo vamos a usar las herramientas de AWS...",
   tags: ~w(golang serverless terraform),
   published: true,
-  image: "lambda-helloworld-example.png",
+  image: "lambda-helloworld-example.webp",
   sponsored: false,
   video: "",
   lang: "es"
@@ -378,11 +378,11 @@ Para simplificar este paso, decidí usar la consola de AWS en lugar de la CLI. T
 ### **Crear el endpoint en API Gateway**
 
 Solo tenés que ir a Lambda -> Funciones -> helloworld -> Add triggers -> API Gateway. Completá los campos como se muestra en la imagen, y cuando guardes este nuevo disparador, obtendrás el recurso que luego se podrá usar para probar la integración de API Gateway.
-![img](/images/lambda-helloworld-example.png){:class="mx-auto"}
+![img](/images/lambda-helloworld-example.webp){:class="mx-auto"}
 <br />
 
 El endpoint se verá así (hacé clic en API Gateway):
-![image](/images/lambda-helloworld-example-endpoint.png){:class="mx-auto"}
+![image](/images/lambda-helloworld-example-endpoint.webp){:class="mx-auto"}
 <br />
 
 ### **Probar el API**

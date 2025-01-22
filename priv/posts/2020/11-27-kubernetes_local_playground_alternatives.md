@@ -4,14 +4,14 @@
   description: "In this article we will explore different alternatives for spinning up a cluster locally for testing, practicing or just developing an application...",
   tags: ~w(kubernetes vagrant linux),
   published: true,
-  image: "kubernetes.png",
+  image: "kubernetes.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![kubernetes](/images/kubernetes.png){:class="mx-auto"}
+![kubernetes](/images/kubernetes.webp){:class="mx-auto"}
 
 ##### **Introduction**
 In this article we will explore different alternatives for spinning up a cluster locally for testing, practicing or just developing an application.
@@ -628,14 +628,14 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "Diferentes alternativas para tu cluster local...",
   tags: ~w(kubernetes vagrant linux),
   published: true,
-  image: "kubernetes.png",
+  image: "kubernetes.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![kubernetes](/images/kubernetes.png){:class="mx-auto"}
+![kubernetes](/images/kubernetes.webp){:class="mx-auto"}
 
 ##### **Introducción**
 En este artículo exploraremos diferentes alternativas para levantar un clúster localmente para pruebas, práctica o simplemente desarrollar una aplicación.

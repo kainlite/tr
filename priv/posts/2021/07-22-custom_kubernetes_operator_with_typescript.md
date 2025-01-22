@@ -4,14 +4,14 @@
   description: "In this article we will explore how to create a sample operator using typescript and to deploy it to our cluster, the operator will be pretty dummy...",
   tags: ~w(kubernetes typescript operator),
   published: true,
-  image: "kubernetes-ts.png",
+  image: "kubernetes-ts.webp",
   sponsored: false,
   video: "",
   lang: "en"
 }
 ---
 
-![operator](/images/kubernetes-ts.png){:class="mx-auto"}
+![operator](/images/kubernetes-ts.webp){:class="mx-auto"}
 
 #### **Introduction**
 
@@ -520,14 +520,14 @@ Also, you can check the source code and changes in the [generated code](https://
   description: "Operador simple de kubernetes usando typescript...",
   tags: ~w(kubernetes typescript operator),
   published: true,
-  image: "kubernetes-ts.png",
+  image: "kubernetes-ts.webp",
   sponsored: false,
   video: "",
   lang: "es"
 }
 ---
 
-![operator](/images/kubernetes-ts.png){:class="mx-auto"}
+![operator](/images/kubernetes-ts.webp){:class="mx-auto"}
 
 #### **Introducción**
 
