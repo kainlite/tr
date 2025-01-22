@@ -349,17 +349,17 @@ msgstr ""
 
 #: lib/tr_web/controllers/page_xml/index.xml.eex:7
 #, elixir-autogen, elixir-format
-msgid "Red Beard Team offers expert fractional DevOps services specializing in Linux, Kubernetes,\n    AWS, Terraform, Docker, and more. Transform your infrastructure with our tailored solutions. Explore insights,\n    tutorials, and experiments across the tech landscape."
+msgid "SegFault offers expert fractional DevOps services specializing in Linux, Kubernetes,\n    AWS, Terraform, Docker, and more. Transform your infrastructure with our tailored solutions. Explore insights,\n    tutorials, and experiments across the tech landscape."
 msgstr ""
 
 #: lib/tr_web/components/layouts/root.html.heex:8
 #, elixir-autogen, elixir-format
-msgid "Red Beard Team offers expert fractional DevOps services specializing in Linux, Kubernetes, AWS,\n       Terraform, Docker, and more. Transform your infrastructure with our tailored solutions. Explore insights,\n       tutorials, and experiments across the tech landscape."
+msgid "SegFault offers expert fractional DevOps services specializing in Linux, Kubernetes, AWS,\n       Terraform, Docker, and more. Transform your infrastructure with our tailored solutions. Explore insights,\n       tutorials, and experiments across the tech landscape."
 msgstr ""
 
 #: lib/tr_web/live/beard_live.ex:17
 #, elixir-autogen, elixir-format
-msgid "Red Beard logo"
+msgid "SegFault"
 msgstr ""
 
 #: lib/tr_web/components/layouts/app.html.heex:89
@@ -488,7 +488,7 @@ msgstr ""
 
 #: lib/tr_web/controllers/error_html/root.html.heex:8
 #, elixir-autogen, elixir-format
-msgid "Welcome to the Techsquad and Red Beard blog! This page is dedicated to documenting and exploring various\n               technologies. Our blog is hosted on a k3s cluster in OCI, powered by Elixir and Phoenix. Dive in to\n               discover insights, tutorials, and experiments across the tech landscape."
+msgid "Welcome to the SegFault blog! This page is dedicated to documenting and exploring various\n               technologies. Our blog is hosted on a k3s cluster in OCI, powered by Elixir and Phoenix. Dive in to\n               discover insights, tutorials, and experiments across the tech landscape."
 msgstr ""
 
 #: lib/tr_web/live/post_live.ex:339
@@ -530,7 +530,7 @@ msgstr ""
 
 #: lib/tr_web/controllers/page_xml/index.xml.eex:4
 #, elixir-autogen, elixir-format
-msgid "Fractional DevOps Services | Linux, Kubernetes, AWS Experts | Red Beard Team"
+msgid "Fractional DevOps Services | Linux, Kubernetes, AWS Experts | SegFault"
 msgstr ""
 
 #: lib/tr_web/live/user_settings_live.ex:10
@@ -671,7 +671,7 @@ msgstr ""
 
 #: lib/tr_web/controllers/page_controller.ex:43
 #, elixir-autogen, elixir-format
-msgid "Learn about DevOps, Linux, Containers, Kubernetes, CI/CD, AWS, Terraform | Red Beard Team"
+msgid "Learn about DevOps, Linux, Containers, Kubernetes, CI/CD, AWS, Terraform | SegFault"
 msgstr ""
 
 #: lib/tr_web/controllers/page_controller.ex:47

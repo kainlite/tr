@@ -349,23 +349,23 @@ msgstr "Leer mas..."
 
 #: lib/tr_web/controllers/page_xml/index.xml.eex:7
 #, elixir-autogen, elixir-format
-msgid "Red Beard Team offers expert fractional DevOps services specializing in Linux, Kubernetes,\n    AWS, Terraform, Docker, and more. Transform your infrastructure with our tailored solutions. Explore insights,\n    tutorials, and experiments across the tech landscape."
-msgstr "Red Beard Team ofrece servicios expertos de DevOps fraccionados especializados en Linux, Kubernetes, AWS, Terraform, Docker y más. Transforme su infraestructura con nuestras soluciones a medida.."
+msgid "SegFault offers expert fractional DevOps services specializing in Linux, Kubernetes,\n    AWS, Terraform, Docker, and more. Transform your infrastructure with our tailored solutions. Explore insights,\n    tutorials, and experiments across the tech landscape."
+msgstr "SegFault ofrece servicios expertos de DevOps fraccionados especializados en Linux, Kubernetes, AWS, Terraform, Docker y más. Transforme su infraestructura con nuestras soluciones a medida.."
 
 #: lib/tr_web/components/layouts/root.html.heex:8
 #, elixir-autogen, elixir-format
-msgid "Red Beard Team offers expert fractional DevOps services specializing in Linux, Kubernetes, AWS,\n       Terraform, Docker, and more. Transform your infrastructure with our tailored solutions. Explore insights,\n       tutorials, and experiments across the tech landscape."
-msgstr "Red Beard Team ofrece servicios expertos de DevOps fraccionados especializados en Linux, Kubernetes, AWS, Terraform, Docker y más. Transforme su infraestructura con nuestras soluciones a medida."
+msgid "SegFault offers expert fractional DevOps services specializing in Linux, Kubernetes, AWS,\n       Terraform, Docker, and more. Transform your infrastructure with our tailored solutions. Explore insights,\n       tutorials, and experiments across the tech landscape."
+msgstr "SegFault ofrece servicios expertos de DevOps fraccionados especializados en Linux, Kubernetes, AWS, Terraform, Docker y más. Transforme su infraestructura con nuestras soluciones a medida."
 
 #: lib/tr_web/controllers/page_controller.ex:47
 #, elixir-autogen, elixir-format
-msgid "Red Beard Team offers expert fractional DevOps services specializing in Linux, Kubernetes, AWS, Terraform, Docker, and more. Transform your infrastructure with our tailored solutions. Explore insights, tutorials, and experiments across the tech landscape."
-msgstr "Red Beard Team ofrece servicios expertos de DevOps fraccionados especializados en Linux, Kubernetes, AWS, Terraform, Docker y más. Transforme su infraestructura con nuestras soluciones a medida."
+msgid "SegFault offers expert fractional DevOps services specializing in Linux, Kubernetes, AWS, Terraform, Docker, and more. Transform your infrastructure with our tailored solutions. Explore insights, tutorials, and experiments across the tech landscape."
+msgstr "SegFault ofrece servicios expertos de DevOps fraccionados especializados en Linux, Kubernetes, AWS, Terraform, Docker y más. Transforme su infraestructura con nuestras soluciones a medida."
 
 #: lib/tr_web/live/beard_live.ex:16
 #, elixir-autogen, elixir-format
-msgid "Red Beard logo"
-msgstr "Red Beard logo"
+msgid "SegFault logo"
+msgstr "SegFault logo"
 
 #: lib/tr_web/components/layouts/app.html.heex:89
 #: lib/tr_web/live/user_confirmation_live.ex:21
@@ -493,8 +493,8 @@ msgstr "Bienvenido de nuevo!"
 
 #: lib/tr_web/controllers/error_html/root.html.heex:8
 #, elixir-autogen, elixir-format
-msgid "Welcome to the Techsquad and Red Beard blog! This page is dedicated to documenting and exploring various\n               technologies. Our blog is hosted on a k3s cluster in OCI, powered by Elixir and Phoenix. Dive in to\n               discover insights, tutorials, and experiments across the tech landscape."
-msgstr "Bienvenido al blog de Red Beard! Esta página está dedicada a documentar y explorar varias tecnologías. Nuestro blog está alojado en un clúster k3s en OCI, impulsado por Elixir y Phoenix. Sumérgete para descubrir ideas, tutoriales y experimentos."
+msgid "Welcome to the Techsquad and SegFault blog! This page is dedicated to documenting and exploring various\n               technologies. Our blog is hosted on a k3s cluster in OCI, powered by Elixir and Phoenix. Dive in to\n               discover insights, tutorials, and experiments across the tech landscape."
+msgstr "Bienvenido al blog de SegFault! Esta página está dedicada a documentar y explorar varias tecnologías. Nuestro blog está alojado en un clúster k3s en OCI, impulsado por Elixir y Phoenix. Sumérgete para descubrir ideas, tutoriales y experimentos."
 
 #: lib/tr_web/live/post_live.ex:329
 #, elixir-autogen, elixir-format
@@ -536,8 +536,8 @@ msgstr "Cuenta"
 #: lib/tr_web/controllers/page_controller.ex:43
 #: lib/tr_web/controllers/page_xml/index.xml.eex:4
 #, elixir-autogen, elixir-format, fuzzy
-msgid "Fractional DevOps Services | Linux, Kubernetes, AWS Experts | Red Beard Team"
-msgstr "Servicios fraccionados de DevOps | Expertos en Linux, Kubernetes, AWS | Red Beard Team"
+msgid "Fractional DevOps Services | Linux, Kubernetes, AWS Experts | SegFault"
+msgstr "Servicios fraccionados de DevOps | Expertos en Linux, Kubernetes, AWS | SegFault"
 
 #: lib/tr_web/live/user_settings_live.ex:10
 #, elixir-autogen, elixir-format
