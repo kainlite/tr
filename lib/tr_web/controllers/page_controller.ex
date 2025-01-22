@@ -74,7 +74,7 @@ defmodule TrWeb.PageController do
   end
 
   def json_sitemap(conn, _params) do
-    json_sitemap(conn, %{locale: "en"})
+    json_sitemap(conn, %{"locale" => "en"})
   end
 
   def privacy(conn, _params) do
