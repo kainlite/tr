@@ -187,7 +187,7 @@ CookieConsent.run({
           acceptAllBtn: "Aceptar todo",
           showPreferencesBtn: "Preferencias",
           footer:
-            '<a href="https://redbeard.team/privacy">Politica de privacidad</a>',
+            '<a href="https://segfault.pw/privacy">Politica de privacidad</a>',
         },
         preferencesModal: {
           title: "Consentimiento de cookies",
@@ -204,7 +204,7 @@ CookieConsent.run({
             {
               title: "Mas informacion",
               description:
-                'Por cualquier consulta relacionada al sitio o las cookies, por favor contactarnos aqui <a class="cc__link" href="mailto:gabriel@redbeard.team">gabriel@redbeard.team</a>.',
+                'Por cualquier consulta relacionada al sitio o las cookies, por favor contactarnos aqui <a class="cc__link" href="mailto:gabriel@segfault.pw">gabriel@segfault.pw</a>.',
             },
           ],
         },
@@ -216,7 +216,7 @@ CookieConsent.run({
             "Please accept the usage of cookies to be able to continue browsing our site.",
           acceptAllBtn: "Accept all",
           showPreferencesBtn: "Manage preferences",
-          footer: '<a href="https://redbeard.team/privacy">Privacy Policy</a>',
+          footer: '<a href="https://segfault.pw/privacy">Privacy Policy</a>',
         },
         preferencesModal: {
           title: "Consent Preferences Center",
@@ -233,7 +233,7 @@ CookieConsent.run({
             {
               title: "More information",
               description:
-                'For any query in relation to my policy on cookies and your choices, please <a class="cc__link" href="mailto:gabriel@redbeard.team">gabriel@redbeard.team</a>.',
+                'For any query in relation to my policy on cookies and your choices, please <a class="cc__link" href="mailto:gabriel@segfault.pw">gabriel@segfault.pw</a>.',
             },
           ],
         },

@@ -3,7 +3,7 @@
 [![github](https://github.com/kainlite/tr/actions/workflows/coverage.yaml/badge.svg)](https://github.com/kainlite/tr/actions/workflows/coverage.yaml)
 [![codecov](https://codecov.io/gh/kainlite/tr/branch/master/graph/badge.svg)](https://codecov.io/gh/kainlite/tr)
 
-This is the source code for my blog, you can check it out [here](https://redbeard.team/blog)
+This is the source code for my blog, you can check it out [here](https://segfault.pw/blog)
 
 # Development
 
