@@ -1,15 +1,21 @@
 name: Elixir CI
 
 on: 
+  workflow_call:
   push:
     branches:
       - master
   pull_request:
 
 jobs:
+  tests:
+    uses: ./.github/workflows/coverage.yaml
   build:
     name: Build and test
     runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      packages: write
 
     services:
       # Label used to access the service container
