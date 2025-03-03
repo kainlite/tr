@@ -51,7 +51,7 @@ defmodule Tr.MixProject do
       {:phoenix_live_dashboard, "~> 0.8.3"},
       {:floki, ">= 0.30.0", only: :test},
       {:esbuild, "~> 0.6", runtime: Mix.env() == :dev},
-      {:tailwind, "~> 0.2.2", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.3.1", runtime: Mix.env() == :dev},
       {:swoosh, "~> 1.9"},
       {:finch, "~> 0.13"},
       {:telemetry_metrics, "~> 1.0"},
