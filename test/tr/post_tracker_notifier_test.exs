@@ -26,7 +26,7 @@ defmodule Tr.PostTracker.NotifierTest do
         )
 
       assert mail.subject =~ "New post"
-      assert mail.text_body =~ "A new article was just added:"
+      assert mail.text_body =~ "A new article has been published on"
       assert mail.text_body =~ "upgrading-k3s-with-system-upgrade-controller"
     end
 
