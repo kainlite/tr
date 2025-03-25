@@ -11,7 +11,6 @@
 }
 ---
 
-
 ##### **Introduction**
 In this article we will explore GitOps and what it means, how it is used and why it is so effective in many large
 organizations.
