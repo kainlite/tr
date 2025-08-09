@@ -60,7 +60,7 @@ First, let's talk about the application repository. This is where your code live
 
 Here's what happens when you push code:
 
-```yaml
+```elixir
 name: CI/CD Pipeline
 
 on:
@@ -76,7 +76,7 @@ Simple trigger - push to master or create a tag, and the magic begins. No webhoo
 <br />
 
 ##### **Step 1: Testing (Because We're Professionals)**
-```yaml
+```elixir
 test:
   runs-on: ubuntu-latest
   steps:
@@ -105,7 +105,7 @@ Nothing fancy here. Check out the code, set up Go, run the tests, and lint the c
 ##### **Step 2: Build and Push the Container**
 Here's where things get interesting. We're using GitHub Container Registry (ghcr.io) because it's free, integrated, and just works:
 
-```yaml
+```elixir
 build-and-push:
   needs: test
   runs-on: ubuntu-latest
@@ -131,7 +131,7 @@ Notice something beautiful here? We're using `GITHUB_TOKEN` for the registry, no
 
 The image tagging strategy is where the magic happens:
 
-```yaml
+```elixir
 - name: Extract metadata
   id: meta
   uses: docker/metadata-action@v5
@@ -152,7 +152,7 @@ We tag images with the commit SHA. Why? Because SHAs are immutable, unique, and 
 ##### **Step 3: Security Scanning**
 Before we deploy anything, let's make sure we're not shipping known vulnerabilities:
 
-```yaml
+```elixir
 security-scan:
   needs: build-and-push
   runs-on: ubuntu-latest
@@ -175,7 +175,7 @@ Trivy scans our image for known vulnerabilities and reports them directly to Git
 ##### **Step 4: The GitOps Magic - Updating Manifests**
 This is where GitOps actually happens. After our image is built and scanned, we update the manifest repository:
 
-```yaml
+```elixir
 update-manifests:
   needs: [build-and-push, security-scan]
   runs-on: ubuntu-latest
@@ -214,7 +214,7 @@ This is beautiful in its simplicity. We check out the manifest repo, update the 
 ##### **The Manifest Repository**
 The manifest repository is even simpler. It contains your Kubernetes YAML files and... that's it. No scripts, no pipelines, just declarative configuration:
 
-```yaml
+```elixir
 # 02-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -237,7 +237,7 @@ spec:
 
 If you're using ArgoCD like I am, you'd also have an Application spec:
 
-```yaml
+```elixir
 # 01-appspec.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -270,7 +270,7 @@ Ready to implement this? Here's your checklist:
 <br />
 
 **1. Create a Personal Access Token**
-```bash
+```elixir
 # Go to GitHub Settings > Developer settings > Personal access tokens
 # Create a token with 'repo' scope for the manifest repository
 # Save it as MANIFEST_REPO_TOKEN in your app repo's secrets
@@ -279,7 +279,7 @@ Ready to implement this? Here's your checklist:
 <br />
 
 **2. Create Your Manifest Repository**
-```bash
+```elixir
 mkdir k8s-manifests
 cd k8s-manifests
 git init
@@ -304,7 +304,7 @@ Now, you have a few options:
 
 **Option A: Using ArgoCD (what I use)**
 If you have ArgoCD installed, just apply the Application spec and it will handle everything:
-```bash
+```elixir
 kubectl apply -f https://raw.githubusercontent.com/kainlite/tools-manifests/main/01-appspec.yaml
 ```
 
@@ -313,7 +313,7 @@ ArgoCD will then watch the repository and automatically sync changes. Done.
 <br />
 
 **Option B: Manual sync (simplest)**
-```bash
+```elixir
 kubectl apply -f https://raw.githubusercontent.com/kainlite/tools-manifests/main/02-deployment.yaml
 ```
 
@@ -321,7 +321,7 @@ kubectl apply -f https://raw.githubusercontent.com/kainlite/tools-manifests/main
 
 **Option C: Automated sync without ArgoCD**
 Set up a simple CronJob in your cluster that pulls and applies changes:
-```yaml
+```elixir
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -394,7 +394,7 @@ Use GitHub's fine-grained personal access tokens with longer expiration dates, o
 <br />
 
 **Need to rollback quickly?**
-```bash
+```elixir
 git revert HEAD
 git push
 # Wait for sync, or manually apply
@@ -474,7 +474,7 @@ Primero, hablemos del repositorio de la aplicación. Acá es donde vive tu códi
 
 Esto es lo que pasa cuando pusheás código:
 
-```yaml
+```elixir
 name: CI/CD Pipeline
 
 on:
@@ -490,7 +490,7 @@ Disparador simple - push a master o creá un tag, y la magia comienza. Sin webho
 <br />
 
 ##### **Paso 1: Testing (Porque Somos Profesionales)**
-```yaml
+```elixir
 test:
   runs-on: ubuntu-latest
   steps:
@@ -514,7 +514,7 @@ Nada sofisticado acá. Checkout del código, configurar el entorno, ejecutar las
 ##### **Paso 2: Construir y Pushear el Contenedor**
 Acá es donde las cosas se ponen interesantes. Estamos usando GitHub Container Registry (ghcr.io) porque es gratis, está integrado y simplemente funciona:
 
-```yaml
+```elixir
 build-and-push:
   needs: test
   runs-on: ubuntu-latest
@@ -540,7 +540,7 @@ Estamos usando `GITHUB_TOKEN` para el registry de github, no necesitás crear y 
 
 La estrategia de etiquetado de imágenes es donde ocurre la magia:
 
-```yaml
+```elixir
 - name: Extract metadata
   id: meta
   uses: docker/metadata-action@v5
@@ -561,7 +561,7 @@ Etiquetamos las imágenes con el SHA del commit. ¿Por qué? Porque los SHAs son
 ##### **Paso 3: Escaneo de Seguridad**
 Antes de desplegar cualquier cosa, asegurémonos de que no estamos enviando vulnerabilidades:
 
-```yaml
+```elixir
 security-scan:
   needs: build-and-push
   runs-on: ubuntu-latest
@@ -584,7 +584,7 @@ Trivy escanea nuestra imagen en busca de vulnerabilidades conocidas y las report
 ##### **Paso 4: La Magia de GitOps - Actualizando Manifiestos**
 Acá es donde GitOps realmente sucede. Después de que nuestra imagen está construida y escaneada, actualizamos el repositorio de manifiestos:
 
-```yaml
+```elixir
 update-manifests:
   needs: [build-and-push, security-scan]
   runs-on: ubuntu-latest
@@ -623,7 +623,7 @@ Esto es hermoso en su simplicidad. Hacemos checkout del repo de manifiestos, act
 ##### **El Repositorio de Manifiestos**
 El repositorio de manifiestos es aún más simple. Contiene tus archivos YAML de Kubernetes y... eso es todo. Sin scripts, sin pipelines, solo configuración declarativa:
 
-```yaml
+```elixir
 # deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -650,7 +650,7 @@ Cada cambio en este repositorio está rastreado en Git. Podés ver quién desple
 <br />
 
 **1. Crear un Token de Acceso Personal**
-```bash
+```elixir
 # Andá a GitHub Settings > Developer settings > Personal access tokens
 # Creá un token con scope 'repo' para el repositorio de manifiestos
 # Guardalo como MANIFEST_REPO_TOKEN en los secrets del repo de tu app
@@ -659,7 +659,7 @@ Cada cambio en este repositorio está rastreado en Git. Podés ver quién desple
 <br />
 
 **2. Crear Tu Repositorio de Manifiestos**
-```bash
+```elixir
 mkdir k8s-manifests
 cd k8s-manifests
 git init
@@ -683,7 +683,7 @@ Copiá el workflow a `.github/workflows/ci.yaml` en tu repositorio de aplicació
 Ahora, tenés dos opciones:
 
 **Opción A: Sincronización manual (más simple)**
-```bash
+```elixir
 kubectl apply -f https://raw.githubusercontent.com/tu-org/tus-manifiestos/main/deployment.yaml
 ```
 
@@ -691,7 +691,7 @@ kubectl apply -f https://raw.githubusercontent.com/tu-org/tus-manifiestos/main/d
 
 **Opción B: Sincronización automatizada**
 Configurá un CronJob simple en tu cluster que hace pull y aplica los cambios:
-```yaml
+```elixir
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -764,7 +764,7 @@ Usá tokens de acceso personal de GitHub con fechas de vencimiento más largas, 
 <br />
 
 **¿Necesitás hacer rollback rápidamente?**
-```bash
+```elixir
 git revert HEAD
 git push
 # Esperá la sincronización, o aplicá manualmente
