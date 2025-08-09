@@ -4,7 +4,7 @@
   description: "Let's build the most minimal GitOps setup that you can actually use in production...",
   tags: ~w(gitops cicd github-actions kubernetes),
   published: true,
-  image: "simple-gitops.png",
+  image: "gitops.png",
   sponsored: false,
   video: "",
   lang: "en"
@@ -424,7 +424,7 @@ Hope you found this useful and enjoyed reading it, until next time!
   description: "Construyamos la configuración de GitOps más mínima que puedas usar en producción...",
   tags: ~w(gitops cicd github-actions kubernetes),
   published: true,
-  image: "simple-gitops.png",
+  image: "gitops.png",
   sponsored: false,
   video: "",
   lang: "es"
