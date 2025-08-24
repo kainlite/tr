@@ -44,11 +44,20 @@ So we are going to create some RBAC resources, test them with kubectl, and then 
 <br />
 
 #### Let's get to it
-Let's start by setting up our testing environment. I'll create a namespace, some roles, and users, then show you both the kubectl commands and the equivalent curl calls.
+Let's start by setting up our testing environment. I'll create a namespace, some roles, and users, then show you both the kubectl commands and the equivalent curl calls, either use kubectl or curl as both will be equivalent.
 
 <br />
 
 **Setup our environment**:
+
+First, we need to find out the public ip of our API server:
+```
+kubectl get ep -A
+NAMESPACE     NAME         ENDPOINTS                                               AGE
+default       kubernetes   172.19.0.2:6443                                         78m
+kube-system   kube-dns     10.244.0.3:53,10.244.0.4:53,10.244.0.3:53 + 3 more...   78m
+```
+if you instead use kubectl proxy, that will use your current credentials and will sort-of bypass the authentication when using curl, so stick to hitting the URL directly for all the examples to work as expected.
 
 First, let's create a namespace for our experiments:
 ```elixir
@@ -85,7 +94,7 @@ TOKEN=$(kubectl get secret $(kubectl get serviceaccount default -o jsonpath='{.s
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/api/v1/namespaces \
+  https://172.19.0.2:6443/api/v1/namespaces \
   -d '{
     "apiVersion": "v1",
     "kind": "Namespace", 
@@ -159,7 +168,7 @@ This shows us the exact JSON payload. Now let's send it via curl:
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles \
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles \
   -d '{
     "apiVersion": "rbac.authorization.k8s.io/v1",
     "kind": "Role",
@@ -232,7 +241,7 @@ Now the curl equivalent:
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/rolebindings \
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/rolebindings \
   -d '{
     "apiVersion": "rbac.authorization.k8s.io/v1",
     "kind": "RoleBinding",
@@ -249,7 +258,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
       {
         "apiGroup": "rbac.authorization.k8s.io",
         "kind": "User",
-        "name": "jane.doe@example.com"
+        "name": "john.doe@example.com"
       }
     ]
   }'
@@ -272,7 +281,7 @@ This should return `yes` since we just gave john.doe@example.com the pod-reader 
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/apis/authorization.k8s.io/v1/subjectaccessreviews \
+  https://172.19.0.2:6443/apis/authorization.k8s.io/v1/subjectaccessreviews \
   -d '{
     "apiVersion": "authorization.k8s.io/v1",
     "kind": "SubjectAccessReview",
@@ -322,7 +331,7 @@ Let's test a permission that should be denied:
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/apis/authorization.k8s.io/v1/subjectaccessreviews \
+  https://172.19.0.2:6443/apis/authorization.k8s.io/v1/subjectaccessreviews \
   -d '{
     "apiVersion": "authorization.k8s.io/v1",
     "kind": "SubjectAccessReview",
@@ -365,7 +374,7 @@ The curl equivalent (notice no namespace in the URL since it's cluster-scoped):
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/clusterroles \
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/clusterroles \
   -d '{
     "apiVersion": "rbac.authorization.k8s.io/v1",
     "kind": "ClusterRole",
@@ -389,7 +398,7 @@ Now bind it to a user:
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/clusterrolebindings \
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/clusterrolebindings \
   -d '{
     "apiVersion": "rbac.authorization.k8s.io/v1",
     "kind": "ClusterRoleBinding",
@@ -448,63 +457,6 @@ done
 
 <br />
 
-You can also do this with curl by scripting the SubjectAccessReview calls:
-```elixir
-#!/bin/bash
-# rbac-check-curl.sh
-
-USER=$1
-NAMESPACE=${2:-"default"}
-TOKEN=$(kubectl get secret $(kubectl get serviceaccount default -o jsonpath='{.secrets[0].name}') -o jsonpath='{.data.token}' | base64 -d)
-APISERVER=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')
-
-check_permission() {
-  local verb=$1
-  local resource=$2
-  local user=$3
-  local namespace=$4
-  
-  response=$(curl -s -k -H "Authorization: Bearer $TOKEN" \
-    -H "Content-Type: application/json" \
-    -X POST \
-    "$APISERVER/apis/authorization.k8s.io/v1/subjectaccessreviews" \
-    -d '{
-      "apiVersion": "authorization.k8s.io/v1",
-      "kind": "SubjectAccessReview",
-      "spec": {
-        "resourceAttributes": {
-          "namespace": "'$namespace'",
-          "verb": "'$verb'",
-          "resource": "'$resource'"
-        },
-        "user": "'$user'"
-      }
-    }')
-  
-  allowed=$(echo $response | jq -r '.status.allowed')
-  reason=$(echo $response | jq -r '.status.reason')
-  
-  if [ "$allowed" = "true" ]; then
-    echo "  $verb: ✓ ALLOWED ($reason)"
-  else
-    echo "  $verb: ✗ DENIED"
-  fi
-}
-
-echo "Checking permissions for user: $USER in namespace: $NAMESPACE"
-echo "=================================================="
-
-for resource in pods services deployments configmaps secrets; do
-  echo "Resource: $resource"
-  for verb in get list watch create update patch delete; do
-    check_permission $verb $resource $USER $NAMESPACE
-  done
-  echo ""
-done
-```
-
-<br />
-
 #### Advanced RBAC Features
 
 Let's explore some advanced RBAC features using both kubectl and curl:
@@ -514,7 +466,7 @@ Let's explore some advanced RBAC features using both kubectl and curl:
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles \
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles \
   -d '{
     "apiVersion": "rbac.authorization.k8s.io/v1",
     "kind": "Role",
@@ -544,7 +496,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles \
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles \
   -d '{
     "apiVersion": "rbac.authorization.k8s.io/v1",
     "kind": "Role",
@@ -571,19 +523,19 @@ To understand what permissions exist in your cluster, you can query the API dire
 ```elixir
 # List all roles in a namespace
 curl -k -H "Authorization: Bearer $TOKEN" \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles
 
 # List all rolebindings in a namespace
 curl -k -H "Authorization: Bearer $TOKEN" \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/rolebindings
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/rolebindings
 
 # List all clusterroles
 curl -k -H "Authorization: Bearer $TOKEN" \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/clusterroles
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/clusterroles
 
 # List all clusterrolebindings
 curl -k -H "Authorization: Bearer $TOKEN" \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/clusterrolebindings
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/clusterrolebindings
 ```
 
 <br />
@@ -592,7 +544,7 @@ You can also use jq to filter and format the output:
 ```elixir
 # Get all rolebindings and show which users have which roles
 curl -s -k -H "Authorization: Bearer $TOKEN" \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/rolebindings | \
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/rolebindings | \
   jq -r '.items[] | "\(.metadata.name): \(.subjects[]?.name) -> \(.roleRef.name)"'
 ```
 
@@ -609,6 +561,18 @@ kubectl create rolebinding test-user-binding \
   --namespace=rbac-demo \
   --role=pod-reader \
   --serviceaccount=rbac-demo:test-user
+
+# Special secret to generate a token for the service account
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-user-sa-secret
+  namespace: rbac-demo
+  annotations:
+    kubernetes.io/service-account.name: test-user
+type: kubernetes.io/service-account-token
+EOF
 ```
 
 <br />
@@ -616,11 +580,11 @@ kubectl create rolebinding test-user-binding \
 Now let's get the service account token and test permissions:
 ```elixir
 # Get the service account token
-SA_TOKEN=$(kubectl get secret $(kubectl get serviceaccount test-user -n rbac-demo -o jsonpath='{.secrets[0].name}') -n rbac-demo -o jsonpath='{.data.token}' | base64 -d)
+SA_TOKEN=$(kubectl get secret test-user-sa-secret -n rbac-demo -o jsonpath='{.data.token}' | base64 -d)
 
 # Test if we can list pods using the service account token
 curl -k -H "Authorization: Bearer $SA_TOKEN" \
-  https://127.0.0.1:6443/api/v1/namespaces/rbac-demo/pods
+  https://172.19.0.2:6443/api/v1/namespaces/rbac-demo/pods
 ```
 
 <br />
@@ -631,7 +595,7 @@ This should work since we gave the service account the pod-reader role. Now let'
 curl -k -H "Authorization: Bearer $SA_TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/api/v1/namespaces/rbac-demo/pods \
+  https://172.19.0.2:6443/api/v1/namespaces/rbac-demo/pods \
   -d '{
     "apiVersion": "v1",
     "kind": "Pod",
@@ -682,7 +646,7 @@ Here are some common RBAC patterns you'll encounter:
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles \
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles \
   -d '{
     "apiVersion": "rbac.authorization.k8s.io/v1",
     "kind": "Role",
@@ -707,7 +671,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles \
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles \
   -d '{
     "apiVersion": "rbac.authorization.k8s.io/v1",
     "kind": "Role",
@@ -774,7 +738,7 @@ Or with curl:
 ```elixir
 curl -k -H "Authorization: Bearer $TOKEN" \
   -X DELETE \
-  https://127.0.0.1:6443/api/v1/namespaces/rbac-demo
+  https://172.19.0.2:6443/api/v1/namespaces/rbac-demo
 ```
 
 <br />
@@ -840,6 +804,15 @@ Empecemos configurando nuestro entorno de testing. Voy a crear un namespace, alg
 
 **Configurando nuestro entorno**:
 
+Primero necesitamos encontrar la direccion publica de nuestro API server:
+```
+kubectl get ep -A
+NAMESPACE     NAME         ENDPOINTS                                               AGE
+default       kubernetes   172.19.0.2:6443                                         78m
+kube-system   kube-dns     10.244.0.3:53,10.244.0.4:53,10.244.0.3:53 + 3 more...   78m
+```
+Si en vez usamos kubectl proxy, va a usar las credenciales que usa kubectl e ignorar las que le pasemos con curl, asi que para que todos los ejemplos funcionen como se muestra hay que usar la direccion directa del API server.
+
 Primero, vamos a crear un namespace para nuestros experimentos:
 ```elixir
 kubectl create namespace rbac-demo
@@ -875,7 +848,7 @@ TOKEN=$(kubectl get secret $(kubectl get serviceaccount default -o jsonpath='{.s
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/api/v1/namespaces \
+  https://172.19.0.2:6443/api/v1/namespaces \
   -d '{
     "apiVersion": "v1",
     "kind": "Namespace", 
@@ -949,7 +922,7 @@ Esto nos muestra el payload JSON exacto. Ahora enviémoslo vía curl:
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles \
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles \
   -d '{
     "apiVersion": "rbac.authorization.k8s.io/v1",
     "kind": "Role",
@@ -1022,7 +995,7 @@ Ahora el equivalente en curl:
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/rolebindings \
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/rolebindings \
   -d '{
     "apiVersion": "rbac.authorization.k8s.io/v1",
     "kind": "RoleBinding",
@@ -1039,7 +1012,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
       {
         "apiGroup": "rbac.authorization.k8s.io",
         "kind": "User",
-        "name": "jane.doe@example.com"
+        "name": "john.doe@example.com"
       }
     ]
   }'
@@ -1062,7 +1035,7 @@ Esto debería retornar `yes` ya que recién le dimos a john.doe@example.com el r
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/apis/authorization.k8s.io/v1/subjectaccessreviews \
+  https://172.19.0.2:6443/apis/authorization.k8s.io/v1/subjectaccessreviews \
   -d '{
     "apiVersion": "authorization.k8s.io/v1",
     "kind": "SubjectAccessReview",
@@ -1112,7 +1085,7 @@ Testeemos un permiso que debería ser denegado:
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/apis/authorization.k8s.io/v1/subjectaccessreviews \
+  https://172.19.0.2:6443/apis/authorization.k8s.io/v1/subjectaccessreviews \
   -d '{
     "apiVersion": "authorization.k8s.io/v1",
     "kind": "SubjectAccessReview",
@@ -1155,7 +1128,7 @@ El equivalente en curl (notá que no hay namespace en la URL ya que es de nivel 
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/clusterroles \
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/clusterroles \
   -d '{
     "apiVersion": "rbac.authorization.k8s.io/v1",
     "kind": "ClusterRole",
@@ -1179,7 +1152,7 @@ Ahora vinculémoslo a un usuario:
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/clusterrolebindings \
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/clusterrolebindings \
   -d '{
     "apiVersion": "rbac.authorization.k8s.io/v1",
     "kind": "ClusterRoleBinding",
@@ -1238,63 +1211,6 @@ done
 
 <br />
 
-También podés hacer esto con curl scripteando las llamadas SubjectAccessReview:
-```elixir
-#!/bin/bash
-# rbac-check-curl.sh
-
-USER=$1
-NAMESPACE=${2:-"default"}
-TOKEN=$(kubectl get secret $(kubectl get serviceaccount default -o jsonpath='{.secrets[0].name}') -o jsonpath='{.data.token}' | base64 -d)
-APISERVER=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')
-
-check_permission() {
-  local verb=$1
-  local resource=$2
-  local user=$3
-  local namespace=$4
-  
-  response=$(curl -s -k -H "Authorization: Bearer $TOKEN" \
-    -H "Content-Type: application/json" \
-    -X POST \
-    "$APISERVER/apis/authorization.k8s.io/v1/subjectaccessreviews" \
-    -d '{
-      "apiVersion": "authorization.k8s.io/v1",
-      "kind": "SubjectAccessReview",
-      "spec": {
-        "resourceAttributes": {
-          "namespace": "'$namespace'",
-          "verb": "'$verb'",
-          "resource": "'$resource'"
-        },
-        "user": "'$user'"
-      }
-    }')
-  
-  allowed=$(echo $response | jq -r '.status.allowed')
-  reason=$(echo $response | jq -r '.status.reason')
-  
-  if [ "$allowed" = "true" ]; then
-    echo "  $verb: ✓ PERMITIDO ($reason)"
-  else
-    echo "  $verb: ✗ DENEGADO"
-  fi
-}
-
-echo "Verificando permisos para usuario: $USER en namespace: $NAMESPACE"
-echo "=================================================="
-
-for resource in pods services deployments configmaps secrets; do
-  echo "Recurso: $resource"
-  for verb in get list watch create update patch delete; do
-    check_permission $verb $resource $USER $NAMESPACE
-  done
-  echo ""
-done
-```
-
-<br />
-
 #### Características Avanzadas de RBAC
 
 Exploremos algunas características avanzadas de RBAC usando tanto kubectl como curl:
@@ -1304,7 +1220,7 @@ Exploremos algunas características avanzadas de RBAC usando tanto kubectl como 
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles \
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles \
   -d '{
     "apiVersion": "rbac.authorization.k8s.io/v1",
     "kind": "Role",
@@ -1334,7 +1250,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles \
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles \
   -d '{
     "apiVersion": "rbac.authorization.k8s.io/v1",
     "kind": "Role",
@@ -1361,19 +1277,19 @@ Para entender qué permisos existen en tu cluster, podés consultar la API direc
 ```elixir
 # Listar todos los roles en un namespace
 curl -k -H "Authorization: Bearer $TOKEN" \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles
 
 # Listar todos los rolebindings en un namespace
 curl -k -H "Authorization: Bearer $TOKEN" \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/rolebindings
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/rolebindings
 
 # Listar todos los clusterroles
 curl -k -H "Authorization: Bearer $TOKEN" \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/clusterroles
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/clusterroles
 
 # Listar todos los clusterrolebindings
 curl -k -H "Authorization: Bearer $TOKEN" \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/clusterrolebindings
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/clusterrolebindings
 ```
 
 <br />
@@ -1382,7 +1298,7 @@ También podés usar jq para filtrar y formatear el output:
 ```elixir
 # Obtener todos los rolebindings y mostrar qué usuarios tienen qué roles
 curl -s -k -H "Authorization: Bearer $TOKEN" \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/rolebindings | \
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/rolebindings | \
   jq -r '.items[] | "\(.metadata.name): \(.subjects[]?.name) -> \(.roleRef.name)"'
 ```
 
@@ -1399,6 +1315,19 @@ kubectl create rolebinding test-user-binding \
   --namespace=rbac-demo \
   --role=pod-reader \
   --serviceaccount=rbac-demo:test-user
+
+# Secreto especial que se usa para crear el token de este service account
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-user-sa-secret
+  namespace: rbac-demo
+  annotations:
+    kubernetes.io/service-account.name: test-user
+type: kubernetes.io/service-account-token
+EOF
+
 ```
 
 <br />
@@ -1410,7 +1339,7 @@ SA_TOKEN=$(kubectl get secret $(kubectl get serviceaccount test-user -n rbac-dem
 
 # Testear si podemos listar pods usando el token del service account
 curl -k -H "Authorization: Bearer $SA_TOKEN" \
-  https://127.0.0.1:6443/api/v1/namespaces/rbac-demo/pods
+  https://172.19.0.2:6443/api/v1/namespaces/rbac-demo/pods
 ```
 
 <br />
@@ -1421,7 +1350,7 @@ Esto debería funcionar ya que le dimos al service account el role pod-reader. A
 curl -k -H "Authorization: Bearer $SA_TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/api/v1/namespaces/rbac-demo/pods \
+  https://172.19.0.2:6443/api/v1/namespaces/rbac-demo/pods \
   -d '{
     "apiVersion": "v1",
     "kind": "Pod",
@@ -1472,7 +1401,7 @@ Acá hay algunos patrones comunes de RBAC que vas a encontrar:
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles \
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles \
   -d '{
     "apiVersion": "rbac.authorization.k8s.io/v1",
     "kind": "Role",
@@ -1497,7 +1426,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
-  https://127.0.0.1:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles \
+  https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles \
   -d '{
     "apiVersion": "rbac.authorization.k8s.io/v1",
     "kind": "Role",
@@ -1564,7 +1493,7 @@ O con curl:
 ```elixir
 curl -k -H "Authorization: Bearer $TOKEN" \
   -X DELETE \
-  https://127.0.0.1:6443/api/v1/namespaces/rbac-demo
+  https://172.19.0.2:6443/api/v1/namespaces/rbac-demo
 ```
 
 <br />
