@@ -51,7 +51,7 @@ Let's start by setting up our testing environment. I'll create a namespace, some
 **Setup our environment**:
 
 First, we need to find out the public ip of our API server:
-```
+```elixir
 kubectl get ep -A
 NAMESPACE     NAME         ENDPOINTS                                               AGE
 default       kubernetes   172.19.0.2:6443                                         78m
@@ -805,7 +805,7 @@ Empecemos configurando nuestro entorno de testing. Voy a crear un namespace, alg
 **Configurando nuestro entorno**:
 
 Primero necesitamos encontrar la direccion publica de nuestro API server:
-```
+```elixir
 kubectl get ep -A
 NAMESPACE     NAME         ENDPOINTS                                               AGE
 default       kubernetes   172.19.0.2:6443                                         78m
