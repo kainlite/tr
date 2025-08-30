@@ -277,7 +277,9 @@ defmodule Tr.Accounts do
       |> User.display_name_changeset(attrs)
       |> User.confirm_changeset()
 
-    Ecto.Multi.new()
+    multi = Ecto.Multi.new()
+
+    multi
     |> Ecto.Multi.update(:user, changeset)
     |> Repo.transaction()
     |> case do
@@ -310,7 +312,9 @@ defmodule Tr.Accounts do
       |> User.email_changeset(%{email: email})
       |> User.confirm_changeset()
 
-    Ecto.Multi.new()
+    multi = Ecto.Multi.new()
+
+    multi
     |> Ecto.Multi.update(:user, changeset)
     |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, [context]))
   end
@@ -363,7 +367,9 @@ defmodule Tr.Accounts do
       |> User.password_changeset(attrs)
       |> User.validate_current_password(password)
 
-    Ecto.Multi.new()
+    multi = Ecto.Multi.new()
+
+    multi
     |> Ecto.Multi.update(:user, changeset)
     |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, :all))
     |> Repo.transaction()
@@ -396,7 +402,9 @@ defmodule Tr.Accounts do
       |> User.accept_emails_changeset(accept_emails)
       |> User.confirm_changeset()
 
-    Ecto.Multi.new()
+    multi = Ecto.Multi.new()
+
+    multi
     |> Ecto.Multi.update(:user, changeset)
     |> Repo.transaction()
     |> case do
@@ -424,7 +432,9 @@ defmodule Tr.Accounts do
       |> User.github_username_changeset(%{github_username: github_username})
       |> User.confirm_changeset()
 
-    Ecto.Multi.new()
+    multi = Ecto.Multi.new()
+
+    multi
     |> Ecto.Multi.update(:user, changeset)
     |> Repo.transaction()
     |> case do
@@ -502,7 +512,9 @@ defmodule Tr.Accounts do
   end
 
   defp confirm_user_multi(user) do
-    Ecto.Multi.new()
+    multi = Ecto.Multi.new()
+
+    multi
     |> Ecto.Multi.update(:user, User.confirm_changeset(user))
     |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, ["confirm"]))
   end
@@ -559,7 +571,9 @@ defmodule Tr.Accounts do
 
   """
   def reset_user_password(user, attrs) do
-    Ecto.Multi.new()
+    multi = Ecto.Multi.new()
+
+    multi
     |> Ecto.Multi.update(:user, User.password_changeset(user, attrs))
     |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, :all))
     |> Repo.transaction()
