@@ -277,14 +277,9 @@ defmodule Tr.Accounts do
       |> User.display_name_changeset(attrs)
       |> User.confirm_changeset()
 
-    multi = Ecto.Multi.new()
-
-    multi
-    |> Ecto.Multi.update(:user, changeset)
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{user: user}} -> {:ok, user}
-      {:error, :user, changeset, _} -> {:error, changeset}
+    case Repo.update(changeset) do
+      {:ok, user} -> {:ok, user}
+      {:error, changeset} -> {:error, changeset}
     end
   end
 
@@ -299,24 +294,31 @@ defmodule Tr.Accounts do
 
     with {:ok, query} <- UserToken.verify_change_email_token_query(token, context),
          %UserToken{sent_to: email} <- Repo.one(query),
-         {:ok, _} <- Repo.transaction(user_access_emails_multi(user, email, context)) do
+         {:ok, _user} <- update_user_email_and_delete_tokens(user, email, context) do
       :ok
     else
       _ -> :error
     end
   end
 
-  defp user_access_emails_multi(user, email, context) do
+  defp update_user_email_and_delete_tokens(user, email, context) do
     changeset =
       user
       |> User.email_changeset(%{email: email})
       |> User.confirm_changeset()
 
-    multi = Ecto.Multi.new()
+    Repo.transaction(fn ->
+      case Repo.update(changeset) do
+        {:ok, user} ->
+          UserToken.by_user_and_contexts_query(user, [context])
+          |> Repo.delete_all()
 
-    multi
-    |> Ecto.Multi.update(:user, changeset)
-    |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, [context]))
+          user
+
+        {:error, changeset} ->
+          Repo.rollback(changeset)
+      end
+    end)
   end
 
   @doc ~S"""
@@ -367,16 +369,18 @@ defmodule Tr.Accounts do
       |> User.password_changeset(attrs)
       |> User.validate_current_password(password)
 
-    multi = Ecto.Multi.new()
+    Repo.transaction(fn ->
+      case Repo.update(changeset) do
+        {:ok, user} ->
+          UserToken.by_user_and_contexts_query(user, :all)
+          |> Repo.delete_all()
 
-    multi
-    |> Ecto.Multi.update(:user, changeset)
-    |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, :all))
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{user: user}} -> {:ok, user}
-      {:error, :user, changeset, _} -> {:error, changeset}
-    end
+          user
+
+        {:error, changeset} ->
+          Repo.rollback(changeset)
+      end
+    end)
   end
 
   @doc """
@@ -402,14 +406,9 @@ defmodule Tr.Accounts do
       |> User.accept_emails_changeset(accept_emails)
       |> User.confirm_changeset()
 
-    multi = Ecto.Multi.new()
-
-    multi
-    |> Ecto.Multi.update(:user, changeset)
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{user: user}} -> {:ok, user}
-      {:error, :user, changeset, _} -> {:error, changeset}
+    case Repo.update(changeset) do
+      {:ok, user} -> {:ok, user}
+      {:error, changeset} -> {:error, changeset}
     end
   end
 
@@ -432,14 +431,9 @@ defmodule Tr.Accounts do
       |> User.github_username_changeset(%{github_username: github_username})
       |> User.confirm_changeset()
 
-    multi = Ecto.Multi.new()
-
-    multi
-    |> Ecto.Multi.update(:user, changeset)
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{user: user}} -> {:ok, user}
-      {:error, :user, changeset, _} -> {:error, changeset}
+    case Repo.update(changeset) do
+      {:ok, user} -> {:ok, user}
+      {:error, changeset} -> {:error, changeset}
     end
   end
 
