@@ -12,8 +12,8 @@
 #   - Ex: hexpm/elixir:1.19.0-erlang-28.0.2-debian-trixie-20260202-slim
 #   - https://hub.docker.com/r/hexpm/elixir/tags?name=1.19.0-erlang-28.0.2
 #
-ARG ELIXIR_VERSION=1.19.0
-ARG OTP_VERSION=28.0.2
+ARG ELIXIR_VERSION=1.19.5
+ARG OTP_VERSION=28.0
 ARG DEBIAN_VERSION=trixie-20260202-slim
 
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
