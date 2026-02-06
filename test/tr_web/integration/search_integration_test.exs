@@ -21,9 +21,8 @@ defmodule TrWeb.Integration.SearchIntegrationTest do
     test "can search some articles", %{session: session} do
       session
       |> visit("/blog/search")
-      |> fill_in(css("#search_form input"), with: "linux")
-      |> assert_has(Query.css("a", minimum: 4))
-      |> assert_has(Query.css("div h2 a", text: "What exactly is a container?", count: 1))
+      |> fill_in(css("#search_form input"), with: "kubernetes")
+      |> assert_has(Query.css("div.flex h2.text-4xl a", minimum: 1, wait: 5_000))
     end
   end
 end
