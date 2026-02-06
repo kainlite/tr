@@ -28,6 +28,7 @@ defmodule Tr.Tracker do
     |> Repo.insert()
   end
 
+  @dialyzer {:nowarn_function, update_post_status: 2}
   def update_post_status(post, attrs) do
     changeset =
       post

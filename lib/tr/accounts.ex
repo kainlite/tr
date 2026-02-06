@@ -505,10 +505,9 @@ defmodule Tr.Accounts do
     end
   end
 
+  @dialyzer {:nowarn_function, confirm_user_multi: 1}
   defp confirm_user_multi(user) do
-    multi = Ecto.Multi.new()
-
-    multi
+    Ecto.Multi.new()
     |> Ecto.Multi.update(:user, User.confirm_changeset(user))
     |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, ["confirm"]))
   end
@@ -564,10 +563,9 @@ defmodule Tr.Accounts do
       {:error, %Ecto.Changeset{}}
 
   """
+  @dialyzer {:nowarn_function, reset_user_password: 2}
   def reset_user_password(user, attrs) do
-    multi = Ecto.Multi.new()
-
-    multi
+    Ecto.Multi.new()
     |> Ecto.Multi.update(:user, User.password_changeset(user, attrs))
     |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, :all))
     |> Repo.transaction()
