@@ -56,12 +56,12 @@ defmodule Tr.MixProject do
       {:phoenix_live_dashboard, "~> 0.8.3"},
       {:floki, ">= 0.30.0", only: :test},
       {:esbuild, "~> 0.6", runtime: Mix.env() == :dev},
-      {:tailwind, "~> 0.3.1", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.4.1", runtime: Mix.env() == :dev},
       {:swoosh, "~> 1.9"},
       {:finch, "~> 0.13"},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
-      {:gettext, "~> 0.20"},
+      {:gettext, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.6"},
       {:earmark, "~> 1.4.27"},
@@ -83,7 +83,7 @@ defmodule Tr.MixProject do
       {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false},
       {:wallaby, "~> 0.30", runtime: false, only: :test},
       {:ollamex, "0.2.0"},
-      {:mimic, "~> 2.1.1", only: :test},
+      {:mimic, "~> 2.3.0", only: :test},
       {:bandit, "~> 1.0"},
       {:haystack, "~> 0.1.0"},
       {:quantum, "~> 3.5"},
@@ -92,7 +92,7 @@ defmodule Tr.MixProject do
       {:elixir_auth_github, "~> 1.6"},
       {:neuron, "~> 5.1.0"},
       {:cloak, "1.1.4"},
-      {:peep, "~> 3.3"},
+      {:peep, "~> 4.3"},
       {:lazy_html, ">= 0.1.0", only: :test}
     ]
   end
