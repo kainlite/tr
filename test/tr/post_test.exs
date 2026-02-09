@@ -82,5 +82,51 @@ defmodule Tr.PostTest do
       comment = comment_fixture()
       assert %Ecto.Changeset{} = Post.change_comment(comment)
     end
+
+    test "get_unapproved_comments/0 returns only unapproved comments" do
+      comment = comment_fixture()
+      unapproved = Post.get_unapproved_comments()
+      assert Enum.any?(unapproved, &(&1.id == comment.id))
+      assert Enum.all?(unapproved, &(&1.approved == false))
+    end
+
+    test "approve_comment/1 marks comment as approved" do
+      comment = comment_fixture()
+      refute comment.approved
+      assert {:ok, approved} = Post.approve_comment(comment)
+      assert approved.approved
+    end
+
+    test "get_comments_count/0 returns correct count" do
+      comment_fixture()
+      comment_fixture()
+      assert Post.get_comments_count() >= 2
+    end
+
+    test "get_comment/1 returns nil for non-existent" do
+      assert is_nil(Post.get_comment(-1))
+    end
+
+    test "get_children_comments_for_post/1 groups by parent_comment_id" do
+      parent = comment_fixture(%{parent_comment_id: nil})
+      user = Tr.AccountsFixtures.confirmed_user_fixture()
+
+      {:ok, child} =
+        Post.create_comment(%{
+          body: "child comment",
+          slug: parent.slug,
+          user_id: user.id,
+          parent_comment_id: parent.id
+        })
+
+      children = Post.get_children_comments_for_post(parent.slug)
+      assert Map.has_key?(children, parent.id)
+      assert Enum.any?(children[parent.id], &(&1.id == child.id))
+    end
+
+    test "broadcast/2 handles error tuples gracefully" do
+      changeset = Post.change_comment(%Tr.Post.Comment{}, %{})
+      assert {:error, ^changeset} = Post.broadcast({:error, changeset}, :comment_created)
+    end
   end
 end

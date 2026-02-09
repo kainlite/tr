@@ -32,6 +32,24 @@ defmodule Tr.PostFixtures do
   end
 
   @doc """
+  Generate a reaction.
+  """
+  def reaction_fixture(attrs \\ %{}) do
+    user = confirmed_user_fixture()
+
+    {:ok, reaction} =
+      attrs
+      |> Enum.into(%{
+        value: "heart",
+        slug: "some-slug",
+        user_id: user.id
+      })
+      |> Tr.Post.create_reaction()
+
+    reaction
+  end
+
+  @doc """
   Generate a comment.
   """
   def comment_fixture(attrs \\ %{}) do
