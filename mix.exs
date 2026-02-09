@@ -92,7 +92,7 @@ defmodule Tr.MixProject do
       {:elixir_auth_github, "~> 1.6"},
       {:neuron, "~> 5.1.0"},
       {:cloak, "1.1.4"},
-      {:peep, "~> 3.3"},
+      {:peep, "~> 4.3"},
       {:lazy_html, ">= 0.1.0", only: :test}
     ]
   end
