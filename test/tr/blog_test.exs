@@ -9,29 +9,29 @@ defmodule Tr.BlogTest do
 
       assert Enum.sort_by(posts, & &1.date, {:desc, Date}) == posts
       assert Enum.all?(posts, & &1.published)
-      assert Enum.count(posts, & &1.published) > 0
+      assert Enum.any?(posts, & &1.published)
     end
 
     test "gets all slugs" do
       slugs = Blog.all_slugs()
       assert Enum.sort(slugs) == slugs
-      assert Enum.count(slugs) > 0
+      assert not Enum.empty?(slugs)
     end
 
     test "gets all tags" do
       tags = Blog.all_tags()
       assert Enum.sort(tags) == tags
-      assert Enum.count(tags) > 0
+      assert not Enum.empty?(tags)
     end
 
     test "gets posts by tag" do
       posts = Blog.by_tag("en", Enum.random(Blog.all_tags()))
-      assert Enum.count(posts) > 0
+      assert not Enum.empty?(posts)
     end
 
     test "gets recent posts" do
       posts = Blog.recent_posts("en")
-      assert Enum.count(posts) > 0
+      assert not Enum.empty?(posts)
     end
 
     test "gets post by id" do
@@ -53,13 +53,13 @@ defmodule Tr.BlogTest do
     test "gets Spanish posts" do
       posts = Blog.posts("es")
       assert Enum.all?(posts, &(&1.lang == "es"))
-      assert Enum.count(posts) > 0
+      assert not Enum.empty?(posts)
     end
 
     test "all_posts/0 returns all published posts" do
       posts = Blog.all_posts()
       assert Enum.all?(posts, & &1.published)
-      assert Enum.count(posts) > 0
+      assert not Enum.empty?(posts)
     end
 
     test "recent_posts/2 respects the count parameter" do

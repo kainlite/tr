@@ -45,7 +45,7 @@ defmodule Tr.MixProject do
   defp deps do
     [
       {:bcrypt_elixir, "~> 3.0"},
-      {:phoenix, "~> 1.7.2"},
+      {:phoenix, "~> 1.8.1"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},
       {:postgrex, ">= 0.0.0"},
@@ -83,7 +83,7 @@ defmodule Tr.MixProject do
       {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false},
       {:wallaby, "~> 0.30", runtime: false, only: :test},
       {:ollamex, "0.2.0"},
-      {:mimic, "~> 1.7", only: :test},
+      {:mimic, "~> 2.1.1", only: :test},
       {:bandit, "~> 1.0"},
       {:haystack, "~> 0.1.0"},
       {:quantum, "~> 3.5"},

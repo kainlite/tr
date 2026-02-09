@@ -56,7 +56,7 @@ defmodule Tr.Tracker do
     start_app()
     track_posts()
 
-    if length(get_unannounced_posts()) > 0 do
+    if get_unannounced_posts() != [] do
       announce_posts()
     end
   end

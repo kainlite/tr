@@ -12,7 +12,7 @@ defmodule Tr.SearchTest do
     test "search/1 returns results for known terms" do
       results = Tr.Search.search("kubernetes")
       assert is_list(results)
-      assert length(results) > 0
+      assert results != []
     end
 
     test "search/1 returns empty list for nonsense terms" do
