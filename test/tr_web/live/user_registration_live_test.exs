@@ -74,7 +74,7 @@ defmodule TrWeb.UserRegistrationLiveTest do
 
       {:ok, _login_live, login_html} =
         lv
-        |> element(~s|main a:fl-contains("Sign in")|)
+        |> element(~s|main a[href="/en/users/log_in"]|)
         |> render_click()
         |> follow_redirect(conn, ~p"/en/users/log_in")
 
