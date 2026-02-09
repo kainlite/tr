@@ -55,7 +55,9 @@ defmodule TrWeb.Integration.PostIntegrationTest do
 
       user2
       |> visit(page)
-      |> assert_has(Query.css("li", text: "Comment hidden, awaiting moderation...", minimum: 1, wait: 10_000))
+      |> assert_has(
+        Query.css("li", text: "Comment hidden, awaiting moderation...", minimum: 1, wait: 10_000)
+      )
       |> click(Query.link("Reply", wait: 10_000))
 
       user2
