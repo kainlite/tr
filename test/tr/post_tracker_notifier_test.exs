@@ -55,5 +55,70 @@ defmodule Tr.PostTracker.NotifierTest do
       assert mail.text_body =~ "A new reply was just added to a comment you are following:"
       assert mail.text_body =~ "upgrading-k3s-with-system-upgrade-controller"
     end
+
+    test "email to field matches user email", %{user: user, post: post} do
+      {:ok, mail} =
+        Notifier.deliver_new_post_notification(
+          user,
+          "New post",
+          post.body,
+          "/blog/some-post"
+        )
+
+      assert [{_, email}] = mail.to
+      assert email == user.email
+    end
+
+    test "email from field matches configured sender", %{user: user, post: post} do
+      {:ok, mail} =
+        Notifier.deliver_new_post_notification(
+          user,
+          "New post",
+          post.body,
+          "/blog/some-post"
+        )
+
+      assert {"segfault", "noreply@segfault.pw"} = mail.from
+    end
+
+    test "post notification body contains the URL", %{user: user, post: post} do
+      url = "/blog/my-specific-test-post"
+
+      {:ok, mail} =
+        Notifier.deliver_new_post_notification(
+          user,
+          "New post",
+          post.body,
+          url
+        )
+
+      assert mail.text_body =~ url
+    end
+
+    test "comment notification subject includes URL slug", %{user: user, post: post} do
+      url = "/blog/upgrading-k3s-with-system-upgrade-controller"
+
+      {:ok, mail} =
+        Notifier.deliver_new_comment_notification(
+          user,
+          post.body,
+          url
+        )
+
+      assert mail.subject =~ url
+    end
+
+    test "reply notification subject includes URL slug", %{user: user, post: post} do
+      url = "/blog/upgrading-k3s-with-system-upgrade-controller"
+
+      {:ok, mail} =
+        Notifier.deliver_new_reply_notification(
+          user,
+          post.body,
+          url
+        )
+
+      assert mail.subject =~ url
+    end
   end
 end

@@ -1,4 +1,5 @@
 Mimic.copy(Tr.Ollama)
+Mimic.copy(Neuron)
 
 ExUnit.start()
 Ecto.Adapters.SQL.Sandbox.mode(Tr.Repo, :manual)
