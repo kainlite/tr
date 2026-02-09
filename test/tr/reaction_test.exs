@@ -9,19 +9,25 @@ defmodule Tr.ReactionTest do
 
   describe "Reaction changeset" do
     test "valid changeset with required fields" do
-      changeset = Reaction.changeset(%Reaction{}, %{value: "heart", slug: "test-slug", user_id: 1})
+      changeset =
+        Reaction.changeset(%Reaction{}, %{value: "heart", slug: "test-slug", user_id: 1})
+
       assert changeset.valid?
     end
 
     test "validates required fields" do
       changeset = Reaction.changeset(%Reaction{}, %{})
       refute changeset.valid?
-      assert %{value: ["can't be blank"], slug: ["can't be blank"], user_id: ["can't be blank"]} = errors_on(changeset)
+
+      assert %{value: ["can't be blank"], slug: ["can't be blank"], user_id: ["can't be blank"]} =
+               errors_on(changeset)
     end
 
     test "validates inclusion of value" do
       for valid_value <- ["rocket-launch", "hand-thumb-up", "heart"] do
-        changeset = Reaction.changeset(%Reaction{}, %{value: valid_value, slug: "test", user_id: 1})
+        changeset =
+          Reaction.changeset(%Reaction{}, %{value: valid_value, slug: "test", user_id: 1})
+
         assert changeset.valid?, "Expected #{valid_value} to be valid"
       end
     end
