@@ -69,8 +69,7 @@ if config_env() == :prod do
       "//segfault.pw",
       "//www.segfault.pw"
     ],
-    secret_key_base: secret_key_base,
-    force_ssl: [host: nil]
+    secret_key_base: secret_key_base
 
   # ## SSL Support
   #
