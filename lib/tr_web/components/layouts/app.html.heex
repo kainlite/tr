@@ -1,11 +1,14 @@
-<header class="dark:bg-zinc-900 dark:text-white">
-  <section class="flex flex-row-reverse">
-    <nav class="dark:invert">
+<header class="sticky top-0 z-50 dark:bg-surface-900/95 bg-white/95 backdrop-blur-sm border-b border-zinc-200 dark:border-surface-700">
+  <section class="flex flex-row-reverse max-w-screen-2xl mx-auto">
+    <nav>
       <ul class="relative z-10 flex flex-row items-center gap-4 px-4 sm:px-6 lg:px-8">
         <li class="order-399">
           <% locale = if Gettext.get_locale(TrWeb.Gettext) == "en", do: "es", else: "en" %>
-          <.link aria-label="language-toggle" navigate={~p"/#{locale}/blog"}>
-            <span class="hero-language w-10 h-10" />
+          <.link aria-label="language-toggle" navigate={~p"/#{locale}/blog"} class="icon-button">
+            <.icon
+              name="hero-language"
+              class="w-10 h-10 text-zinc-600 dark:text-zinc-300 hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
+            />
           </.link>
         </li>
         <li class="order-299">
@@ -14,34 +17,68 @@
             phx-update="ignore"
             aria-label="cookies"
             data-cc="show-preferencesModal"
+            class="icon-button"
           >
-            <span class="hero-information-circle w-10 h-10" />
+            <.icon
+              name="hero-information-circle"
+              class="w-10 h-10 text-zinc-600 dark:text-zinc-300 hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
+            />
           </.link>
         </li>
         <li class="order-199">
-          <.link phx-click={JS.dispatch("toogle-darkmode")} aria-label="toggle dark mode">
-            <span class="hero-moon dark:hero-sun dark:w-10 dark:h-10 w-10 h-10" />
+          <.link
+            phx-click={JS.dispatch("toogle-darkmode")}
+            aria-label="toggle dark mode"
+            class="icon-button"
+          >
+            <span class="hidden dark:inline-block">
+              <.icon
+                name="hero-sun"
+                class="w-10 h-10 text-zinc-300 hover:text-brand-400 transition-colors"
+              />
+            </span>
+            <span class="inline-block dark:hidden">
+              <.icon
+                name="hero-moon"
+                class="w-10 h-10 text-zinc-600 hover:text-brand-500 transition-colors"
+              />
+            </span>
           </.link>
         </li>
         <li class="order-99">
           <.link
             navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/search"}
             aria-label="search"
+            class="icon-button"
           >
-            <.icon name="hero-magnifying-glass" class="w-10 h-10" />
+            <.icon
+              name="hero-magnifying-glass"
+              class="w-10 h-10 text-zinc-600 dark:text-zinc-300 hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
+            />
           </.link>
         </li>
         <li class="order-90">
           <.link
             navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/tags"}
             aria-label="labels"
+            class="icon-button"
           >
-            <.icon name="hero-tag" class="w-10 h-10" />
+            <.icon
+              name="hero-tag"
+              class="w-10 h-10 text-zinc-600 dark:text-zinc-300 hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
+            />
           </.link>
         </li>
         <li class="order-100">
-          <.link navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog"} aria-label="blog">
-            <.icon name="hero-list-bullet" class="w-10 h-10" />
+          <.link
+            navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog"}
+            aria-label="blog"
+            class="icon-button"
+          >
+            <.icon
+              name="hero-list-bullet"
+              class="w-10 h-10 text-zinc-600 dark:text-zinc-300 hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
+            />
           </.link>
         </li>
         <%= if Map.get(assigns, :current_user) do %>
@@ -49,7 +86,7 @@
             <li class="order-80">
               <.link
                 href={~p"/admin/dashboard?comments=unapproved"}
-                class="text-[1.25rem] leading-6 text-[#0069d9] dark:text-[rgb(253 79 0 / var(--tw-text-opacity))] font-semibold hover:text-zinc-700"
+                class="text-[1.25rem] leading-6 text-accent-600 dark:text-brand-400 font-semibold hover:text-brand-500 dark:hover:text-brand-500 transition-colors"
               >
                 {gettext("Dashboard")}
               </.link>
@@ -58,7 +95,7 @@
           <li class="order-70">
             <.link
               href={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/users/settings"}
-              class="text-[1.25rem] leading-6 text-[#0069d9] dark:text-[rgb(253 79 0 / var(--tw-text-opacity))] font-semibold hover:text-zinc-700"
+              class="text-[1.25rem] leading-6 text-accent-600 dark:text-brand-400 font-semibold hover:text-brand-500 dark:hover:text-brand-500 transition-colors"
             >
               {@current_user.email}
             </.link>
@@ -67,7 +104,7 @@
             <.link
               href={~p"/users/log_out"}
               method="delete"
-              class="text-[1.25rem] leading-6 text-[#0069d9] dark:text-[rgb(253 79 0 / var(--tw-text-opacity))] font-semibold hover:text-zinc-700"
+              class="text-[1.25rem] leading-6 text-accent-600 dark:text-brand-400 font-semibold hover:text-brand-500 dark:hover:text-brand-500 transition-colors"
             >
               {gettext("Log out")}
             </.link>
@@ -76,7 +113,7 @@
           <li class="order-50">
             <.link
               href={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/users/log_in"}
-              class="text-[1.25rem] leading-6 text-[#0069d9] dark:text-[rgb(253 79 0 / var(--tw-text-opacity))] font-semibold hover:text-zinc-700"
+              class="text-[1.25rem] leading-6 text-accent-600 dark:text-brand-400 font-semibold hover:text-brand-500 dark:hover:text-brand-500 transition-colors"
             >
               {gettext("Log in")}
             </.link>
@@ -84,7 +121,7 @@
           <li class="order-60">
             <.link
               href={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/users/register"}
-              class="text-[1.25rem] leading-6 text-[#0069d9] dark:text-[rgb(253 79 0 / var(--tw-text-opacity))] font-semibold hover:text-zinc-700"
+              class="text-[1.25rem] leading-6 text-accent-600 dark:text-brand-400 font-semibold hover:text-brand-500 dark:hover:text-brand-500 transition-colors"
             >
               {gettext("Register")}
             </.link>
@@ -108,8 +145,8 @@
   </section>
 </header>
 
-<main class="sm:px-6 lg:px-8 min-h-[70vh]">
-  <div class="mx-auto max-w-screen-2xl shadow-xl p-8 rounded-lg">
+<main class="sm:px-6 lg:px-8 min-h-[70vh] py-8">
+  <div class="mx-auto max-w-screen-2xl card-tech p-8 rounded-xl">
     <.flash_group flash={@flash} />
     {@inner_content}
   </div>

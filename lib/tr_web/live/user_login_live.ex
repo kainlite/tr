@@ -4,7 +4,7 @@ defmodule TrWeb.UserLoginLive do
   def render(assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
-      <.header class="text-center dark:invert">
+      <.header class="text-center dark:text-zinc-100">
         {gettext("Sign in to account")}
         <:subtitle>
           {gettext("Don't have an account?")}

@@ -1,6 +1,55 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+@layer components {
+  .card-tech {
+    @apply bg-white shadow-lg border border-zinc-200 transition-all duration-200;
+  }
+
+  .dark .card-tech {
+    background-color: #1e2128;
+    border-color: #2d3748;
+    box-shadow: none;
+  }
+
+  .dark .card-tech:hover {
+    border-color: #486581;
+    box-shadow: 0 0 8px rgba(233, 114, 25, 0.3);
+  }
+
+  .tag-pill {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+    @apply bg-zinc-100 text-zinc-700 border border-zinc-200 transition-all duration-200;
+  }
+
+  .dark .tag-pill {
+    background-color: #2d3748;
+    color: #d4d4d8;
+    border-color: #486581;
+  }
+
+  .tag-pill:hover {
+    @apply bg-zinc-200;
+  }
+
+  .dark .tag-pill:hover {
+    background-color: #486581;
+    color: #ef8f40;
+  }
+
+  .icon-button {
+    @apply inline-flex items-center justify-center p-2 rounded-lg transition-all duration-200;
+  }
+
+  .icon-button:hover {
+    @apply bg-zinc-100;
+  }
+
+  .dark .icon-button:hover {
+    background-color: #2d3748;
+  }
+}
 @import "monokai";
 @import "cookieconsent";
 
@@ -168,6 +217,11 @@
     letter-spacing: 0.01em;
     line-height: 1.6;
   }
+
+  .dark body {
+    background-color: #13161a;
+    color: #e4e4e7;
+  }
   blockquote {
     border-left: 0.3rem solid #d1d1d1;
     margin-left: 0;
@@ -316,11 +370,16 @@
   }
 
   pre {
-    @apply dark:bg-zinc-500 dark:text-white;
     @apply rounded-lg;
     @apply mx-auto w-[99%];
     @apply my-2;
     position: relative;
+  }
+
+  .dark pre {
+    background-color: #0d0f12;
+    color: #e4e4e7;
+    border: 1px solid #2d3748;
   }
 
   pre > code {
@@ -452,13 +511,20 @@
     }
   }
   a {
-    color: #0069d9;
+    color: #486581;
     text-decoration: none;
-    @apply dark:text-blue-500;
+    transition-property: color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
   }
+
+  .dark a {
+    color: #ef8f40;
+  }
+
   a:focus,
   a:hover {
-    color: #606c76;
+    color: #e97219;
   }
   dl,
   ol,
@@ -548,8 +614,14 @@
   header {
     width: 100%;
     background: #fdfdfd;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     border-bottom: 1px solid #eaeaea;
-    margin-bottom: 2rem;
+  }
+
+  .dark header {
+    background-color: rgba(19, 22, 26, 0.95);
+    border-bottom-color: #2d3748;
   }
   header section {
     align-items: center;
@@ -581,4 +653,5 @@
       margin: 1rem;
     }
   }
+
 }

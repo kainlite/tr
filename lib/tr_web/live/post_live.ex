@@ -72,15 +72,16 @@ defmodule TrWeb.PostLive do
     <div class="float-left">
       <h2>{@post.title}</h2>
     </div>
-    <div class="float-right dark:invert py-6">
+    <div class="float-right py-6 flex items-center gap-4">
       <.link
         phx-click="react"
         phx-value-value="rocket-launch"
         phx-value-slug={@post.id}
         aria-label="awesome"
         id="hero-rocket-launch-link"
+        class="flex items-center gap-1 text-zinc-600 dark:text-zinc-300 hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
       >
-        <.icon name={@rocket_launch} class="w-10 h-10 bg-black" />
+        <.icon name={@rocket_launch} class="w-10 h-10" />
         <span class="font-semibold">{Map.get(@reactions, "rocket-launch", 0)}</span>
       </.link>
       <.link
@@ -89,8 +90,9 @@ defmodule TrWeb.PostLive do
         phx-value-slug={@post.id}
         aria-label="love it"
         id="hero-heart-link"
+        class="flex items-center gap-1 text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 transition-colors"
       >
-        <.icon name={@heart} class="w-10 h-10 bg-red-500 dark:bg-black" />
+        <.icon name={@heart} class="w-10 h-10" />
         <span class="font-semibold">
           {Map.get(@reactions, "heart", 0)}
         </span>
@@ -101,8 +103,9 @@ defmodule TrWeb.PostLive do
         phx-value-slug={@post.id}
         aria-label="like it"
         id="hero-hand-thumb-up-link"
+        class="flex items-center gap-1 text-zinc-600 dark:text-zinc-300 hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
       >
-        <.icon name={@hand_thumb_up} class="w-10 h-10 bg-black" />
+        <.icon name={@hand_thumb_up} class="w-10 h-10" />
         <span class="font-semibold">{Map.get(@reactions, "hand-thumb-up", 0)}</span>
       </.link>
     </div>

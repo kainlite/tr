@@ -52,7 +52,11 @@ defmodule TrWeb.CoreComponents do
       phx-remove={hide_modal(@id)}
       class="relative z-50 hidden"
     >
-      <div id={"#{@id}-bg"} class="fixed inset-0 bg-zinc-50/90 transition-opacity" aria-hidden="true" />
+      <div
+        id={"#{@id}-bg"}
+        class="fixed inset-0 bg-zinc-50/90 dark:bg-surface-950/90 transition-opacity"
+        aria-hidden="true"
+      />
       <div
         class="fixed inset-0 overflow-y-auto"
         aria-labelledby={"#{@id}-title"}
@@ -69,7 +73,7 @@ defmodule TrWeb.CoreComponents do
               phx-window-keydown={hide_modal(@on_cancel, @id)}
               phx-key="escape"
               phx-click-away={hide_modal(@on_cancel, @id)}
-              class="hidden relative rounded-2xl bg-white dark:bg-zinc-900 dark:text-white p-14 shadow-lg shadow-zinc-700/10 ring-1 ring-zinc-700/10 transition"
+              class="hidden relative rounded-2xl bg-white dark:bg-surface-800 dark:text-zinc-200 p-14 shadow-lg shadow-zinc-700/10 ring-1 ring-zinc-700/10 dark:ring-surface-600 transition"
             >
               <div class="absolute top-6 right-5">
                 <button
@@ -83,13 +87,16 @@ defmodule TrWeb.CoreComponents do
               </div>
               <div id={"#{@id}-content"}>
                 <header :if={@title != []}>
-                  <h1 id={"#{@id}-title"} class="text-lg font-semibold leading-8 text-zinc-800">
+                  <h1
+                    id={"#{@id}-title"}
+                    class="text-lg font-semibold leading-8 text-zinc-800 dark:text-zinc-100"
+                  >
                     {render_slot(@title)}
                   </h1>
                   <p
                     :if={@subtitle != []}
                     id={"#{@id}-description"}
-                    class="mt-2 text-sm leading-6 text-zinc-600"
+                    class="mt-2 text-sm leading-6 text-zinc-600 dark:text-zinc-400"
                   >
                     {render_slot(@subtitle)}
                   </p>
@@ -150,8 +157,10 @@ defmodule TrWeb.CoreComponents do
       role="alert"
       class={[
         "fixed hidden top-2 right-2 w-80 sm:w-96 z-50 rounded-lg p-3 shadow-md shadow-zinc-900/5 ring-1",
-        @kind == :info && "bg-emerald-50 text-emerald-800 ring-emerald-500 fill-cyan-900",
-        @kind == :error && "bg-rose-50 p-3 text-rose-900 shadow-md ring-rose-500 fill-rose-900"
+        @kind == :info &&
+          "bg-emerald-50 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-200 ring-emerald-500 dark:ring-emerald-700 fill-cyan-900",
+        @kind == :error &&
+          "bg-rose-50 dark:bg-rose-900/30 p-3 text-rose-900 dark:text-rose-200 shadow-md ring-rose-500 dark:ring-rose-700 fill-rose-900"
       ]}
       {@rest}
     >
@@ -259,8 +268,9 @@ defmodule TrWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
+        "phx-submit-loading:opacity-75 rounded-lg bg-brand-500 hover:bg-brand-600 py-2 px-3",
         "text-sm font-semibold leading-6 text-white active:text-white/80",
+        "transition-all duration-200 hover:shadow-glow-sm",
         @class
       ]}
       {@rest}
@@ -444,10 +454,10 @@ defmodule TrWeb.CoreComponents do
     ~H"""
     <header class={[@actions != [] && "flex items-center justify-between gap-6", @class]}>
       <div>
-        <h1 class="text-lg font-semibold leading-8 text-zinc-800">
+        <h1 class="text-lg font-semibold leading-8 text-zinc-800 dark:text-zinc-100">
           {render_slot(@inner_block)}
         </h1>
-        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600">
+        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
           {render_slot(@subtitle)}
         </p>
       </div>
@@ -499,12 +509,12 @@ defmodule TrWeb.CoreComponents do
         <tbody
           id={"tbody-#{@id}"}
           phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
-          class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700"
+          class="relative divide-y divide-zinc-100 dark:divide-zinc-700 border-t border-zinc-200 dark:border-zinc-700 text-sm leading-6 text-zinc-700 dark:text-zinc-300"
         >
           <tr
             :for={row <- @rows}
             id={@row_id && @row_id.(row)}
-            class="group hover:bg-zinc-50 dark:hover:bg-zinc-700 dark:text-gray-200"
+            class="group hover:bg-zinc-50 dark:hover:bg-surface-700"
           >
             <td
               :for={{col, i} <- Enum.with_index(@col)}
@@ -512,20 +522,18 @@ defmodule TrWeb.CoreComponents do
               class={["relative p-0", @row_click && "hover:cursor-pointer"]}
             >
               <div class="block py-4 pr-6">
-                <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-50 dark:group-hover:invert sm:rounded-l-xl" />
-                <span class={["relative", i == 0 && "font-semibold text-zinc-900 dark:invert"]}>
+                <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-50 dark:group-hover:bg-surface-700 sm:rounded-l-xl" />
+                <span class={["relative", i == 0 && "font-semibold text-zinc-900 dark:text-zinc-100"]}>
                   {render_slot(col, @row_item.(row))}
                 </span>
               </div>
             </td>
             <td :if={@action != []} class="relative p-0 w-14">
-              <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium dark:invert">
-                <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50 dark:group-hover:invert
-                sm:rounded-r-xl dark:invert" />
+              <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
+                <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50 dark:group-hover:bg-surface-700 sm:rounded-r-xl" />
                 <span
                   :for={action <- @action}
-                  class="relative ml-4 font-semibold leading-6 text-zinc-900 dark:hover:invert hover:text-zinc-700
-                  dark:invert"
+                  class="relative ml-4 font-semibold leading-6 text-zinc-900 dark:text-zinc-100 hover:text-zinc-700 dark:hover:text-brand-400"
                 >
                   {render_slot(action, @row_item.(row))}
                 </span>
@@ -614,7 +622,7 @@ defmodule TrWeb.CoreComponents do
 
   def icon(%{name: "hero-" <> _} = assigns) do
     ~H"""
-    <span class={[@name, @class]} />
+    <span class={[@name, "shrink-0", @class]} />
     """
   end
 

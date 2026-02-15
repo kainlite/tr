@@ -11,7 +11,28 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        brand: "#FD4F00",
+        brand: {
+          400: '#ef8f40',
+          500: '#e97219',
+          600: '#d25810',
+        },
+        accent: {
+          500: '#627d98',
+          600: '#486581',
+        },
+        surface: {
+          700: '#2d3748',
+          800: '#1e2128',
+          900: '#13161a',
+          950: '#0d0f12',
+        },
+      },
+      boxShadow: {
+        'glow-sm': '0 0 8px rgba(233, 114, 25, 0.3)',
+        'glow': '0 0 15px rgba(233, 114, 25, 0.4)',
+      },
+      fontFamily: {
+        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
       },
     },
   },

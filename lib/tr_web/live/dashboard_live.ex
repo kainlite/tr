@@ -43,9 +43,9 @@ defmodule TrWeb.DashboardLive do
           <span>{gettext("Total comments:")} {Tr.Post.get_comments_count()}</span>
           <span>{gettext("Connected users:")} {@user_stats.total}</span>
         </div>
-        <ul class="list-none text-base bg-gray-100 rounded-lg p-4 shadow-md dark:invert">
+        <ul class="list-none text-base bg-gray-100 dark:bg-surface-800 rounded-lg p-4 shadow-md dark:text-zinc-200">
           <%= for {room, count} <- @user_stats.per_room do %>
-            <li class="py-2 border-b border-gray-200 dark:invert">{room}: {count}</li>
+            <li class="py-2 border-b border-gray-200 dark:border-surface-600">{room}: {count}</li>
           <% end %>
         </ul>
       </div>
@@ -54,14 +54,14 @@ defmodule TrWeb.DashboardLive do
 
       <.link
         href={~p"/admin/dashboard?comments=all"}
-        class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700 dark:invert"
+        class="text-[1.25rem] leading-6 text-zinc-900 dark:text-zinc-100 font-semibold hover:text-brand-500 dark:hover:text-brand-400"
       >
         {gettext("All comments")}
       </.link>
       |
       <.link
         href={~p"/admin/dashboard?comments=unapproved"}
-        class="text-[1.25rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700 dark:invert"
+        class="text-[1.25rem] leading-6 text-zinc-900 dark:text-zinc-100 font-semibold hover:text-brand-500 dark:hover:text-brand-400"
       >
         {gettext("Unapproved comments")}
       </.link>

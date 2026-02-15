@@ -5,7 +5,7 @@ defmodule TrWeb.UserSettingsLive do
 
   def render(assigns) do
     ~H"""
-    <.header class="text-center  dark:invert">
+    <.header class="text-center dark:text-zinc-100">
       {gettext("Account Settings")}
       <:subtitle>{gettext("Manage your account email address and password settings")}</:subtitle>
     </.header>
