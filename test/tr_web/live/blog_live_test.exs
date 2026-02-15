@@ -17,7 +17,7 @@ defmodule TrWeb.BlogLiveTest do
         conn
         |> live(~p"/blog")
 
-      assert html =~ "<article"
+      assert html =~ "card-tech"
     end
 
     test "blog page shows article metadata", %{conn: conn} do
