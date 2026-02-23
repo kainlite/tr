@@ -13,8 +13,8 @@
 #   - https://hub.docker.com/r/hexpm/elixir/tags?name=1.19.0-erlang-28.0.2
 #
 ARG ELIXIR_VERSION=1.19.5
-ARG OTP_VERSION=28.0
-ARG DEBIAN_VERSION=trixie-20260112-slim
+ARG OTP_VERSION=28.3.1
+ARG DEBIAN_VERSION=bookworm-20260202-slim
 
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
