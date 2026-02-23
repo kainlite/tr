@@ -80,67 +80,114 @@ defmodule Tr.Tracker do
     unanounced_posts = get_unannounced_posts()
     notifiable_users = Tr.Accounts.get_all_notifiable_users()
 
-    if length(unanounced_posts) > 1 do
-      url = TrWeb.Endpoint.url() <> "/en/blog/"
-      subject = "This is what you have missed so far..."
-      titles = Enum.map(unanounced_posts, fn p -> p.slug end)
+    # Don't mark posts as announced if there are no users to notify
+    if notifiable_users == [] do
+      require Logger
+      Logger.warning("No notifiable users found, skipping announcement to retry later")
+      :ok
+    else
+      send_and_mark(unanounced_posts, notifiable_users)
+    end
+  end
 
-      # Fetch all posts
-      posts =
-        Enum.map(unanounced_posts, fn p -> Tr.Blog.get_post_by_slug(p.slug) end)
+  defp send_and_mark(unanounced_posts, notifiable_users) do
+    require Logger
+    {subject, body, url} = build_announcement(unanounced_posts)
 
-      descriptions =
-        Enum.map(posts, fn p ->
-          Map.get(p, :description)
-        end)
+    # Send emails first, only mark as announced if at least one email succeeds
+    case notify_users(notifiable_users, subject, body, url) do
+      {:ok, _results} ->
+        mark_as_announced(unanounced_posts)
 
-      # Create the body based in the title and descriptions
-      body =
-        Enum.join(
-          Enum.map(Enum.zip([titles, descriptions]), fn p ->
-            elem(p, 0) <> "\n" <> elem(p, 1) <> "\n" <> url <> elem(p, 0) <> "\n\n"
-          end)
-        )
+      {:error, reason} ->
+        Logger.error("Failed to send post notifications: #{inspect(reason)}")
+    end
+  end
 
-      Enum.each(unanounced_posts, fn post ->
-        # Mark posts as already announced
-        update_post_status(post, %{announced: true})
+  defp mark_as_announced(posts) do
+    Enum.each(posts, fn post ->
+      update_post_status(post, %{announced: true})
+    end)
+  end
+
+  defp build_announcement(unanounced_posts) when length(unanounced_posts) > 1 do
+    url = TrWeb.Endpoint.url() <> "/en/blog/"
+    subject = "This is what you have missed so far..."
+
+    # Fetch all posts, filtering out any that no longer exist
+    post_pairs =
+      unanounced_posts
+      |> Enum.map(fn p -> {p.slug, Tr.Blog.get_post_by_slug(p.slug)} end)
+      |> Enum.reject(fn {_slug, post} -> is_nil(post) end)
+
+    body =
+      Enum.map_join(post_pairs, fn {slug, post} ->
+        slug <> "\n" <> post.description <> "\n" <> url <> slug <> "\n\n"
       end)
 
-      notify_users(notifiable_users, subject, body, url)
-    else
-      unannounced_post = hd(unanounced_posts)
-      post = Tr.Blog.get_post_by_slug(unannounced_post.slug)
+    {subject, body, url}
+  end
+
+  defp build_announcement(unanounced_posts) do
+    unannounced_post = hd(unanounced_posts)
+    post = Tr.Blog.get_post_by_slug(unannounced_post.slug)
+
+    if post do
       url = TrWeb.Endpoint.url() <> "/en/blog/" <> post.id
       subject = post.title
       body = post.title <> "\n" <> post.description <> "\n" <> url
-
-      # Mark post as already announced
-      update_post_status(unannounced_post, %{announced: true})
-
-      # Fire in the hole
-      notify_users(notifiable_users, subject, body, url)
+      {subject, body, url}
+    else
+      require Logger
+      Logger.warning("Post not found for slug: #{unannounced_post.slug}")
+      url = TrWeb.Endpoint.url() <> "/en/blog/"
+      {"New article on segfault.pw", "A new article has been published!", url}
     end
   end
 
   defp notify_users(users, subject, body, url) do
-    tasks =
+    require Logger
+
+    results =
       Enum.map(users, fn user ->
-        # Fire in the hole
-        Task.Supervisor.async_nolink(
-          Tr.TaskSupervisor,
-          fn ->
-            Tr.PostTracker.Notifier.deliver_new_post_notification(
-              user,
-              subject,
-              body,
-              url
+        try do
+          task =
+            Task.Supervisor.async_nolink(
+              Tr.TaskSupervisor,
+              fn ->
+                Tr.PostTracker.Notifier.deliver_new_post_notification(
+                  user,
+                  subject,
+                  body,
+                  url
+                )
+              end
             )
+
+          case Task.yield(task, 15_000) || Task.shutdown(task) do
+            {:ok, {:ok, _email}} ->
+              Logger.info("Post notification sent to #{user.email}")
+              :ok
+
+            {:ok, {:error, reason}} ->
+              Logger.error("Failed to send notification to #{user.email}: #{inspect(reason)}")
+              {:error, reason}
+
+            nil ->
+              Logger.error("Timeout sending notification to #{user.email}")
+              {:error, :timeout}
           end
-        )
+        rescue
+          e ->
+            Logger.error("Exception sending notification to #{user.email}: #{inspect(e)}")
+            {:error, e}
+        end
       end)
 
-    tasks
-    |> Enum.map(&Task.await/1)
+    if Enum.any?(results, &(&1 == :ok)) do
+      {:ok, results}
+    else
+      {:error, :all_failed}
+    end
   end
 end

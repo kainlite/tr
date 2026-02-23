@@ -26,8 +26,8 @@ defmodule Tr.PostTracker.NotifierTest do
         )
 
       assert mail.subject =~ "New post"
-      assert mail.text_body =~ "A new article has been published on"
-      assert mail.text_body =~ "upgrading-k3s-with-system-upgrade-controller"
+      assert mail.html_body =~ "A new article has been published on"
+      assert mail.html_body =~ "upgrading-k3s-with-system-upgrade-controller"
     end
 
     test "deliver new comment notification", %{user: user, post: post} do
@@ -39,8 +39,8 @@ defmodule Tr.PostTracker.NotifierTest do
         )
 
       assert mail.subject =~ "new message"
-      assert mail.text_body =~ "A new comment was just added to a post you are following:"
-      assert mail.text_body =~ "upgrading-k3s-with-system-upgrade-controller"
+      assert mail.html_body =~ "A new comment was just added to a post you are following:"
+      assert mail.html_body =~ "upgrading-k3s-with-system-upgrade-controller"
     end
 
     test "deliver new reply notification", %{user: user, post: post} do
@@ -52,8 +52,8 @@ defmodule Tr.PostTracker.NotifierTest do
         )
 
       assert mail.subject =~ "new reply"
-      assert mail.text_body =~ "A new reply was just added to a comment you are following:"
-      assert mail.text_body =~ "upgrading-k3s-with-system-upgrade-controller"
+      assert mail.html_body =~ "A new reply was just added to a comment you are following:"
+      assert mail.html_body =~ "upgrading-k3s-with-system-upgrade-controller"
     end
 
     test "email to field matches user email", %{user: user, post: post} do
@@ -92,7 +92,7 @@ defmodule Tr.PostTracker.NotifierTest do
           url
         )
 
-      assert mail.text_body =~ url
+      assert mail.html_body =~ url
     end
 
     test "comment notification subject includes URL slug", %{user: user, post: post} do

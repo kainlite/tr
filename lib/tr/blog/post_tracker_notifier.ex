@@ -13,7 +13,7 @@ defmodule Tr.PostTracker.Notifier do
       |> to(recipient)
       |> from({"segfault", "noreply@segfault.pw"})
       |> subject(subject)
-      |> text_body(body)
+      |> html_body(body)
 
     with {:ok, _metadata} <- Mailer.deliver(email) do
       {:ok, email}
