@@ -298,7 +298,6 @@ And here is what a good runbook looks like:
 
 <br />
 
-```elixir
 # TR-Web High Latency Runbook
 
 ## Alert
@@ -309,25 +308,25 @@ And here is what a good runbook looks like:
 ## Quick diagnosis
 
 1. Check if it is a deploy-related issue:
-   ```
-   kubectl -n default rollout history deployment/tr-web
-   argocd app history tr-web
-   ```
+```
+kubectl -n default rollout history deployment/tr-web
+argocd app history tr-web
+```
 
 2. Check pod resource usage:
-   ```
-   kubectl -n default top pods -l app=tr-web
-   ```
+```
+kubectl -n default top pods -l app=tr-web
+```
 
 3. Check database connection pool:
-   ```
-   kubectl -n default exec deploy/tr-web -- bin/tr rpc "Ecto.Adapters.SQL.query(Tr.Repo, \"SELECT count(*) FROM pg_stat_activity\")"
-   ```
+```
+kubectl -n default exec deploy/tr-web -- bin/tr rpc "Ecto.Adapters.SQL.query(Tr.Repo, \"SELECT count(*) FROM pg_stat_activity\")"
+```
 
 4. Check for upstream dependency issues:
-   ```
-   kubectl -n default logs deploy/tr-web --since=10m | grep -i error | head -20
-   ```
+```
+kubectl -n default logs deploy/tr-web --since=10m | grep -i error | head -20
+```
 
 ## Mitigation actions
 
@@ -344,14 +343,13 @@ kubectl -n default rollout restart deployment/tr-web
 ### If caused by external dependency (e.g., GitHub API)
 - Check `lib/tr/sponsors.ex` - the GitHub sponsor fetch runs on a schedule
 - The dedicated `:github_pool` Hackney pool should isolate it, but verify:
-  ```
-  kubectl -n default logs deploy/tr-web --since=10m | grep "github_pool\|sponsors"
-  ```
+```
+kubectl -n default logs deploy/tr-web --since=10m | grep "github_pool\|sponsors"
+```
 
 ## Escalation
 - If not resolved in 30 minutes, escalate to team lead
 - If data loss suspected, escalate immediately
-```
 
 <br />
 
