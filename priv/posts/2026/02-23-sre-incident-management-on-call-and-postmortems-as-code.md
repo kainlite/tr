@@ -298,14 +298,14 @@ And here is what a good runbook looks like:
 
 <br />
 
-# TR-Web High Latency Runbook
+##### TR-Web High Latency Runbook
 
-## Alert
+##### Alert
 - **Name**: TrWebHighLatency
 - **Severity**: critical (page) / warning (ticket)
 - **SLO**: 99% of requests under 300ms
 
-## Quick diagnosis
+##### Quick diagnosis
 
 1. Check if it is a deploy-related issue:
 ```
@@ -328,26 +328,26 @@ kubectl -n default exec deploy/tr-web -- bin/tr rpc "Ecto.Adapters.SQL.query(Tr.
 kubectl -n default logs deploy/tr-web --since=10m | grep -i error | head -20
 ```
 
-## Mitigation actions
+##### Mitigation actions
 
-### If caused by a recent deploy
+#### If caused by a recent deploy
 ```
 argocd app rollback tr-web
 ```
 
-### If caused by database
+#### If caused by database
 ```
 kubectl -n default rollout restart deployment/tr-web
 ```
 
-### If caused by external dependency (e.g., GitHub API)
+#### If caused by external dependency (e.g., GitHub API)
 - Check `lib/tr/sponsors.ex` - the GitHub sponsor fetch runs on a schedule
 - The dedicated `:github_pool` Hackney pool should isolate it, but verify:
 ```
 kubectl -n default logs deploy/tr-web --since=10m | grep "github_pool\|sponsors"
 ```
 
-## Escalation
+#### Escalation
 - If not resolved in 30 minutes, escalate to team lead
 - If data loss suspected, escalate immediately
 
