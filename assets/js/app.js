@@ -35,7 +35,8 @@ Hooks.Scroll = {
 
 Hooks.CopyHtml = {
   mounted() {
-    this.handleEvent("copy_to_clipboard", ({ text }) => {
+    this.handleEvent("copy_to_clipboard", ({ text, target }) => {
+      if (target !== this.el.id) return;
       const btn = this.el;
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(text).then(() => {

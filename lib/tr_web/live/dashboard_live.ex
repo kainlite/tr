@@ -234,7 +234,11 @@ defmodule TrWeb.DashboardLive do
   def handle_event("substack_content", %{"slug" => slug}, socket) do
     case Tr.CrossPoster.Substack.generate_content(slug) do
       {:ok, content} ->
-        {:noreply, push_event(socket, "copy_to_clipboard", %{text: content.body_html})}
+        {:noreply,
+         push_event(socket, "copy_to_clipboard", %{
+           text: content.body_html,
+           target: "copy-html-" <> slug
+         })}
 
       {:error, reason} ->
         {:noreply, socket |> put_flash(:error, "Failed to generate content: #{inspect(reason)}")}
