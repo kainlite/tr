@@ -40,7 +40,6 @@ defmodule TrWeb.DashboardLive do
     |> assign(:cross_post_pending, Tr.CrossPoster.get_all_pending())
     |> assign(:linkedin_configured, Tr.CrossPoster.LinkedIn.configured?())
     |> assign(:substack_configured, Tr.CrossPoster.Substack.draft_api_configured?())
-    |> assign(:substack_content, nil)
   end
 
   @impl true
@@ -153,6 +152,8 @@ defmodule TrWeb.DashboardLive do
                 Push Draft
               </button>
               <button
+                id={"copy-html-" <> tracker.slug}
+                phx-hook="CopyHtml"
                 phx-click="substack_content"
                 phx-value-slug={tracker.slug}
                 class="rounded bg-gray-600 px-2 py-1 text-sm text-white hover:bg-gray-700"
@@ -163,27 +164,6 @@ defmodule TrWeb.DashboardLive do
           <% end %>
         </:col>
       </.table>
-
-      <%= if @substack_content do %>
-        <div class="mt-4 p-4 bg-gray-100 dark:bg-surface-800 rounded-lg">
-          <h4 class="font-semibold mb-2">{@substack_content.title}</h4>
-          <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">{@substack_content.subtitle}</p>
-          <textarea
-            readonly
-            rows="10"
-            class="w-full font-mono text-xs bg-white dark:bg-surface-900 border rounded p-2"
-            id="substack-html-content"
-          >{@substack_content.body_html}</textarea>
-          <button
-            id="copy-substack-btn"
-            phx-hook="CopyHtml"
-            data-copy-target="substack-html-content"
-            class="mt-2 rounded bg-gray-600 px-3 py-1 text-sm text-white hover:bg-gray-700"
-          >
-            Copy to Clipboard
-          </button>
-        </div>
-      <% end %>
     </div>
     """
   end
@@ -254,7 +234,7 @@ defmodule TrWeb.DashboardLive do
   def handle_event("substack_content", %{"slug" => slug}, socket) do
     case Tr.CrossPoster.Substack.generate_content(slug) do
       {:ok, content} ->
-        {:noreply, assign(socket, :substack_content, content)}
+        {:noreply, push_event(socket, "copy_to_clipboard", %{text: content.body_html})}
 
       {:error, reason} ->
         {:noreply, socket |> put_flash(:error, "Failed to generate content: #{inspect(reason)}")}

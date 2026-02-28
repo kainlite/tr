@@ -35,22 +35,16 @@ Hooks.Scroll = {
 
 Hooks.CopyHtml = {
   mounted() {
-    this.el.addEventListener("click", () => {
-      const targetId = this.el.dataset.copyTarget;
-      const target = document.getElementById(targetId);
-      if (!target) return;
-
-      const text = target.value || target.innerText;
+    this.handleEvent("copy_to_clipboard", ({ text }) => {
       const btn = this.el;
-
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(text).then(() => {
           this.flash(btn);
         }).catch(() => {
-          this.fallbackCopy(target, btn);
+          this.fallbackCopy(text, btn);
         });
       } else {
-        this.fallbackCopy(target, btn);
+        this.fallbackCopy(text, btn);
       }
     });
   },
@@ -59,10 +53,15 @@ Hooks.CopyHtml = {
     btn.innerText = "Copied!";
     setTimeout(() => { btn.innerText = original; }, 1500);
   },
-  fallbackCopy(textarea, btn) {
+  fallbackCopy(text, btn) {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    document.body.appendChild(textarea);
     textarea.select();
-    textarea.setSelectionRange(0, textarea.value.length);
     document.execCommand("copy");
+    document.body.removeChild(textarea);
     this.flash(btn);
   },
 };
