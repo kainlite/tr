@@ -175,7 +175,9 @@ defmodule TrWeb.DashboardLive do
             id="substack-html-content"
           >{@substack_content.body_html}</textarea>
           <button
-            phx-click={JS.dispatch("phx:copy", to: "#substack-html-content")}
+            id="copy-substack-btn"
+            phx-hook="CopyHtml"
+            data-copy-target="substack-html-content"
             class="mt-2 rounded bg-gray-600 px-3 py-1 text-sm text-white hover:bg-gray-700"
           >
             Copy to Clipboard

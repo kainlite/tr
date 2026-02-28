@@ -33,6 +33,24 @@ Hooks.Scroll = {
   },
 };
 
+Hooks.CopyHtml = {
+  mounted() {
+    this.el.addEventListener("click", () => {
+      const targetId = this.el.dataset.copyTarget;
+      const target = document.getElementById(targetId);
+      if (target && navigator.clipboard) {
+        navigator.clipboard.writeText(target.value || target.innerText).then(() => {
+          const original = this.el.innerText;
+          this.el.innerText = "Copied!";
+          setTimeout(() => { this.el.innerText = original; }, 1500);
+        }).catch((err) => {
+          console.error("Failed to copy: ", err);
+        });
+      }
+    });
+  },
+};
+
 Hooks.CopyToClipboard = {
   mounted() {
     this.run();
@@ -97,18 +115,6 @@ let liveSocket = new LiveSocket("/live", Socket, {
 topbar.config({ barColors: { 0: "#29d" }, shadowColor: "rgba(0, 0, 0, .3)" });
 window.addEventListener("phx:page-loading-start", (_info) => topbar.show(300));
 window.addEventListener("phx:page-loading-stop", (_info) => topbar.hide());
-
-// Copy to clipboard handler for cross-posting dashboard
-window.addEventListener("phx:copy", (event) => {
-  const el = event.target;
-  if (el && navigator.clipboard) {
-    navigator.clipboard.writeText(el.value || el.innerText).then(() => {
-      const original = el.style.borderColor;
-      el.style.borderColor = "green";
-      setTimeout(() => { el.style.borderColor = original; }, 1000);
-    });
-  }
-});
 
 // connect if there are any LiveViews on the page
 liveSocket.connect();
