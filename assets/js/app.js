@@ -98,6 +98,18 @@ topbar.config({ barColors: { 0: "#29d" }, shadowColor: "rgba(0, 0, 0, .3)" });
 window.addEventListener("phx:page-loading-start", (_info) => topbar.show(300));
 window.addEventListener("phx:page-loading-stop", (_info) => topbar.hide());
 
+// Copy to clipboard handler for cross-posting dashboard
+window.addEventListener("phx:copy", (event) => {
+  const el = event.target;
+  if (el && navigator.clipboard) {
+    navigator.clipboard.writeText(el.value || el.innerText).then(() => {
+      const original = el.style.borderColor;
+      el.style.borderColor = "green";
+      setTimeout(() => { el.style.borderColor = original; }, 1000);
+    });
+  }
+});
+
 // connect if there are any LiveViews on the page
 liveSocket.connect();
 
