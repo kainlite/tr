@@ -79,7 +79,9 @@ config :tr, Tr.Scheduler,
     # Every 15 minutes
     {"*/15 * * * *", {Tr.Approver, :start, []}},
     # Every 5 minutes
-    {"*/5 * * * *", {Tr.Sponsors, :start, []}}
+    {"*/5 * * * *", {Tr.Sponsors, :start, []}},
+    # Every 30 minutes — track new posts for cross-posting
+    {"*/30 * * * *", {Tr.CrossPoster, :start, []}}
   ]
 
 config :tr, metrics_port: 9091

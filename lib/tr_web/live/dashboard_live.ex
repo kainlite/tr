@@ -15,7 +15,8 @@ defmodule TrWeb.DashboardLive do
      socket
      |> assign(:comments, Tr.Post.list_comments())
      |> assign(:user_stats, TrWeb.Presence.list_connected_users())
-     |> assign(:users, Tr.Accounts.get_users(5))}
+     |> assign(:users, Tr.Accounts.get_users(5))
+     |> assign_cross_post_data()}
   end
 
   @impl true
@@ -30,7 +31,16 @@ defmodule TrWeb.DashboardLive do
      socket
      |> assign(:comments, Tr.Post.get_unapproved_comments())
      |> assign(:user_stats, TrWeb.Presence.list_connected_users())
-     |> assign(:users, Tr.Accounts.get_users(5))}
+     |> assign(:users, Tr.Accounts.get_users(5))
+     |> assign_cross_post_data()}
+  end
+
+  defp assign_cross_post_data(socket) do
+    socket
+    |> assign(:cross_post_pending, Tr.CrossPoster.get_all_pending())
+    |> assign(:linkedin_configured, Tr.CrossPoster.LinkedIn.configured?())
+    |> assign(:substack_configured, Tr.CrossPoster.Substack.draft_api_configured?())
+    |> assign(:substack_content, nil)
   end
 
   @impl true
@@ -100,6 +110,78 @@ defmodule TrWeb.DashboardLive do
         <:col :let={user} label="email">{user.email}</:col>
         <:col :let={user} label="github_username">{user.github_username}</:col>
       </.table>
+
+      <br />
+
+      <h3>{gettext("Cross-Posting")}</h3>
+
+      <%= unless @linkedin_configured do %>
+        <p class="text-sm text-yellow-600 dark:text-yellow-400">
+          LinkedIn not configured (set LINKEDIN_ACCESS_TOKEN and LINKEDIN_PERSON_URN)
+        </p>
+      <% end %>
+
+      <.table id="cross-posts" rows={@cross_post_pending}>
+        <:col :let={tracker} label="Slug">{tracker.slug}</:col>
+        <:col :let={tracker} label="LinkedIn">
+          <%= if tracker.linkedin_posted do %>
+            <span class="text-green-600">Posted</span>
+          <% else %>
+            <button
+              phx-click="linkedin_post"
+              phx-value-slug={tracker.slug}
+              disabled={!@linkedin_configured}
+              class="rounded bg-blue-600 px-2 py-1 text-sm text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              data-confirm="Post to LinkedIn?"
+            >
+              Post to LinkedIn
+            </button>
+          <% end %>
+        </:col>
+        <:col :let={tracker} label="Substack">
+          <%= if tracker.substack_drafted do %>
+            <span class="text-green-600">Drafted</span>
+          <% else %>
+            <div class="flex gap-2">
+              <button
+                phx-click="substack_draft"
+                phx-value-slug={tracker.slug}
+                disabled={!@substack_configured}
+                class="rounded bg-orange-600 px-2 py-1 text-sm text-white hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                data-confirm="Push draft to Substack?"
+              >
+                Push Draft
+              </button>
+              <button
+                phx-click="substack_content"
+                phx-value-slug={tracker.slug}
+                class="rounded bg-gray-600 px-2 py-1 text-sm text-white hover:bg-gray-700"
+              >
+                Copy HTML
+              </button>
+            </div>
+          <% end %>
+        </:col>
+      </.table>
+
+      <%= if @substack_content do %>
+        <div class="mt-4 p-4 bg-gray-100 dark:bg-surface-800 rounded-lg">
+          <h4 class="font-semibold mb-2">{@substack_content.title}</h4>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">{@substack_content.subtitle}</p>
+          <textarea
+            readonly
+            rows="10"
+            class="w-full font-mono text-xs bg-white dark:bg-surface-900 border rounded p-2"
+            id="substack-html-content"
+          >{@substack_content.body_html}</textarea>
+          <button
+            phx-click={JS.dispatch("phx:copy", to: "#substack-html-content")}
+            class="mt-2 rounded bg-gray-600 px-3 py-1 text-sm text-white hover:bg-gray-700"
+          >
+            Copy to Clipboard
+          </button>
+        </div>
+      <% end %>
     </div>
     """
   end
@@ -123,13 +205,69 @@ defmodule TrWeb.DashboardLive do
   end
 
   @impl true
+  def handle_event("linkedin_post", %{"slug" => slug}, socket) do
+    case Tr.CrossPoster.LinkedIn.share_post(slug) do
+      {:ok, post_id} ->
+        tracker = Tr.CrossPoster.get_by_slug(slug)
+
+        Tr.CrossPoster.update_tracker(tracker, %{
+          linkedin_posted: true,
+          linkedin_post_id: post_id,
+          linkedin_posted_at: DateTime.utc_now() |> DateTime.truncate(:second)
+        })
+
+        {:noreply,
+         socket
+         |> put_flash(:info, "Posted to LinkedIn successfully.")
+         |> assign(:cross_post_pending, Tr.CrossPoster.get_all_pending())}
+
+      {:error, reason} ->
+        {:noreply, socket |> put_flash(:error, "LinkedIn post failed: #{inspect(reason)}")}
+    end
+  end
+
+  @impl true
+  def handle_event("substack_draft", %{"slug" => slug}, socket) do
+    case Tr.CrossPoster.Substack.create_draft(slug) do
+      {:ok, draft_url} ->
+        tracker = Tr.CrossPoster.get_by_slug(slug)
+
+        Tr.CrossPoster.update_tracker(tracker, %{
+          substack_drafted: true,
+          substack_post_url: draft_url,
+          substack_drafted_at: DateTime.utc_now() |> DateTime.truncate(:second)
+        })
+
+        {:noreply,
+         socket
+         |> put_flash(:info, "Substack draft created successfully.")
+         |> assign(:cross_post_pending, Tr.CrossPoster.get_all_pending())}
+
+      {:error, reason} ->
+        {:noreply, socket |> put_flash(:error, "Substack draft failed: #{inspect(reason)}")}
+    end
+  end
+
+  @impl true
+  def handle_event("substack_content", %{"slug" => slug}, socket) do
+    case Tr.CrossPoster.Substack.generate_content(slug) do
+      {:ok, content} ->
+        {:noreply, assign(socket, :substack_content, content)}
+
+      {:error, reason} ->
+        {:noreply, socket |> put_flash(:error, "Failed to generate content: #{inspect(reason)}")}
+    end
+  end
+
+  @impl true
   def handle_info(:refresh, socket) do
     Process.send_after(self(), :refresh, 5000)
 
     {:noreply,
      socket
      |> assign(:comments, Tr.Post.get_unapproved_comments())
-     |> assign(:user_stats, TrWeb.Presence.list_connected_users())}
+     |> assign(:user_stats, TrWeb.Presence.list_connected_users())
+     |> assign(:cross_post_pending, Tr.CrossPoster.get_all_pending())}
   end
 
   @impl true

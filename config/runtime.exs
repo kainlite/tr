@@ -124,4 +124,8 @@ if config_env() == :prod do
   config :tr, Tr.Mailer,
     adapter: Swoosh.Adapters.Brevo,
     api_key: System.get_env("BREVO_API_KEY")
+
+  # Cross-posting configuration (optional — gracefully degrades if not set)
+  # LinkedIn: LINKEDIN_ACCESS_TOKEN, LINKEDIN_PERSON_URN
+  # Substack: SUBSTACK_SUBDOMAIN, SUBSTACK_SESSION_COOKIE
 end
