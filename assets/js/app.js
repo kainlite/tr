@@ -38,16 +38,32 @@ Hooks.CopyHtml = {
     this.el.addEventListener("click", () => {
       const targetId = this.el.dataset.copyTarget;
       const target = document.getElementById(targetId);
-      if (target && navigator.clipboard) {
-        navigator.clipboard.writeText(target.value || target.innerText).then(() => {
-          const original = this.el.innerText;
-          this.el.innerText = "Copied!";
-          setTimeout(() => { this.el.innerText = original; }, 1500);
-        }).catch((err) => {
-          console.error("Failed to copy: ", err);
+      if (!target) return;
+
+      const text = target.value || target.innerText;
+      const btn = this.el;
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => {
+          this.flash(btn);
+        }).catch(() => {
+          this.fallbackCopy(target, btn);
         });
+      } else {
+        this.fallbackCopy(target, btn);
       }
     });
+  },
+  flash(btn) {
+    const original = btn.innerText;
+    btn.innerText = "Copied!";
+    setTimeout(() => { btn.innerText = original; }, 1500);
+  },
+  fallbackCopy(textarea, btn) {
+    textarea.select();
+    textarea.setSelectionRange(0, textarea.value.length);
+    document.execCommand("copy");
+    this.flash(btn);
   },
 };
 
