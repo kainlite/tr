@@ -38,8 +38,11 @@ Hooks.CopyHtml = {
     this.handleEvent("copy_to_clipboard", ({ text, target }) => {
       if (target !== this.el.id) return;
       const btn = this.el;
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text).then(() => {
+      const htmlBlob = new Blob([text], { type: "text/html" });
+      const textBlob = new Blob([text], { type: "text/plain" });
+      const item = new ClipboardItem({ "text/html": htmlBlob, "text/plain": textBlob });
+      if (navigator.clipboard && navigator.clipboard.write && window.isSecureContext) {
+        navigator.clipboard.write([item]).then(() => {
           this.flash(btn);
         }).catch(() => {
           this.fallbackCopy(text, btn);
