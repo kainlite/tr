@@ -25,7 +25,7 @@ defmodule TrWeb.PostComponent do
     ~H"""
     <div id={@post.id}>
       <div class="relative group">
-        <div class="card-tech rounded-xl overflow-hidden w-full sm:w-[39rem] h-auto min-h-[20rem] sm:min-h-[30rem] m-2 sm:m-4
+        <div class="card-tech rounded-xl overflow-hidden w-full max-w-[39rem] h-auto min-h-[16rem] sm:min-h-[24rem]
             hover:shadow-glow transition-all duration-300">
           <%= if @post.sponsored do %>
             <.link href="https://github.com/sponsors/kainlite#sponsors" class="">
@@ -51,47 +51,47 @@ defmodule TrWeb.PostComponent do
             />
             <div class="absolute inset-0 bg-gradient-to-t from-surface-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </.link>
-          <div class="p-6">
-            <h2 class="text-xl font-bold mb-2 truncate">
+          <div class="p-4 sm:p-6">
+            <h2 class="text-xl font-bold mb-1 truncate">
               <.link
                 navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{@post.id}"}
                 class="inline-block text-zinc-900 dark:text-zinc-100 hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
               >
                 {@post.title}
               </.link>
-              <p class="text-sm float-right font-semibold text-zinc-500 dark:text-zinc-400">
-                <time>{@post.date}</time>
-                <span class="ml-2">
-                  {Tr.Blog.reading_time(@post)} {Gettext.gettext(TrWeb.Gettext, "min read")}
-                </span>
-              </p>
             </h2>
+            <p class="text-sm font-semibold text-zinc-500 dark:text-zinc-400 mb-2">
+              <time>{@post.date}</time>
+              <span class="ml-2">
+                {Tr.Blog.reading_time(@post)} {Gettext.gettext(TrWeb.Gettext, "min read")}
+              </span>
+            </p>
             <p class="mx-auto text-sm sm:text-base sm:leading-7 text-zinc-600 dark:text-zinc-300">
               {raw(@post.description)}
             </p>
           </div>
-          <div class="absolute bottom-3 right-6">
+          <div class="px-4 sm:px-6 pb-2 flex flex-wrap items-center justify-between gap-2">
+            <div class="flex flex-wrap gap-2">
+              <%= for tag <- @post.tags do %>
+                <span class="tag-pill text-sm">
+                  <.link
+                    navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/tags/#{tag}"}
+                    class="flex items-center gap-1"
+                  >
+                    <span class="inline-flex items-center justify-center text-white bg-brand-500 rounded-full w-6 h-6 text-xs font-semibold">
+                      {Enum.count(Tr.Blog.by_tag(Gettext.get_locale(TrWeb.Gettext), tag))}
+                    </span>
+                    <span class="text-zinc-700 dark:text-zinc-300">{tag}</span>
+                  </.link>
+                </span>
+              <% end %>
+            </div>
             <.link
               navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{@post.id}"}
-              class="mt-4 inline-block text-brand-500 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-500 float-right text-base font-semibold transition-colors"
+              class="inline-block text-brand-500 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-500 text-base font-semibold transition-colors"
             >
               {gettext("Read more...")}
             </.link>
-          </div>
-          <div class="absolute bottom-0 left-6 flex flex-wrap gap-2">
-            <%= for tag <- @post.tags do %>
-              <span class="tag-pill text-sm">
-                <.link
-                  navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/tags/#{tag}"}
-                  class="flex items-center gap-1"
-                >
-                  <span class="inline-flex items-center justify-center text-white bg-brand-500 rounded-full w-6 h-6 text-xs font-semibold">
-                    {Enum.count(Tr.Blog.by_tag(Gettext.get_locale(TrWeb.Gettext), tag))}
-                  </span>
-                  <span class="text-zinc-700 dark:text-zinc-300">{tag}</span>
-                </.link>
-              </span>
-            <% end %>
           </div>
         </div>
       </div>

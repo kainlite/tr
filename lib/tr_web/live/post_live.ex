@@ -87,51 +87,51 @@ defmodule TrWeb.PostLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="float-left">
-      <h2>{@post.title}</h2>
-      <span class="text-sm text-zinc-500 dark:text-zinc-400">
-        {@reading_time} {gettext("min read")}
-      </span>
-    </div>
-    <div class="float-right py-6 flex items-center gap-4">
-      <.link
-        phx-click="react"
-        phx-value-value="rocket-launch"
-        phx-value-slug={@post.id}
-        aria-label="awesome"
-        id="hero-rocket-launch-link"
-        class="flex items-center gap-1 text-zinc-600 dark:text-zinc-300 hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
-      >
-        <.icon name={@rocket_launch} class="w-10 h-10" />
-        <span class="font-semibold">{Map.get(@reactions, "rocket-launch", 0)}</span>
-      </.link>
-      <.link
-        phx-click="react"
-        phx-value-value="heart"
-        phx-value-slug={@post.id}
-        aria-label="love it"
-        id="hero-heart-link"
-        class="flex items-center gap-1 text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 transition-colors"
-      >
-        <.icon name={@heart} class="w-10 h-10" />
-        <span class="font-semibold">
-          {Map.get(@reactions, "heart", 0)}
+    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
+      <div>
+        <h2>{@post.title}</h2>
+        <span class="text-sm text-zinc-500 dark:text-zinc-400">
+          {@reading_time} {gettext("min read")}
         </span>
-      </.link>
-      <.link
-        phx-click="react"
-        phx-value-value="hand-thumb-up"
-        phx-value-slug={@post.id}
-        aria-label="like it"
-        id="hero-hand-thumb-up-link"
-        class="flex items-center gap-1 text-zinc-600 dark:text-zinc-300 hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
-      >
-        <.icon name={@hand_thumb_up} class="w-10 h-10" />
-        <span class="font-semibold">{Map.get(@reactions, "hand-thumb-up", 0)}</span>
-      </.link>
+      </div>
+      <div class="flex items-center gap-4 py-2 sm:py-6">
+        <.link
+          phx-click="react"
+          phx-value-value="rocket-launch"
+          phx-value-slug={@post.id}
+          aria-label="awesome"
+          id="hero-rocket-launch-link"
+          class="flex items-center gap-1 text-zinc-600 dark:text-zinc-300 hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
+        >
+          <.icon name={@rocket_launch} class="w-7 h-7 sm:w-10 sm:h-10" />
+          <span class="font-semibold">{Map.get(@reactions, "rocket-launch", 0)}</span>
+        </.link>
+        <.link
+          phx-click="react"
+          phx-value-value="heart"
+          phx-value-slug={@post.id}
+          aria-label="love it"
+          id="hero-heart-link"
+          class="flex items-center gap-1 text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 transition-colors"
+        >
+          <.icon name={@heart} class="w-7 h-7 sm:w-10 sm:h-10" />
+          <span class="font-semibold">
+            {Map.get(@reactions, "heart", 0)}
+          </span>
+        </.link>
+        <.link
+          phx-click="react"
+          phx-value-value="hand-thumb-up"
+          phx-value-slug={@post.id}
+          aria-label="like it"
+          id="hero-hand-thumb-up-link"
+          class="flex items-center gap-1 text-zinc-600 dark:text-zinc-300 hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
+        >
+          <.icon name={@hand_thumb_up} class="w-7 h-7 sm:w-10 sm:h-10" />
+          <span class="font-semibold">{Map.get(@reactions, "hand-thumb-up", 0)}</span>
+        </.link>
+      </div>
     </div>
-
-    <p class="clear-both"></p>
 
     <div class="mx-auto">
       <ul class="space-y-6 list-none">
@@ -679,7 +679,7 @@ defmodule TrWeb.PostLive do
           title="Sponsor kainlite"
           height="225"
           width="600"
-          style="border: 0;"
+          style="border: 0; max-width: 100%;"
           class="mx-auto justify-center items-center"
         >
         </iframe>

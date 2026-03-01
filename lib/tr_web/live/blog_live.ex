@@ -34,7 +34,7 @@ defmodule TrWeb.BlogLive do
               title="Sponsor kainlite"
               height="225"
               width="600"
-              style="border: 0;"
+              style="border: 0; max-width: 100%;"
             >
             </iframe>
           </div>
@@ -110,7 +110,7 @@ defmodule TrWeb.BlogLive do
         </div>
       </div>
     </div>
-    <div class="flex flex-row flex-wrap columns-3 text-center justify-center">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-items-center">
       <%= for post <- @posts do %>
         {PostComponent.render_post_card(%{post: post})}
       <% end %>
