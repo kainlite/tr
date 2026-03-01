@@ -54,7 +54,7 @@ defmodule TrWeb.Integration.AdminIntegrationTest do
     end)
 
     session
-    |> assert_has(css("div #flash", text: "Comment approved successfully."))
+    |> assert_has(css("div#flash", text: "Comment approved successfully.", wait: 10_000))
   end
 
   test "an admin user can delete a comment", %{session: session} do

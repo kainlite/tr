@@ -81,6 +81,10 @@ defmodule TrWeb.PageController do
     render(conn, :privacy)
   end
 
+  def about(conn, _params) do
+    render(conn, :about)
+  end
+
   def tags(conn, _params) do
     render(conn, tags: Tr.Blog.all_tags())
   end

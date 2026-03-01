@@ -100,7 +100,7 @@ defmodule TrWeb.Integration.PostIntegrationTest do
       session
       |> visit(page)
       |> click(link("hero-heart-link"))
-      |> assert_has(css(".float-right span.font-semibold", text: "1"))
+      |> assert_has(css("#hero-heart-link span.font-semibold", text: "1"))
     end
 
     test "an user can remove their reaction to a post", %{session: session} do
@@ -111,9 +111,11 @@ defmodule TrWeb.Integration.PostIntegrationTest do
       session
       |> visit(page)
       |> click(link("hero-heart-link"))
-      |> assert_has(css(".float-right span.font-semibold", text: "1"))
+      |> assert_has(css("#hero-heart-link span.font-semibold", text: "1"))
       |> click(link("hero-heart-link"))
-      |> assert_has(css(".float-right span.font-semibold", text: "0", count: 3))
+      |> assert_has(css("#hero-heart-link span.font-semibold", text: "0"))
+      |> assert_has(css("#hero-rocket-launch-link span.font-semibold", text: "0"))
+      |> assert_has(css("#hero-hand-thumb-up-link span.font-semibold", text: "0"))
     end
   end
 end

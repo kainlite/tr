@@ -40,6 +40,13 @@ defmodule TrWeb.PageControllerTest do
       assert response(conn, 200) =~
                "The examples, code snippets, and blog articles provided herein are offered for educational or illustrative purposes\n    only."
     end
+
+    test "fetch about page", %{conn: conn} do
+      conn = get(conn, ~p"/about")
+
+      assert response(conn, 200) =~ "Gabriel Garrido"
+      assert response(conn, 200) =~ "About the blog"
+    end
   end
 
   describe "GET /index.json" do

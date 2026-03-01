@@ -208,9 +208,6 @@ CookieConsent.run({
     necessary: {
       readOnly: true,
     },
-    marketing: {
-      readOnly: true,
-    },
   },
   language: {
     default: defaultLanguage,
@@ -236,7 +233,7 @@ CookieConsent.run({
             {
               title: "Uso de cookies",
               description:
-                "Utilizamos únicamente las cookies necesarias para garantizar el correcto funcionamiento del sitio web y para ejecutar 1 anuncio por página. Como el contenido es gratuito, esto es un incentivo para que todo siga funcionando. Solo hay tres cookies que puede ver: una es para mantener la información de su sesión (puramente funcional) y la segunda es una cookie seudoanónima creada por AdsTerra para ejecutar los anuncios en el sitio. La tercera cookie es cc_cookie, que se utiliza para guardar sus preferencias de cookies. Al utilizar este sitio, acepta los términos de privacidad de este sitio y mantener estas cookies mientras utilice el sitio",
+                "Utilizamos unicamente las cookies necesarias para garantizar el correcto funcionamiento del sitio web. Solo hay dos cookies: una para mantener la informacion de su sesion (puramente funcional) y cc_cookie, que se utiliza para guardar sus preferencias de cookies. No servimos anuncios de terceros. Al utilizar este sitio, acepta los terminos de privacidad de este sitio.",
             },
             {
               title: "Mas informacion",
@@ -265,7 +262,7 @@ CookieConsent.run({
             {
               title: "Cookie Usage",
               description:
-                "We use only necessary cookies to ensure the website works properly, and to run 1 ad per page, as the content is free this is an incentive to keep everything running. There are only three cookies that you might see one is to maintain your session information (purely functional), and the second one is a pseudoanonymous cookie created by AdsTerra to run the ads in the site, the third cookie is cc_cookie which is used to save your cookie preferences, by using this site you are agreeing to the privacy terms from this site and to keep these cookies as long as you are using the site.",
+                "We use only necessary cookies to ensure the website works properly. There are two cookies: one to maintain your session information (purely functional), and cc_cookie which is used to save your cookie preferences. We do not serve third-party ads. By using this site you are agreeing to the privacy terms from this site.",
             },
             {
               title: "More information",
