@@ -167,6 +167,17 @@ defmodule Tr.Accounts do
     Repo.all(query)
   end
 
+  @doc """
+  Returns the count of confirmed users who have opted in to emails.
+  """
+  def get_subscribers_count do
+    Repo.one(
+      from u in User,
+        where: u.accept_emails == true and not is_nil(u.confirmed_at),
+        select: count(u.id)
+    )
+  end
+
   ## User registration
 
   @doc """

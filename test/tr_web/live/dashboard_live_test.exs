@@ -23,7 +23,15 @@ defmodule TrWeb.DashboardLiveTest do
         |> live(~p"/admin/dashboard")
 
       assert html =~ "Admin Dashboard"
-      assert html =~ "table"
+      assert html =~ "Registered Users"
+      assert html =~ "Total Reactions"
+      assert html =~ "Posts (EN)"
+      assert html =~ "Posts (ES)"
+      assert html =~ "Most Reacted Posts"
+      assert html =~ "Most Commented Posts"
+      assert html =~ "Comment Moderation"
+      assert html =~ "Recent Users"
+      assert html =~ "Cross-Posting"
     end
   end
 end

@@ -518,6 +518,14 @@ defmodule Tr.AccountsTest do
     end
   end
 
+  describe "get_subscribers_count/0" do
+    test "returns an integer" do
+      count = Accounts.get_subscribers_count()
+      assert is_integer(count)
+      assert count >= 0
+    end
+  end
+
   describe "inspect/2 for the User module" do
     test "does not include password" do
       refute inspect(%User{password: "123456"}) =~ "password: \"123456\""

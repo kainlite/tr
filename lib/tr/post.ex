@@ -335,4 +335,51 @@ defmodule Tr.Post do
   def change_reaction(%Reaction{} = reaction, attrs \\ %{}) do
     Reaction.changeset(reaction, attrs)
   end
+
+  @doc """
+  Returns the count of approved comments.
+  """
+  def get_approved_comments_count do
+    Repo.one(from c in Comment, where: c.approved == true, select: count(c.id))
+  end
+
+  @doc """
+  Returns the count of unapproved comments.
+  """
+  def get_unapproved_comments_count do
+    Repo.one(from c in Comment, where: c.approved == false, select: count(c.id))
+  end
+
+  @doc """
+  Returns the total count of reactions.
+  """
+  def get_total_reactions_count do
+    Repo.one(from r in Reaction, select: count(r.id))
+  end
+
+  @doc """
+  Returns the top posts by reaction count.
+  """
+  def get_top_reacted_posts(limit \\ 5) do
+    from(r in Reaction,
+      group_by: r.slug,
+      select: {r.slug, count(r.id)},
+      order_by: [desc: count(r.id)],
+      limit: ^limit
+    )
+    |> Repo.all()
+  end
+
+  @doc """
+  Returns the top posts by comment count.
+  """
+  def get_most_commented_posts(limit \\ 5) do
+    from(c in Comment,
+      group_by: c.slug,
+      select: {c.slug, count(c.id)},
+      order_by: [desc: count(c.id)],
+      limit: ^limit
+    )
+    |> Repo.all()
+  end
 end

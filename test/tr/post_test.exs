@@ -128,5 +128,37 @@ defmodule Tr.PostTest do
       changeset = Post.change_comment(%Tr.Post.Comment{}, %{})
       assert {:error, ^changeset} = Post.broadcast({:error, changeset}, :comment_created)
     end
+
+    test "get_approved_comments_count/0 returns count of approved comments" do
+      comment = comment_fixture()
+      Post.approve_comment(comment)
+      assert Post.get_approved_comments_count() >= 1
+    end
+
+    test "get_unapproved_comments_count/0 returns count of unapproved comments" do
+      comment_fixture()
+      assert Post.get_unapproved_comments_count() >= 1
+    end
+
+    test "get_most_commented_posts/1 returns list of {slug, count} tuples" do
+      comment_fixture(%{slug: "top-commented-slug"})
+      results = Post.get_most_commented_posts(5)
+      assert is_list(results)
+
+      assert Enum.any?(results, fn {slug, count} ->
+               slug == "top-commented-slug" and count >= 1
+             end)
+    end
+
+    test "get_total_reactions_count/0 returns count of reactions" do
+      assert Post.get_total_reactions_count() >= 0
+    end
+
+    test "get_top_reacted_posts/1 returns list of {slug, count} tuples" do
+      reaction_fixture(%{slug: "top-reacted-slug"})
+      results = Post.get_top_reacted_posts(5)
+      assert is_list(results)
+      assert Enum.any?(results, fn {slug, count} -> slug == "top-reacted-slug" and count >= 1 end)
+    end
   end
 end
