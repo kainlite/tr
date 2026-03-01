@@ -1,0 +1,30 @@
+# Docker Compose for running tests with Chromium for integration tests.
+#
+# Usage:
+#   docker compose -f docker-compose.test.yml run --rm test          # full suite
+#   docker compose -f docker-compose.test.yml run --rm test mix test test/tr_web/integration/
+
+services:
+  postgres:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      MIX_ENV: test
+      DATABASE_HOST: postgres
+      CHROME_BINARY: /usr/bin/chromium
+    command: mix test

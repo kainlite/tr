@@ -1,0 +1,68 @@
+# Dockerfile for running the test suite with Chromium for integration tests.
+# Uses the same base image as the production Dockerfile.
+#
+# Usage:
+#   docker compose -f docker-compose.test.yml run --rm test
+#   docker compose -f docker-compose.test.yml run --rm test mix test test/tr_web/integration/
+
+ARG ELIXIR_VERSION=1.19.5
+ARG OTP_VERSION=28.3.2
+ARG DEBIAN_VERSION=bookworm-20260202-slim
+
+ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
+
+FROM ${BUILDER_IMAGE}
+
+# Install build dependencies, Chromium, chromedriver, and Xvfb
+RUN apt-get update -y && \
+    apt-get install -y \
+      build-essential \
+      git \
+      chromium \
+      chromium-driver \
+      xvfb \
+    && apt-get clean && rm -f /var/lib/apt/lists/*_*
+
+WORKDIR /app
+
+# Install hex and rebar
+RUN mix local.hex --force && \
+    mix local.rebar --force
+
+ENV MIX_ENV=test
+
+# Install dependencies first for better layer caching
+COPY mix.exs mix.lock ./
+RUN mix deps.get && mix deps.compile
+
+# Copy the rest of the project
+COPY config config
+COPY lib lib
+COPY priv priv
+COPY test test
+COPY assets assets
+
+# Compile the project
+RUN mix compile
+
+# Entrypoint: start Xvfb and chromedriver, then run the given command
+COPY <<'ENTRYPOINT_SCRIPT' /usr/local/bin/docker-entrypoint.sh
+#!/bin/bash
+set -e
+
+# Start virtual framebuffer
+Xvfb :99 -screen 0 1280x1024x24 &
+export DISPLAY=:99
+
+# Start chromedriver
+chromedriver --port=9515 --whitelisted-ips="" &
+
+# Wait briefly for services to be ready
+sleep 1
+
+exec "$@"
+ENTRYPOINT_SCRIPT
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+CMD ["mix", "test"]

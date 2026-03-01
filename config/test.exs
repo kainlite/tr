@@ -11,7 +11,7 @@ config :bcrypt_elixir, :log_rounds, 1
 config :tr, Tr.Repo,
   username: "postgres",
   password: "postgres",
-  hostname: "localhost",
+  hostname: System.get_env("DATABASE_HOST", "localhost"),
   database: "tr_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
@@ -43,7 +43,7 @@ config :wallaby,
   driver: Wallaby.Chrome,
   chromedriver: [
     headless: true,
-    binary: "/usr/bin/google-chrome-stable",
+    binary: System.get_env("CHROME_BINARY", "/usr/bin/google-chrome-stable"),
     javascriptEnabled: true
   ]
 
