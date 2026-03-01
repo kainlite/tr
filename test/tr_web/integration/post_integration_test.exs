@@ -24,7 +24,7 @@ defmodule TrWeb.Integration.PostIntegrationTest do
       session
       |> visit("/en/blog")
       |> find(css("div ##{Map.get(post, :id)}", count: 1))
-      |> assert_has(css("h2 a", text: post.title))
+      |> assert_has(css("h2", text: post.title))
     end
 
     test "has some articles", %{session: session} do
