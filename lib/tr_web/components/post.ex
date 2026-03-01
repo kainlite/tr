@@ -25,7 +25,7 @@ defmodule TrWeb.PostComponent do
     ~H"""
     <div id={@post.id}>
       <div class="relative group">
-        <div class="card-tech rounded-xl overflow-hidden w-[39rem] h-[30rem] m-4
+        <div class="card-tech rounded-xl overflow-hidden w-full sm:w-[39rem] h-auto min-h-[20rem] sm:min-h-[30rem] m-2 sm:m-4
             hover:shadow-glow transition-all duration-300">
           <%= if @post.sponsored do %>
             <.link href="https://github.com/sponsors/kainlite#sponsors" class="">
@@ -61,6 +61,9 @@ defmodule TrWeb.PostComponent do
               </.link>
               <p class="text-sm float-right font-semibold text-zinc-500 dark:text-zinc-400">
                 <time>{@post.date}</time>
+                <span class="ml-2">
+                  {Tr.Blog.reading_time(@post)} {Gettext.gettext(TrWeb.Gettext, "min read")}
+                </span>
               </p>
             </h2>
             <p class="mx-auto text-sm sm:text-base sm:leading-7 text-zinc-600 dark:text-zinc-300">

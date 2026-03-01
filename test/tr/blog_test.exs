@@ -106,5 +106,30 @@ defmodule Tr.BlogTest do
       assert Enum.at(result, 0).id == p1.id
       assert Enum.at(result, 1).id == p2.id
     end
+
+    test "reading_time/1 returns an integer >= 1" do
+      post = Enum.random(Blog.posts("en"))
+      time = Blog.reading_time(post)
+      assert is_integer(time)
+      assert time >= 1
+    end
+
+    test "related_posts/3 excludes the current post" do
+      post = Enum.random(Blog.posts("en"))
+      related = Blog.related_posts(post, "en")
+      refute Enum.any?(related, &(&1.id == post.id))
+    end
+
+    test "related_posts/3 returns at most the requested count" do
+      post = Enum.random(Blog.posts("en"))
+      related = Blog.related_posts(post, "en", 2)
+      assert length(related) <= 2
+    end
+
+    test "related_posts/3 respects locale" do
+      post = Enum.random(Blog.posts("es"))
+      related = Blog.related_posts(post, "es")
+      assert Enum.all?(related, &(&1.lang == "es"))
+    end
   end
 end

@@ -4,14 +4,53 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
-    <% description =
+    <% default_description =
       gettext("Learn about DevOps, Linux, Containers, Kubernetes, CI/CD, AWS,
        Terraform, Docker, and more. Explore insights,
        tutorials, and experiments.") %>
-    <meta name="description" content={description} />
-    <meta property="og:title" content={assigns[:page_title] || "SegFault"} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={url(~p"/images/segfault.web")} />
+    <% og_desc = assigns[:og_description] || default_description %>
+    <% og_title = assigns[:page_title] || "SegFault" %>
+    <% og_image = assigns[:og_image] || url(~p"/images/segfault.webp") %>
+    <% og_url = assigns[:og_url] || "https://segfault.pw" %>
+    <% og_type = assigns[:og_type] || "website" %>
+
+    <meta name="description" content={og_desc} />
+
+    <meta property="og:title" content={og_title} />
+    <meta property="og:description" content={og_desc} />
+    <meta property="og:image" content={og_image} />
+    <meta property="og:url" content={og_url} />
+    <meta property="og:type" content={og_type} />
+    <meta property="og:site_name" content="SegFault" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={og_title} />
+    <meta name="twitter:description" content={og_desc} />
+    <meta name="twitter:image" content={og_image} />
+
+    <link rel="canonical" href={og_url} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="SegFault RSS"
+      href={url(~p"/index.xml")}
+    />
+
+    <%= if assigns[:og_url] do %>
+      <script type="application/ld+json">
+        <%= raw(Jason.encode!(%{
+          "@context" => "https://schema.org",
+          "@type" => "TechArticle",
+          "headline" => og_title,
+          "description" => assigns[:og_description],
+          "image" => og_image,
+          "url" => assigns[:og_url],
+          "datePublished" => assigns[:og_date_published],
+          "author" => %{"@type" => "Person", "name" => "Gabriel Garrido"},
+          "publisher" => %{"@type" => "Organization", "name" => "SegFault"}
+        })) %>
+      </script>
+    <% end %>
 
     <.live_title>
       {assigns[:page_title] || "SegFault"}

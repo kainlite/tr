@@ -4,4 +4,6 @@
 # User-agent: *
 # Disallow: /
 User-agent: *
-Disallow: 
+Disallow:
+
+Sitemap: https://segfault.pw/sitemap.xml

@@ -112,4 +112,35 @@ defmodule Tr.Blog do
       Enum.find(all_posts(), &(&1.id == id))
     end)
   end
+
+  @doc """
+  Returns the estimated reading time in minutes for a post.
+  Strips HTML tags, counts words, divides by 200 words per minute.
+  Returns at least 1.
+  """
+  def reading_time(post) do
+    word_count =
+      post.body
+      |> String.replace(~r/<[^>]+>/, " ")
+      |> String.split(~r/\s+/, trim: true)
+      |> length()
+
+    max(div(word_count, 200), 1)
+  end
+
+  @doc """
+  Returns up to `count` related posts ranked by tag overlap.
+  Excludes the given post itself.
+  """
+  def related_posts(post, locale, count \\ 3) do
+    posts(locale)
+    |> Enum.reject(&(&1.id == post.id))
+    |> Enum.map(fn p ->
+      overlap = length(post.tags -- (post.tags -- p.tags))
+      {p, overlap}
+    end)
+    |> Enum.sort_by(fn {_, overlap} -> overlap end, :desc)
+    |> Enum.take(count)
+    |> Enum.map(fn {p, _} -> p end)
+  end
 end

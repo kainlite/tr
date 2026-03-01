@@ -112,6 +112,54 @@ defmodule TrWeb.PostLiveTest do
     end
   end
 
+  describe "SEO and engagement" do
+    setup %{conn: conn} do
+      password = valid_user_password()
+      user = confirmed_user_fixture(%{password: password})
+      admin_user_fixture()
+
+      %{conn: log_in_user(conn, user), user: user, password: password}
+    end
+
+    test "renders og and twitter meta tags", %{conn: conn} do
+      {:ok, _lv, html} =
+        conn
+        |> live(~p"/blog/upgrading-k3s-with-system-upgrade-controller")
+
+      assert html =~ ~s(property="og:description")
+      assert html =~ ~s(property="og:image")
+      assert html =~ ~s(property="og:url")
+      assert html =~ ~s(name="twitter:card")
+      assert html =~ ~s(name="twitter:title")
+    end
+
+    test "renders reading time", %{conn: conn} do
+      {:ok, _lv, html} =
+        conn
+        |> live(~p"/blog/upgrading-k3s-with-system-upgrade-controller")
+
+      assert html =~ "min read"
+    end
+
+    test "renders related posts section", %{conn: conn} do
+      {:ok, _lv, html} =
+        conn
+        |> live(~p"/blog/upgrading-k3s-with-system-upgrade-controller")
+
+      assert html =~ "Related Posts"
+    end
+
+    test "renders share buttons", %{conn: conn} do
+      {:ok, _lv, html} =
+        conn
+        |> live(~p"/blog/upgrading-k3s-with-system-upgrade-controller")
+
+      assert html =~ "twitter.com/intent/tweet"
+      assert html =~ "linkedin.com/sharing/share-offsite"
+      assert html =~ "news.ycombinator.com/submitlink"
+    end
+  end
+
   describe "Annonymous users" do
     test "cannot comment as annonymous user", %{conn: conn} do
       {:ok, _lv, html} =
