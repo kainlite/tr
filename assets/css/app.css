@@ -4,50 +4,55 @@
 
 @layer components {
   .card-tech {
-    @apply bg-white shadow-lg border border-zinc-200 transition-all duration-200;
+    @apply bg-terminal-100 border border-terminal-300 transition-all duration-200;
   }
 
   .dark .card-tech {
-    background-color: #1e2128;
-    border-color: #2d3748;
+    background-color: #111111;
+    border-color: #2a2a2a;
     box-shadow: none;
   }
 
   .dark .card-tech:hover {
-    border-color: #486581;
-    box-shadow: 0 0 8px rgba(233, 114, 25, 0.3);
+    border-color: #00ff41;
+    box-shadow: 0 0 8px rgba(0, 255, 65, 0.15);
+  }
+
+  .card-tech:hover {
+    @apply border-accent-light;
   }
 
   .tag-pill {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
-    @apply bg-zinc-100 text-zinc-700 border border-zinc-200 transition-all duration-200;
+    @apply inline-flex items-center px-2 py-0.5 text-sm font-mono font-medium;
+    @apply bg-terminal-100 text-terminal-500 border border-terminal-300 transition-all duration-200;
   }
 
   .dark .tag-pill {
-    background-color: #2d3748;
-    color: #d4d4d8;
-    border-color: #486581;
+    background-color: #1a1a1a;
+    color: #38ef7d;
+    border-color: #2a2a2a;
   }
 
   .tag-pill:hover {
-    @apply bg-zinc-200;
+    @apply border-accent-light text-accent-light;
   }
 
   .dark .tag-pill:hover {
-    background-color: #486581;
-    color: #ef8f40;
+    border-color: #00ff41;
+    color: #00ff41;
   }
 
   .icon-button {
-    @apply inline-flex items-center justify-center p-2 rounded-lg transition-all duration-200;
+    @apply inline-flex items-center justify-center p-2 transition-all duration-200;
   }
 
   .icon-button:hover {
-    @apply bg-zinc-100;
+    @apply bg-terminal-200 text-accent-light;
   }
 
   .dark .icon-button:hover {
-    background-color: #2d3748;
+    background-color: #1a1a1a;
+    color: #00ff41;
   }
 }
 @import "monokai";
