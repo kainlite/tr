@@ -71,9 +71,11 @@ defmodule TrWeb.DashboardLive do
 
   defp stat_card(assigns) do
     ~H"""
-    <div class="card-tech p-4 flex flex-col gap-1">
-      <span class="text-sm text-zinc-500 dark:text-zinc-400">{@label}</span>
-      <span class="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{@value}</span>
+    <div class="border border-terminal-300 dark:border-terminal-600 p-4">
+      <div class="font-mono text-xs text-accent-light dark:text-accent uppercase tracking-wider">
+        {@label}
+      </div>
+      <div class="font-mono text-2xl mt-1">{@value}</div>
     </div>
     """
   end
@@ -81,121 +83,131 @@ defmodule TrWeb.DashboardLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="mx-auto space-y-8">
-      <h2>{gettext("Admin Dashboard")}</h2>
-
-      <%!-- Stats Grid --%>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <.stat_card label="Registered Users" value={Tr.Accounts.get_users_count()} />
-        <.stat_card label="Connected Users" value={@user_stats.total} />
-        <.stat_card label="Total Comments" value={Tr.Post.get_comments_count()} />
-        <.stat_card label="Total Reactions" value={@total_reactions} />
-        <.stat_card label="Posts (EN)" value={@total_posts_en} />
-        <.stat_card label="Posts (ES)" value={@total_posts_es} />
-        <.stat_card label="Tags" value={@total_tags} />
-        <.stat_card label="Avg Reading Time" value={"#{@avg_reading_time} min"} />
-        <.stat_card label="Approved Comments" value={@approved_comments} />
-        <.stat_card label="Pending Comments" value={@pending_comments} />
-        <.stat_card label="Subscribers" value={@subscribers_count} />
-        <.stat_card label="Unannounced Posts" value={length(@unannounced_posts)} />
+    <div class="mx-auto space-y-6">
+      <!-- Terminal header -->
+      <div class="font-mono">
+        <span class="text-accent-light dark:text-accent">$</span>
+        <span class="text-terminal-400 ml-2">sre-dashboard --stats</span>
       </div>
-
-      <%!-- Active Rooms --%>
-      <div class="card-tech p-6">
-        <h3 class="text-lg font-semibold mb-4 text-zinc-900 dark:text-zinc-100">
-          {gettext("Active Rooms")}
-        </h3>
+      
+    <!-- System Stats -->
+      <div>
+        <h3 class="font-mono text-sm text-accent-light dark:text-accent mb-3">## System</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <.stat_card label="Registered Users" value={Tr.Accounts.get_users_count()} />
+          <.stat_card label="Connected Users" value={@user_stats.total} />
+          <.stat_card label="Subscribers" value={@subscribers_count} />
+          <.stat_card label="Unannounced" value={length(@unannounced_posts)} />
+        </div>
+      </div>
+      
+    <!-- Content Stats -->
+      <div>
+        <h3 class="font-mono text-sm text-accent-light dark:text-accent mb-3">## Content</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <.stat_card label="Posts (EN)" value={@total_posts_en} />
+          <.stat_card label="Posts (ES)" value={@total_posts_es} />
+          <.stat_card label="Tags" value={@total_tags} />
+          <.stat_card label="Avg Read Time" value={"#{@avg_reading_time} min"} />
+        </div>
+      </div>
+      
+    <!-- Engagement Stats -->
+      <div>
+        <h3 class="font-mono text-sm text-accent-light dark:text-accent mb-3">## Engagement</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <.stat_card label="Total Reactions" value={@total_reactions} />
+          <.stat_card label="Approved Comments" value={@approved_comments} />
+          <.stat_card label="Pending Comments" value={@pending_comments} />
+          <.stat_card label="Total Comments" value={Tr.Post.get_comments_count()} />
+        </div>
+      </div>
+      
+    <!-- Active Rooms -->
+      <div class="border border-terminal-300 dark:border-terminal-600 p-4">
+        <h3 class="font-mono text-sm text-accent-light dark:text-accent mb-3">## Active Rooms</h3>
         <%= if @user_stats.per_room == %{} do %>
-          <p class="text-sm text-zinc-500 dark:text-zinc-400">No active rooms</p>
+          <p class="font-mono text-sm text-terminal-400">No active rooms</p>
         <% else %>
-          <ul class="list-none space-y-2">
+          <div class="space-y-1">
             <%= for {room, count} <- @user_stats.per_room do %>
-              <li class="flex justify-between items-center py-2 border-b border-gray-200 dark:border-surface-600">
+              <div class="font-mono text-sm py-1">
+                <span class="text-accent-light dark:text-accent">></span>
                 <.link
                   href={"/en/blog/#{room}"}
-                  class="text-brand-500 hover:text-brand-600 dark:text-brand-400 dark:hover:text-brand-300"
+                  class="ml-2 hover:text-accent-light dark:hover:text-accent"
                 >
                   {room}
                 </.link>
-                <span class="text-sm text-zinc-500 dark:text-zinc-400">{count} users</span>
-              </li>
+                <span class="text-terminal-400 ml-2">({count} users)</span>
+              </div>
             <% end %>
-          </ul>
+          </div>
         <% end %>
       </div>
-
-      <%!-- Top Posts --%>
+      
+    <!-- Top Posts -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="card-tech p-6">
-          <h3 class="text-lg font-semibold mb-4 text-zinc-900 dark:text-zinc-100">
-            Most Reacted Posts
-          </h3>
+        <div class="border border-terminal-300 dark:border-terminal-600 p-4">
+          <h3 class="font-mono text-sm text-accent-light dark:text-accent mb-3">## Most Reacted</h3>
           <%= if @top_reacted == [] do %>
-            <p class="text-sm text-zinc-500 dark:text-zinc-400">No reactions yet</p>
+            <p class="font-mono text-sm text-terminal-400">No reactions yet</p>
           <% else %>
-            <ul class="list-none space-y-2">
-              <%= for {slug, count} <- @top_reacted do %>
-                <li class="flex justify-between items-center py-2 border-b border-gray-200 dark:border-surface-600">
+            <div class="space-y-1">
+              <%= for {{slug, count}, idx} <- Enum.with_index(@top_reacted, 1) do %>
+                <div class="font-mono text-sm py-1">
+                  <span class="text-terminal-400">{idx}.</span>
                   <.link
                     href={"/en/blog/#{slug}"}
-                    class="text-brand-500 hover:text-brand-600 dark:text-brand-400 dark:hover:text-brand-300 truncate mr-2"
+                    class="ml-2 hover:text-accent-light dark:hover:text-accent truncate"
                   >
                     {slug}
                   </.link>
-                  <span class="text-sm text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
-                    {count} reactions
-                  </span>
-                </li>
+                  <span class="text-terminal-400 ml-2">({count})</span>
+                </div>
               <% end %>
-            </ul>
+            </div>
           <% end %>
         </div>
 
-        <div class="card-tech p-6">
-          <h3 class="text-lg font-semibold mb-4 text-zinc-900 dark:text-zinc-100">
-            Most Commented Posts
-          </h3>
+        <div class="border border-terminal-300 dark:border-terminal-600 p-4">
+          <h3 class="font-mono text-sm text-accent-light dark:text-accent mb-3">## Most Commented</h3>
           <%= if @most_commented == [] do %>
-            <p class="text-sm text-zinc-500 dark:text-zinc-400">No comments yet</p>
+            <p class="font-mono text-sm text-terminal-400">No comments yet</p>
           <% else %>
-            <ul class="list-none space-y-2">
-              <%= for {slug, count} <- @most_commented do %>
-                <li class="flex justify-between items-center py-2 border-b border-gray-200 dark:border-surface-600">
+            <div class="space-y-1">
+              <%= for {{slug, count}, idx} <- Enum.with_index(@most_commented, 1) do %>
+                <div class="font-mono text-sm py-1">
+                  <span class="text-terminal-400">{idx}.</span>
                   <.link
                     href={"/en/blog/#{slug}"}
-                    class="text-brand-500 hover:text-brand-600 dark:text-brand-400 dark:hover:text-brand-300 truncate mr-2"
+                    class="ml-2 hover:text-accent-light dark:hover:text-accent truncate"
                   >
                     {slug}
                   </.link>
-                  <span class="text-sm text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
-                    {count} comments
-                  </span>
-                </li>
+                  <span class="text-terminal-400 ml-2">({count})</span>
+                </div>
               <% end %>
-            </ul>
+            </div>
           <% end %>
         </div>
       </div>
-
-      <%!-- Comment Moderation --%>
-      <div class="card-tech p-6">
-        <h3 class="text-lg font-semibold mb-4 text-zinc-900 dark:text-zinc-100">
-          Comment Moderation
-        </h3>
-
-        <div class="flex gap-4 mb-4">
+      
+    <!-- Comment Moderation -->
+      <div class="border border-terminal-300 dark:border-terminal-600 p-4">
+        <h3 class="font-mono text-sm text-accent-light dark:text-accent mb-3">## Moderation</h3>
+        <div class="flex gap-4 mb-4 font-mono text-sm">
           <.link
             href={~p"/admin/dashboard?comments=all"}
-            class="text-[1.25rem] leading-6 text-zinc-900 dark:text-zinc-100 font-semibold hover:text-brand-500 dark:hover:text-brand-400"
+            class="text-terminal-500 dark:text-terminal-400 hover:text-accent-light dark:hover:text-accent no-underline"
           >
-            {gettext("All comments")}
+            [all]
           </.link>
-          <span class="text-zinc-400">|</span>
           <.link
             href={~p"/admin/dashboard?comments=unapproved"}
-            class="text-[1.25rem] leading-6 text-zinc-900 dark:text-zinc-100 font-semibold hover:text-brand-500 dark:hover:text-brand-400"
+            class="text-terminal-500 dark:text-terminal-400 hover:text-accent-light dark:hover:text-accent no-underline"
           >
-            {gettext("Unapproved comments")}
+            [unapproved]
           </.link>
         </div>
 
@@ -204,7 +216,7 @@ defmodule TrWeb.DashboardLive do
           <:col :let={comment} label="slug">
             <.link
               href={"/en/blog/#{comment.slug}"}
-              class="text-brand-500 hover:text-brand-600 dark:text-brand-400 dark:hover:text-brand-300"
+              class="hover:text-accent-light dark:hover:text-accent"
             >
               {comment.slug}
             </.link>
@@ -213,121 +225,106 @@ defmodule TrWeb.DashboardLive do
           <:col :let={comment} label="body">{comment.body}</:col>
           <:col :let={comment} label="actions">
             <.link
-              class="text-[1.25rem] leading-6 text-zinc-700 font-semibold hover:text-zinc-700"
+              class="font-mono text-sm text-accent-light dark:text-accent hover:underline no-underline mr-2"
               phx-click="approve_comment"
               phx-value-slug={comment.slug}
               phx-value-comment-id={comment.id}
               data-confirm="Are you sure?"
             >
-              Approve
+              [approve]
             </.link>
             <.link
-              class="text-[1.25rem] leading-6 text-zinc-700 font-semibold hover:text-zinc-700"
+              class="font-mono text-sm text-danger dark:text-danger hover:underline no-underline"
               phx-click="delete_comment"
               phx-value-slug={comment.slug}
               phx-value-comment-id={comment.id}
               data-confirm="Are you sure?"
             >
-              Delete
+              [delete]
             </.link>
           </:col>
         </.table>
       </div>
-
-      <%!-- Recent Users --%>
-      <div class="card-tech p-6">
-        <h3 class="text-lg font-semibold mb-4 text-zinc-900 dark:text-zinc-100">
-          Recent Users
-        </h3>
-
+      
+    <!-- Recent Users -->
+      <div class="border border-terminal-300 dark:border-terminal-600 p-4">
+        <h3 class="font-mono text-sm text-accent-light dark:text-accent mb-3">## Recent Users</h3>
         <.table id="users" rows={@users}>
           <:col :let={user} label="id">{user.id}</:col>
           <:col :let={user} label="email">{user.email}</:col>
-          <:col :let={user} label="github_username">{user.github_username}</:col>
-          <:col :let={user} label="display_name">{user.display_name}</:col>
+          <:col :let={user} label="github">{user.github_username}</:col>
+          <:col :let={user} label="name">{user.display_name}</:col>
           <:col :let={user} label="confirmed">
             <%= if user.confirmed_at do %>
-              <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset dark:bg-green-500/10 dark:text-green-400 dark:ring-green-500/20">
-                Yes
-              </span>
+              <span class="font-mono text-xs text-accent-light dark:text-accent">[yes]</span>
             <% else %>
-              <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset dark:bg-red-400/10 dark:text-red-400 dark:ring-red-400/20">
-                No
-              </span>
+              <span class="font-mono text-xs text-danger">[no]</span>
             <% end %>
           </:col>
           <:col :let={user} label="subscribed">
             <%= if user.accept_emails do %>
-              <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset dark:bg-green-500/10 dark:text-green-400 dark:ring-green-500/20">
-                Yes
-              </span>
+              <span class="font-mono text-xs text-accent-light dark:text-accent">[yes]</span>
             <% else %>
-              <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset dark:bg-red-400/10 dark:text-red-400 dark:ring-red-400/20">
-                No
-              </span>
+              <span class="font-mono text-xs text-danger">[no]</span>
             <% end %>
           </:col>
         </.table>
       </div>
-
-      <%!-- Cross-Posting --%>
-      <div class="card-tech p-6">
-        <h3 class="text-lg font-semibold mb-4 text-zinc-900 dark:text-zinc-100">
-          Cross-Posting
-        </h3>
-
+      
+    <!-- Cross-Posting -->
+      <div class="border border-terminal-300 dark:border-terminal-600 p-4">
+        <h3 class="font-mono text-sm text-accent-light dark:text-accent mb-3">## Cross-Posting</h3>
         <%= unless @linkedin_configured do %>
-          <p class="text-sm text-yellow-600 dark:text-yellow-400 mb-4">
+          <p class="font-mono text-sm text-yellow-600 dark:text-yellow-400 mb-4">
             LinkedIn not configured (set LINKEDIN_ACCESS_TOKEN and LINKEDIN_PERSON_URN)
           </p>
         <% end %>
-
         <.table id="cross-posts" rows={@cross_post_pending}>
           <:col :let={tracker} label="Slug">
             <.link
               href={"/en/blog/#{tracker.slug}"}
-              class="text-brand-500 hover:text-brand-600 dark:text-brand-400 dark:hover:text-brand-300"
+              class="hover:text-accent-light dark:hover:text-accent"
             >
               {tracker.slug}
             </.link>
           </:col>
           <:col :let={tracker} label="LinkedIn">
             <%= if tracker.linkedin_posted do %>
-              <span class="text-green-600">Posted</span>
+              <span class="font-mono text-xs text-accent-light dark:text-accent">[posted]</span>
             <% else %>
               <button
                 phx-click="linkedin_post"
                 phx-value-slug={tracker.slug}
                 disabled={!@linkedin_configured}
-                class="rounded bg-blue-600 px-2 py-1 text-sm text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                class="font-mono text-sm border border-terminal-300 dark:border-terminal-600 px-2 py-1 hover:border-accent-light dark:hover:border-accent disabled:opacity-50 disabled:cursor-not-allowed"
                 data-confirm="Post to LinkedIn?"
               >
-                Post to LinkedIn
+                [post]
               </button>
             <% end %>
           </:col>
           <:col :let={tracker} label="Substack">
             <%= if tracker.substack_drafted do %>
-              <span class="text-green-600">Drafted</span>
+              <span class="font-mono text-xs text-accent-light dark:text-accent">[drafted]</span>
             <% else %>
               <div class="flex gap-2">
                 <button
                   phx-click="substack_draft"
                   phx-value-slug={tracker.slug}
                   disabled={!@substack_configured}
-                  class="rounded bg-orange-600 px-2 py-1 text-sm text-white hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="font-mono text-sm border border-terminal-300 dark:border-terminal-600 px-2 py-1 hover:border-accent-light dark:hover:border-accent disabled:opacity-50 disabled:cursor-not-allowed"
                   data-confirm="Push draft to Substack?"
                 >
-                  Push Draft
+                  [draft]
                 </button>
                 <button
                   id={"copy-html-" <> tracker.slug}
                   phx-hook="CopyHtml"
                   phx-click="substack_content"
                   phx-value-slug={tracker.slug}
-                  class="rounded bg-gray-600 px-2 py-1 text-sm text-white hover:bg-gray-700"
+                  class="font-mono text-sm border border-terminal-300 dark:border-terminal-600 px-2 py-1 hover:border-accent-light dark:hover:border-accent"
                 >
-                  Copy HTML
+                  [copy]
                 </button>
               </div>
             <% end %>

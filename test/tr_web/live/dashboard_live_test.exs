@@ -22,16 +22,16 @@ defmodule TrWeb.DashboardLiveTest do
         |> log_in_user(admin_user_fixture())
         |> live(~p"/admin/dashboard")
 
-      assert html =~ "Admin Dashboard"
+      assert html =~ "sre-dashboard --stats"
       assert html =~ "Registered Users"
       assert html =~ "Total Reactions"
       assert html =~ "Posts (EN)"
       assert html =~ "Posts (ES)"
-      assert html =~ "Most Reacted Posts"
-      assert html =~ "Most Commented Posts"
-      assert html =~ "Comment Moderation"
-      assert html =~ "Recent Users"
-      assert html =~ "Cross-Posting"
+      assert html =~ "## Most Reacted"
+      assert html =~ "## Most Commented"
+      assert html =~ "## Moderation"
+      assert html =~ "## Recent Users"
+      assert html =~ "## Cross-Posting"
     end
   end
 end
