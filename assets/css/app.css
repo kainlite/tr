@@ -212,35 +212,40 @@
   }
   html {
     box-sizing: border-box;
-    font-size: 75%;
+    font-size: 100%;
   }
   body {
-    color: #000000;
-    font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-    font-size: 1.6em;
-    font-weight: 300;
+    color: #18181b;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
     letter-spacing: 0.01em;
     line-height: 1.6;
+    background-color: #fafafa;
   }
 
   .dark body {
-    background-color: #13161a;
+    background-color: #0a0a0a;
     color: #e4e4e7;
   }
   blockquote {
-    border-left: 0.3rem solid #d1d1d1;
+    border-left: 0.2rem solid #16a34a;
     margin-left: 0;
     margin-right: 0;
     padding: 1rem 1.5rem;
+    font-style: normal;
+  }
+  .dark blockquote {
+    border-left-color: #00ff41;
   }
   .button,
   button,
   input[type="button"],
   input[type="reset"],
   input[type="submit"] {
-    background-color: #0069d9;
-    border: 0.1rem solid #0069d9;
-    border-radius: 0.4rem;
+    background-color: #16a34a;
+    border: 0.1rem solid #16a34a;
+    border-radius: 0;
     color: #fff;
     cursor: pointer;
     display: inline-block;
@@ -265,8 +270,8 @@
   input[type="reset"]:hover,
   input[type="submit"]:focus,
   input[type="submit"]:hover {
-    background-color: #606c76;
-    border-color: #606c76;
+    background-color: #0d7a2e;
+    border-color: #0d7a2e;
     color: #fff;
     outline: 0;
   }
@@ -288,8 +293,8 @@
   input[type="reset"][disabled]:hover,
   input[type="submit"][disabled]:focus,
   input[type="submit"][disabled]:hover {
-    background-color: #0069d9;
-    border-color: #0069d9;
+    background-color: #16a34a;
+    border-color: #16a34a;
   }
   .button.button-outline,
   button.button-outline,
@@ -297,7 +302,7 @@
   input[type="reset"].button-outline,
   input[type="submit"].button-outline {
     background-color: transparent;
-    color: #0069d9;
+    color: #16a34a;
   }
   .button.button-outline:focus,
   .button.button-outline:hover,
@@ -310,8 +315,8 @@
   input[type="submit"].button-outline:focus,
   input[type="submit"].button-outline:hover {
     background-color: transparent;
-    border-color: #606c76;
-    color: #606c76;
+    border-color: #0d7a2e;
+    color: #0d7a2e;
   }
   .button.button-outline[disabled]:focus,
   .button.button-outline[disabled]:hover,
@@ -324,7 +329,7 @@
   input[type="submit"].button-outline[disabled]:focus,
   input[type="submit"].button-outline[disabled]:hover {
     border-color: inherit;
-    color: #0069d9;
+    color: #16a34a;
   }
   .button.button-clear,
   button.button-clear,
@@ -333,7 +338,7 @@
   input[type="submit"].button-clear {
     background-color: transparent;
     border-color: transparent;
-    color: #0069d9;
+    color: #16a34a;
   }
   .button.button-clear:focus,
   .button.button-clear:hover,
@@ -347,7 +352,7 @@
   input[type="submit"].button-clear:hover {
     background-color: transparent;
     border-color: transparent;
-    color: #606c76;
+    color: #0d7a2e;
   }
   .button.button-clear[disabled]:focus,
   .button.button-clear[disabled]:hover,
@@ -359,32 +364,33 @@
   input[type="reset"].button-clear[disabled]:hover,
   input[type="submit"].button-clear[disabled]:focus,
   input[type="submit"].button-clear[disabled]:hover {
-    color: #0069d9;
+    color: #16a34a;
   }
   code {
-    border-radius: 0.2rem;
+    border-radius: 0;
     font-size: 80%;
     white-space: nowrap;
   }
   pre {
-    background: #f4f5f6;
-    border-left: 0.5rem solid #0069d9;
+    background: #f0f0f0;
+    border: 1px solid #d4d4d4;
+    border-left: none;
+    border-radius: 0;
     overflow-y: hidden;
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
 
   pre {
-    @apply rounded-lg;
     @apply mx-auto w-[99%];
     @apply my-2;
     position: relative;
   }
 
   .dark pre {
-    background-color: #0d0f12;
+    background-color: #0a0a0a;
     color: #e4e4e7;
-    border: 1px solid #2d3748;
+    border: 1px solid #2a2a2a;
   }
 
   pre > code {
@@ -466,7 +472,7 @@
   input:not([type]):focus,
   textarea:focus,
   select:focus {
-    border-color: #0069d9;
+    border-color: #16a34a;
     outline: 0;
   }
   select {
@@ -475,7 +481,7 @@
     padding-right: 3rem;
   }
   select:focus {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 8" width="30"><path fill="%230069d9" d="M0,0l6,8l6-8"/></svg>');
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 8" width="30"><path fill="%2316a34a" d="M0,0l6,8l6-8"/></svg>');
   }
   select[multiple] {
     background: none;
@@ -516,7 +522,7 @@
     }
   }
   a {
-    color: #486581;
+    color: #16a34a;
     text-decoration: none;
     transition-property: color;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -524,12 +530,18 @@
   }
 
   .dark a {
-    color: #ef8f40;
+    color: #00ff41;
   }
 
   a:focus,
   a:hover {
-    color: #e97219;
+    color: #22c55e;
+    text-decoration: underline;
+  }
+
+  .dark a:focus,
+  .dark a:hover {
+    color: #38ef7d;
   }
   dl,
   ol,
@@ -573,6 +585,11 @@
   b,
   strong {
     font-weight: bold;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
   h1 {
     font-size: 4.6rem;
@@ -618,15 +635,13 @@
   /* Headers */
   header {
     width: 100%;
-    background: #fdfdfd;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    border-bottom: 1px solid #eaeaea;
+    background: #fafafa;
+    border-bottom: 1px solid #d4d4d4;
   }
 
   .dark header {
-    background-color: rgba(19, 22, 26, 0.95);
-    border-bottom-color: #2d3748;
+    background-color: #0a0a0a;
+    border-bottom-color: #2a2a2a;
   }
   header section {
     align-items: center;
