@@ -12,25 +12,32 @@ defmodule TrWeb.SearchLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="mx-auto mt-8 sm:mt-20 flex flex-col space-y-8 bg-white p-4 sm:p-8 shadow-sm dark:bg-zinc-900">
+    <div class="max-w-2xl mx-auto py-8">
+      <div class="font-mono text-accent-light dark:text-accent mb-4">$ search</div>
       <.form :let={f} for={%{}} as={:search} phx-change="search" phx-submit="search" id="search_form">
-        <.input
-          type="search"
-          field={f[:q]}
-          placeholder={gettext("Try full terms like: linux, kubernetes, elixir...")}
-          value={@q}
-          autofocus="true"
-          class="max-w-2xl border border-gray-100 text-2xl active:border-0 active:border-gray-200 focus:border-gray-200 focus:ring-0 bg-gray-50"
-        />
+        <div class="flex items-center gap-2 border border-terminal-300 dark:border-terminal-600 bg-terminal-100 dark:bg-terminal-800 px-4 py-3">
+          <span class="font-mono text-accent-light dark:text-accent">></span>
+          <input
+            type="text"
+            name={f[:q].name}
+            id={f[:q].id}
+            value={@q}
+            placeholder={gettext("Try full terms like: linux, kubernetes, elixir...")}
+            class="flex-1 bg-transparent border-none font-mono text-lg focus:ring-0 focus:outline-none p-0 text-zinc-900 dark:text-zinc-100 placeholder:text-terminal-400"
+            autofocus="true"
+          />
+        </div>
       </.form>
-      <div class="flex flex-col space-y-8">
-        <div :for={post <- @posts} class="flex flex-col space-y-1">
-          <h2 class="text-4xl font-medium text-gray-900">
-            <.link navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{post.id}"}>
-              {post.title}
-            </.link>
-          </h2>
-          {raw(post.description)}
+
+      <div :if={@posts != []} class="mt-6 space-y-0">
+        <div :for={post <- @posts} class="border-b border-terminal-300 dark:border-terminal-600 py-3">
+          <.link
+            navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{post.id}"}
+            class="font-mono font-semibold hover:text-accent-light dark:hover:text-accent transition-colors"
+          >
+            {post.title}
+          </.link>
+          <p class="text-sm text-terminal-400 mt-1 line-clamp-2">{raw(post.description)}</p>
         </div>
       </div>
     </div>
