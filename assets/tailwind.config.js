@@ -11,28 +11,39 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        brand: {
-          400: '#ef8f40',
-          500: '#e97219',
-          600: '#d25810',
+        terminal: {
+          50: '#fafafa',    // light bg-primary
+          100: '#f0f0f0',   // light bg-surface
+          200: '#e5e5e5',   // light bg-surface-alt
+          300: '#d4d4d4',   // light border
+          400: '#71717a',   // muted text (both modes)
+          500: '#3f3f46',   // dark muted
+          600: '#2a2a2a',   // dark border
+          700: '#1a1a1a',   // dark bg-surface-alt
+          800: '#111111',   // dark bg-surface
+          900: '#0a0a0a',   // dark bg-primary
+          950: '#050505',   // darkest
         },
         accent: {
-          500: '#627d98',
-          600: '#486581',
+          DEFAULT: '#00ff41',
+          light: '#16a34a',  // for light mode
+          muted: '#38ef7d',
+          dim: '#22c55e',    // light mode muted
+          dark: '#0d7a2e',   // very dark for bg tints
         },
-        surface: {
-          700: '#2d3748',
-          800: '#1e2128',
-          900: '#13161a',
-          950: '#0d0f12',
+        danger: {
+          DEFAULT: '#ef4444',
+          dark: '#dc2626',
         },
       },
       boxShadow: {
-        'glow-sm': '0 0 8px rgba(233, 114, 25, 0.3)',
-        'glow': '0 0 15px rgba(233, 114, 25, 0.4)',
+        'glow-sm': '0 0 8px rgba(0, 255, 65, 0.15)',
+        'glow': '0 0 15px rgba(0, 255, 65, 0.25)',
+        'glow-accent': '0 0 20px rgba(0, 255, 65, 0.3)',
       },
       fontFamily: {
         mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
       },
     },
   },
