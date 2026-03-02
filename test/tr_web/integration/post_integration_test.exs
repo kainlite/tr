@@ -34,7 +34,7 @@ defmodule TrWeb.Integration.PostIntegrationTest do
       |> assert_has(css("h2", text: "Upgrading K3S with system-upgrade-controller"))
     end
 
-    def message(msg), do: css("li", text: msg)
+    def message(msg), do: css("p", text: msg)
 
     @sessions 3
     feature "That users can send messages to each other", %{sessions: [user1, user2, user3]} do
@@ -56,9 +56,9 @@ defmodule TrWeb.Integration.PostIntegrationTest do
       user2
       |> visit(page)
       |> assert_has(
-        Query.css("li", text: "Comment hidden, awaiting moderation...", minimum: 1, wait: 10_000)
+        Query.css("p", text: "Comment hidden, awaiting moderation...", minimum: 1, wait: 10_000)
       )
-      |> click(Query.link("Reply", wait: 10_000))
+      |> click(Query.link("[reply]", wait: 10_000))
 
       user2
       |> fill_in(Query.text_field("Message"), with: "Hello user1!")
@@ -70,8 +70,8 @@ defmodule TrWeb.Integration.PostIntegrationTest do
       |> visit(page)
 
       user1
-      |> assert_has(Query.css("li", text: "Comment hidden, awaiting moderation...", count: 2))
-      |> assert_has(css("p", text: "Online: 3"))
+      |> assert_has(Query.css("p", text: "Comment hidden, awaiting moderation...", count: 2))
+      |> assert_has(css("span", text: "Online: 3"))
 
       comments = Tr.Post.get_unapproved_comments()
 
@@ -82,14 +82,14 @@ defmodule TrWeb.Integration.PostIntegrationTest do
       user2
       |> visit(page)
       |> assert_has(message("Hello user2!"))
-      |> assert_has(css("p", text: "Online: 3"))
+      |> assert_has(css("span", text: "Online: 3"))
 
       user3
       |> visit(page)
       |> assert_has(message("Hello user1!"))
       |> assert_has(message("Hello user2!"))
       |> assert_has(css("p", text: "Please sign in to be able to write comments"))
-      |> assert_has(css("p", text: "Online: 3"))
+      |> assert_has(css("span", text: "Online: 3"))
     end
 
     test "an user can react to a post", %{session: session} do

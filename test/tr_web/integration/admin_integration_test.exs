@@ -31,7 +31,7 @@ defmodule TrWeb.Integration.AdminIntegrationTest do
 
     session
     |> visit("/admin/dashboard")
-    |> assert_has(css("h2", text: "Admin Dashboard"))
+    |> assert_has(css("span", text: "sre-dashboard --stats"))
     |> assert_has(css("table#comments"))
     |> assert_has(css("table#comments th", text: "id"))
     |> assert_has(css("table#comments th", text: "email"))
@@ -47,10 +47,10 @@ defmodule TrWeb.Integration.AdminIntegrationTest do
 
     session
     |> visit("/admin/dashboard")
-    |> assert_has(css("h2", text: "Admin Dashboard"))
+    |> assert_has(css("span", text: "sre-dashboard --stats"))
     |> assert_has(css("table#comments"))
     |> accept_confirm(fn s ->
-      click(s, css("a", text: "Approve"))
+      click(s, css("a", text: "[approve]"))
     end)
 
     session
@@ -64,10 +64,10 @@ defmodule TrWeb.Integration.AdminIntegrationTest do
 
     session
     |> visit("/admin/dashboard")
-    |> assert_has(css("h2", text: "Admin Dashboard"))
+    |> assert_has(css("span", text: "sre-dashboard --stats"))
     |> assert_has(css("table#comments"))
     |> accept_confirm(fn s ->
-      click(s, css("a", text: "Delete"))
+      click(s, css("a", text: "[delete]"))
     end)
 
     session

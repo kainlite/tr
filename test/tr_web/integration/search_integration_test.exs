@@ -23,7 +23,7 @@ defmodule TrWeb.Integration.SearchIntegrationTest do
       |> visit("/blog/search")
       |> fill_in(css("#search_form input"), with: "kubernetes")
       |> send_keys([:enter])
-      |> assert_has(Query.css("h2.text-4xl a", minimum: 1, wait: 10_000))
+      |> assert_has(Query.css("a.font-semibold", minimum: 1, wait: 10_000))
     end
   end
 end
