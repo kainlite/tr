@@ -56,7 +56,7 @@ defmodule TrWeb.CommentComponent do
         <.error :if={@check_errors}>
           {gettext("Oops, something went wrong! Please check the errors below.")}
         </.error>
-        <.input field={@form[:body]} type="textarea" label="" required />
+        <.input field={@form[:body]} type="textarea" label="Message" required />
         <.input
           field={@form[:parent_comment_id]}
           type="hidden"
