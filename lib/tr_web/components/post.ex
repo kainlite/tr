@@ -6,16 +6,15 @@ defmodule TrWeb.PostComponent do
 
   def render_tag_card(assigns) do
     ~H"""
-    <li class="tag-pill list-none mx-1 px-4 py-2 hover:shadow-glow-sm">
-      <span class="inline-flex items-center justify-center text-white bg-brand-500 rounded-full w-8 h-8 text-sm
-        font-semibold mr-2">
-        {Enum.count(Tr.Blog.by_tag(Gettext.get_locale(TrWeb.Gettext), @tag))}
-      </span>
+    <li class="tag-pill list-none mx-1 px-3 py-1.5 hover:shadow-glow-sm">
       <.link
         navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/tags/#{@tag}"}
-        class="inline-flex items-center justify-center text-lg font-semibold text-zinc-700 dark:text-zinc-200 hover:text-brand-500 dark:hover:text-brand-400"
+        class="inline-flex items-center gap-2 font-mono text-sm no-underline"
       >
-        {@tag}
+        <span class="text-terminal-500 dark:text-accent-muted">[{@tag}]</span>
+        <span class="text-terminal-400 text-xs">
+          {Enum.count(Tr.Blog.by_tag(Gettext.get_locale(TrWeb.Gettext), @tag))}
+        </span>
       </.link>
     </li>
     """
@@ -23,75 +22,32 @@ defmodule TrWeb.PostComponent do
 
   def render_post_card(assigns) do
     ~H"""
-    <div id={@post.id}>
-      <div class="relative group">
-        <div class="card-tech rounded-xl overflow-hidden w-full max-w-[39rem] h-auto min-h-[16rem] sm:min-h-[24rem]
-            hover:shadow-glow transition-all duration-300">
-          <%= if @post.sponsored do %>
-            <.link href="https://github.com/sponsors/kainlite#sponsors" class="">
-              <.icon
-                name="hero-lock-closed-solid"
-                class="absolute right-6 top-3 w-7 h-7 text-brand-500 dark:text-brand-400 z-10"
-              />
-            </.link>
-          <% else %>
-            <.icon
-              name="hero-lock-open-solid"
-              class="absolute right-6 top-3 w-7 h-7 text-zinc-400 dark:text-zinc-500 z-10"
-            />
-          <% end %>
-          <.link
-            navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{@post.id}"}
-            class="block relative"
-          >
-            <img
-              src={~p"/images/#{@post.image}"}
-              alt="Article Image"
-              class="w-full h-32 sm:h-48 object-center object-scale-down group-hover:scale-105 transition-transform duration-300"
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-surface-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </.link>
-          <div class="p-4 sm:p-6">
-            <h2 class="text-xl font-bold mb-1 truncate">
-              <.link
-                navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{@post.id}"}
-                class="inline-block text-zinc-900 dark:text-zinc-100 hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
-              >
-                {@post.title}
-              </.link>
-            </h2>
-            <p class="text-sm font-semibold text-zinc-500 dark:text-zinc-400 mb-2">
-              <time>{@post.date}</time>
-              <span class="ml-2">
-                {Tr.Blog.reading_time(@post)} {Gettext.gettext(TrWeb.Gettext, "min read")}
-              </span>
-            </p>
-            <p class="mx-auto text-sm sm:text-base sm:leading-7 text-zinc-600 dark:text-zinc-300">
-              {raw(@post.description)}
-            </p>
-          </div>
-          <div class="px-4 sm:px-6 pb-2 flex flex-wrap items-center justify-between gap-2">
-            <div class="flex flex-wrap gap-2">
-              <%= for tag <- @post.tags do %>
-                <span class="tag-pill text-sm">
-                  <.link
-                    navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/tags/#{tag}"}
-                    class="flex items-center gap-1"
-                  >
-                    <span class="inline-flex items-center justify-center text-white bg-brand-500 rounded-full w-6 h-6 text-xs font-semibold">
-                      {Enum.count(Tr.Blog.by_tag(Gettext.get_locale(TrWeb.Gettext), tag))}
-                    </span>
-                    <span class="text-zinc-700 dark:text-zinc-300">{tag}</span>
-                  </.link>
-                </span>
-              <% end %>
-            </div>
+    <div id={@post.id} class="border-b border-terminal-300 dark:border-terminal-600 py-4">
+      <div class="flex items-start justify-between gap-4">
+        <div class="flex-1 min-w-0">
+          <h2 class="text-lg font-bold font-mono truncate">
             <.link
               navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{@post.id}"}
-              class="inline-block text-brand-500 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-500 text-base font-semibold transition-colors"
+              class="text-zinc-900 dark:text-zinc-100 hover:text-accent-light dark:hover:text-accent transition-colors no-underline"
             >
-              {gettext("Read more...")}
+              {@post.title}
             </.link>
+          </h2>
+          <div class="font-mono text-sm text-terminal-400 mt-1">
+            {@post.date} | {Tr.Blog.reading_time(@post)} {Gettext.gettext(TrWeb.Gettext, "min read")}
+          </div>
+          <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-300 line-clamp-2">
+            {raw(@post.description)}
+          </p>
+          <div class="flex flex-wrap gap-2 mt-2">
+            <%= for tag <- @post.tags do %>
+              <.link
+                navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/tags/#{tag}"}
+                class="font-mono text-xs text-terminal-400 dark:text-accent-muted hover:text-accent-light dark:hover:text-accent no-underline transition-colors"
+              >
+                [{tag}]
+              </.link>
+            <% end %>
           </div>
         </div>
       </div>

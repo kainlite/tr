@@ -5,7 +5,7 @@ defmodule TrWeb.PageControllerTest do
     conn = get(conn, ~p"/")
 
     assert html_response(conn, 200) =~
-             "Sign in with Google"
+             "DevOps, Linux, Containers, Kubernetes, and cloud technologies."
   end
 
   describe "GET /sitemap.xml" do
