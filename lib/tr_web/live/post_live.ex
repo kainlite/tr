@@ -104,16 +104,17 @@ defmodule TrWeb.PostLive do
       </div>
       
     <!-- Reactions -->
-      <div class="flex gap-4 font-mono text-sm mb-4 border-b border-terminal-300 dark:border-terminal-600 pb-4">
+      <div class="flex items-center gap-4 font-mono text-sm mb-4 border-b border-terminal-300 dark:border-terminal-600 pb-4">
         <.link
           phx-click="react"
           phx-value-value="rocket-launch"
           phx-value-slug={@post.id}
           aria-label="awesome"
           id="hero-rocket-launch-link"
-          class="text-terminal-400 hover:text-accent-light dark:hover:text-accent transition-colors no-underline"
+          class="flex items-center gap-1 text-terminal-400 hover:text-accent-light dark:hover:text-accent transition-colors no-underline"
         >
-          [rocket: {Map.get(@reactions, "rocket-launch", 0)}]
+          <.icon name={@rocket_launch} class="w-5 h-5" />
+          <span>{Map.get(@reactions, "rocket-launch", 0)}</span>
         </.link>
         <.link
           phx-click="react"
@@ -121,9 +122,10 @@ defmodule TrWeb.PostLive do
           phx-value-slug={@post.id}
           aria-label="love it"
           id="hero-heart-link"
-          class="text-terminal-400 hover:text-danger dark:hover:text-danger transition-colors no-underline"
+          class="flex items-center gap-1 text-terminal-400 hover:text-danger dark:hover:text-danger transition-colors no-underline"
         >
-          [heart: {Map.get(@reactions, "heart", 0)}]
+          <.icon name={@heart} class="w-5 h-5" />
+          <span>{Map.get(@reactions, "heart", 0)}</span>
         </.link>
         <.link
           phx-click="react"
@@ -131,9 +133,10 @@ defmodule TrWeb.PostLive do
           phx-value-slug={@post.id}
           aria-label="like it"
           id="hero-hand-thumb-up-link"
-          class="text-terminal-400 hover:text-accent-light dark:hover:text-accent transition-colors no-underline"
+          class="flex items-center gap-1 text-terminal-400 hover:text-accent-light dark:hover:text-accent transition-colors no-underline"
         >
-          [thumbs: {Map.get(@reactions, "hand-thumb-up", 0)}]
+          <.icon name={@hand_thumb_up} class="w-5 h-5" />
+          <span>{Map.get(@reactions, "hand-thumb-up", 0)}</span>
         </.link>
       </div>
       
@@ -594,7 +597,7 @@ defmodule TrWeb.PostLive do
           href="https://buymeacoffee.com/kainlite"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 px-4 py-2 bg-accent-light dark:bg-accent text-white dark:text-terminal-900 font-mono font-semibold rounded-none hover:bg-accent-dark dark:hover:bg-accent-muted transition-colors"
+          class="inline-flex items-center gap-2 px-4 py-2 bg-accent-light dark:bg-accent text-white dark:!text-terminal-900 font-mono font-semibold rounded-none hover:bg-accent-dark dark:hover:bg-accent-muted transition-colors"
         >
           <svg class="w-5 h-5" viewBox="0 0 884 1279" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
