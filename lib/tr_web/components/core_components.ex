@@ -54,7 +54,7 @@ defmodule TrWeb.CoreComponents do
     >
       <div
         id={"#{@id}-bg"}
-        class="fixed inset-0 bg-zinc-50/90 dark:bg-surface-950/90 transition-opacity"
+        class="fixed inset-0 bg-zinc-50/90 dark:bg-terminal-950/90 transition-opacity"
         aria-hidden="true"
       />
       <div
@@ -73,7 +73,7 @@ defmodule TrWeb.CoreComponents do
               phx-window-keydown={hide_modal(@on_cancel, @id)}
               phx-key="escape"
               phx-click-away={hide_modal(@on_cancel, @id)}
-              class="hidden relative rounded-2xl bg-white dark:bg-surface-800 dark:text-zinc-200 p-14 shadow-lg shadow-zinc-700/10 ring-1 ring-zinc-700/10 dark:ring-surface-600 transition"
+              class="hidden relative rounded-none bg-terminal-50 dark:bg-terminal-800 dark:text-zinc-200 p-14 border border-terminal-300 dark:border-terminal-600 transition"
             >
               <div class="absolute top-6 right-5">
                 <button
@@ -156,7 +156,7 @@ defmodule TrWeb.CoreComponents do
       phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> hide("##{@id}")}
       role="alert"
       class={[
-        "fixed hidden top-2 right-2 w-80 sm:w-96 z-50 rounded-lg p-3 shadow-md shadow-zinc-900/5 ring-1",
+        "fixed hidden top-2 right-2 w-80 sm:w-96 z-50 rounded-none p-3 ring-1",
         @kind == :info &&
           "bg-emerald-50 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-200 ring-emerald-500 dark:ring-emerald-700 fill-cyan-900",
         @kind == :error &&
@@ -239,7 +239,7 @@ defmodule TrWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="space-y-8 bg-white dark:bg-zinc-900 dark:text-white  mt-10">
+      <div class="space-y-8 bg-terminal-50 dark:bg-terminal-900 dark:text-white mt-10">
         {render_slot(@inner_block, f)}
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
           {render_slot(action, f)}
@@ -268,8 +268,8 @@ defmodule TrWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-brand-500 hover:bg-brand-600 py-2 px-3",
-        "text-sm font-semibold leading-6 text-white active:text-white/80",
+        "phx-submit-loading:opacity-75 rounded-none bg-accent-light dark:bg-accent hover:bg-accent-dark dark:hover:bg-accent-muted py-2 px-3",
+        "text-sm font-mono font-semibold leading-6 text-white dark:text-terminal-900 active:text-white/80",
         "transition-all duration-200 hover:shadow-glow-sm",
         @class
       ]}
@@ -337,7 +337,7 @@ defmodule TrWeb.CoreComponents do
           name={@name}
           value="true"
           checked={@checked}
-          class="rounded border-zinc-300 text-zinc-900 focus:ring-zinc-900 mb-[3px]"
+          class="rounded-none border-terminal-300 dark:border-terminal-600 text-accent-light dark:text-accent focus:ring-accent/20 mb-[3px]"
           {@rest}
         />
         {@label}
@@ -354,7 +354,7 @@ defmodule TrWeb.CoreComponents do
       <select
         id={@id}
         name={@name}
-        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white dark:bg-zinc-900 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-zinc-500 focus:border-zinc-500 sm:text-sm"
+        class="mt-1 block w-full py-2 px-3 border border-terminal-300 dark:border-terminal-600 bg-white dark:bg-terminal-900 dark:text-white rounded-none focus:outline-none focus:ring-accent/20 focus:border-accent-light dark:focus:border-accent sm:text-sm font-mono"
         multiple={@multiple}
         {@rest}
       >
@@ -374,10 +374,10 @@ defmodule TrWeb.CoreComponents do
         id={@id || @name}
         name={@name}
         class={[
-          "mt-2 block min-h-[6rem] w-full rounded-lg border-zinc-300 py-[7px] px-[11px] dark:bg-zinc-800 dark:text-white",
-          "text-zinc-900 focus:border-zinc-400 focus:outline-none focus:ring-4 focus:ring-zinc-800/5 sm:text-sm sm:leading-6",
-          "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 phx-no-feedback:focus:ring-zinc-800/5",
-          "border-zinc-300 focus:border-zinc-400 focus:ring-zinc-800/5",
+          "mt-2 block min-h-[6rem] w-full rounded-none border-terminal-300 dark:border-terminal-600 py-[7px] px-[11px] dark:bg-terminal-900 dark:text-white font-mono",
+          "text-zinc-900 focus:border-accent-light dark:focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/10 sm:text-sm sm:leading-6",
+          "phx-no-feedback:border-terminal-300 phx-no-feedback:focus:border-accent-light phx-no-feedback:focus:ring-accent/10",
+          "border-terminal-300 focus:border-accent-light focus:ring-accent/10",
           @errors != [] && "border-rose-400 focus:border-rose-400 focus:ring-rose-400/10"
         ]}
         {@rest}
@@ -397,10 +397,10 @@ defmodule TrWeb.CoreComponents do
         id={@id || @name}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
-          "mt-2 block w-full rounded-lg border-zinc-300 py-[7px] px-[11px]",
-          "text-zinc-900 focus:outline-none focus:ring-4 sm:text-sm sm:leading-6 dark:text-gray-200",
-          "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 phx-no-feedback:focus:ring-zinc-800/5",
-          "border-zinc-300 focus:border-zinc-400 focus:ring-zinc-800/5",
+          "mt-2 block w-full rounded-none border-terminal-300 dark:border-terminal-600 py-[7px] px-[11px] font-mono",
+          "text-zinc-900 dark:text-gray-200 focus:outline-none focus:ring-4 focus:ring-accent/10 focus:border-accent-light dark:focus:border-accent sm:text-sm sm:leading-6",
+          "phx-no-feedback:border-terminal-300 phx-no-feedback:focus:border-accent-light phx-no-feedback:focus:ring-accent/10",
+          "border-terminal-300 focus:border-accent-light focus:ring-accent/10",
           @errors != [] && "border-rose-400 focus:border-rose-400 focus:ring-rose-400/10"
         ]}
         {@rest}
@@ -420,7 +420,7 @@ defmodule TrWeb.CoreComponents do
     ~H"""
     <label
       for={@for}
-      class="block text-sm font-semibold leading-6 text-zinc-800 dark:bg-zinc-900 dark:text-white"
+      class="block text-sm font-semibold leading-6 text-zinc-800 dark:bg-terminal-900 dark:text-white font-mono"
     >
       {render_slot(@inner_block)}
     </label>
@@ -454,7 +454,7 @@ defmodule TrWeb.CoreComponents do
     ~H"""
     <header class={[@actions != [] && "flex items-center justify-between gap-6", @class]}>
       <div>
-        <h1 class="text-lg font-semibold leading-8 text-zinc-800 dark:text-zinc-100">
+        <h1 class="text-lg font-semibold leading-8 text-terminal-500 dark:text-terminal-50 font-mono">
           {render_slot(@inner_block)}
         </h1>
         <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
@@ -514,7 +514,7 @@ defmodule TrWeb.CoreComponents do
           <tr
             :for={row <- @rows}
             id={@row_id && @row_id.(row)}
-            class="group hover:bg-zinc-50 dark:hover:bg-surface-700"
+            class="group hover:bg-terminal-100 dark:hover:bg-terminal-700"
           >
             <td
               :for={{col, i} <- Enum.with_index(@col)}
@@ -522,7 +522,7 @@ defmodule TrWeb.CoreComponents do
               class={["relative p-0", @row_click && "hover:cursor-pointer"]}
             >
               <div class="block py-4 pr-6">
-                <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-50 dark:group-hover:bg-surface-700 sm:rounded-l-xl" />
+                <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-terminal-100 dark:group-hover:bg-terminal-700 sm:rounded-l-xl" />
                 <span class={["relative", i == 0 && "font-semibold text-zinc-900 dark:text-zinc-100"]}>
                   {render_slot(col, @row_item.(row))}
                 </span>
@@ -530,10 +530,10 @@ defmodule TrWeb.CoreComponents do
             </td>
             <td :if={@action != []} class="relative p-0 w-14">
               <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
-                <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50 dark:group-hover:bg-surface-700 sm:rounded-r-xl" />
+                <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-terminal-100 dark:group-hover:bg-terminal-700 sm:rounded-r-xl" />
                 <span
                   :for={action <- @action}
-                  class="relative ml-4 font-semibold leading-6 text-zinc-900 dark:text-zinc-100 hover:text-zinc-700 dark:hover:text-brand-400"
+                  class="relative ml-4 font-semibold leading-6 text-zinc-900 dark:text-zinc-100 hover:text-zinc-700 dark:hover:text-accent"
                 >
                   {render_slot(action, @row_item.(row))}
                 </span>
