@@ -9,6 +9,12 @@ defmodule Tr.Application do
   def start(_type, _args) do
     topologies = Application.get_env(:libcluster, :topologies, [])
 
+    # OpenTelemetry auto-instrumentation
+    OpentelemetryBandit.setup()
+    OpentelemetryPhoenix.setup(adapter: :bandit)
+    OpentelemetryEcto.setup([:tr, :repo])
+    OpentelemetryFinch.setup()
+
     children = [
       # Start the Cluster supervisor for libcluster
       {Cluster.Supervisor, [topologies, [name: Tr.ClusterSupervisor]]},

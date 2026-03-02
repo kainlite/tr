@@ -25,7 +25,7 @@ defmodule TrWeb.PostComponent do
     <div id={@post.id} class="border-b border-terminal-300 dark:border-terminal-600 py-4">
       <div class="flex items-start justify-between gap-4">
         <div class="flex-1 min-w-0">
-          <h2 class="text-lg font-bold font-mono truncate">
+          <h2 class="text-lg font-bold font-mono break-words">
             <.link
               navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{@post.id}"}
               class="text-zinc-900 dark:text-zinc-100 hover:text-accent-light dark:hover:text-accent transition-colors no-underline"

@@ -128,4 +128,11 @@ if config_env() == :prod do
   # Cross-posting configuration (optional — gracefully degrades if not set)
   # LinkedIn: LINKEDIN_ACCESS_TOKEN, LINKEDIN_PERSON_URN
   # Substack: SUBSTACK_SUBDOMAIN, SUBSTACK_SESSION_COOKIE
+
+  # OpenTelemetry OTLP exporter
+  config :opentelemetry_exporter,
+    otlp_protocol: :grpc,
+    otlp_endpoint:
+      System.get_env("OTEL_EXPORTER_OTLP_ENDPOINT") ||
+        "http://tempo.monitoring.svc.cluster.local:4317"
 end

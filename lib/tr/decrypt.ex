@@ -7,6 +7,7 @@ defmodule Tr.Decrypt do
 
   alias Tr.Blog
   alias Tr.CryptUtils
+  alias Tr.Telemetry.Spans
 
   defp load_app do
     Application.load(@app)
@@ -18,9 +19,11 @@ defmodule Tr.Decrypt do
   end
 
   def start() do
-    start_app()
+    Spans.trace("decrypt.start", %{}, fn ->
+      start_app()
 
-    Enum.each(["en", "es"], fn locale -> get_and_decrypt_all_posts(locale) end)
+      Enum.each(["en", "es"], fn locale -> get_and_decrypt_all_posts(locale) end)
+    end)
   end
 
   defp get_and_decrypt_all_posts(locale) do

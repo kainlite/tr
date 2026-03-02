@@ -7,6 +7,7 @@ defmodule Tr.SponsorsCache do
   alias Tr.Repo
 
   alias Tr.Sponsors.Cache
+  alias Tr.Telemetry.Spans
 
   @doc """
   Updates sponsors cache.
@@ -18,21 +19,23 @@ defmodule Tr.SponsorsCache do
 
   """
   def add_or_update(sponsor) do
-    user = Repo.get_by(Cache, github_username: sponsor.login)
+    Spans.trace("sponsors_cache.add_or_update", %{}, fn ->
+      user = Repo.get_by(Cache, github_username: sponsor.login)
 
-    if is_nil(user) do
-      {:ok, user} =
-        register_sponsor(%{
-          github_username: sponsor.github_username,
-          first_seen: NaiveDateTime.utc_now(),
-          last_seen: NaiveDateTime.utc_now(),
-          amount: 10
-        })
+      if is_nil(user) do
+        {:ok, user} =
+          register_sponsor(%{
+            github_username: sponsor.github_username,
+            first_seen: NaiveDateTime.utc_now(),
+            last_seen: NaiveDateTime.utc_now(),
+            amount: 10
+          })
 
-      user
-    else
-      user
-    end
+        user
+      else
+        user
+      end
+    end)
   end
 
   @doc """
@@ -44,9 +47,11 @@ defmodule Tr.SponsorsCache do
       {:ok, %Sponsor{}}
   """
   def register_sponsor(attrs) do
-    %Cache{}
-    |> Cache.changeset(attrs)
-    |> Repo.insert()
+    Spans.trace("sponsors_cache.register", %{}, fn ->
+      %Cache{}
+      |> Cache.changeset(attrs)
+      |> Repo.insert()
+    end)
   end
 
   @doc """
@@ -57,14 +62,16 @@ defmodule Tr.SponsorsCache do
       iex> sponsor?(github_username)
       true
   """
-  def sponsor?(github_username) when not is_nil(github_username) do
-    sponsor = Repo.get_by(Cache, github_username: github_username)
+  def sponsor?(username) when not is_nil(username) do
+    Spans.trace("sponsors_cache.check", %{"github.username" => username || ""}, fn ->
+      sponsor = Repo.get_by(Cache, github_username: username)
 
-    if sponsor do
-      true
-    else
-      false
-    end
+      if sponsor do
+        true
+      else
+        false
+      end
+    end)
   end
 
   def sponsor?(_github_username), do: false

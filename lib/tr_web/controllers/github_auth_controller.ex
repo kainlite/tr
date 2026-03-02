@@ -1,20 +1,24 @@
 defmodule TrWeb.GithubAuthController do
   use TrWeb, :controller
 
+  alias Tr.Telemetry.Spans
+
   @doc """
   `index/2` handles the callback from Google Auth API redirect.
   """
   def index(conn, %{"code" => code}) do
-    {:ok, profile} = ElixirAuthGithub.github_auth(code)
+    Spans.trace("auth.github_callback", %{}, fn ->
+      {:ok, profile} = ElixirAuthGithub.github_auth(code)
 
-    if profile.email do
-      conn
-      |> TrWeb.UserAuth.log_in_github_user(profile)
-      |> redirect(to: ~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog", profile: profile)
-    else
-      conn
-      |> put_flash(:error, gettext("Email not verified"))
-    end
+      if profile.email do
+        conn
+        |> TrWeb.UserAuth.log_in_github_user(profile)
+        |> redirect(to: ~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog", profile: profile)
+      else
+        conn
+        |> put_flash(:error, gettext("Email not verified"))
+      end
+    end)
   end
 
   def index(conn, params) do

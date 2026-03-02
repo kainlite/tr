@@ -5,6 +5,7 @@ defmodule Tr.Search do
 
   alias Haystack.Index
   alias Haystack.Storage
+  alias Tr.Telemetry.Spans
 
   @doc """
   Return the Haystack.
@@ -30,25 +31,31 @@ defmodule Tr.Search do
   Load the storage.
   """
   def load do
-    Task.Supervisor.start_child(Tr.TaskSupervisor, fn ->
-      Haystack.index(haystack(), :posts, fn index ->
-        Tr.Blog.posts(Gettext.get_locale(TrWeb.Gettext))
-        |> Stream.map(&Map.take(&1, ~w{id description body}a))
-        |> Enum.each(&Haystack.Index.add(index, [&1]))
+    Spans.trace("search.index_load", %{}, fn ->
+      Task.Supervisor.start_child(Tr.TaskSupervisor, &do_index_load/0)
 
-        index
-      end)
+      []
     end)
+  end
 
-    []
+  defp do_index_load do
+    Haystack.index(haystack(), :posts, fn index ->
+      Tr.Blog.posts(Gettext.get_locale(TrWeb.Gettext))
+      |> Stream.map(&Map.take(&1, ~w{id description body}a))
+      |> Enum.each(&Haystack.Index.add(index, [&1]))
+
+      index
+    end)
   end
 
   @doc """
   Perform a search.
   """
   def search(q) do
-    Haystack.index(haystack(), :posts, fn index ->
-      Index.search(index, q)
+    Spans.trace("search.query", %{"search.term" => q}, fn ->
+      Haystack.index(haystack(), :posts, fn index ->
+        Index.search(index, q)
+      end)
     end)
   end
 

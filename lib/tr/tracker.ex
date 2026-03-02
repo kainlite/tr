@@ -9,6 +9,7 @@ defmodule Tr.Tracker do
   alias Tr.Repo
 
   alias Tr.PostTracker
+  alias Tr.Telemetry.Spans
 
   ## Database getters
   def get_post_by_slug(slug) when is_binary(slug) do
@@ -23,24 +24,28 @@ defmodule Tr.Tracker do
 
   ## Database setters
   def insert_post(attrs) do
-    %PostTracker{}
-    |> PostTracker.changeset(attrs)
-    |> Repo.insert()
+    Spans.trace("tracker.insert_post", %{}, fn ->
+      %PostTracker{}
+      |> PostTracker.changeset(attrs)
+      |> Repo.insert()
+    end)
   end
 
   @dialyzer {:nowarn_function, update_post_status: 2}
   def update_post_status(post, attrs) do
-    changeset =
-      post
-      |> PostTracker.changeset(attrs)
+    Spans.trace("tracker.update_post_status", %{}, fn ->
+      changeset =
+        post
+        |> PostTracker.changeset(attrs)
 
-    Ecto.Multi.new()
-    |> Ecto.Multi.update(:post_tracker, changeset)
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{post_tracker: post_tracker}} -> {:ok, post_tracker}
-      {:error, :post_tracker, changeset, _} -> {:error, changeset}
-    end
+      Ecto.Multi.new()
+      |> Ecto.Multi.update(:post_tracker, changeset)
+      |> Repo.transaction()
+      |> case do
+        {:ok, %{post_tracker: post_tracker}} -> {:ok, post_tracker}
+        {:error, :post_tracker, changeset, _} -> {:error, changeset}
+      end
+    end)
   end
 
   defp load_app do
@@ -53,12 +58,14 @@ defmodule Tr.Tracker do
   end
 
   def start() do
-    start_app()
-    track_posts()
+    Spans.trace("tracker.start", %{}, fn ->
+      start_app()
+      track_posts()
 
-    if get_unannounced_posts() != [] do
-      announce_posts()
-    end
+      if get_unannounced_posts() != [] do
+        announce_posts()
+      end
+    end)
   end
 
   defp track_posts do

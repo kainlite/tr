@@ -2,6 +2,8 @@ defmodule Tr.Approver do
   @moduledoc """
   Basic task runner to approve comments if they pass sentiment analysis
   """
+  alias Tr.Telemetry.Spans
+
   @app :tr
 
   defp load_app do
@@ -17,20 +19,25 @@ defmodule Tr.Approver do
   If the llama agrees upon the sentiment then the comment can be automatically approved
   """
   def check_comment_sentiment(comment) do
-    ollama_sentiment = Tr.Ollama.send(comment.body)
+    Spans.trace("approver.check_sentiment", %{"comment.id" => comment.id}, fn ->
+      ollama_sentiment = Tr.Ollama.send(comment.body)
 
-    ollama_sentiment
+      ollama_sentiment
+    end)
   end
 
   def start do
-    start_app()
+    Spans.trace("approver.start", %{}, fn ->
+      start_app()
 
-    comments = Tr.Post.get_unapproved_comments()
-
-    Enum.each(comments, fn comment ->
-      if check_comment_sentiment(comment) do
-        Tr.Post.approve_comment(comment)
-      end
+      Tr.Post.get_unapproved_comments()
+      |> Enum.each(&maybe_approve/1)
     end)
+  end
+
+  defp maybe_approve(comment) do
+    if check_comment_sentiment(comment) do
+      Tr.Post.approve_comment(comment)
+    end
   end
 end

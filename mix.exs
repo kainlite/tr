@@ -94,6 +94,14 @@ defmodule Tr.MixProject do
       {:neuron, "~> 5.1.0"},
       {:cloak, "1.1.4"},
       {:peep, "~> 4.3"},
+      # OpenTelemetry
+      {:opentelemetry_api, "~> 1.4"},
+      {:opentelemetry, "~> 1.5"},
+      {:opentelemetry_exporter, "~> 1.8"},
+      {:opentelemetry_bandit, "~> 0.2"},
+      {:opentelemetry_phoenix, "~> 2.0"},
+      {:opentelemetry_ecto, "~> 1.2"},
+      {:opentelemetry_finch, "~> 0.2"},
       {:lazy_html, ">= 0.1.0", only: :test}
     ]
   end

@@ -94,6 +94,11 @@ config :libcluster,
     ]
   ]
 
+# OpenTelemetry - local dev exports to localhost
+config :opentelemetry_exporter,
+  otlp_protocol: :grpc,
+  otlp_endpoint: "http://localhost:4317"
+
 config :git_hooks,
   auto_install: true,
   verbose: true,

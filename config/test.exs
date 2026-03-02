@@ -50,3 +50,8 @@ config :wallaby,
 config :floki, :encode_raw_html, false
 
 config :tr, metrics_port: 9092
+
+# OpenTelemetry - disabled in tests
+config :opentelemetry,
+  traces_exporter: :none,
+  span_processor: :simple

@@ -86,6 +86,12 @@ config :tr, Tr.Scheduler,
 
 config :tr, metrics_port: 9091
 
+# OpenTelemetry
+config :opentelemetry,
+  resource: [service: [name: "tr", version: "0.1.0"]],
+  span_processor: :batch,
+  traces_exporter: :otlp
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

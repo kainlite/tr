@@ -9,6 +9,7 @@ defmodule Tr.CrossPoster do
   alias Tr.Repo
 
   alias Tr.CrossPostTracker
+  alias Tr.Telemetry.Spans
 
   def get_by_slug(slug) when is_binary(slug) do
     Repo.get_by(CrossPostTracker, slug: slug)
@@ -39,22 +40,26 @@ defmodule Tr.CrossPoster do
   end
 
   def insert_tracker(attrs) do
-    %CrossPostTracker{}
-    |> CrossPostTracker.changeset(attrs)
-    |> Repo.insert()
+    Spans.trace("cross_poster.insert_tracker", %{}, fn ->
+      %CrossPostTracker{}
+      |> CrossPostTracker.changeset(attrs)
+      |> Repo.insert()
+    end)
   end
 
   @dialyzer {:nowarn_function, update_tracker: 2}
   def update_tracker(tracker, attrs) do
-    changeset = CrossPostTracker.changeset(tracker, attrs)
+    Spans.trace("cross_poster.update_tracker", %{}, fn ->
+      changeset = CrossPostTracker.changeset(tracker, attrs)
 
-    Ecto.Multi.new()
-    |> Ecto.Multi.update(:cross_post_tracker, changeset)
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{cross_post_tracker: tracker}} -> {:ok, tracker}
-      {:error, :cross_post_tracker, changeset, _} -> {:error, changeset}
-    end
+      Ecto.Multi.new()
+      |> Ecto.Multi.update(:cross_post_tracker, changeset)
+      |> Repo.transaction()
+      |> case do
+        {:ok, %{cross_post_tracker: tracker}} -> {:ok, tracker}
+        {:error, :cross_post_tracker, changeset, _} -> {:error, changeset}
+      end
+    end)
   end
 
   defp load_app do
@@ -67,8 +72,10 @@ defmodule Tr.CrossPoster do
   end
 
   def start do
-    start_app()
-    track_posts()
+    Spans.trace("cross_poster.start", %{}, fn ->
+      start_app()
+      track_posts()
+    end)
   end
 
   defp track_posts do

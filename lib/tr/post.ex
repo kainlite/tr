@@ -8,6 +8,7 @@ defmodule Tr.Post do
 
   alias Tr.Post.Comment
   alias Tr.Post.Reaction
+  alias Tr.Telemetry.Spans
 
   def subscribe(slug) do
     channel = "post-" <> slug
@@ -32,9 +33,11 @@ defmodule Tr.Post do
       [%Comment{}, ...]
   """
   def get_comments_for_post(slug) do
-    query = from(Tr.Post.Comment, where: [slug: ^slug], order_by: [desc: :inserted_at])
-    comments = Repo.all(query)
-    Repo.preload(comments, :user)
+    Spans.trace("post.get_comments", %{"post.slug" => slug}, fn ->
+      query = from(Tr.Post.Comment, where: [slug: ^slug], order_by: [desc: :inserted_at])
+      comments = Repo.all(query)
+      Repo.preload(comments, :user)
+    end)
   end
 
   @doc """
@@ -117,14 +120,16 @@ defmodule Tr.Post do
       %{15 => [%Reaction{}, ...]}
   """
   def get_reactions(slug) do
-    query =
-      from p in Tr.Post.Reaction,
-        where: p.slug == ^slug
+    Spans.trace("post.get_reactions", %{"post.slug" => slug}, fn ->
+      query =
+        from p in Tr.Post.Reaction,
+          where: p.slug == ^slug
 
-    Repo.all(query)
-    |> Enum.group_by(& &1.value)
-    |> Enum.map(fn {k, v} -> {k, Enum.count(v)} end)
-    |> Enum.into(%{})
+      Repo.all(query)
+      |> Enum.group_by(& &1.value)
+      |> Enum.map(fn {k, v} -> {k, Enum.count(v)} end)
+      |> Enum.into(%{})
+    end)
   end
 
   @doc """
@@ -164,12 +169,14 @@ defmodule Tr.Post do
 
   """
   def get_unapproved_comments do
-    query =
-      from p in Tr.Post.Comment,
-        where: not p.approved
+    Spans.trace("post.get_unapproved_comments", %{}, fn ->
+      query =
+        from p in Tr.Post.Comment,
+          where: not p.approved
 
-    comments = Repo.all(query)
-    Repo.preload(comments, :user)
+      comments = Repo.all(query)
+      Repo.preload(comments, :user)
+    end)
   end
 
   @doc """
@@ -218,10 +225,16 @@ defmodule Tr.Post do
 
   """
   def create_comment(attrs \\ %{}) do
-    %Comment{}
-    |> Comment.changeset(attrs)
-    |> Repo.insert()
-    |> broadcast(:comment_created)
+    Spans.trace(
+      "post.create_comment",
+      %{"comment.slug" => attrs["slug"] || attrs[:slug] || ""},
+      fn ->
+        %Comment{}
+        |> Comment.changeset(attrs)
+        |> Repo.insert()
+        |> broadcast(:comment_created)
+      end
+    )
   end
 
   @doc """
@@ -237,10 +250,12 @@ defmodule Tr.Post do
 
   """
   def create_reaction(attrs \\ %{}) do
-    %Reaction{}
-    |> Reaction.changeset(attrs)
-    |> Repo.insert()
-    |> broadcast(:reaction_created)
+    Spans.trace("post.create_reaction", %{}, fn ->
+      %Reaction{}
+      |> Reaction.changeset(attrs)
+      |> Repo.insert()
+      |> broadcast(:reaction_created)
+    end)
   end
 
   @doc """
@@ -274,7 +289,9 @@ defmodule Tr.Post do
 
   """
   def delete_comment(%Comment{} = comment) do
-    Repo.delete(comment)
+    Spans.trace("post.delete_comment", %{"comment.id" => comment.id}, fn ->
+      Repo.delete(comment)
+    end)
   end
 
   @doc """
@@ -290,8 +307,10 @@ defmodule Tr.Post do
 
   """
   def delete_reaction(%Reaction{} = reaction) do
-    Repo.delete(reaction)
-    |> broadcast(:reaction_deleted)
+    Spans.trace("post.delete_reaction", %{}, fn ->
+      Repo.delete(reaction)
+      |> broadcast(:reaction_deleted)
+    end)
   end
 
   @doc """
@@ -307,7 +326,9 @@ defmodule Tr.Post do
 
   """
   def approve_comment(%Comment{} = comment) do
-    update_comment(comment, %{approved: true})
+    Spans.trace("post.approve_comment", %{"comment.id" => comment.id}, fn ->
+      update_comment(comment, %{approved: true})
+    end)
   end
 
   @doc """

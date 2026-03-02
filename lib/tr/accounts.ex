@@ -7,6 +7,7 @@ defmodule Tr.Accounts do
   alias Tr.Repo
 
   alias Tr.Accounts.{User, UserToken, UserNotifier}
+  alias Tr.Telemetry.Spans
 
   ## Database getters
 
@@ -52,30 +53,32 @@ defmodule Tr.Accounts do
 
   """
   def get_user_by_email_or_create(email) when is_binary(email) do
-    user = Repo.get_by(User, email: email)
+    Spans.trace("accounts.get_or_create_user", %{}, fn ->
+      user = Repo.get_by(User, email: email)
 
-    if is_nil(user) do
-      random_password = :crypto.strong_rand_bytes(16)
-      faker = Faker.Superhero
+      if is_nil(user) do
+        random_password = :crypto.strong_rand_bytes(16)
+        faker = Faker.Superhero
 
-      name = faker.prefix() <> " " <> faker.name() <> " " <> faker.suffix()
+        name = faker.prefix() <> " " <> faker.name() <> " " <> faker.suffix()
 
-      avatar = Faker.Avatar.image_url()
+        avatar = Faker.Avatar.image_url()
 
-      {:ok, user} =
-        register_google_user(%{
-          email: email,
-          password: random_password,
-          password_confirmation: random_password,
-          confirmed_at: NaiveDateTime.utc_now(),
-          display_name: name,
-          avatar_url: avatar
-        })
+        {:ok, user} =
+          register_google_user(%{
+            email: email,
+            password: random_password,
+            password_confirmation: random_password,
+            confirmed_at: NaiveDateTime.utc_now(),
+            display_name: name,
+            avatar_url: avatar
+          })
 
-      user
-    else
-      user
-    end
+        user
+      else
+        user
+      end
+    end)
   end
 
   @doc """
@@ -92,13 +95,15 @@ defmodule Tr.Accounts do
   """
   def get_user_by_email_and_password(email, password)
       when is_binary(email) and is_binary(password) do
-    user = Repo.get_by(User, email: email)
+    Spans.trace("accounts.authenticate", %{}, fn ->
+      user = Repo.get_by(User, email: email)
 
-    cond do
-      !User.valid_password?(user, password) -> {:error, :bad_username_or_password}
-      !User.confirmed?(user) -> {:error, :not_confirmed}
-      true -> {:ok, user}
-    end
+      cond do
+        !User.valid_password?(user, password) -> {:error, :bad_username_or_password}
+        !User.confirmed?(user) -> {:error, :not_confirmed}
+        true -> {:ok, user}
+      end
+    end)
   end
 
   @doc """
@@ -193,9 +198,11 @@ defmodule Tr.Accounts do
 
   """
   def register_user(attrs) do
-    %User{}
-    |> User.registration_changeset(attrs)
-    |> Repo.insert()
+    Spans.trace("accounts.register_user", %{}, fn ->
+      %User{}
+      |> User.registration_changeset(attrs)
+      |> Repo.insert()
+    end)
   end
 
   @doc """
@@ -211,9 +218,11 @@ defmodule Tr.Accounts do
 
   """
   def register_google_user(attrs) do
-    %User{}
-    |> User.google_registration_changeset(attrs)
-    |> Repo.insert()
+    Spans.trace("accounts.register_google_user", %{}, fn ->
+      %User{}
+      |> User.google_registration_changeset(attrs)
+      |> Repo.insert()
+    end)
   end
 
   @doc """
@@ -229,9 +238,11 @@ defmodule Tr.Accounts do
 
   """
   def register_admin(attrs) do
-    %User{}
-    |> User.admin_registration_changeset(attrs)
-    |> Repo.insert()
+    Spans.trace("accounts.register_admin", %{}, fn ->
+      %User{}
+      |> User.admin_registration_changeset(attrs)
+      |> Repo.insert()
+    end)
   end
 
   @doc """
@@ -276,10 +287,12 @@ defmodule Tr.Accounts do
 
   """
   def apply_user_email(user, password, attrs) do
-    user
-    |> User.email_changeset(attrs)
-    |> User.validate_current_password(password)
-    |> Ecto.Changeset.apply_action(:update)
+    Spans.trace("accounts.apply_user_email", %{}, fn ->
+      user
+      |> User.email_changeset(attrs)
+      |> User.validate_current_password(password)
+      |> Ecto.Changeset.apply_action(:update)
+    end)
   end
 
   def apply_user_display_name(user, attrs) do
@@ -301,15 +314,17 @@ defmodule Tr.Accounts do
   The confirmed_at date is also updated to the current time.
   """
   def update_user_email(user, token) do
-    context = "change:#{user.email}"
+    Spans.trace("accounts.update_user_email", %{}, fn ->
+      context = "change:#{user.email}"
 
-    with {:ok, query} <- UserToken.verify_change_email_token_query(token, context),
-         %UserToken{sent_to: email} <- Repo.one(query),
-         {:ok, _user} <- update_user_email_and_delete_tokens(user, email, context) do
-      :ok
-    else
-      _ -> :error
-    end
+      with {:ok, query} <- UserToken.verify_change_email_token_query(token, context),
+           %UserToken{sent_to: email} <- Repo.one(query),
+           {:ok, _user} <- update_user_email_and_delete_tokens(user, email, context) do
+        :ok
+      else
+        _ -> :error
+      end
+    end)
   end
 
   defp update_user_email_and_delete_tokens(user, email, context) do
@@ -343,10 +358,12 @@ defmodule Tr.Accounts do
   """
   def deliver_user_update_email_instructions(%User{} = user, current_email, update_email_url_fun)
       when is_function(update_email_url_fun, 1) do
-    {encoded_token, user_token} = UserToken.build_email_token(user, "change:#{current_email}")
+    Spans.trace("accounts.deliver_update_email", %{}, fn ->
+      {encoded_token, user_token} = UserToken.build_email_token(user, "change:#{current_email}")
 
-    Repo.insert!(user_token)
-    UserNotifier.deliver_update_email_instructions(user, update_email_url_fun.(encoded_token))
+      Repo.insert!(user_token)
+      UserNotifier.deliver_update_email_instructions(user, update_email_url_fun.(encoded_token))
+    end)
   end
 
   @doc """
@@ -375,23 +392,27 @@ defmodule Tr.Accounts do
 
   """
   def update_user_password(user, password, attrs) do
-    changeset =
-      user
-      |> User.password_changeset(attrs)
-      |> User.validate_current_password(password)
+    Spans.trace("accounts.update_user_password", %{}, fn ->
+      changeset =
+        user
+        |> User.password_changeset(attrs)
+        |> User.validate_current_password(password)
 
-    Repo.transaction(fn ->
-      case Repo.update(changeset) do
-        {:ok, user} ->
-          UserToken.by_user_and_contexts_query(user, :all)
-          |> Repo.delete_all()
-
-          user
-
-        {:error, changeset} ->
-          Repo.rollback(changeset)
-      end
+      Repo.transaction(fn -> do_update_password(changeset) end)
     end)
+  end
+
+  defp do_update_password(changeset) do
+    case Repo.update(changeset) do
+      {:ok, user} ->
+        UserToken.by_user_and_contexts_query(user, :all)
+        |> Repo.delete_all()
+
+        user
+
+      {:error, changeset} ->
+        Repo.rollback(changeset)
+    end
   end
 
   @doc """
@@ -454,9 +475,11 @@ defmodule Tr.Accounts do
   Generates a session token.
   """
   def generate_user_session_token(user) do
-    {token, user_token} = UserToken.build_session_token(user)
-    Repo.insert!(user_token)
-    token
+    Spans.trace("accounts.generate_session_token", %{}, fn ->
+      {token, user_token} = UserToken.build_session_token(user)
+      Repo.insert!(user_token)
+      token
+    end)
   end
 
   @doc """
@@ -471,8 +494,10 @@ defmodule Tr.Accounts do
   Deletes the signed token with the given context.
   """
   def delete_user_session_token(token) do
-    Repo.delete_all(UserToken.by_token_and_context_query(token, "session"))
-    :ok
+    Spans.trace("accounts.delete_session_token", %{}, fn ->
+      Repo.delete_all(UserToken.by_token_and_context_query(token, "session"))
+      :ok
+    end)
   end
 
   ## Confirmation
@@ -491,13 +516,15 @@ defmodule Tr.Accounts do
   """
   def deliver_user_confirmation_instructions(%User{} = user, confirmation_url_fun)
       when is_function(confirmation_url_fun, 1) do
-    if user.confirmed_at do
-      {:error, :already_confirmed}
-    else
-      {encoded_token, user_token} = UserToken.build_email_token(user, "confirm")
-      Repo.insert!(user_token)
-      UserNotifier.deliver_confirmation_instructions(user, confirmation_url_fun.(encoded_token))
-    end
+    Spans.trace("accounts.deliver_confirmation_email", %{}, fn ->
+      if user.confirmed_at do
+        {:error, :already_confirmed}
+      else
+        {encoded_token, user_token} = UserToken.build_email_token(user, "confirm")
+        Repo.insert!(user_token)
+        UserNotifier.deliver_confirmation_instructions(user, confirmation_url_fun.(encoded_token))
+      end
+    end)
   end
 
   @doc """
@@ -507,13 +534,15 @@ defmodule Tr.Accounts do
   and the token is deleted.
   """
   def confirm_user(token) do
-    with {:ok, query} <- UserToken.verify_email_token_query(token, "confirm"),
-         %User{} = user <- Repo.one(query),
-         {:ok, %{user: user}} <- Repo.transaction(confirm_user_multi(user)) do
-      {:ok, user}
-    else
-      _ -> :error
-    end
+    Spans.trace("accounts.confirm_user", %{}, fn ->
+      with {:ok, query} <- UserToken.verify_email_token_query(token, "confirm"),
+           %User{} = user <- Repo.one(query),
+           {:ok, %{user: user}} <- Repo.transaction(confirm_user_multi(user)) do
+        {:ok, user}
+      else
+        _ -> :error
+      end
+    end)
   end
 
   @dialyzer {:nowarn_function, confirm_user_multi: 1}
@@ -536,9 +565,15 @@ defmodule Tr.Accounts do
   """
   def deliver_user_reset_password_instructions(%User{} = user, reset_password_url_fun)
       when is_function(reset_password_url_fun, 1) do
-    {encoded_token, user_token} = UserToken.build_email_token(user, "reset_password")
-    Repo.insert!(user_token)
-    UserNotifier.deliver_reset_password_instructions(user, reset_password_url_fun.(encoded_token))
+    Spans.trace("accounts.deliver_reset_password_email", %{}, fn ->
+      {encoded_token, user_token} = UserToken.build_email_token(user, "reset_password")
+      Repo.insert!(user_token)
+
+      UserNotifier.deliver_reset_password_instructions(
+        user,
+        reset_password_url_fun.(encoded_token)
+      )
+    end)
   end
 
   @doc """
@@ -576,13 +611,15 @@ defmodule Tr.Accounts do
   """
   @dialyzer {:nowarn_function, reset_user_password: 2}
   def reset_user_password(user, attrs) do
-    Ecto.Multi.new()
-    |> Ecto.Multi.update(:user, User.password_changeset(user, attrs))
-    |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, :all))
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{user: user}} -> {:ok, user}
-      {:error, :user, changeset, _} -> {:error, changeset}
-    end
+    Spans.trace("accounts.reset_password", %{}, fn ->
+      Ecto.Multi.new()
+      |> Ecto.Multi.update(:user, User.password_changeset(user, attrs))
+      |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, :all))
+      |> Repo.transaction()
+      |> case do
+        {:ok, %{user: user}} -> {:ok, user}
+        {:error, :user, changeset, _} -> {:error, changeset}
+      end
+    end)
   end
 end

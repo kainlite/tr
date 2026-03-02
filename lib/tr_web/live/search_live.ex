@@ -16,7 +16,7 @@ defmodule TrWeb.SearchLive do
       <div class="font-mono text-accent-light dark:text-accent mb-4">$ search</div>
       <.form :let={f} for={%{}} as={:search} phx-change="search" phx-submit="search" id="search_form">
         <div class="flex items-center gap-2 border border-terminal-300 dark:border-terminal-600 bg-terminal-100 dark:bg-terminal-800 px-4 py-3">
-          <span class="font-mono text-accent-light dark:text-accent">></span>
+          <span class="font-mono text-lg text-accent-light dark:text-accent">></span>
           <input
             type="text"
             name={f[:q].name}

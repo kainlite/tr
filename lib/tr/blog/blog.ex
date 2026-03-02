@@ -35,6 +35,7 @@ defmodule Tr.Blog do
     This module is responsible for managing the blog posts
   """
   alias Tr.Blog.Post
+  alias Tr.Telemetry.Spans
 
   use NimblePublisher,
     build: Post,
@@ -83,12 +84,16 @@ defmodule Tr.Blog do
   defmodule NotFoundError, do: defexception([:message, plug_status: 404])
 
   def get_post_by_id!(id) do
-    Enum.find(all_posts(), &(&1.id == id)) ||
-      raise NotFoundError, "post with id=#{id} not found"
+    Spans.trace("blog.get_post", %{"post.id" => id}, fn ->
+      Enum.find(all_posts(), &(&1.id == id)) ||
+        raise NotFoundError, "post with id=#{id} not found"
+    end)
   end
 
   def get_post_by_slug(slug) do
-    Enum.find(all_posts(), &(&1.id == slug)) || nil
+    Spans.trace("blog.get_post_by_slug", %{"post.slug" => slug}, fn ->
+      Enum.find(all_posts(), &(&1.id == slug)) || nil
+    end)
   end
 
   def get_posts_by_tag!(locale, tag) do
@@ -99,17 +104,23 @@ defmodule Tr.Blog do
   end
 
   def get_post_by_id!(locale, id) do
-    Enum.find(all_posts(), &(&1.id == id && &1.lang == locale)) ||
-      raise NotFoundError, "post with id=#{id} not found"
+    Spans.trace("blog.get_post", %{"post.id" => id, "locale" => locale}, fn ->
+      Enum.find(all_posts(), &(&1.id == id && &1.lang == locale)) ||
+        raise NotFoundError, "post with id=#{id} not found"
+    end)
   end
 
   def get_post_by_slug(locale, slug) do
-    Enum.find(all_posts(), &(&1.id == slug && &1.lang == locale)) || nil
+    Spans.trace("blog.get_post_by_slug", %{"post.slug" => slug, "locale" => locale}, fn ->
+      Enum.find(all_posts(), &(&1.id == slug && &1.lang == locale)) || nil
+    end)
   end
 
   def take(ids) do
-    Enum.map(ids, fn id ->
-      Enum.find(all_posts(), &(&1.id == id))
+    Spans.trace("blog.take", %{}, fn ->
+      Enum.map(ids, fn id ->
+        Enum.find(all_posts(), &(&1.id == id))
+      end)
     end)
   end
 
@@ -133,14 +144,16 @@ defmodule Tr.Blog do
   Excludes the given post itself.
   """
   def related_posts(post, locale, count \\ 3) do
-    posts(locale)
-    |> Enum.reject(&(&1.id == post.id))
-    |> Enum.map(fn p ->
-      overlap = length(post.tags -- (post.tags -- p.tags))
-      {p, overlap}
+    Spans.trace("blog.related_posts", %{"post.id" => post.id}, fn ->
+      posts(locale)
+      |> Enum.reject(&(&1.id == post.id))
+      |> Enum.map(fn p ->
+        overlap = length(post.tags -- (post.tags -- p.tags))
+        {p, overlap}
+      end)
+      |> Enum.sort_by(fn {_, overlap} -> overlap end, :desc)
+      |> Enum.take(count)
+      |> Enum.map(fn {p, _} -> p end)
     end)
-    |> Enum.sort_by(fn {_, overlap} -> overlap end, :desc)
-    |> Enum.take(count)
-    |> Enum.map(fn {p, _} -> p end)
   end
 end
