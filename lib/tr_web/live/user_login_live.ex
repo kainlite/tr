@@ -4,11 +4,15 @@ defmodule TrWeb.UserLoginLive do
   def render(assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
+      <div class="font-mono text-accent-light dark:text-accent mb-4">$ login --user</div>
       <.header class="text-center dark:text-zinc-100">
         {gettext("Sign in to account")}
         <:subtitle>
           {gettext("Don't have an account?")}
-          <.link navigate={~p"/users/register"} class="font-semibold text-brand hover:underline">
+          <.link
+            navigate={~p"/users/register"}
+            class="font-semibold text-accent-light dark:text-accent hover:underline"
+          >
             {gettext("Sign up")}
           </.link>
           {gettext("for an account now.")}

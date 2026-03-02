@@ -5,100 +5,107 @@ defmodule TrWeb.UserSettingsLive do
 
   def render(assigns) do
     ~H"""
-    <.header class="text-center dark:text-zinc-100">
-      {gettext("Account Settings")}
-      <:subtitle>{gettext("Manage your account email address and password settings")}</:subtitle>
-    </.header>
+    <div class="max-w-lg mx-auto">
+      <div class="font-mono text-accent-light dark:text-accent mb-4">$ settings --user</div>
+      <.header class="text-center dark:text-zinc-100">
+        {gettext("Account Settings")}
+        <:subtitle>{gettext("Manage your account email address and password settings")}</:subtitle>
+      </.header>
 
-    <div class="space-y-12 divide-y">
-      <div>
-        <.simple_form for={@display_name_form} id="display_name_form" phx-submit="update_display_name">
-          <.input
-            field={@email_form[:display_name]}
-            type="text"
-            label={gettext("Display Name")}
-            value={@current_user.display_name}
-            required
-          />
-          <:actions>
-            <.button phx-disable-with="Changing...">{gettext("Change display name")}</.button>
-          </:actions>
-        </.simple_form>
-      </div>
-      <div>
-        <.simple_form
-          for={@email_form}
-          id="email_form"
-          phx-submit="update_email"
-          phx-change="validate_email"
-        >
-          <.input field={@email_form[:email]} type="email" label="Email" required />
-          <.input
-            field={@email_form[:current_password]}
-            name="current_password"
-            id="current_password_for_email"
-            type="password"
-            label="Current password"
-            value={@email_form_current_password}
-            required
-          />
-          <:actions>
-            <.button phx-disable-with="Changing...">{gettext("Change Email")}</.button>
-          </:actions>
-        </.simple_form>
-      </div>
-      <div>
-        <.simple_form
-          for={@password_form}
-          id="password_form"
-          method="post"
-          phx-change="validate_password"
-          phx-submit="update_password"
-          phx-trigger-action={@trigger_submit}
-        >
-          <.input
-            field={@password_form[:email]}
-            type="hidden"
-            id="hidden_user_email"
-            value={@current_email}
-          />
-          <.input field={@password_form[:password]} type="password" label="New password" required />
-          <.input
-            field={@password_form[:password_confirmation]}
-            type="password"
-            label="Confirm new password"
-          />
-          <.input
-            field={@password_form[:current_password]}
-            name="current_password"
-            type="password"
-            label="Current password"
-            id="current_password_for_password"
-            value={@current_password}
-            required
-          />
-          <:actions>
-            <.button phx-disable-with="Changing...">{gettext("Change Password")}</.button>
-          </:actions>
-        </.simple_form>
-      </div>
-      <div>
-        <.simple_form
-          for={@accept_emails_form}
-          id="accept_emails_form"
-          phx-submit="update_accept_emails"
-          phx-trigger-action={@trigger_submit}
-        >
-          <.input
-            field={@accept_emails_form[:accept_emails_toggle]}
-            type="checkbox"
-            label="Accept Emails"
-            checked={@current_user.accept_emails}
-          />
-          <:actions>
-            <.button phx-disable-with="Changing...">{gettext("Change Accept Emails")}</.button>
-          </:actions>
-        </.simple_form>
+      <div class="space-y-8 divide-y divide-terminal-300 dark:divide-terminal-600">
+        <div>
+          <.simple_form
+            for={@display_name_form}
+            id="display_name_form"
+            phx-submit="update_display_name"
+          >
+            <.input
+              field={@email_form[:display_name]}
+              type="text"
+              label={gettext("Display Name")}
+              value={@current_user.display_name}
+              required
+            />
+            <:actions>
+              <.button phx-disable-with="Changing...">{gettext("Change display name")}</.button>
+            </:actions>
+          </.simple_form>
+        </div>
+        <div>
+          <.simple_form
+            for={@email_form}
+            id="email_form"
+            phx-submit="update_email"
+            phx-change="validate_email"
+          >
+            <.input field={@email_form[:email]} type="email" label="Email" required />
+            <.input
+              field={@email_form[:current_password]}
+              name="current_password"
+              id="current_password_for_email"
+              type="password"
+              label="Current password"
+              value={@email_form_current_password}
+              required
+            />
+            <:actions>
+              <.button phx-disable-with="Changing...">{gettext("Change Email")}</.button>
+            </:actions>
+          </.simple_form>
+        </div>
+        <div>
+          <.simple_form
+            for={@password_form}
+            id="password_form"
+            method="post"
+            phx-change="validate_password"
+            phx-submit="update_password"
+            phx-trigger-action={@trigger_submit}
+          >
+            <.input
+              field={@password_form[:email]}
+              type="hidden"
+              id="hidden_user_email"
+              value={@current_email}
+            />
+            <.input field={@password_form[:password]} type="password" label="New password" required />
+            <.input
+              field={@password_form[:password_confirmation]}
+              type="password"
+              label="Confirm new password"
+            />
+            <.input
+              field={@password_form[:current_password]}
+              name="current_password"
+              type="password"
+              label="Current password"
+              id="current_password_for_password"
+              value={@current_password}
+              required
+            />
+            <:actions>
+              <.button phx-disable-with="Changing...">{gettext("Change Password")}</.button>
+            </:actions>
+          </.simple_form>
+        </div>
+        <div>
+          <.simple_form
+            for={@accept_emails_form}
+            id="accept_emails_form"
+            phx-submit="update_accept_emails"
+            phx-trigger-action={@trigger_submit}
+          >
+            <.input
+              field={@accept_emails_form[:accept_emails_toggle]}
+              type="checkbox"
+              label="Accept Emails"
+              checked={@current_user.accept_emails}
+            />
+            <:actions>
+              <.button phx-disable-with="Changing...">{gettext("Change Accept Emails")}</.button>
+            </:actions>
+          </.simple_form>
+        </div>
       </div>
     </div>
     """

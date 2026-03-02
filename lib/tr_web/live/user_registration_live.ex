@@ -7,13 +7,14 @@ defmodule TrWeb.UserRegistrationLive do
   def render(assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
+      <div class="font-mono text-accent-light dark:text-accent mb-4">$ register --new-user</div>
       <.header class="text-center">
         {gettext("Register for an account")}
         <:subtitle>
           {gettext("Already registered?")}
           <.link
             navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/users/log_in"}
-            class="font-semibold text-brand hover:underline"
+            class="font-semibold text-accent-light dark:text-accent hover:underline"
           >
             {gettext("Sign in")}
           </.link>
