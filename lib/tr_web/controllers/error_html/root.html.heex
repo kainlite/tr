@@ -15,6 +15,12 @@
     <meta property="og:description" content={description} />
     <meta property="og:image" content={url(~p"/images/segfault.webp")} />
 
+    <link rel="icon" type="image/svg+xml" href={~p"/favicon.svg"} />
+    <link rel="icon" type="image/x-icon" href={~p"/favicon.ico"} />
+    <link rel="icon" type="image/png" sizes="32x32" href={~p"/favicon-32x32.png"} />
+    <link rel="icon" type="image/png" sizes="16x16" href={~p"/favicon-16x16.png"} />
+    <link rel="apple-touch-icon" sizes="180x180" href={~p"/apple-touch-icon.png"} />
+
     <.live_title>
       {assigns[:page_title] || "SegFault"}
     </.live_title>
@@ -24,14 +30,19 @@
   </head>
   <body class="bg-terminal-50 dark:bg-terminal-900 dark:text-white font-sans antialiased">
     <header class="dark:bg-terminal-900 dark:text-white">
-      <section class="">
-        <ul class="list-none float-left">
-          <li class="">
-            <.link navigate="/#{Gettext.get_locale(TrWeb.Gettext)}/" class="">
-              <img src={~p"/images/segfault.webp"} alt="SegFault logo" class="max-h-24 max-w-24" />
-            </.link>
-          </li>
-        </ul>
+      <section class="p-4">
+        <.link navigate="/#{Gettext.get_locale(TrWeb.Gettext)}/" class="no-underline inline-block">
+          <div class="logo-full">
+            <div class="logo-addr">0x0000DEAD</div>
+            <div class="logo-main">
+              <span class="logo-prompt">$</span><span class="logo-wordmark">segfault</span><span class="logo-cursor"></span>
+            </div>
+            <div class="logo-bottom">
+              <span class="logo-signal">SIGSEGV (11) -- core dumped</span>
+              <span class="logo-pw">.pw</span>
+            </div>
+          </div>
+        </.link>
       </section>
     </header>
 

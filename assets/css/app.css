@@ -56,6 +56,124 @@
     background-color: #1a1a1a;
     color: #00ff41;
   }
+
+  /* Logo styles */
+  .logo-compact,
+  .logo-full .logo-main {
+    display: flex;
+    align-items: baseline;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  .logo-prompt {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #71717a;
+    margin-right: 0.3em;
+  }
+
+  .dark .logo-prompt {
+    color: #71717a;
+  }
+
+  .logo-wordmark {
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: #3f3f46;
+    letter-spacing: -0.02em;
+  }
+
+  .dark .logo-wordmark {
+    color: #e4e4e7;
+  }
+
+  .logo-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.1rem;
+    background: #16a34a;
+    margin-left: 0.1em;
+    vertical-align: middle;
+    animation: logo-blink 1s step-end infinite;
+  }
+
+  .dark .logo-cursor {
+    background: #00ff41;
+  }
+
+  @keyframes logo-blink {
+    50% { opacity: 0; }
+  }
+
+  /* Full logo (error pages, etc) */
+  .logo-full {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  .logo-full .logo-wordmark {
+    font-size: 2rem;
+  }
+
+  .logo-full .logo-prompt {
+    font-size: 1.2rem;
+  }
+
+  .logo-full .logo-cursor {
+    width: 3px;
+    height: 1.6rem;
+  }
+
+  .logo-addr {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.6rem;
+    color: #16a34a;
+    letter-spacing: 0.12em;
+    opacity: 0.5;
+    margin-bottom: 0.15rem;
+    margin-left: 1.6em;
+  }
+
+  .dark .logo-addr {
+    color: #00ff41;
+    opacity: 0.45;
+  }
+
+  .logo-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+    margin-top: 0.15rem;
+    margin-left: 1.6em;
+    padding-right: 0.2em;
+  }
+
+  .logo-signal {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.6rem;
+    color: #d4d4d4;
+    letter-spacing: 0.08em;
+  }
+
+  .dark .logo-signal {
+    color: #2a2a2a;
+  }
+
+  .logo-pw {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #d4d4d4;
+    letter-spacing: 0.12em;
+    margin-left: 1rem;
+  }
+
+  .dark .logo-pw {
+    color: #2a2a2a;
+  }
 }
 @layer base {
   p,

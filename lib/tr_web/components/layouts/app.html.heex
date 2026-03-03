@@ -29,12 +29,11 @@
       <div class="p-4 border-b border-terminal-300 dark:border-terminal-600">
         <.link
           navigate={"/" <> Gettext.get_locale(TrWeb.Gettext)}
-          class="flex items-center gap-3 no-underline"
+          class="no-underline block"
         >
-          <img src={~p"/images/segfault.webp"} alt="segfault" class="w-8 h-8 rounded-full" />
-          <span class="font-mono text-sm text-accent-light dark:text-accent font-semibold">
-            SegFault
-          </span>
+          <div class="logo-compact">
+            <span class="logo-prompt">$</span><span class="logo-wordmark">segfault</span><span class="logo-cursor"></span>
+          </div>
         </.link>
       </div>
       
