@@ -46,3 +46,22 @@ tags
 
 .claude
 /docs
+
+# Sandbox artifacts (Claude Code)
+.bash_profile
+.bashrc
+.gitconfig
+.gitmodules
+.profile
+.ripgreprc
+.zprofile
+.zshrc
+HEAD
+hooks
+objects
+refs
+
+# IDE / editor
+.idea
+.vscode
+.mcp.json

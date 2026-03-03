@@ -1,6 +1,8 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import "./monokai.css";
+@import "./cookieconsent.css";
 
 @layer components {
   .card-tech {
@@ -55,9 +57,6 @@
     color: #00ff41;
   }
 }
-@import "monokai";
-@import "cookieconsent";
-
 @layer base {
   p,
   li {
