@@ -1,18 +1,15 @@
-<h3 class="font-bold">
-  {gettext(
-    "It seems we cannot find the page you are looking for, but please check out the following tags and latest
-  articles..."
-  )}
-</h3>
-<div class="mx-auto">
-  <ul class="list-none flex flex-row flex-wrap">
-    <%= for tag <- Tr.Blog.all_tags() do %>
-      {TrWeb.PostComponent.render_tag_card(%{tag: tag})}
-    <% end %>
-  </ul>
-</div>
-<div class="flex flex-row flex-wrap columns-3">
-  <%= for post <- Tr.Blog.recent_posts(7) do %>
-    {TrWeb.PostComponent.render_post_card(%{post: post})}
-  <% end %>
+<div class="text-center py-12">
+  <h1 class="text-4xl font-bold font-mono text-accent-light dark:text-accent mb-4">500</h1>
+  <h3 class="font-bold text-lg mb-6">
+    Something went wrong. Please try again later.
+  </h3>
+  <p class="text-terminal-400 font-mono text-sm mb-8">
+    The server encountered an internal error.
+  </p>
+  <a
+    href="/en/blog"
+    class="inline-block px-4 py-2 border border-accent-light dark:border-accent text-accent-light dark:text-accent font-mono hover:bg-accent-light hover:text-white dark:hover:bg-accent dark:hover:text-terminal-900 transition-colors"
+  >
+    Go to Blog
+  </a>
 </div>

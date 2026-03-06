@@ -45,6 +45,8 @@ defmodule TrWeb.PostLive do
       |> assign(:og_type, "article")
       |> assign(:og_tags, post.tags)
       |> assign(:og_date_published, Date.to_iso8601(post.date))
+      |> assign(:og_hreflang_en, TrWeb.Endpoint.url() <> "/en/blog/#{post.id}")
+      |> assign(:og_hreflang_es, TrWeb.Endpoint.url() <> "/es/blog/#{post.id}")
       |> assign(:reading_time, Blog.reading_time(post))
       |> assign(
         :related_posts,

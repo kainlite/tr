@@ -5,15 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
     <% description =
-      gettext(
-        "Welcome to SegFault blog! This page is dedicated to documenting and exploring various
-               technologies. Our blog is hosted on a k3s cluster in OCI, powered by Elixir and Phoenix. Dive in to
-               discover insights, tutorials, and experiments across the tech landscape."
-      ) %>
+      "Welcome to SegFault blog! This page is dedicated to documenting and exploring various technologies. Our blog is hosted on a k3s cluster in OCI, powered by Elixir and Phoenix. Dive in to discover insights, tutorials, and experiments across the tech landscape." %>
     <meta name="description" content={description} />
     <meta property="og:title" content={assigns[:page_title] || "SegFault"} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={url(~p"/images/segfault.webp")} />
+    <meta name="robots" content="noindex" />
 
     <link rel="icon" type="image/svg+xml" href={~p"/favicon.svg"} />
     <link rel="icon" type="image/x-icon" href={~p"/favicon.ico"} />
@@ -31,7 +28,7 @@
   <body class="bg-terminal-50 dark:bg-terminal-900 dark:text-white font-sans antialiased">
     <header class="dark:bg-terminal-900 dark:text-white">
       <section class="p-4">
-        <.link navigate="/#{Gettext.get_locale(TrWeb.Gettext)}/" class="no-underline inline-block">
+        <.link navigate="/en/" class="no-underline inline-block">
           <div class="logo-full">
             <div class="logo-addr">0x0000DEAD</div>
             <div class="logo-main">
@@ -57,7 +54,7 @@
     <article class="column text-sm">
       <ul>
         <li>
-          <a href={"https://segfault.pw/#{Gettext.get_locale(TrWeb.Gettext)}/blog"}>
+          <a href="https://segfault.pw/en/blog">
             This blog
           </a>
         </li>
@@ -78,7 +75,7 @@
           </.link>
         </li>
         <li>
-          <.link navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/privacy"}>
+          <.link navigate={~p"/en/privacy"}>
             Privacy policy
           </.link>
         </li>

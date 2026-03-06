@@ -14,6 +14,18 @@ defmodule TrWeb.PageControllerTest do
 
       assert response_content_type(conn, :xml)
 
+      body = response(conn, 200)
+      assert body =~ "<urlset"
+      assert body =~ "sitemaps.org/schemas/sitemap/0.9"
+      assert body =~ "/en/blog/new-blog"
+      assert body =~ "hreflang"
+    end
+
+    test "accesses the RSS feed in format xml", %{conn: conn} do
+      conn = get(conn, "/index.xml")
+
+      assert response_content_type(conn, :xml)
+
       assert String.match?(
                response(conn, 200),
                ~r/<link>.*\/blog\/new-blog<\/link>/

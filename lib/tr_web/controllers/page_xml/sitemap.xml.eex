@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://segfault.pw/en/blog</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://segfault.pw/en/blog" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://segfault.pw/es/blog" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://segfault.pw/en/blog" />
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://segfault.pw/en/blog/tags</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://segfault.pw/en/blog/tags" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://segfault.pw/es/blog/tags" />
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://segfault.pw/en/about</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://segfault.pw/en/about" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://segfault.pw/es/about" />
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <%= for post <- @en_posts do %>
+  <url>
+    <loc><%= url(~p"/en/blog/#{post.id}") %></loc>
+    <lastmod><%= Date.to_iso8601(post.date) %></lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="<%= url(~p"/en/blog/#{post.id}") %>" />
+    <xhtml:link rel="alternate" hreflang="es" href="<%= url(~p"/es/blog/#{post.id}") %>" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="<%= url(~p"/en/blog/#{post.id}") %>" />
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <% end %>
+  <%= for post <- @es_posts do %>
+  <url>
+    <loc><%= url(~p"/es/blog/#{post.id}") %></loc>
+    <lastmod><%= Date.to_iso8601(post.date) %></lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="<%= url(~p"/en/blog/#{post.id}") %>" />
+    <xhtml:link rel="alternate" hreflang="es" href="<%= url(~p"/es/blog/#{post.id}") %>" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <% end %>
+</urlset>

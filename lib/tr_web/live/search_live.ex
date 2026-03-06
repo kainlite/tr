@@ -3,8 +3,12 @@ defmodule TrWeb.SearchLive do
 
   @impl true
   def mount(_params, _session, socket) do
+    locale = Gettext.get_locale(TrWeb.Gettext)
+
     {:ok,
      socket
+     |> assign(:page_title, "SegFault - Search")
+     |> assign(:og_url, TrWeb.Endpoint.url() <> "/#{locale}/blog/search")
      |> assign(:q, nil)
      |> assign(:posts, [])}
   end

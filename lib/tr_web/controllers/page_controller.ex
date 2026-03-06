@@ -3,9 +3,18 @@ defmodule TrWeb.PageController do
 
   alias Tr.Blog
 
-  plug :put_layout, false when action in [:sitemap, :json_sitemap]
+  plug :put_layout, false when action in [:rss_feed, :xml_sitemap, :json_sitemap]
 
-  def sitemap(conn, %{"locale" => locale}) do
+  def xml_sitemap(conn, _params) do
+    en_posts = Blog.posts("en")
+    es_posts = Blog.posts("es")
+
+    conn
+    |> put_resp_content_type("text/xml")
+    |> render("sitemap.xml", en_posts: en_posts, es_posts: es_posts)
+  end
+
+  def rss_feed(conn, %{"locale" => locale}) do
     Gettext.put_locale(TrWeb.Gettext, locale)
     posts = Blog.posts(Gettext.get_locale(TrWeb.Gettext))
 
@@ -14,7 +23,7 @@ defmodule TrWeb.PageController do
     |> render("index.xml", posts: posts)
   end
 
-  def sitemap(conn, _params) do
+  def rss_feed(conn, _params) do
     posts = Blog.posts(Gettext.get_locale(TrWeb.Gettext))
 
     conn
@@ -78,19 +87,47 @@ defmodule TrWeb.PageController do
   end
 
   def privacy(conn, _params) do
-    render(conn, :privacy)
+    locale = Gettext.get_locale(TrWeb.Gettext)
+
+    conn
+    |> assign(:og_url, TrWeb.Endpoint.url() <> "/#{locale}/privacy")
+    |> assign(:page_title, "SegFault - Privacy Policy")
+    |> assign(:og_hreflang_en, TrWeb.Endpoint.url() <> "/en/privacy")
+    |> assign(:og_hreflang_es, TrWeb.Endpoint.url() <> "/es/privacy")
+    |> render(:privacy)
   end
 
   def about(conn, _params) do
-    render(conn, :about)
+    locale = Gettext.get_locale(TrWeb.Gettext)
+
+    conn
+    |> assign(:og_url, TrWeb.Endpoint.url() <> "/#{locale}/about")
+    |> assign(:page_title, "SegFault - About")
+    |> assign(:og_hreflang_en, TrWeb.Endpoint.url() <> "/en/about")
+    |> assign(:og_hreflang_es, TrWeb.Endpoint.url() <> "/es/about")
+    |> render(:about)
   end
 
   def tags(conn, _params) do
-    render(conn, tags: Tr.Blog.all_tags())
+    locale = Gettext.get_locale(TrWeb.Gettext)
+
+    conn
+    |> assign(:og_url, TrWeb.Endpoint.url() <> "/#{locale}/blog/tags")
+    |> assign(:page_title, "SegFault - Tags")
+    |> assign(:og_hreflang_en, TrWeb.Endpoint.url() <> "/en/blog/tags")
+    |> assign(:og_hreflang_es, TrWeb.Endpoint.url() <> "/es/blog/tags")
+    |> render(tags: Tr.Blog.all_tags())
   end
 
   def by_tag(conn, %{"tag" => tag} = _params) do
-    render(conn, posts: Blog.by_tag(Gettext.get_locale(TrWeb.Gettext), tag))
+    locale = Gettext.get_locale(TrWeb.Gettext)
+
+    conn
+    |> assign(:og_url, TrWeb.Endpoint.url() <> "/#{locale}/blog/tags/#{tag}")
+    |> assign(:page_title, "SegFault - #{tag}")
+    |> assign(:og_hreflang_en, TrWeb.Endpoint.url() <> "/en/blog/tags/#{tag}")
+    |> assign(:og_hreflang_es, TrWeb.Endpoint.url() <> "/es/blog/tags/#{tag}")
+    |> render(posts: Blog.by_tag(Gettext.get_locale(TrWeb.Gettext), tag))
   end
 
   defp format_date(date) do

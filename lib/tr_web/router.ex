@@ -63,16 +63,16 @@ defmodule TrWeb.Router do
   scope "/", TrWeb do
     pipe_through :xml
 
-    get "/index.xml", PageController, :sitemap
-    get "/sitemap.xml", PageController, :sitemap
+    get "/index.xml", PageController, :rss_feed
+    get "/sitemap.xml", PageController, :xml_sitemap
   end
 
   scope "/:locale", TrWeb do
     scope "/" do
       pipe_through :xml
 
-      get "/index.xml", PageController, :sitemap
-      get "/sitemap.xml", PageController, :sitemap
+      get "/index.xml", PageController, :rss_feed
+      get "/sitemap.xml", PageController, :xml_sitemap
     end
   end
 

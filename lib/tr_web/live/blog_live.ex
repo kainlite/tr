@@ -12,6 +12,10 @@ defmodule TrWeb.BlogLive do
     {
       :ok,
       socket
+      |> assign(:page_title, "SegFault - Blog")
+      |> assign(:og_url, TrWeb.Endpoint.url() <> "/#{locale}/blog")
+      |> assign(:og_hreflang_en, TrWeb.Endpoint.url() <> "/en/blog")
+      |> assign(:og_hreflang_es, TrWeb.Endpoint.url() <> "/es/blog")
       |> assign(:posts, posts)
       |> assign(:featured_post, featured_post)
       |> assign(
