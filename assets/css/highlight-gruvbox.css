@@ -1,7 +1,129 @@
 /*!
-  Theme: Gruvbox dark, medium
-  Author: Dawid Kurek (dawikur@gmail.com), morhetz (https://github.com/morhetz/gruvbox)
-  License: ~ MIT (or more permissive) [via base16-schemes-source]
-  Maintainer: @highlightjs/core-team
-  Version: 2021.09.0
-*/pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{color:#d5c4a1;background:#282828}.hljs ::selection,.hljs::selection{background-color:#504945;color:#d5c4a1}.hljs-comment{color:#665c54}.hljs-tag{color:#bdae93}.hljs-operator,.hljs-punctuation,.hljs-subst{color:#d5c4a1}.hljs-operator{opacity:.7}.hljs-bullet,.hljs-deletion,.hljs-name,.hljs-selector-tag,.hljs-template-variable,.hljs-variable{color:#fb4934}.hljs-attr,.hljs-link,.hljs-literal,.hljs-number,.hljs-symbol,.hljs-variable.constant_{color:#fe8019}.hljs-class .hljs-title,.hljs-title,.hljs-title.class_{color:#fabd2f}.hljs-strong{font-weight:700;color:#fabd2f}.hljs-addition,.hljs-code,.hljs-string,.hljs-title.class_.inherited__{color:#b8bb26}.hljs-built_in,.hljs-doctag,.hljs-keyword.hljs-atrule,.hljs-quote,.hljs-regexp{color:#8ec07c}.hljs-attribute,.hljs-function .hljs-title,.hljs-section,.hljs-title.function_,.ruby .hljs-property{color:#83a598}.diff .hljs-meta,.hljs-keyword,.hljs-template-tag,.hljs-type{color:#d3869b}.hljs-emphasis{color:#d3869b;font-style:italic}.hljs-meta,.hljs-meta .hljs-keyword,.hljs-meta .hljs-string{color:#d65d0e}.hljs-meta .hljs-keyword,.hljs-meta-keyword{font-weight:700}
+  Theme: Gruvbox (light + dark)
+  Based on highlight.js base16 Gruvbox themes by Dawid Kurek / morhetz
+  Light theme as default, dark theme scoped under .dark
+*/
+
+/* Shared layout */
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+}
+code.hljs {
+  padding: 3px 5px;
+}
+
+/* Light theme (default) */
+.hljs {
+  color: #504945;
+  background: #fbf1c7;
+}
+.hljs ::selection,
+.hljs::selection {
+  background-color: #d5c4a1;
+  color: #504945;
+}
+.hljs-comment { color: #bdae93; }
+.hljs-tag { color: #665c54; }
+.hljs-operator,
+.hljs-punctuation,
+.hljs-subst { color: #504945; }
+.hljs-operator { opacity: .7; }
+.hljs-bullet,
+.hljs-deletion,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-template-variable,
+.hljs-variable { color: #9d0006; }
+.hljs-attr,
+.hljs-link,
+.hljs-literal,
+.hljs-number,
+.hljs-symbol,
+.hljs-variable.constant_ { color: #af3a03; }
+.hljs-class .hljs-title,
+.hljs-title,
+.hljs-title.class_ { color: #b57614; }
+.hljs-strong { font-weight: 700; color: #b57614; }
+.hljs-addition,
+.hljs-code,
+.hljs-string,
+.hljs-title.class_.inherited__ { color: #79740e; }
+.hljs-built_in,
+.hljs-doctag,
+.hljs-keyword.hljs-atrule,
+.hljs-quote,
+.hljs-regexp { color: #427b58; }
+.hljs-attribute,
+.hljs-function .hljs-title,
+.hljs-section,
+.hljs-title.function_,
+.ruby .hljs-property { color: #076678; }
+.diff .hljs-meta,
+.hljs-keyword,
+.hljs-template-tag,
+.hljs-type { color: #8f3f71; }
+.hljs-emphasis { color: #8f3f71; font-style: italic; }
+.hljs-meta,
+.hljs-meta .hljs-keyword,
+.hljs-meta .hljs-string { color: #d65d0e; }
+.hljs-meta .hljs-keyword,
+.hljs-meta-keyword { font-weight: 700; }
+
+/* Dark theme (scoped under .dark) */
+.dark .hljs {
+  color: #d5c4a1;
+  background: #282828;
+}
+.dark .hljs ::selection,
+.dark .hljs::selection {
+  background-color: #504945;
+  color: #d5c4a1;
+}
+.dark .hljs-comment { color: #665c54; }
+.dark .hljs-tag { color: #bdae93; }
+.dark .hljs-operator,
+.dark .hljs-punctuation,
+.dark .hljs-subst { color: #d5c4a1; }
+.dark .hljs-operator { opacity: .7; }
+.dark .hljs-bullet,
+.dark .hljs-deletion,
+.dark .hljs-name,
+.dark .hljs-selector-tag,
+.dark .hljs-template-variable,
+.dark .hljs-variable { color: #fb4934; }
+.dark .hljs-attr,
+.dark .hljs-link,
+.dark .hljs-literal,
+.dark .hljs-number,
+.dark .hljs-symbol,
+.dark .hljs-variable.constant_ { color: #fe8019; }
+.dark .hljs-class .hljs-title,
+.dark .hljs-title,
+.dark .hljs-title.class_ { color: #fabd2f; }
+.dark .hljs-strong { font-weight: 700; color: #fabd2f; }
+.dark .hljs-addition,
+.dark .hljs-code,
+.dark .hljs-string,
+.dark .hljs-title.class_.inherited__ { color: #b8bb26; }
+.dark .hljs-built_in,
+.dark .hljs-doctag,
+.dark .hljs-keyword.hljs-atrule,
+.dark .hljs-quote,
+.dark .hljs-regexp { color: #8ec07c; }
+.dark .hljs-attribute,
+.dark .hljs-function .hljs-title,
+.dark .hljs-section,
+.dark .hljs-title.function_,
+.dark .ruby .hljs-property { color: #83a598; }
+.dark .diff .hljs-meta,
+.dark .hljs-keyword,
+.dark .hljs-template-tag,
+.dark .hljs-type { color: #d3869b; }
+.dark .hljs-emphasis { color: #d3869b; font-style: italic; }
+.dark .hljs-meta,
+.dark .hljs-meta .hljs-keyword,
+.dark .hljs-meta .hljs-string { color: #d65d0e; }
+.dark .hljs-meta .hljs-keyword,
+.dark .hljs-meta-keyword { font-weight: 700; }
