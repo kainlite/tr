@@ -11,6 +11,6 @@ defmodule TrWeb.ErrorHTMLTest do
 
   test "renders 500.html" do
     assert render_to_string(TrWeb.ErrorHTML, "500", "html", []) =~
-             "It seems we cannot find the page you are looking for"
+             "Something went wrong"
   end
 end
