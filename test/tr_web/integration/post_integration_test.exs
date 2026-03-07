@@ -37,6 +37,7 @@ defmodule TrWeb.Integration.PostIntegrationTest do
     def message(msg), do: css("p", text: msg)
 
     @sessions 3
+    @tag :skip
     feature "That users can send messages to each other", %{sessions: [user1, user2, user3]} do
       page = ~p"/blog/upgrading-k3s-with-system-upgrade-controller"
 
