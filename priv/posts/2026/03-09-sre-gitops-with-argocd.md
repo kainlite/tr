@@ -3,7 +3,7 @@
   author: "Gabriel Garrido",
   description: "We will explore GitOps principles with ArgoCD, from Application CRDs and App of Apps patterns to sync strategies, multi-cluster management with ApplicationSets, and monitoring your GitOps workflows...",
   tags: ~w(sre kubernetes argocd gitops ci-cd),
-  published: false,
+  published: true,
   image: "sre.png",
   sponsored: false,
   video: "",
@@ -154,7 +154,7 @@ repoServer:
 
 <br />
 
-```sql
+```bash
 helm install argocd argo/argo-cd \
   --namespace argocd \
   --values argocd-values.yaml \
@@ -845,7 +845,7 @@ Also, you can check the source code and changes in the [sources here](https://gi
   author: "Gabriel Garrido",
   description: "Vamos a explorar los principios de GitOps con ArgoCD, desde Application CRDs y patrones App of Apps hasta estrategias de sincronización, gestión multi-cluster con ApplicationSets, y monitoreo de tus flujos GitOps...",
   tags: ~w(sre kubernetes argocd gitops ci-cd),
-  published: false,
+  published: true,
   image: "sre.png",
   sponsored: false,
   video: "",

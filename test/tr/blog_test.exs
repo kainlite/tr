@@ -131,5 +131,19 @@ defmodule Tr.BlogTest do
       related = Blog.related_posts(post, "es")
       assert Enum.all?(related, &(&1.lang == "es"))
     end
+
+    test "all_posts/0 excludes future-dated posts" do
+      posts = Blog.all_posts()
+      tomorrow = Date.add(Date.utc_today(), 1)
+      assert Enum.all?(posts, &Date.before?(&1.date, tomorrow))
+    end
+
+    test "posts/1 excludes future-dated posts" do
+      for locale <- ["en", "es"] do
+        posts = Blog.posts(locale)
+        tomorrow = Date.add(Date.utc_today(), 1)
+        assert Enum.all?(posts, &Date.before?(&1.date, tomorrow))
+      end
+    end
   end
 end

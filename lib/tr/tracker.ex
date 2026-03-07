@@ -83,17 +83,53 @@ defmodule Tr.Tracker do
     end
   end
 
-  defp announce_posts do
-    unanounced_posts = get_unannounced_posts()
-    notifiable_users = Tr.Accounts.get_all_notifiable_users()
+  # Advisory lock key for post announcements (arbitrary unique integer)
+  @announce_lock_key 736_102_948
 
-    # Don't mark posts as announced if there are no users to notify
-    if notifiable_users == [] do
-      require Logger
-      Logger.warning("No notifiable users found, skipping announcement to retry later")
+  defp announce_posts do
+    require Logger
+
+    # Use a PostgreSQL advisory lock to prevent multiple pods from
+    # announcing the same posts simultaneously
+    Repo.transaction(fn ->
+      case acquire_announcement_lock() do
+        :acquired -> announce_locked_posts()
+        :skip -> :ok
+      end
+    end)
+  end
+
+  defp acquire_announcement_lock do
+    require Logger
+
+    case Repo.query("SELECT pg_try_advisory_xact_lock($1)", [@announce_lock_key]) do
+      {:ok, %{rows: [[true]]}} ->
+        :acquired
+
+      {:ok, %{rows: [[false]]}} ->
+        Logger.info("Another instance is already processing post announcements, skipping")
+        :skip
+
+      {:error, reason} ->
+        Logger.error("Failed to acquire advisory lock: #{inspect(reason)}")
+        :skip
+    end
+  end
+
+  defp announce_locked_posts do
+    require Logger
+    unanounced_posts = get_unannounced_posts()
+
+    if unanounced_posts == [] do
       :ok
     else
-      send_and_mark(unanounced_posts, notifiable_users)
+      notifiable_users = Tr.Accounts.get_all_notifiable_users()
+
+      if notifiable_users == [] do
+        Logger.warning("No notifiable users found, skipping announcement to retry later")
+      else
+        send_and_mark(unanounced_posts, notifiable_users)
+      end
     end
   end
 

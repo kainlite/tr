@@ -486,13 +486,14 @@
   code {
     border-radius: 0;
     font-size: 80%;
-    white-space: nowrap;
+    word-break: break-word;
   }
   pre {
     background: #f0f0f0;
     border: 1px solid #d4d4d4;
     border-left: none;
     border-radius: 0;
+    overflow-x: auto;
     overflow-y: hidden;
     margin-top: 1rem;
     margin-bottom: 1rem;

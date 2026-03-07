@@ -44,35 +44,43 @@ defmodule Tr.Blog do
     highlighters: [],
     parser: MultiParser
 
-  @published_posts @posts
-                   |> Enum.filter(
-                     &(Date.before?(&1.date, Date.add(Date.utc_today(), 1)) &&
-                         &1.published == true)
-                   )
+  # All posts marked as published, sorted by date desc, split by locale.
+  # Date filtering happens at runtime so future-dated posts auto-release.
+  @published_posts @posts |> Enum.filter(&(&1.published == true))
 
-  @en_posts Enum.sort_by(@published_posts, & &1.date, {:desc, Date})
+  @en_posts @published_posts
+            |> Enum.sort_by(& &1.date, {:desc, Date})
             |> Enum.filter(&(&1.lang == "en"))
 
-  @es_posts Enum.sort_by(@published_posts, & &1.date, {:desc, Date})
+  @es_posts @published_posts
+            |> Enum.sort_by(& &1.date, {:desc, Date})
             |> Enum.filter(&(&1.lang == "es"))
 
-  # Group all the ids or URL slugs
-  @slugs @en_posts
-         |> Enum.filter(&(&1.lang == "en"))
-         |> Enum.map(& &1.id)
-         |> Enum.sort()
-
-  # Let's also get all tags
-  @tags @en_posts |> Enum.flat_map(& &1.tags) |> Enum.uniq() |> Enum.sort()
-
-  # And finally export them
-  def posts(locale) do
-    if locale == "en", do: @en_posts, else: @es_posts
+  defp filter_by_date(posts) do
+    tomorrow = Date.add(Date.utc_today(), 1)
+    Enum.filter(posts, &Date.before?(&1.date, tomorrow))
   end
 
-  def all_posts, do: @published_posts
-  def all_slugs, do: @slugs
-  def all_tags, do: @tags
+  def posts(locale) do
+    if locale == "en", do: filter_by_date(@en_posts), else: filter_by_date(@es_posts)
+  end
+
+  def all_posts, do: filter_by_date(@published_posts)
+
+  def all_slugs do
+    all_posts()
+    |> Enum.filter(&(&1.lang == "en"))
+    |> Enum.map(& &1.id)
+    |> Enum.sort()
+  end
+
+  def all_tags do
+    all_posts()
+    |> Enum.filter(&(&1.lang == "en"))
+    |> Enum.flat_map(& &1.tags)
+    |> Enum.uniq()
+    |> Enum.sort()
+  end
 
   def by_tag(locale, tag), do: get_posts_by_tag!(locale, tag)
   def recent_posts(locale \\ "en", num \\ 5), do: Enum.take(posts(locale), num)

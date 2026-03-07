@@ -3,7 +3,7 @@
   author: "Gabriel Garrido",
   description: "We will explore release engineering practices for reliable deployments, from canary releases with Argo Rollouts and blue-green deployments to feature flags, rollback automation, and deployment SLOs...",
   tags: ~w(sre kubernetes deployment ci-cd argocd),
-  published: false,
+  published: true,
   image: "sre.png",
   sponsored: false,
   video: "",
@@ -426,7 +426,7 @@ jobs:
         run: |
           for i in $(seq 1 5); do
             STATUS=$(curl -s -o /dev/null -w '%{http_code}' \
-              https://techsquad.rocks/healthz)
+              https://segfault.pw/healthz)
             if [ "$STATUS" != "200" ]; then exit 1; fi
             sleep 2
           done
@@ -903,7 +903,7 @@ Also, you can check the source code and changes in the [sources here](https://gi
   author: "Gabriel Garrido",
   description: "Vamos a explorar prácticas de ingeniería de releases para deployments confiables, desde canary releases con Argo Rollouts y deployments blue-green hasta feature flags, automatización de rollbacks, y SLOs de deployment...",
   tags: ~w(sre kubernetes deployment ci-cd argocd),
-  published: false,
+  published: true,
   image: "sre.png",
   sponsored: false,
   video: "",
@@ -1328,7 +1328,7 @@ jobs:
         run: |
           for i in $(seq 1 5); do
             STATUS=$(curl -s -o /dev/null -w '%{http_code}' \
-              https://techsquad.rocks/healthz)
+              https://segfault.pw/healthz)
             if [ "$STATUS" != "200" ]; then exit 1; fi
             sleep 2
           done

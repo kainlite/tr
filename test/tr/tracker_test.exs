@@ -141,5 +141,26 @@ defmodule Tr.TrackerTest do
       # call announce_posts. Just verify it doesn't crash.
       Tracker.start()
     end
+
+    test "concurrent start/0 calls do not produce duplicate announcements" do
+      # Insert an unannounced post with a slug that exists in the blog
+      unannounced =
+        post_tracker_fixture(%{
+          slug: "upgrading-k3s-with-system-upgrade-controller",
+          announced: false
+        })
+
+      Tracker.insert_post(unannounced)
+
+      # Run two concurrent start calls
+      task1 = Task.async(fn -> Tracker.start() end)
+      task2 = Task.async(fn -> Tracker.start() end)
+
+      Task.await(task1, 30_000)
+      Task.await(task2, 30_000)
+
+      # The post should be announced exactly once (no duplicates, no errors)
+      assert Tracker.get_unannounced_posts() == []
+    end
   end
 end

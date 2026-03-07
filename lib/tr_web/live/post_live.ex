@@ -588,8 +588,7 @@ defmodule TrWeb.PostLive do
             src="https://github.com/sponsors/kainlite/card"
             title="Sponsor kainlite"
             height="225"
-            width="600"
-            style="border: 0; max-width: 100%;"
+            style="border: 0; width: 100%; max-width: 600px;"
             class="mx-auto justify-center items-center"
           >
           </iframe>
