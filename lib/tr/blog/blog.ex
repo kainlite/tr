@@ -41,7 +41,7 @@ defmodule Tr.Blog do
     build: Post,
     from: Application.app_dir(:tr, "priv/posts/**/*.md"),
     as: :posts,
-    highlighters: [:makeup_elixir, :makeup_erlang],
+    highlighters: [],
     parser: MultiParser
 
   @published_posts @posts

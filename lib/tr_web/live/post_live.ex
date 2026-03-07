@@ -206,7 +206,6 @@ defmodule TrWeb.PostLive do
           {@post.id
           |> decrypt_by_path()
           |> Earmark.as_html!()
-          |> NimblePublisher.highlight()
           |> raw}
         <% @post.sponsored && @current_user && !Tr.SponsorsCache.sponsor?(@current_user.github_username) -> %>
           <br />
