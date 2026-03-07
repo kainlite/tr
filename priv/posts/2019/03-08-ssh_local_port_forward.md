@@ -23,14 +23,14 @@ Local port forward basically let's you forward one port from a remote machine to
 <br />
 
 ##### **The command**
-```elixir
+```plaintext
 ssh -Nn -L 3306:localhost:3306 user@example.com
 ```
 <br />
 
 Here we are forwarding localhost:3306 in the remote machine to localhost:3306, but you can specify another address in the network for example 172.16.16.200 and the command would look like this:
 
-```elixir
+```plaintext
 ssh -Nn -L 3306:172.16.16.200:3306 user@example.com
 ```
 This will give you access to the ip 172.16.16.200 and port 3306 in the remote network.
@@ -38,7 +38,7 @@ This will give you access to the ip 172.16.16.200 and port 3306 in the remote ne
 
 ##### **The parameters and their meaning**
 I extracted a portion of the meaning of parameter from the man page, but in a nutshell it means local port forward without a shell.
-```elixir
+```plaintext
 -N Do not execute a remote command. This is useful for just forwarding ports.
 -n Redirects stdin from /dev/null (actually, prevents reading from stdin). This must be used when ssh is run in the background.
 -L Specifies that connections to the given TCP port or Unix socket on the local (client) host are to be forwarded to the given host and port, or Unix socket, on the remote side.
@@ -89,14 +89,14 @@ El reenvío de puertos locales básicamente te permite redirigir un puerto de un
 <br />
 
 ### **El comando**
-```elixir
+```plaintext
 ssh -Nn -L 3306:localhost:3306 user@example.com
 ```
 <br />
 
 En este caso, estamos redirigiendo `localhost:3306` de la máquina remota a `localhost:3306` de tu máquina local, pero también podés especificar otra dirección de la red, por ejemplo 172.16.16.200, y el comando se vería así:
 
-```elixir
+```plaintext
 ssh -Nn -L 3306:172.16.16.200:3306 user@example.com
 ```
 Esto te dará acceso a la IP 172.16.16.200 y al puerto 3306 en la red remota.
@@ -104,7 +104,7 @@ Esto te dará acceso a la IP 172.16.16.200 y al puerto 3306 en la red remota.
 
 ### **Los parámetros y su significado**
 Saqué una porción del significado de los parámetros de la página del manual, pero en resumen significa un reenvío de puerto local sin ejecutar un shell.
-```elixir
+```plaintext
 -N No ejecuta un comando remoto. Esto es útil solo para redirigir puertos.
 -n Redirige stdin desde /dev/null (en realidad, evita la lectura desde stdin). Debe usarse cuando SSH se ejecuta en segundo plano.
 -L Especifica que las conexiones al puerto TCP o socket Unix en el host local (cliente) deben ser redirigidas al host y puerto dados, o socket Unix, en el lado remoto.

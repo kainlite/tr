@@ -58,14 +58,14 @@ your deployments), in this particular case it will be overseeing its own app and
 <br />
 
 We need a Kubernetes cluster up and running for that I'm using Kind here, just issue to get going:
-```elixir 
+```plaintext
 kind create cluster
 ```
 
 <br />
 
 Then install ArgoCD to deploy our controller (not the recommended approach):
-```elixir
+```bash
 helm repo add argo https://argoproj.github.io/argo-helm
 helm install -n argocd argocd argo/argo-cd
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
@@ -74,7 +74,7 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 <br />
 
 About now you should be able to port-forward and login to your ArgoCD instance:
-```elixir
+```plaintext
 kubectl port-forward service/argocd-server 8080:443
 ```
 
@@ -94,7 +94,7 @@ Everything should look something like this:
 <br />
 
 You can generate an RSA key like this:
-```elixir
+```plaintext
 ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa_demo 
 ```
 
@@ -134,7 +134,7 @@ something that works tm!
 The Dockerfile is pretty straight-forward, basically we build a production release and copy that and the known_hosts
 file to the home path of the user that will be running the image (this is necessary since we are using SSH
 authentication).
-```elixir
+```dockerfile
 FROM clux/muslrust:stable AS builder
 
 COPY Cargo.* .
@@ -160,7 +160,7 @@ ENTRYPOINT ["/app/gitops-operator"]
 Next up we can check the known_hosts file, these signatures were taken from [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints), but you can also do it with
 `ssh-keygen`.
 
-```elixir
+```plaintext
 github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
 github.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=
 github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=
@@ -174,7 +174,7 @@ HTTP Web server on port 8000 with two routes (/health and /reconcile), instead o
 (usually a recursive function or using a callback) I decided to use the Readiness Probe to trigger a call to the
 endpoint /reconcile and making it run every two minutes (we will check that when we get to the manifests). 
 
-```elixir
+```yaml
 pub mod files;
 pub mod git;
 
@@ -313,7 +313,7 @@ async fn main() -> anyhow::Result<()> {
 <br />
 
 Then in this file `files.rs` we have some functions that deal with files and actually updating the deployment file.
-```elixir
+```hcl
 use crate::git::stage_and_push_changes;
 use anyhow::Context;
 use anyhow::Error;
@@ -410,7 +410,7 @@ pub fn patch_deployment_and_commit(
 
 And last but not least `git.rs`, possibly the complex part in this project, git... This file has a few functions to deal with
 cloning, fetching and merging remote changes, then to add our local changes, stage them and push them to the repository:
-```elixir
+```hcl
 use git2::{
     build::RepoBuilder, CertificateCheckStatus, Cred, Error as GitError, FetchOptions, RemoteCallbacks,
     Repository,
@@ -720,7 +720,7 @@ For the sake of completeness lets add the pipeline, as you can see we have two j
 code is formatted and the other one to build and push the image to dockerhub, the most interesting bit is probably the
 cache dance.
 
-```elixir
+```yaml
 name: ci
 
 on:
@@ -839,7 +839,7 @@ Also you will notice that we are calling the `/reconcile` path every two minutes
 will keep calling that endpoint every two minutes to it based in our configuration and since we are not expecting any
 external traffic this should do, it should be also relatively safe to run it concurrently so this is good enough for
 now.
-```elixir
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -914,7 +914,7 @@ quick reference of the most used ways to create and use secrets in Kubernetes ch
 
 <br />
 
-```elixir
+```plaintext
 ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa_demo
 kubectl create secret generic my-ssh-key --from-file=ssh-privatekey=~/.ssh/id_rsa_demo
 ```
@@ -981,14 +981,14 @@ algo así como una especie de **Inception**.
 <br />  
 
 Necesitamos un clúster de Kubernetes en funcionamiento. En este caso, usaremos **Kind**. Ejecuta el siguiente comando para iniciar:  
-```elixir 
+```plaintext
 kind create cluster
 ```
 
 <br />  
 
 Luego, instala **ArgoCD** para desplegar nuestro controlador (no es el enfoque recomendado):  
-```elixir
+```bash
 helm repo add argo https://argoproj.github.io/argo-helm
 helm install -n argocd argocd argo/argo-cd
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
@@ -997,7 +997,7 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 <br />  
 
 En este punto, deberías poder realizar un port-forward y acceder a tu instancia de **ArgoCD**:  
-```elixir
+```plaintext
 kubectl port-forward service/argocd-server 8080:443
 ```
 
@@ -1017,7 +1017,7 @@ Todo debería verse algo así:
 <br />  
 
 Puedes generar una clave RSA de la siguiente manera:  
-```elixir
+```plaintext
 ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa_demo 
 ```
 
@@ -1055,7 +1055,7 @@ Por cierto, estoy aprendiendo **Rust**, así que no esperes un código listo par
 
 El Dockerfile es bastante sencillo. Básicamente, construimos una versión de producción, copiamos ese binario y el archivo **known_hosts** 
 a la ruta home del usuario que ejecutará la imagen (esto es necesario ya que estamos utilizando autenticación SSH).
-```elixir
+```dockerfile
 FROM clux/muslrust:stable AS builder
 
 COPY Cargo.* .
@@ -1081,7 +1081,7 @@ ENTRYPOINT ["/app/gitops-operator"]
 A continuación, podemos revisar el archivo **known_hosts**. Estas firmas fueron tomadas de [aquí](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints),  
 pero también puedes hacerlo usando el comando `ssh-keygen`. 
 
-```elixir
+```plaintext
 github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
 github.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=
 github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=
@@ -1096,7 +1096,7 @@ En resumen, configurará un servidor **HTTP** en el puerto **8000** con dos ruta
 decidí usar la **Readiness Probe** para desencadenar una llamada al endpoint `/reconcile` y hacer que se ejecute cada dos minutos 
 (lo revisaremos cuando lleguemos a los **manifiestos**).
 
-```elixir
+```yaml
 pub mod files;
 pub mod git;
 
@@ -1236,7 +1236,7 @@ async fn main() -> anyhow::Result<()> {
 
 En este archivo `files.rs` tenemos las funciones relevantes a cambios en archivos, mas especificamente el archivo de
 deployment.
-```elixir
+```hcl
 use crate::git::stage_and_push_changes;
 use anyhow::Context;
 use anyhow::Error;
@@ -1334,7 +1334,7 @@ pub fn patch_deployment_and_commit(
 Y por ultimo pero no menos importante `git.rs`, posiblemente la parte mas compleja de este proyecto, git... Este archivo
 tiene algunas funciones que se encargan de clonar, traer cambios remotos y fusionarlos, tambien para agregar los cambios
 locales y enviarlos al repositorio remoto.
-```elixir
+```hcl
 use git2::{
     build::RepoBuilder, CertificateCheckStatus, Cred, Error as GitError, FetchOptions, RemoteCallbacks,
     Repository,
@@ -1642,7 +1642,7 @@ Y algunas cosas más, pero recordá que esto es un MVP; por ahora, lo único que
 ###### El pipeline
 Para completar el panorama, agreguemos la pipeline. Como podés ver, tenemos dos jobs: uno para **lint** y validar que el código esté correctamente formateado, y otro para **compilar y publicar la imagen en DockerHub**. Lo más interesante probablemente sea el "baile del caché".
 
-```elixir
+```yaml
 name: ci
 
 on:
@@ -1756,7 +1756,7 @@ Una de las cosas que necesitamos hacer para que esto funcione es almacenar nuest
 
 Además, verás que estamos llamando a la ruta `/reconcile` cada dos minutos desde el **Readiness Probe**. Kubernetes seguirá llamando a ese endpoint cada dos minutos basándose en nuestra configuración. Como no esperamos tráfico externo, esto debería ser suficiente. Además, debería ser relativamente seguro ejecutarlo de forma concurrente, por lo que es una solución adecuada por ahora.
 
-```elixir
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -1831,7 +1831,7 @@ Si no recordás cómo crear una clave y almacenarla como un **secreto** en Kuber
 
 <br />
 
-```elixir
+```plaintext
 ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa_demo
 kubectl create secret generic my-ssh-key --from-file=ssh-privatekey=~/.ssh/id_rsa_demo
 ```

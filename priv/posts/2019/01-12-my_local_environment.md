@@ -27,7 +27,7 @@ And the configuration file can be [found here](https://github.com/kainlite/dotfi
 <br />
 
 It's different than other terminals I have tried in the way it manages and uses the configuration, it uses an additional tool called `xrdb` (X server resource database utility) to manage the configuration provided in the configuration file `.Xresources`.
-```elixir
+```bash
 # Loads the configuration from Xresources in xrdb
 $ xrdb -merge .Xresources
 
@@ -105,7 +105,7 @@ Y el archivo de configuración lo puedes [encontrar aquí](https://github.com/ka
 
 Es diferente a otros terminales que he probado en la forma en que gestiona y utiliza la configuración. Usa una herramienta adicional llamada `xrdb` (utilidad de base de datos de recursos del servidor X) para manejar la configuración proporcionada en el archivo `.Xresources`.
 
-```elixir
+```bash
 # Carga la configuración de Xresources en xrdb
 $ xrdb -merge .Xresources
 

@@ -51,7 +51,7 @@ Let's start by setting up our testing environment. I'll create a namespace, some
 **Setup our environment**:
 
 First, we need to find out the public ip of our API server:
-```elixir
+```plaintext
 kubectl get ep -A
 NAMESPACE     NAME         ENDPOINTS                                               AGE
 default       kubernetes   172.19.0.2:6443                                         78m
@@ -60,21 +60,21 @@ kube-system   kube-dns     10.244.0.3:53,10.244.0.4:53,10.244.0.3:53 + 3 more...
 if you instead use kubectl proxy, that will use your current credentials and will sort-of bypass the authentication when using curl, so stick to hitting the URL directly for all the examples to work as expected.
 
 First, let's create a namespace for our experiments:
-```elixir
+```plaintext
 kubectl create namespace rbac-demo
 ```
 
 <br />
 
 Now let's see what this actually does at the API level. Enable kubectl verbose mode to see the HTTP calls:
-```elixir
+```plaintext
 kubectl create namespace rbac-demo -v=8
 ```
 
 <br />
 
 You'll see output like this (truncated for readability):
-```elixir
+```plaintext
 I0110 10:30:15.123456 POST https://127.0.0.1:6443/api/v1/namespaces
 I0110 10:30:15.123456 Request Body: {"apiVersion":"v1","kind":"Namespace","metadata":{"name":"rbac-demo"}}
 I0110 10:30:15.123456 Response Status: 201 Created
@@ -83,7 +83,7 @@ I0110 10:30:15.123456 Response Status: 201 Created
 <br />
 
 Now let's do the same thing with curl to understand the raw API call:
-```elixir
+```bash
 # Get your cluster info
 kubectl cluster-info
 
@@ -114,7 +114,7 @@ The response will be a JSON representation of the created namespace. This is exa
 
 Now let's create a Role that allows reading pods in our namespace:
 
-```elixir
+```plaintext
 kubectl create role pod-reader \
   --namespace=rbac-demo \
   --verb=get,list,watch \
@@ -124,14 +124,14 @@ kubectl create role pod-reader \
 <br />
 
 Let's see the actual YAML that was created:
-```elixir
+```plaintext
 kubectl get role pod-reader -n rbac-demo -o yaml
 ```
 
 <br />
 
 The output should look like this:
-```elixir
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -152,7 +152,7 @@ rules:
 <br />
 
 Now let's make the same call with curl to see the raw HTTP request:
-```elixir
+```bash
 # First, let's see what kubectl would send
 kubectl create role pod-reader-curl \
   --namespace=rbac-demo \
@@ -164,7 +164,7 @@ kubectl create role pod-reader-curl \
 <br />
 
 This shows us the exact JSON payload. Now let's send it via curl:
-```elixir
+```bash
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
@@ -199,7 +199,7 @@ Notice the API path: `/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/ro
 #### Creating a RoleBinding
 
 Now let's create a RoleBinding to give a user the pod-reader role:
-```elixir
+```plaintext
 kubectl create rolebinding pod-reader-binding \
   --namespace=rbac-demo \
   --role=pod-reader \
@@ -211,14 +211,14 @@ NOTE: creating users can be a bit tricky as we need a certificate and so on, you
 <br />
 
 Let's inspect what was created:
-```elixir
+```plaintext
 kubectl get rolebinding pod-reader-binding -n rbac-demo -o yaml
 ```
 
 <br />
 
 The output shows:
-```elixir
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -237,7 +237,7 @@ subjects:
 <br />
 
 Now the curl equivalent:
-```elixir
+```bash
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
@@ -269,7 +269,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 #### Checking Permissions
 
 Now let's test permissions. Kubernetes provides a handy API for this - the SubjectAccessReview:
-```elixir
+```plaintext
 kubectl auth can-i get pods --namespace=rbac-demo --as=john.doe@example.com
 ```
 
@@ -277,7 +277,7 @@ kubectl auth can-i get pods --namespace=rbac-demo --as=john.doe@example.com
 
 This should return `yes` since we just gave john.doe@example.com the pod-reader role. But what's happening behind the scenes? Let's use curl to make the same check:
 
-```elixir
+```bash
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
@@ -299,7 +299,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 <br />
 
 The response will look like:
-```elixir
+```json
 {
   "apiVersion": "authorization.k8s.io/v1",
   "kind": "SubjectAccessReview",
@@ -327,7 +327,7 @@ This is incredibly useful! The response not only tells us if the action is allow
 <br />
 
 Let's test a permission that should be denied:
-```elixir
+```bash
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
@@ -349,7 +349,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 <br />
 
 The response will show:
-```elixir
+```json
 {
   "status": {
     "allowed": false,
@@ -363,14 +363,14 @@ The response will show:
 #### ClusterRole and ClusterRoleBinding Example
 
 Let's create a ClusterRole that can read nodes (a cluster-scoped resource):
-```elixir
+```plaintext
 kubectl create clusterrole node-reader --verb=get,list,watch --resource=nodes
 ```
 
 <br />
 
 The curl equivalent (notice no namespace in the URL since it's cluster-scoped):
-```elixir
+```bash
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
@@ -394,7 +394,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 <br />
 
 Now bind it to a user:
-```elixir
+```bash
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
@@ -426,7 +426,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 
 One of the most powerful features for debugging RBAC is the ability to check permissions for any user. Let's create a comprehensive script to audit permissions:
 
-```elixir
+```hcl
 #!/bin/bash
 # rbac-check.sh
 
@@ -462,7 +462,7 @@ done
 Let's explore some advanced RBAC features using both kubectl and curl:
 
 **Resource Names**: You can restrict access to specific named resources:
-```elixir
+```bash
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
@@ -488,7 +488,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 <br />
 
 **API Groups**: Different resources belong to different API groups:
-```elixir
+```bash
 # Core API group (empty string) - pods, services, etc.
 # apps API group - deployments, replicasets, etc.
 # extensions API group - ingresses, etc.
@@ -520,7 +520,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 
 To understand what permissions exist in your cluster, you can query the API directly:
 
-```elixir
+```bash
 # List all roles in a namespace
 curl -k -H "Authorization: Bearer $TOKEN" \
   https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles
@@ -541,7 +541,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 <br />
 
 You can also use jq to filter and format the output:
-```elixir
+```bash
 # Get all rolebindings and show which users have which roles
 curl -s -k -H "Authorization: Bearer $TOKEN" \
   https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/rolebindings | \
@@ -553,7 +553,7 @@ curl -s -k -H "Authorization: Bearer $TOKEN" \
 #### Testing with a Real User
 
 Let's create a service account and test our RBAC rules:
-```elixir
+```yaml
 kubectl create serviceaccount test-user -n rbac-demo
 
 # Bind our pod-reader role to this service account
@@ -578,7 +578,7 @@ EOF
 <br />
 
 Now let's get the service account token and test permissions:
-```elixir
+```bash
 # Get the service account token
 SA_TOKEN=$(kubectl get secret test-user-sa-secret -n rbac-demo -o jsonpath='{.data.token}' | base64 -d)
 
@@ -590,7 +590,7 @@ curl -k -H "Authorization: Bearer $SA_TOKEN" \
 <br />
 
 This should work since we gave the service account the pod-reader role. Now let's try something it shouldn't be able to do:
-```elixir
+```bash
 # Try to create a pod (should fail)
 curl -k -H "Authorization: Bearer $SA_TOKEN" \
   -H "Content-Type: application/json" \
@@ -616,7 +616,7 @@ curl -k -H "Authorization: Bearer $SA_TOKEN" \
 <br />
 
 This should return a 403 Forbidden error with a message like:
-```elixir
+```json
 {
   "kind": "Status",
   "apiVersion": "v1",
@@ -642,7 +642,7 @@ Perfect! The RBAC is working as expected.
 Here are some common RBAC patterns you'll encounter:
 
 **Read-only access to everything in a namespace**:
-```elixir
+```bash
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
@@ -667,7 +667,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 <br />
 
 **Access to create and manage deployments**:
-```elixir
+```bash
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
@@ -701,18 +701,18 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 When RBAC isn't working as expected, here's a systematic approach to debug:
 
 1. **Check if the user/service account exists**:
-```elixir
+```plaintext
 kubectl get serviceaccount test-user -n rbac-demo
 ```
 
 2. **Check what roles are bound to the user**:
-```elixir
+```plaintext
 kubectl get rolebindings -n rbac-demo -o wide
 kubectl get clusterrolebindings -o wide
 ```
 
 3. **Use SubjectAccessReview to test specific permissions**:
-```elixir
+```plaintext
 kubectl auth can-i create pods --namespace=rbac-demo --as=system:serviceaccount:rbac-demo:test-user
 ```
 
@@ -720,7 +720,7 @@ kubectl auth can-i create pods --namespace=rbac-demo --as=system:serviceaccount:
 The error messages are usually very specific about what's missing.
 
 5. **Verify the role rules**:
-```elixir
+```plaintext
 kubectl describe role pod-reader -n rbac-demo
 ```
 
@@ -728,14 +728,14 @@ kubectl describe role pod-reader -n rbac-demo
 
 #### Clean up
 Always remember to clean up your testing resources:
-```elixir
+```plaintext
 kubectl delete namespace rbac-demo
 ```
 
 <br />
 
 Or with curl:
-```elixir
+```bash
 curl -k -H "Authorization: Bearer $TOKEN" \
   -X DELETE \
   https://172.19.0.2:6443/api/v1/namespaces/rbac-demo
@@ -805,7 +805,7 @@ Empecemos configurando nuestro entorno de testing. Voy a crear un namespace, alg
 **Configurando nuestro entorno**:
 
 Primero necesitamos encontrar la direccion publica de nuestro API server:
-```elixir
+```plaintext
 kubectl get ep -A
 NAMESPACE     NAME         ENDPOINTS                                               AGE
 default       kubernetes   172.19.0.2:6443                                         78m
@@ -814,21 +814,21 @@ kube-system   kube-dns     10.244.0.3:53,10.244.0.4:53,10.244.0.3:53 + 3 more...
 Si en vez usamos kubectl proxy, va a usar las credenciales que usa kubectl e ignorar las que le pasemos con curl, asi que para que todos los ejemplos funcionen como se muestra hay que usar la direccion directa del API server.
 
 Primero, vamos a crear un namespace para nuestros experimentos:
-```elixir
+```plaintext
 kubectl create namespace rbac-demo
 ```
 
 <br />
 
 Ahora veamos qué hace esto realmente a nivel de API. Habilitá el modo verbose de kubectl para ver las llamadas HTTP:
-```elixir
+```plaintext
 kubectl create namespace rbac-demo -v=8
 ```
 
 <br />
 
 Vas a ver output como este (truncado para legibilidad):
-```elixir
+```plaintext
 I0110 10:30:15.123456 POST https://127.0.0.1:6443/api/v1/namespaces
 I0110 10:30:15.123456 Request Body: {"apiVersion":"v1","kind":"Namespace","metadata":{"name":"rbac-demo"}}
 I0110 10:30:15.123456 Response Status: 201 Created
@@ -837,7 +837,7 @@ I0110 10:30:15.123456 Response Status: 201 Created
 <br />
 
 Ahora hagamos lo mismo con curl para entender la llamada de API cruda:
-```elixir
+```bash
 # Obtener info del cluster
 kubectl cluster-info
 
@@ -868,7 +868,7 @@ La respuesta va a ser una representación JSON del namespace creado. ¡Esto es e
 
 Ahora vamos a crear un Role que permita leer pods en nuestro namespace:
 
-```elixir
+```plaintext
 kubectl create role pod-reader \
   --namespace=rbac-demo \
   --verb=get,list,watch \
@@ -878,14 +878,14 @@ kubectl create role pod-reader \
 <br />
 
 Veamos el YAML real que se creó:
-```elixir
+```plaintext
 kubectl get role pod-reader -n rbac-demo -o yaml
 ```
 
 <br />
 
 El output debería verse así:
-```elixir
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -906,7 +906,7 @@ rules:
 <br />
 
 Ahora hagamos la misma llamada con curl para ver el request HTTP crudo:
-```elixir
+```bash
 # Primero, veamos qué enviaría kubectl
 kubectl create role pod-reader-curl \
   --namespace=rbac-demo \
@@ -918,7 +918,7 @@ kubectl create role pod-reader-curl \
 <br />
 
 Esto nos muestra el payload JSON exacto. Ahora enviémoslo vía curl:
-```elixir
+```bash
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
@@ -953,7 +953,7 @@ Notá el path de API: `/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/r
 #### Creando un RoleBinding
 
 Ahora vamos a crear un RoleBinding para darle a un usuario el role pod-reader:
-```elixir
+```plaintext
 kubectl create rolebinding pod-reader-binding \
   --namespace=rbac-demo \
   --role=pod-reader \
@@ -965,14 +965,14 @@ NOTA: Crear usuarios es un poco complicado por que necesitamos un certificado, e
 <br />
 
 Inspeccionemos qué se creó:
-```elixir
+```plaintext
 kubectl get rolebinding pod-reader-binding -n rbac-demo -o yaml
 ```
 
 <br />
 
 El output muestra:
-```elixir
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -991,7 +991,7 @@ subjects:
 <br />
 
 Ahora el equivalente en curl:
-```elixir
+```bash
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
@@ -1023,7 +1023,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 #### Verificando Permisos
 
 Ahora testeemos permisos. Kubernetes proporciona una API muy útil para esto - el SubjectAccessReview:
-```elixir
+```plaintext
 kubectl auth can-i get pods --namespace=rbac-demo --as=john.doe@example.com
 ```
 
@@ -1031,7 +1031,7 @@ kubectl auth can-i get pods --namespace=rbac-demo --as=john.doe@example.com
 
 Esto debería retornar `yes` ya que recién le dimos a john.doe@example.com el role pod-reader. ¿Pero qué está pasando por detrás? Usemos curl para hacer la misma verificación:
 
-```elixir
+```bash
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
@@ -1053,7 +1053,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 <br />
 
 La respuesta se va a ver así:
-```elixir
+```json
 {
   "apiVersion": "authorization.k8s.io/v1",
   "kind": "SubjectAccessReview",
@@ -1081,7 +1081,7 @@ La respuesta se va a ver así:
 <br />
 
 Testeemos un permiso que debería ser denegado:
-```elixir
+```bash
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
@@ -1103,7 +1103,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 <br />
 
 La respuesta va a mostrar:
-```elixir
+```json
 {
   "status": {
     "allowed": false,
@@ -1117,14 +1117,14 @@ La respuesta va a mostrar:
 #### Ejemplo de ClusterRole y ClusterRoleBinding
 
 Vamos a crear un ClusterRole que pueda leer nodes (un recurso de nivel cluster):
-```elixir
+```plaintext
 kubectl create clusterrole node-reader --verb=get,list,watch --resource=nodes
 ```
 
 <br />
 
 El equivalente en curl (notá que no hay namespace en la URL ya que es de nivel cluster):
-```elixir
+```bash
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
@@ -1148,7 +1148,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 <br />
 
 Ahora vinculémoslo a un usuario:
-```elixir
+```bash
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
@@ -1180,7 +1180,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 
 Una de las características más poderosas para debugear RBAC es la habilidad de verificar permisos para cualquier usuario. Creemos un script comprensivo para auditar permisos:
 
-```elixir
+```hcl
 #!/bin/bash
 # rbac-check.sh
 
@@ -1216,7 +1216,7 @@ done
 Exploremos algunas características avanzadas de RBAC usando tanto kubectl como curl:
 
 **Resource Names**: Podés restringir acceso a recursos nombrados específicos:
-```elixir
+```bash
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
@@ -1242,7 +1242,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 <br />
 
 **API Groups**: Diferentes recursos pertenecen a diferentes API groups:
-```elixir
+```bash
 # Core API group (string vacío) - pods, services, etc.
 # apps API group - deployments, replicasets, etc.
 # extensions API group - ingresses, etc.
@@ -1274,7 +1274,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 
 Para entender qué permisos existen en tu cluster, podés consultar la API directamente:
 
-```elixir
+```bash
 # Listar todos los roles en un namespace
 curl -k -H "Authorization: Bearer $TOKEN" \
   https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/roles
@@ -1295,7 +1295,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 <br />
 
 También podés usar jq para filtrar y formatear el output:
-```elixir
+```bash
 # Obtener todos los rolebindings y mostrar qué usuarios tienen qué roles
 curl -s -k -H "Authorization: Bearer $TOKEN" \
   https://172.19.0.2:6443/apis/rbac.authorization.k8s.io/v1/namespaces/rbac-demo/rolebindings | \
@@ -1307,7 +1307,7 @@ curl -s -k -H "Authorization: Bearer $TOKEN" \
 #### Testeando con un Usuario Real
 
 Vamos a crear un service account y testear nuestras reglas RBAC:
-```elixir
+```yaml
 kubectl create serviceaccount test-user -n rbac-demo
 
 # Vincular nuestro role pod-reader a este service account
@@ -1333,7 +1333,7 @@ EOF
 <br />
 
 Ahora obtengamos el token del service account y testeemos permisos:
-```elixir
+```bash
 # Obtener el token del service account
 SA_TOKEN=$(kubectl get secret $(kubectl get serviceaccount test-user -n rbac-demo -o jsonpath='{.secrets[0].name}') -n rbac-demo -o jsonpath='{.data.token}' | base64 -d)
 
@@ -1345,7 +1345,7 @@ curl -k -H "Authorization: Bearer $SA_TOKEN" \
 <br />
 
 Esto debería funcionar ya que le dimos al service account el role pod-reader. Ahora probemos algo que no debería poder hacer:
-```elixir
+```bash
 # Intentar crear un pod (debería fallar)
 curl -k -H "Authorization: Bearer $SA_TOKEN" \
   -H "Content-Type: application/json" \
@@ -1371,7 +1371,7 @@ curl -k -H "Authorization: Bearer $SA_TOKEN" \
 <br />
 
 Esto debería retornar un error 403 Forbidden con un mensaje como:
-```elixir
+```json
 {
   "kind": "Status",
   "apiVersion": "v1",
@@ -1397,7 +1397,7 @@ Esto debería retornar un error 403 Forbidden con un mensaje como:
 Acá hay algunos patrones comunes de RBAC que vas a encontrar:
 
 **Acceso de solo lectura a todo en un namespace**:
-```elixir
+```bash
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
@@ -1422,7 +1422,7 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 <br />
 
 **Acceso para crear y manejar deployments**:
-```elixir
+```bash
 curl -k -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -X POST \
@@ -1456,18 +1456,18 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 Cuando RBAC no está funcionando como esperás, acá hay un enfoque sistemático para debugear:
 
 1. **Verificar si el usuario/service account existe**:
-```elixir
+```plaintext
 kubectl get serviceaccount test-user -n rbac-demo
 ```
 
 2. **Verificar qué roles están vinculados al usuario**:
-```elixir
+```plaintext
 kubectl get rolebindings -n rbac-demo -o wide
 kubectl get clusterrolebindings -o wide
 ```
 
 3. **Usar SubjectAccessReview para testear permisos específicos**:
-```elixir
+```plaintext
 kubectl auth can-i create pods --namespace=rbac-demo --as=system:serviceaccount:rbac-demo:test-user
 ```
 
@@ -1475,7 +1475,7 @@ kubectl auth can-i create pods --namespace=rbac-demo --as=system:serviceaccount:
 Los mensajes de error usualmente son muy específicos sobre qué está faltando.
 
 5. **Verificar las reglas del role**:
-```elixir
+```plaintext
 kubectl describe role pod-reader -n rbac-demo
 ```
 
@@ -1483,14 +1483,14 @@ kubectl describe role pod-reader -n rbac-demo
 
 #### Clean up
 Siempre recordá limpiar tus recursos de testing:
-```elixir
+```plaintext
 kubectl delete namespace rbac-demo
 ```
 
 <br />
 
 O con curl:
-```elixir
+```bash
 curl -k -H "Authorization: Bearer $TOKEN" \
   -X DELETE \
   https://172.19.0.2:6443/api/v1/namespaces/rbac-demo

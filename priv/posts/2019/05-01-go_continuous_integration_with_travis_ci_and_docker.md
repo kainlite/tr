@@ -21,7 +21,7 @@ In this article we will see how to create a simple continuous integration proces
 ##### **First thing first**
 ##### App
 We will review the docker file, the app code and the travis-ci file, so let's start with the app `main.go`:
-```elixir
+```hcl
 package main
 
 import (
@@ -55,7 +55,7 @@ Let's quickly check what this code does, first we check for the port to use, the
 <br />
 
 Then the `main_test.go` code:
-```elixir
+```go
 package main
 
 import (
@@ -93,7 +93,7 @@ The test is fairly simple it just checks that the web server works by trying to 
 
 ##### Docker
 Next the `Dockerfile`:
-```elixir
+```dockerfile
 FROM golang:1.12-alpine
 
 LABEL maintainer="kainlite@gmail.com"
@@ -127,7 +127,7 @@ We set the working directory to please go, then fetch dependencies and install o
 
 ##### Travis
 And last but not least the `.travis.yml` file:
-```elixir
+```yaml
 language: go
 
 services:
@@ -208,7 +208,7 @@ En este artículo veremos cómo crear un proceso simple de integración continua
 ##### **Primero lo primero**
 ##### Aplicación
 Revisaremos el archivo docker, el código de la aplicación y el archivo travis-ci, así que comencemos con la aplicación `main.go`:
-```elixir
+```hcl
 package main
 
 import (
@@ -242,7 +242,7 @@ Revisemos rápidamente lo que hace este código. Primero verificamos el puerto a
 <br />
 
 Luego el código de `main_test.go`:
-```elixir
+```go
 package main
 
 import (
@@ -280,7 +280,7 @@ La prueba es bastante simple, solo verifica que el servidor web funcione al inte
 
 ##### Docker
 A continuación, el `Dockerfile`:
-```elixir
+```dockerfile
 FROM golang:1.12-alpine
 
 LABEL maintainer="kainlite@gmail.com"
@@ -314,7 +314,7 @@ Configuramos el directorio de trabajo para satisfacer a go, luego obtenemos las 
 
 ##### Travis
 Y por último, pero no menos importante, el archivo `.travis.yml`:
-```elixir
+```yaml
 language: go
 
 services:

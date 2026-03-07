@@ -35,7 +35,7 @@ The first two (minikube and kind) we will see how to configure a CNI plugin in o
 <br />
 
 We will be using the following pods and network policy to test that it works, we will create 3 pods, 1 client and 2 app backends, one backend will be listening in port TCP/1111 and the other in the port TCP/2222, in our netpolicy we will only allow our client to connect to app1:
-```elixir
+```yaml
 ---
 apiVersion: v1
 kind: Pod
@@ -150,7 +150,7 @@ If you want to learn more about netcat and friends go to: [Cat and friends: netc
 
 ##### Minikube
 Minikube is heavily used but it can be too heavy sometimes, in any case we will see an example of making it work with network policies, the good thing is that it has a lot of documentation because a lot of people use it and it is updated often:
-```elixir
+```plaintext
 ❯ minikube start --cni=cilium --memory=4096
 😄  minikube v1.15.1 on Arch rolling
     ▪ MINIKUBE_ACTIVE_DOCKERD=minikube
@@ -167,7 +167,7 @@ Minikube is heavily used but it can be too heavy sometimes, in any case we will 
 <br />
 
 ###### Give it a couple of minutes to start, for new versions of minikube you can install it like this, otherwise you can specify that you will install the CNI plugin and then just install the manifests.
-```elixir
+```plaintext
 ❯ kubectl get pods -A
 NAMESPACE     NAME                               READY   STATUS     RESTARTS   AGE
 kube-system   cilium-c5bf8                       0/1     Running    0          59s
@@ -180,7 +180,7 @@ kube-system   etcd-minikube                      1/1     Running    0          3
 <br />
 
 ###### Then let's validate that it works
-```elixir
+```plaintext
 ❯ kubectl apply -f netpol-example.yaml
 pod/client configured
 pod/app1 configured
@@ -208,7 +208,7 @@ You can get more info for minikube using Cilium on their [docs](https://docs.cil
 <br />
 
 ###### Remember to clean up
-```elixir
+```plaintext
 ❯ minikube delete
 🔥  Deleting "minikube" in docker ...
 🔥  Deleting container "minikube" ...
@@ -220,7 +220,7 @@ You can get more info for minikube using Cilium on their [docs](https://docs.cil
 
 ##### KIND
 KIND is really lightweight and fast, I usually test and develop using KIND the main reason is that almost everything works like in a real cluster but it has no overhead, it's simple to install and easy to run, first we need to put this config in place to tell kind not to use it's default CNI.
-```elixir
+```yaml
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 networking:
@@ -241,7 +241,7 @@ nodes:
 <br />
 
 Then we can create the cluster and install calico (there is a small gotcha here, you need to check that the calico node pods come up if not kill them and they should come up and everything will start working normally, this is due to the environment variable that gets added after the deployment for it to work with KIND):
-```elixir
+```yaml
 ❯ kind create cluster --config kind-calico.yaml
 Creating cluster "kind" ...
  ✓ Ensuring node image (kindest/node:v1.18.2) 🖼
@@ -292,7 +292,7 @@ daemonset.apps/calico-node env updated
 You can check for more config options for KIND [here](https://kind.sigs.k8s.io/docs/user/configuration/#networking)
 
 ###### Validation
-```elixir
+```plaintext
 ❯ kubectl get pods -A
 NAMESPACE            NAME                                         READY   STATUS    RESTARTS   AGE
 kube-system          calico-kube-controllers-5dc87d545c-2kdn2     1/1     Running   0          2m15s
@@ -324,7 +324,7 @@ networkpolicy.networking.k8s.io/default-network-policy created
 <br />
 
 ###### Testing again:
-```elixir
+```plaintext
 ❯ kubectl exec pod/client -- nc -v -z app1 1111 -w 5
 app1 (10.96.126.52:1111) open
 
@@ -338,7 +338,7 @@ command terminated with exit code 1
 
 ##### Kubeadm and vagrant
 This is an interesting scenario and it's great to understand how clusters are configured using kubeadm also to practice things such as adding/removing/upgrading the nodes, backup and restore etcd, etc. if you want to test this one clone this repo: [Kubernetes with kubeadm using vagrant](https://github.com/kainlite/kubernetes-the-easy-way-with-vagrant-and-kubeadm)
-```elixir
+```plaintext
 ❯ ./up.sh
 Bringing machine 'cluster1-master1' up with 'virtualbox' provider...
 Bringing machine 'cluster1-worker1' up with 'virtualbox' provider...
@@ -382,7 +382,7 @@ Connection to 127.0.0.1 closed.
 <br />
 
 ###### Next, lets copy the kubeconfig and deploy our resources then test (this deployment is using weave)
-```elixir
+```bash
 ❯ vagrant ssh cluster1-master1 -c "sudo cat /root/.kube/config" > vagrant-kubeconfig
 Connection to 127.0.0.1 closed.
 
@@ -407,7 +407,7 @@ web-test-2-594487698d-vnltx   1/1     Running             0          2m33s
 <br />
 
 ###### Test it (wait until the pods are in ready state)
-```elixir
+```plaintext
 ❯ kubectl exec pod/client -- nc -v -z app1 1111
 app1 (10.97.203.229:1111) open
 
@@ -419,7 +419,7 @@ command terminated with exit code 1
 <br />
 
 ###### For more info refer to the readme in the repo and the scripts in there, it should be straight forward to follow and reproduce, remember to clean up:
-```elixir
+```plaintext
 ❯ ./down.sh
 ==> cluster1-worker2: Forcing shutdown of VM...
 ==> cluster1-worker2: Destroying VM and associated drives...
@@ -433,7 +433,7 @@ command terminated with exit code 1
 <br />
 ##### Kubernetes the hard way and vagrant
 This is probably the most complex scenario and it's purely educational you get to generate all the certificates by hand basically and configure everything by yourself (see the original repo for instructions in how to do that in gcloud if you are interested), if you want to test this one clone this repo: [Kubernetes the hard way using vagrant](https://github.com/kainlite/kubernetes-the-easy-way-with-vagrant), but be patient and ready to debug if something doesn't go well.
-```elixir
+```yaml
 ❯ ./up.sh
 ...
 ...
@@ -485,7 +485,7 @@ VM, run `vagrant status NAME`.
 <br />
 
 ###### Validation:
-```elixir
+```bash
 ❯ vagrant ssh controller-0
 Welcome to Ubuntu 18.04.5 LTS (GNU/Linux 4.15.0-124-generic x86_64)
 
@@ -529,7 +529,7 @@ root@controller-0:~#
 
 ```
 <br />
-```elixir
+```plaintext
 root@controller-0:~# kubectl apply -f /vagrant/manifests/coredns-1.7.0.yaml
 serviceaccount/coredns created
 clusterrole.rbac.authorization.k8s.io/system:coredns created
@@ -572,7 +572,7 @@ networkpolicy.networking.k8s.io/default-network-policy   app=client     112s
 
 
 ###### Install the manifests and test it:
-```elixir
+```plaintext
 root@controller-0:~# kubectl get pods -A -o wide
 NAMESPACE     NAME                       READY   STATUS    RESTARTS   AGE     IP           NODE       NOMINATED NODE   READINESS GATES
 default       app1                       1/1     Running   0          6m34s   10.200.0.2   worker-1   <none>           <none>
@@ -590,7 +590,7 @@ command terminated with exit code 1
 <br />
 
 ###### Clean up
-```elixir
+```plaintext
 ❯ ./down.sh
 ==> worker-2: Forcing shutdown of VM...
 ==> worker-2: Destroying VM and associated drives...
@@ -659,7 +659,7 @@ En los dos primeros (minikube y kind) veremos cómo configurar un plugin CNI par
 <br />
 
 Usaremos los siguientes pods y una política de red para probar que funciona. Crearemos 3 pods: 1 cliente y 2 aplicaciones backend. Un backend estará escuchando en el puerto TCP/1111 y el otro en el puerto TCP/2222. En nuestra política de red, solo permitiremos que nuestro cliente se conecte a app1:
-```elixir
+```yaml
 ---
 apiVersion: v1
 kind: Pod
@@ -774,7 +774,7 @@ Si querés aprender más sobre netcat y similares, podés visitar: [Cat and frie
 
 ##### Minikube
 Minikube es muy utilizado, pero a veces puede ser un poco pesado. De cualquier manera, veremos un ejemplo de cómo hacerlo funcionar con políticas de red. Lo bueno es que tiene mucha documentación, ya que mucha gente lo usa, y se actualiza con frecuencia:
-```elixir
+```plaintext
 ❯ minikube start --cni=cilium --memory=4096
 😄  minikube v1.15.1 on Arch rolling
     ▪ MINIKUBE_ACTIVE_DOCKERD=minikube
@@ -791,7 +791,7 @@ Minikube es muy utilizado, pero a veces puede ser un poco pesado. De cualquier m
 <br />
 
 ###### Dale un par de minutos para que inicie. Para versiones nuevas de Minikube, podés instalarlo de esta manera. De lo contrario, podés especificar que vas a instalar el plugin de CNI y luego simplemente instalar los manifiestos.
-```elixir
+```plaintext
 ❯ kubectl get pods -A
 NAMESPACE     NAME                               READY   STATUS     RESTARTS   AGE
 kube-system   cilium-c5bf8                       0/1     Running    0          59s
@@ -804,7 +804,7 @@ kube-system   etcd-minikube                      1/1     Running    0          3
 <br />
 
 ###### Validando
-```elixir
+```plaintext
 ❯ kubectl apply -f netpol-example.yaml
 pod/client configured
 pod/app1 configured
@@ -830,7 +830,7 @@ Tené en cuenta que agregamos el comando `timeout` con un tiempo de espera de 5 
 Podés obtener más información sobre cómo usar Cilium con Minikube en su [documentación oficial](https://docs.cilium.io/en/v1.9/gettingstarted/minikube/).
 
 ###### Recordá limpiar todo al finalizar.
-```elixir
+```plaintext
 ❯ minikube delete
 🔥  Deleting "minikube" in docker ...
 🔥  Deleting container "minikube" ...
@@ -842,7 +842,7 @@ Podés obtener más información sobre cómo usar Cilium con Minikube en su [doc
 
 ##### KIND
 KIND es realmente liviano y rápido, suelo usarlo para testear y desarrollar. La principal razón es que casi todo funciona como en un clúster real, pero sin el overhead. Es simple de instalar y fácil de ejecutar. Primero, necesitamos poner esta configuración en su lugar para indicarle a KIND que no use su CNI predeterminado.
-```elixir
+```yaml
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 networking:
@@ -863,7 +863,7 @@ nodes:
 <br />
 
 Luego podemos crear el clúster e instalar Calico (hay un pequeño detalle aquí: debes verificar que los pods de Calico node se inicien correctamente. Si no es así, matalos y deberían reiniciarse correctamente. Esto se debe a que la variable de entorno que se agrega después del despliegue hace que funcione con KIND):
-```elixir
+```yaml
 ❯ kind create cluster --config kind-calico.yaml
 Creating cluster "kind" ...
  ✓ Ensuring node image (kindest/node:v1.18.2) 🖼
@@ -914,7 +914,7 @@ daemonset.apps/calico-node env updated
 Para ver mas opciones de configurar ve [aqui](https://kind.sigs.k8s.io/docs/user/configuration/#networking)
 
 ###### Validando
-```elixir
+```plaintext
 ❯ kubectl get pods -A
 NAMESPACE            NAME                                         READY   STATUS    RESTARTS   AGE
 kube-system          calico-kube-controllers-5dc87d545c-2kdn2     1/1     Running   0          2m15s
@@ -946,7 +946,7 @@ networkpolicy.networking.k8s.io/default-network-policy created
 <br />
 
 ###### Probamos:
-```elixir
+```plaintext
 ❯ kubectl exec pod/client -- nc -v -z app1 1111 -w 5
 app1 (10.96.126.52:1111) open
 
@@ -960,7 +960,7 @@ command terminated with exit code 1
 
 ##### Kubeadm y vagrant
 Este es un escenario interesante y es excelente para entender cómo se configuran los clústeres usando kubeadm, además de practicar cosas como agregar/eliminar/actualizar los nodos, hacer backup y restaurar etcd, entre otras. Si querés probar este ejemplo, cloná este repo: [Kubernetes with kubeadm using vagrant](https://github.com/kainlite/kubernetes-the-easy-way-with-vagrant-and-kubeadm)
-```elixir
+```plaintext
 ❯ ./up.sh
 Bringing machine 'cluster1-master1' up with 'virtualbox' provider...
 Bringing machine 'cluster1-worker1' up with 'virtualbox' provider...
@@ -1004,7 +1004,7 @@ Connection to 127.0.0.1 closed.
 <br />
 
 ###### Copiemos la configuracion y probemos (este cluster usa weave)
-```elixir
+```bash
 ❯ vagrant ssh cluster1-master1 -c "sudo cat /root/.kube/config" > vagrant-kubeconfig
 Connection to 127.0.0.1 closed.
 
@@ -1029,7 +1029,7 @@ web-test-2-594487698d-vnltx   1/1     Running             0          2m33s
 <br />
 
 ###### Probando (hay que esperar que todos los pods esten en ready)
-```elixir
+```plaintext
 ❯ kubectl exec pod/client -- nc -v -z app1 1111
 app1 (10.97.203.229:1111) open
 
@@ -1041,7 +1041,7 @@ command terminated with exit code 1
 <br />
 
 ###### Si queres usar estos scripts, lee el readme del repositorio, y siempre recorda limpiar antes de cerrar:
-```elixir
+```plaintext
 ❯ ./down.sh
 ==> cluster1-worker2: Forcing shutdown of VM...
 ==> cluster1-worker2: Destroying VM and associated drives...
@@ -1055,7 +1055,7 @@ command terminated with exit code 1
 <br />
 ##### Kubernetes the hard way y vagrant
 Este es probablemente el escenario más complejo y es puramente educativo. Acá vas a generar todos los certificados manualmente y configurar todo por tu cuenta (si te interesa, podés ver el repo original para instrucciones sobre cómo hacerlo en gcloud). Si querés probar este ejemplo, cloná este repo: [Kubernetes the hard way usando vagrant](https://github.com/kainlite/kubernetes-the-easy-way-with-vagrant), pero tené paciencia y preparate para depurar si algo no sale como esperabas.
-```elixir
+```yaml
 ❯ ./up.sh
 ...
 ...
@@ -1107,7 +1107,7 @@ VM, run `vagrant status NAME`.
 <br />
 
 ###### Validando
-```elixir
+```bash
 ❯ vagrant ssh controller-0
 Welcome to Ubuntu 18.04.5 LTS (GNU/Linux 4.15.0-124-generic x86_64)
 
@@ -1151,7 +1151,7 @@ root@controller-0:~#
 
 ```
 <br />
-```elixir
+```plaintext
 root@controller-0:~# kubectl apply -f /vagrant/manifests/coredns-1.7.0.yaml
 serviceaccount/coredns created
 clusterrole.rbac.authorization.k8s.io/system:coredns created
@@ -1194,7 +1194,7 @@ networkpolicy.networking.k8s.io/default-network-policy   app=client     112s
 
 
 ###### Instalando y probando:
-```elixir
+```plaintext
 root@controller-0:~# kubectl get pods -A -o wide
 NAMESPACE     NAME                       READY   STATUS    RESTARTS   AGE     IP           NODE       NOMINATED NODE   READINESS GATES
 default       app1                       1/1     Running   0          6m34s   10.200.0.2   worker-1   <none>           <none>
@@ -1212,7 +1212,7 @@ command terminated with exit code 1
 <br />
 
 ###### Limpiando
-```elixir
+```plaintext
 ❯ ./down.sh
 ==> worker-2: Forcing shutdown of VM...
 ==> worker-2: Destroying VM and associated drives...

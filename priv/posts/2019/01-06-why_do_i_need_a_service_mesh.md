@@ -36,14 +36,14 @@ In case you don't agree with my explanations that's ok, this is a TL;DR version 
 
 ### Let's get started
 First of all we need to download and install Istio in our cluster, the recommended way of doing it is using helm (In this case I will be using the no Tiller alternative, but it could be done with helm install as well, check here for [more info](https://istio.io/docs/setup/kubernetes/helm-install/)):
-```elixir
+```bash
 $ curl -L https://git.io/getLatestIstio | sh -
 ```
 This will download and extract the latest release, in this case 1.0.5 at this moment.
 <br />
 
 So let's install Istio... only pay attention to the first 3 commands, then you can skip until the end of the code block, I post all the output because I like full examples :)
-```elixir
+```bash
 istio-1.0.5 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set grafana.enabled=true > $HOME/istio.yaml
 istio-1.0.5 $ kubectl create namespace istio-system
 namespace "istio-system" created
@@ -187,7 +187,7 @@ WOAH, What did just happen?, a lot of new resources were created, basically we j
 <br />
 
 So lets see what's running and what that means:
-```elixir
+```bash
 $ kubectl get pods -n istio-system
 NAME                                      READY     STATUS      RESTARTS   AGE
 istio-citadel-856f994c58-l96p8            1/1       Running     0          3m
@@ -224,7 +224,7 @@ Note: The service mesh is not an overlay network. It simplifies and enhances how
 <br />
 
 Ok so, a lot of new things were installed but how do I know it's working? let's deploy a [test application](https://istio.io/docs/examples/bookinfo/) and check it:
-```elixir
+```bash
 $ export PATH="$PATH:~/istio-1.0.5/bin"
 istio-1.0.5/samples/bookinfo $ kubectl apply -f <(istioctl kube-inject -f platform/kube/bookinfo.yaml)
 service "details" created
@@ -240,7 +240,7 @@ deployment.extensions "productpage-v1" created
 ```
 <br />
 That command not only deployed the application but injected the Istio sidecar to each pod:
-```elixir
+```bash
 $ kubectl get pods
 NAME                              READY     STATUS    RESTARTS   AGE
 details-v1-8bd954dbb-zhrqq        2/2       Running   0          2m
@@ -254,7 +254,7 @@ As we can see each pod has 2 containers in it, the app container and istio-proxy
 <br />
 
 Also all services are running:
-```elixir
+```bash
 $ kubectl get services
 NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
 details       ClusterIP   10.245.134.179   <none>        9080/TCP   3m
@@ -266,7 +266,7 @@ reviews       ClusterIP   10.245.77.125    <none>        9080/TCP   3m
 <br />
 
 But how do I access the app?
-```elixir
+```plaintext
 istio-1.0.5/samples/bookinfo $ kubectl apply -f networking/bookinfo-gateway.yaml
 gateway.networking.istio.io "bookinfo-gateway" created
 virtualservice.networking.istio.io "bookinfo" created
@@ -275,7 +275,7 @@ In Istio a Gateway configures a load balancer for HTTP/TCP traffic, most commonl
 <br />
 
 After that we need to set some environment variables to fetch the LB ip, port, etc.
-```elixir
+```bash
 $ export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 $ export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
 $ export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].port}')
@@ -352,7 +352,7 @@ En caso de que no estés de acuerdo con mis explicaciones, está bien; esta es u
 
 Primero que nada, necesitamos descargar e instalar Istio en nuestro clúster. La forma recomendada de hacerlo es usando Helm (en este caso, utilizaré la alternativa sin Tiller, pero también se podría hacer con `helm install`. Consulta [más información aquí](https://istio.io/docs/setup/kubernetes/helm-install/)):
 
-```elixir
+```bash
 $ curl -L https://git.io/getLatestIstio | sh -
 ```
 
@@ -361,7 +361,7 @@ Esto descargará y extraerá la última versión, en este caso la 1.0.5 en este 
 <br />
 
 Así que instalemos Istio... solo presta atención a los primeros 3 comandos, luego puedes saltar hasta el final del bloque de código; publico toda la salida porque me gustan los ejemplos completos :)
-```elixir
+```bash
 istio-1.0.5 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set grafana.enabled=true > $HOME/istio.yaml
 istio-1.0.5 $ kubectl create namespace istio-system
 namespace "istio-system" created
@@ -508,7 +508,7 @@ Se crearon muchos recursos nuevos; básicamente, acabamos de generar el manifies
 <br />
 
 Así que veamos qué está en ejecución y qué significa eso:
-```elixir
+```bash
 $ kubectl get pods -n istio-system
 NAME                                      READY     STATUS      RESTARTS   AGE
 istio-citadel-856f994c58-l96p8            1/1       Running     0          3m
@@ -553,7 +553,7 @@ Nota: El service mesh no es una red superpuesta. Simplifica y mejora cómo los m
 <br />
 
 Bien, se instalaron muchas cosas nuevas, pero ¿cómo sé que está funcionando? Vamos a desplegar una [aplicación de prueba](https://istio.io/docs/examples/bookinfo/) y comprobarlo:
-```elixir
+```bash
 $ export PATH="$PATH:~/istio-1.0.5/bin"
 istio-1.0.5/samples/bookinfo $ kubectl apply -f <(istioctl kube-inject -f platform/kube/bookinfo.yaml)
 service "details" created
@@ -569,7 +569,7 @@ deployment.extensions "productpage-v1" created
 ```
 <br />
 Como podemos ver, cada pod tiene 2 contenedores: el contenedor de la aplicación y `istio-proxy`. También puedes configurar la [inyección automática de sidecar](https://istio.io/docs/setup/kubernetes/sidecar-injection/#automatic-sidecar-injection).
-```elixir
+```bash
 $ kubectl get pods
 NAME                              READY     STATUS    RESTARTS   AGE
 details-v1-8bd954dbb-zhrqq        2/2       Running   0          2m
@@ -583,7 +583,7 @@ reviews-v3-74458c4889-kr4wb       2/2       Running   0          2m
 
 Además, todos los servicios están en funcionamiento:
 
-```elixir
+```bash
 $ kubectl get services
 NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
 details       ClusterIP   10.245.134.179   <none>        9080/TCP   3m
@@ -595,7 +595,7 @@ reviews       ClusterIP   10.245.77.125    <none>        9080/TCP   3m
 <br />
 
 Pero, ¿cómo accedo a la aplicación?
-```elixir
+```plaintext
 istio-1.0.5/samples/bookinfo $ kubectl apply -f networking/bookinfo-gateway.yaml
 gateway.networking.istio.io "bookinfo-gateway" created
 virtualservice.networking.istio.io "bookinfo" created
@@ -604,7 +604,7 @@ En Istio, un Gateway configura un balanceador de carga para tráfico HTTP/TCP, o
 <br />
 
 Después de eso, necesitamos establecer algunas variables de entorno para obtener la IP del balanceador de carga, el puerto, etc.
-```elixir
+```bash
 $ export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 $ export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
 $ export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].port}')

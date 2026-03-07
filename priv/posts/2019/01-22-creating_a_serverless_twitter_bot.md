@@ -24,7 +24,7 @@ So before you can start with the Twitter API you need to get a developer account
 
 ### **The code**
 I added several comments over the code so it's easy to understand what everything is supposed to do, also it can be found [here](https://github.com/kainlite/tbo).
-```elixir
+```dockerfile
 package main
 
 import (
@@ -328,7 +328,7 @@ The code is fairly straigth forward, it checks for the environment to have a loc
 
 ### **While debugging locally it can be ran like this**
 You can save use an .env file to test debug how your tweets are going to look.
-```elixir
+```bash
 go run .
 # OUTPUT:
 # time="2019-01-21T22:39:15-03:00" level=debug msg="Starting main" func=main.main file="/home/kainlite/Webs/tbo/tbo/main.go:279"
@@ -347,7 +347,7 @@ The output is very verbose but it will show you everything that the function wil
 
 ### **Creating the project**
 But how did you get the project skeleton?
-```elixir
+```bash
 mkdir tbo && cd tbo && serverless create -t aws-go
 ```
 By default it creates two go functions: hello and world, if you look at the files serverless.yaml and the go code, it will be easy to understand how everything is tied together in the default example.
@@ -355,7 +355,7 @@ By default it creates two go functions: hello and world, if you look at the file
 
 ### **Serverless framework**
 This function is managed by the [serverless framework](https://serverless.com/), as you can see it's an easy way to manage your functions, what this small block of YAML will do is compile, upload, and schedule our function (because we use an event schedule)
-```elixir
+```yaml
 # Welcome to Serverless!
 #
 # This file is the main config file for your service.
@@ -408,7 +408,7 @@ We provide the environment variables there that the app needs to run, under the 
 
 ### **Deploy the function**
 Once the code is ready and you are ready to test it in production aka send a real tweet, just deploy it.
-```elixir
+```bash
 serverless deploy
 # OUTPUT:
 # Serverless: WARNING: Missing "tenant" and "app" properties in serverless.yml. Without these properties, you can not publish the service to the Serverless Platform.
@@ -441,7 +441,7 @@ As we described before you can see everything that the serverless framework did 
 
 ### **S3**
 Example s3 bucket from the previous deployment.
-```elixir
+```bash
 aws s3 ls
 # OUTPUT:
 # 2019-01-21 22:42:05 handler-prod-serverlessdeploymentbucket-1s5fs5igk2pwc
@@ -451,7 +451,7 @@ As we can see after the deployment we see a new bucket with our function and if 
 
 ### **Invoke the function**
 Ok, but I don't want to wait 12 hours to see if everything is okay, then just invoke the function.
-```elixir
+```bash
 serverless invoke -f tweet
 # OUTPUT:
 # null
@@ -498,7 +498,7 @@ Antes de que puedas empezar a usar la API de Twitter, necesitás obtener una cue
 
 ### **El código**
 Agregué varios comentarios en el código para que sea fácil de entender qué hace cada cosa, también lo podés encontrar [aquí](https://github.com/kainlite/tbo).
-```elixir
+```plaintext
 // Código omitido por longitud
 ```
 
@@ -507,7 +507,7 @@ El código es bastante simple, verifica el entorno para tener una aplicación qu
 
 ### **Mientras depurás localmente, se puede ejecutar así**
 Podés usar un archivo `.env` para probar y depurar cómo van a lucir tus tweets.
-```elixir
+```bash
 go run .
 # OUTPUT:
 # Mensaje omitido por longitud
@@ -517,7 +517,7 @@ La salida es bastante detallada pero te muestra todo lo que la función va a hac
 
 ### **Creando el proyecto**
 Pero, ¿cómo obtuviste el esqueleto del proyecto?
-```elixir
+```bash
 mkdir tbo && cd tbo && serverless create -t aws-go
 ```
 Por defecto, crea dos funciones en Go: `hello` y `world`. Si mirás los archivos `serverless.yaml` y el código Go, va a ser fácil entender cómo todo está vinculado en el ejemplo predeterminado.
@@ -525,7 +525,7 @@ Por defecto, crea dos funciones en Go: `hello` y `world`. Si mirás los archivos
 
 ### **Framework Serverless**
 Esta función está gestionada por el [framework Serverless](https://serverless.com/), como podés ver, es una forma sencilla de gestionar tus funciones. Lo que este pequeño bloque de YAML hace es compilar, subir y programar nuestra función (porque usamos un evento `schedule`).
-```elixir
+```plaintext
 // Configuración omitida por longitud
 ```
 Proveemos las variables de entorno que la app necesita para funcionar. Lo que Serverless hace en el fondo es crear un bucket en S3 para esta función, junto con un stack de CloudFormation y un archivo zip con tu función (para cada versión o implementación), luego aplica ese stack y valida que todo esté correcto.
@@ -533,7 +533,7 @@ Proveemos las variables de entorno que la app necesita para funcionar. Lo que Se
 
 ### **Desplegando la función**
 Una vez que el código esté listo y quieras probarlo en producción, es decir, enviar un tweet real, simplemente desplegalo.
-```elixir
+```bash
 serverless deploy
 # OUTPUT:
 # Mensaje omitido por longitud
@@ -543,7 +543,7 @@ Como describimos antes, podés ver todo lo que el framework Serverless hizo por 
 
 ### **S3**
 Ejemplo del bucket de S3 del despliegue anterior.
-```elixir
+```bash
 aws s3 ls
 # OUTPUT:
 # 2019-01-21 22:42:05 handler-prod-serverlessdeploymentbucket-1s5fs5igk2pwc
@@ -553,7 +553,7 @@ Como podés ver después del despliegue, aparece un nuevo bucket con nuestra fun
 
 ### **Invocar la función**
 Ok, pero no quiero esperar 12 horas para ver si todo está bien. Entonces, simplemente invocá la función.
-```elixir
+```bash
 serverless invoke -f tweet
 # OUTPUT:
 # null

@@ -25,7 +25,7 @@ This is the part one of [two](/blog/actually_using_vault_on_kubernetes)
 
 ##### **Preparing the cluster**
 Let's start minikube and validate that we can reach our cluster with `minikube start` and then with `kubectl get nodes`, also the dashboard can become handy you can invoke it like this `minikube dashboard`
-```elixir
+```bash
 $ minikube start
 😄  minikube v1.0.0 on linux (amd64)
 🤹  Downloading Kubernetes v1.14.0 images in the background ...
@@ -53,7 +53,7 @@ minikube   Ready    master   4d20h   v1.14.0
 
 ##### **Creating certificates for Consul and Vault**
 Vault needs a backend to store data, this backend can be consul, etcd, postgres, and [many more](https://www.vaultproject.io/docs/configuration/storage/index.html), so the first thing that we are going to do is create a certificate so consul and vault can speak to each other securely.
-```elixir
+```bash
 $ consul tls ca create
 ==> Saved consul-agent-ca.pem
 ==> Saved consul-agent-ca-key.pem
@@ -76,7 +76,7 @@ $ consul tls cert create -client
 
 ##### **Consul**
 The next steps would be to create an encryption key for the consul cluster and to create all the kubernetes resources associated with it
-```elixir
+```nginx
 # Create secret for the gossip protocol
 $ export GOSSIP_ENCRYPTION_KEY=$(consul keygen)
 
@@ -116,7 +116,7 @@ consul-2  172.17.0.7:8301  alive   server  1.4.4  2         dc1  <all>
 
 ##### **Vault**
 Once we have Consul running starting vault should be straight forward, we need to create all kubernetes resources associated with it and then initialize and unseal the vault.
-```elixir
+```bash
 # Store the certs for vault
 $ kubectl create secret generic vault \
     --from-file=certs/consul-agent-ca.pem \
@@ -251,7 +251,7 @@ Este es el primer artículo de dos en la serie [Uso de Vault en Kubernetes](/blo
 
 ##### **Preparando el clúster**
 Primero, iniciamos Minikube y validamos que podemos acceder al clúster con `minikube start` y `kubectl get nodes`. También puede ser útil iniciar el dashboard de Minikube con `minikube dashboard`.
-```elixir
+```bash
 $ minikube start
 $ kubectl get nodes
 ```
@@ -259,7 +259,7 @@ $ kubectl get nodes
 
 ##### **Creando certificados para Consul y Vault**
 Vault necesita un backend para almacenar datos, que puede ser Consul, etcd, Postgres, y [muchos otros](https://www.vaultproject.io/docs/configuration/storage/index.html). Lo primero que vamos a hacer es crear un certificado para que Consul y Vault se comuniquen de forma segura.
-```elixir
+```bash
 $ consul tls ca create
 $ consul tls cert create -server -additional-dnsname server.dc1.cluster.local
 $ consul tls cert create -client
@@ -268,7 +268,7 @@ $ consul tls cert create -client
 
 ##### **Consul**
 Los siguientes pasos son crear una clave de cifrado para el clúster de Consul y luego crear los recursos de Kubernetes asociados.
-```elixir
+```bash
 $ export GOSSIP_ENCRYPTION_KEY=$(consul keygen)
 $ kubectl create secret generic consul \
   --from-literal="gossip-encryption-key=${GOSSIP_ENCRYPTION_KEY}" \
@@ -286,7 +286,7 @@ $ consul members
 
 ##### **Vault**
 Con Consul en funcionamiento, ahora podemos desplegar Vault, crear los recursos necesarios en Kubernetes y luego inicializar y desbloquear Vault.
-```elixir
+```bash
 $ kubectl create secret generic vault \
     --from-file=certs/consul-agent-ca.pem \
     --from-file=certs/dc1-client-consul-0.pem \
@@ -301,15 +301,15 @@ $ export VAULT_CACERT="certs/consul-agent-ca.pem"
 $ vault operator init -key-shares=3 -key-threshold=3
 ```
 Luego de inicializar, debemos desbloquear Vault:
-```elixir
+```bash
 $ vault operator unseal
 ```
 Iniciar sesión con el token raíz inicial:
-```elixir
+```bash
 $ vault login
 ```
 Habilitamos el camino `/secrets` con el plugin `kv` y luego probamos guardar y leer un secreto:
-```elixir
+```bash
 $ vault secrets enable -path=secrets kv
 $ vault kv put secrets/hello foo=world
 $ vault kv get secrets/hello

@@ -18,13 +18,13 @@ libcluster with some basic configuration.
 
 ##### **Upgrading packages**
 For that to work you need to add in `mix.exs`:
-```elixir
+```plaintext
     {:libcluster, "~> 3.3"},
 ``` 
 <br />
 
 Update your `lib/tr/application.ex` file to start libcluster
-```elixir
+```yaml
     topologies = Application.get_env(:libcluster, :topologies, [])
 
     children = [
@@ -35,7 +35,7 @@ Update your `lib/tr/application.ex` file to start libcluster
 <br />
 
 Then we need to update our `config/prod.exs` file to tell libcluster what to look for in the cluster:
-```elixir
+```yaml
 # Libcluster configuration
 config :libcluster,
   topologies: [
@@ -53,7 +53,7 @@ config :libcluster,
 <br />
 
 Dev config `config/dev.exs`:
-```elixir
+```yaml
 config :libcluster,
   topologies: [
     example: [
@@ -72,7 +72,7 @@ That's enough for elixir to try to find the other pods and attempt to connect to
 that communication and let the pods read the information from the kubernetes API, next up add these permissions to your
 deployment `05-role.yaml`:
 
-```elixir
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -99,7 +99,7 @@ roleRef:
 <br />
 
 Then in your `02-deployment.yaml` file:
-```elixir
+```yaml
         env:
         - name: POD_IP
           valueFrom:
@@ -109,7 +109,7 @@ Then in your `02-deployment.yaml` file:
 <br />
 
 And a service to make things easier `03-service.yaml` (epmd port):
-```elixir
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -126,13 +126,13 @@ This is to set the right environment variables for the application to use and to
 <br />
 
 Before moving on, make sure you generate the release files:
-```elixir
+```plaintext
 mix release.init
 ```
 <br />
 
 And now update your `rel/env.sh.eex` file so it looks like this:
-```elixir
+```bash
 export RELEASE_DISTRIBUTION=name
 export RELEASE_NODE=<%= @release.name %>@${POD_IP}
 ```
@@ -140,14 +140,14 @@ export RELEASE_NODE=<%= @release.name %>@${POD_IP}
 
 
 If everything went well, you should see something like this in the logs:
-```elixir
+```plaintext
 tr-deployment-6cf5c65b56-ndrgm tr 04:13:13.411 [info] [libcluster:erlang_nodes_in_k8s] connected to :"tr@10.42.1.217"
 tr-deployment-6cf5c65b56-ndrgm tr 04:13:13.416 [info] [libcluster:erlang_nodes_in_k8s] connected to :"tr@10.42.3.185"
 ```
 <br />
 
 If you want to validate it locally, use this command instead from `iex`:
-```elixir
+```plaintext
 ❯ iex --name a@127.0.0.1 --cookie secret -S mix
 
 ❯ iex --name b@127.0.0.1 --cookie secret -S mix
@@ -193,13 +193,13 @@ En esta breve actualización, voy a hacer que todos los nodos puedan conectarse 
 
 ##### **Actualizando paquetes**
 Para que esto funcione, necesitás agregar en `mix.exs`:
-```elixir
+```plaintext
     {:libcluster, "~> 3.3"},
 ``` 
 <br />
 
 Actualizá tu archivo `lib/tr/application.ex` para iniciar libcluster:
-```elixir
+```yaml
     topologies = Application.get_env(:libcluster, :topologies, [])
 
     children = [
@@ -210,7 +210,7 @@ Actualizá tu archivo `lib/tr/application.ex` para iniciar libcluster:
 <br />
 
 Luego necesitás actualizar tu archivo `config/prod.exs` para indicarle a libcluster qué buscar en el clúster:
-```elixir
+```yaml
 # Configuración de Libcluster
 config :libcluster,
   topologies: [
@@ -228,7 +228,7 @@ config :libcluster,
 <br />
 
 Config para desarrollo `config/dev.exs`:
-```elixir
+```yaml
 config :libcluster,
   topologies: [
     example: [
@@ -245,7 +245,7 @@ config :libcluster,
 
 Eso es suficiente para que Elixir intente encontrar los otros pods y conectarse a los nodos. Sin embargo, necesitamos permitir esa comunicación y dejar que los pods lean la información de la API de Kubernetes. A continuación, agregá estos permisos a tu despliegue en `05-role.yaml`:
 
-```elixir
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -272,7 +272,7 @@ roleRef:
 <br />
 
 Luego en tu archivo `02-deployment.yaml`:
-```elixir
+```yaml
         env:
         - name: POD_IP
           valueFrom:
@@ -282,7 +282,7 @@ Luego en tu archivo `02-deployment.yaml`:
 <br />
 
 Y un servicio para facilitar las cosas `03-service.yaml` (puerto epmd):
-```elixir
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -298,27 +298,27 @@ Esto es para establecer las variables de entorno correctas para que la aplicaci�
 <br />
 
 Antes de seguir, asegurate de generar los archivos de release:
-```elixir
+```plaintext
 mix release.init
 ```
 <br />
 
 Ahora actualizá tu archivo `rel/env.sh.eex` para que se vea así:
-```elixir
+```bash
 export RELEASE_DISTRIBUTION=name
 export RELEASE_NODE=<%= @release.name %>@${POD_IP}
 ```
 <br />
 
 Si todo salió bien, deberías ver algo como esto en los logs:
-```elixir
+```plaintext
 tr-deployment-6cf5c65b56-ndrgm tr 04:13:13.411 [info] [libcluster:erlang_nodes_in_k8s] connected to :"tr@10.42.1.217"
 tr-deployment-6cf5c65b56-ndrgm tr 04:13:13.416 [info] [libcluster:erlang_nodes_in_k8s] connected to :"tr@10.42.3.185"
 ```
 <br />
 
 Si querés validarlo localmente, usá este comando desde `iex`:
-```elixir
+```plaintext
 ❯ iex --name a@127.0.0.1 --cookie secret -S mix
 
 ❯ iex --name b@127.0.0.1 --cookie secret -S mix

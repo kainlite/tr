@@ -37,7 +37,7 @@ be run by a defined CRON).
 ##### **Code**
 First, lets check the code to see what it looks like and declare what we would be testing and what happens in case of
 failure... This file is called `lib.rs`:
-```elixir
+```yaml
 use serde_json::json;
 use std::sync::atomic::{AtomicU32, Ordering};
 use worker::*;
@@ -122,7 +122,7 @@ async fn handle_failed_check(env: &Env) {
 NOTE: you need to configure these two environment variables, one is defined via wrangler and the secret can be created
 with the following command:
 
-```elixir
+```plaintext
 npx wrangler secret put SLACK_WEBHOOK_URL 
 ```
 
@@ -137,7 +137,7 @@ In simple steps:
 
 ##### **Deploying it**
 If we want to deploy it manually we can do so by running:
-```elixir
+```yaml
 ❯ npx wrangler deploy
 
  ⛅️ wrangler 3.101.0
@@ -172,7 +172,7 @@ Alternatively we can just let the Github Action deploy it automatically for us, 
 doesn't support Rust yet nor sudo, so you cannot install packages to build and release from there, for this you only
 need two environment variables in your secrets as you will see in the action (use the template for workers when creating
 the key).
-```elixir
+```yaml
 name: Deploy Worker
 
 on:
@@ -212,7 +212,7 @@ jobs:
 <br />
 
 And last but not least, the Wrangler configuration (`wrangler.toml`):
-```elixir
+```bash
 name = "healthcheck"
 main = "build/worker/shim.mjs"
 compatibility_date = "2025-01-12"
@@ -280,7 +280,7 @@ Un par de cosas: Cloudflare tiene algunas limitaciones en los workers y también
 
 ##### **Código**
 Primero, vamos a chusmear el código para ver cómo es y declarar qué vamos a probar y qué pasa en caso de fallo... este archivo se llama `lib.rs`:
-```elixir
+```yaml
 use serde_json::json;
 use std::sync::atomic::{AtomicU32, Ordering};
 use worker::*;
@@ -365,7 +365,7 @@ async fn handle_failed_check(env: &Env) {
 
 NOTA: necesitás configurar estas dos variables de entorno, una se define a través de wrangler y el secreto se puede crear con el siguiente comando:
 
-```elixir
+```plaintext
 npx wrangler secret put SLACK_WEBHOOK_URL 
 ```
 
@@ -383,7 +383,7 @@ En simples pasos:
 
 Si queremos desplegarlo manualmente, podemos hacerlo ejecutando:
 
-```elixir
+```yaml
 ❯ npx wrangler deploy
 
  ⛅️ wrangler 3.101.0
@@ -416,7 +416,7 @@ Current Version ID: 7030ba06-1be0-4376-9ced-0c9ba6ef2abc
 
 Alternativamente, podemos dejar que Github Action lo despliegue automáticamente por nosotros. Cloudflare tiene un sistema de CI/CD, pero todavía no soporta Rust ni sudo, así que no podés instalar paquetes para construir y lanzar desde ahí. Para esto, solo necesitás dos variables de entorno en tus secretos, como verás en la action (usá la plantilla para workers al crear la key).
 
-```elixir
+```yaml
 name: Desplegar Worker
 
 on:
@@ -457,7 +457,7 @@ jobs:
 
 Y por último, pero no menos importante, la configuración de Wrangler (`wrangler.toml`):
 
-```elixir
+```bash
 name = "healthcheck"
 main = "build/worker/shim.mjs"
 compatibility_date = "2025-01-12"

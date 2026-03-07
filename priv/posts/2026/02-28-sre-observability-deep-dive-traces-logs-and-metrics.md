@@ -50,7 +50,7 @@ wrong. Traces tell you where in the system it went wrong. You need all three.
 
 <br />
 
-```elixir
+```bash
 # The observability flow during an incident:
 #
 # 1. METRICS: Alert fires: "p99 latency > 300ms for 5 minutes"
@@ -76,7 +76,7 @@ For our Elixir/Phoenix application, the setup looks like this:
 
 <br />
 
-```elixir
+```bash
 # mix.exs - add OpenTelemetry dependencies
 defp deps do
   [
@@ -101,7 +101,7 @@ Then configure the OpenTelemetry SDK:
 
 <br />
 
-```elixir
+```yaml
 # config/runtime.exs
 if config_env() == :prod do
   config :opentelemetry,
@@ -120,7 +120,7 @@ And set up the auto-instrumentation in your application startup:
 
 <br />
 
-```elixir
+```yaml
 # lib/tr/application.ex
 def start(_type, _args) do
   # Set up OpenTelemetry instrumentation
@@ -179,7 +179,7 @@ Deploy it as a DaemonSet in Kubernetes so every node has a local collector:
 
 <br />
 
-```elixir
+```yaml
 # otel-collector/daemonset.yaml
 apiVersion: apps/v1
 kind: DaemonSet
@@ -218,7 +218,7 @@ The collector configuration routes data to the right backends:
 
 <br />
 
-```elixir
+```hcl
 # otel-collector/config.yaml
 apiVersion: v1
 kind: ConfigMap
@@ -302,7 +302,7 @@ Deploy Tempo in your cluster:
 
 <br />
 
-```elixir
+```hcl
 # tempo/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -346,7 +346,7 @@ set on your spans. The most useful queries during an incident:
 
 <br />
 
-```elixir
+```bash
 # Find slow traces (latency > 1s) for a specific service
 { resource.service.name = "tr-web" } && duration > 1s
 
@@ -378,7 +378,7 @@ For Kubernetes, the simplest setup uses Promtail as a DaemonSet to ship containe
 
 <br />
 
-```elixir
+```yaml
 # promtail/daemonset.yaml
 apiVersion: apps/v1
 kind: DaemonSet
@@ -427,7 +427,7 @@ container name). You can then query logs in Grafana using LogQL:
 
 <br />
 
-```elixir
+```bash
 # All logs from the tr-web deployment
 {namespace="default", app="tr-web"}
 
@@ -450,7 +450,7 @@ For our Elixir app, structured logging makes Loki much more powerful. Use a JSON
 
 <br />
 
-```elixir
+```yaml
 # config/prod.exs
 config :logger, :console,
   format: {LogfmtEx, :format},
@@ -476,7 +476,7 @@ This is the single most useful dashboard for any service. Three panels:
 
 <br />
 
-```elixir
+```bash
 # Rate: requests per second
 sum(rate(http_requests_total{service="tr-web"}[5m]))
 
@@ -500,7 +500,7 @@ rules from the first article:
 
 <br />
 
-```elixir
+```bash
 # Current SLI value (availability over 30 days)
 sli:availability:ratio_rate30d{service="tr-web"}
 
@@ -523,7 +523,7 @@ For each infrastructure component (CPU, memory, disk, network):
 
 <br />
 
-```elixir
+```bash
 # CPU utilization
 sum(rate(container_cpu_usage_seconds_total{pod=~"tr-web.*"}[5m]))
 /
@@ -564,7 +564,7 @@ can click on it and jump directly to a trace that was part of that spike:
 
 <br />
 
-```elixir
+```bash
 # In your Prometheus recording rules, enable exemplars
 # Prometheus automatically captures trace_id from OTLP metrics
 
@@ -578,7 +578,7 @@ can click on it and jump directly to a trace that was part of that spike:
 
 <br />
 
-```elixir
+```hcl
 # In Grafana, configure the Tempo data source with a link to Loki:
 # Data Sources → Tempo → Trace to logs
 #   - Data source: Loki
@@ -613,7 +613,7 @@ Here are some practical patterns for instrumenting Elixir applications beyond th
 
 <br />
 
-```elixir
+```yaml
 # lib/tr/sponsors.ex
 require OpenTelemetry.Tracer, as: Tracer
 
@@ -641,7 +641,7 @@ end
 
 <br />
 
-```elixir
+```bash
 # lib/tr/sponsors_cache.ex
 def handle_call({:get, login}, _from, state) do
   Tracer.with_span "sponsors_cache.get" do
@@ -658,7 +658,7 @@ end
 
 <br />
 
-```elixir
+```bash
 # lib/tr_web/live/search_live.ex
 def handle_event("search", %{"q" => query}, socket) do
   Tracer.with_span "live.search", %{attributes: %{"search.query" => query}} do
@@ -676,7 +676,7 @@ Combine your SLO-based alerts (from article 1) with observability-driven alerts:
 
 <br />
 
-```elixir
+```yaml
 # alerts.yaml
 groups:
   - name: observability.alerts
@@ -837,7 +837,7 @@ salió mal. Las trazas te dicen en qué parte del sistema salió mal. Necesitás
 
 <br />
 
-```elixir
+```bash
 # El flujo de observabilidad durante un incidente:
 #
 # 1. MÉTRICAS: Alerta salta: "latencia p99 > 300ms por 5 minutos"
@@ -863,7 +863,7 @@ Para nuestra aplicación Elixir/Phoenix, el setup se ve así:
 
 <br />
 
-```elixir
+```bash
 # mix.exs - agregar dependencias de OpenTelemetry
 defp deps do
   [
@@ -888,7 +888,7 @@ Después configurás el SDK de OpenTelemetry:
 
 <br />
 
-```elixir
+```yaml
 # config/runtime.exs
 if config_env() == :prod do
   config :opentelemetry,
@@ -907,7 +907,7 @@ Y configurás la auto-instrumentación en el arranque de tu aplicación:
 
 <br />
 
-```elixir
+```yaml
 # lib/tr/application.ex
 def start(_type, _args) do
   # Configurar instrumentación de OpenTelemetry
@@ -967,7 +967,7 @@ Deployalo como un DaemonSet en Kubernetes para que cada nodo tenga un collector 
 
 <br />
 
-```elixir
+```yaml
 # otel-collector/daemonset.yaml
 apiVersion: apps/v1
 kind: DaemonSet
@@ -1006,7 +1006,7 @@ La configuración del collector rutea datos a los backends correctos:
 
 <br />
 
-```elixir
+```yaml
 # otel-collector/config.yaml
 apiVersion: v1
 kind: ConfigMap
@@ -1090,7 +1090,7 @@ Las consultas más útiles durante un incidente:
 
 <br />
 
-```elixir
+```bash
 # Encontrar trazas lentas (latencia > 1s) para un servicio específico
 { resource.service.name = "tr-web" } && duration > 1s
 
@@ -1124,7 +1124,7 @@ pod, nombre del contenedor). Después podés consultar logs en Grafana usando Lo
 
 <br />
 
-```elixir
+```bash
 # Todos los logs del deployment tr-web
 {namespace="default", app="tr-web"}
 
@@ -1147,7 +1147,7 @@ Para nuestra app Elixir, el logging estructurado hace a Loki mucho más poderoso
 
 <br />
 
-```elixir
+```yaml
 # config/prod.exs
 config :logger, :console,
   format: {LogfmtEx, :format},
@@ -1173,7 +1173,7 @@ Este es el dashboard más útil para cualquier servicio. Tres paneles:
 
 <br />
 
-```elixir
+```bash
 # Tasa: requests por segundo
 sum(rate(http_requests_total{service="tr-web"}[5m]))
 
@@ -1196,7 +1196,7 @@ Mostrá la tasa de quemado del presupuesto de error junto con los valores reales
 
 <br />
 
-```elixir
+```bash
 # Valor actual del SLI (disponibilidad en 30 días)
 sli:availability:ratio_rate30d{service="tr-web"}
 
@@ -1263,7 +1263,7 @@ básica:
 
 <br />
 
-```elixir
+```yaml
 # lib/tr/sponsors.ex
 require OpenTelemetry.Tracer, as: Tracer
 
@@ -1291,7 +1291,7 @@ end
 
 <br />
 
-```elixir
+```bash
 # lib/tr/sponsors_cache.ex
 def handle_call({:get, login}, _from, state) do
   Tracer.with_span "sponsors_cache.get" do
@@ -1308,7 +1308,7 @@ end
 
 <br />
 
-```elixir
+```bash
 # lib/tr_web/live/search_live.ex
 def handle_event("search", %{"q" => query}, socket) do
   Tracer.with_span "live.search", %{attributes: %{"search.query" => query}} do

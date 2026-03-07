@@ -27,7 +27,7 @@ This article is part of the serverless series, in this article we will see how t
 
 ##### **Serverless framework**
 **As usual I will be using the serverless framework to manage our functions, create the project**
-```elixir
+```yaml
 mkdir techsquad-functions && cd techsquad-functions && serverless create -t aws-go
 # OUTPUT:
 # Serverless: Generating boilerplate...
@@ -44,7 +44,7 @@ mkdir techsquad-functions && cd techsquad-functions && serverless create -t aws-
 ```
 
 After creating the project we can update the serverless manifest as follow:
-```elixir
+```yaml
 service: sendMail
 
 frameworkVersion: ">=1.28.0 <2.0.0"
@@ -83,7 +83,7 @@ The interesting parts here are the IAM permissions and the function send_mail, t
 <br />
 
 **Deploy the function**
-```elixir
+```bash
 make deploy
 # OUTPUT:
 # rm -rf ./send_mail/send_mail
@@ -132,7 +132,7 @@ Everything looks right, so what's next? the source code.
 
 ##### **Lambda**
 This is basically the full source code for this function, as you will see it's really simple:
-```elixir
+```hcl
 package main
 
 import (
@@ -284,7 +284,7 @@ As I don't have this domain in Route53 I don't have a button to add the records 
 <br />
 
 **After that just test it**
-```elixir
+```bash
 serverless invoke -f send_mail -d '{ "Email": "kainlite@gmail.com", "Message": "test" }'
 # OUTPUT:
 {
@@ -300,7 +300,7 @@ After hitting enter the message popped up right away in my inbox :).
 <br />
 
 **Another option is to use [httpie](https://devhints.io/httpie)**
-```elixir
+```bash
 echo '{ "email": "kainlite@gmail.com", "message": "test2" }' | http https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod/sendMail
 # OUTPUT:
 # HTTP/1.1 200 OK
@@ -321,7 +321,7 @@ echo '{ "email": "kainlite@gmail.com", "message": "test2" }' | http https://m8eb
 <br />
 
 **OR [curl](https://devhints.io/curl)**
-```elixir
+```bash
 curl -i -X POST https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod/sendMail -d '{ "email": "kainlite@gmail.com", "message": "test3" }'
 # OUTPUT:
 # HTTP/2 200
@@ -378,7 +378,7 @@ Este artículo forma parte de la serie sobre tecnologías serverless. Aquí vere
 
 ##### **Framework Serverless**
 **Como de costumbre, voy a usar el framework Serverless para gestionar nuestras funciones. Creamos el proyecto:**
-```elixir
+```yaml
 mkdir techsquad-functions && cd techsquad-functions && serverless create -t aws-go
 # OUTPUT:
 # Serverless: Generating boilerplate...
@@ -395,7 +395,7 @@ mkdir techsquad-functions && cd techsquad-functions && serverless create -t aws-
 ```
 
 Después de crear el proyecto, actualizamos el manifiesto de serverless de la siguiente manera:
-```elixir
+```yaml
 service: sendMail
 
 frameworkVersion: ">=1.28.0 <2.0.0"
@@ -434,7 +434,7 @@ Las partes interesantes aquí son los permisos de IAM y la función `send_mail`.
 <br />
 
 **Desplegamos la función**
-```elixir
+```bash
 make deploy
 # OUTPUT:
 # rm -rf ./send_mail/send_mail
@@ -465,7 +465,7 @@ Todo se ve bien, ¿qué sigue? El código fuente.
 
 ##### **Lambda**
 Este es básicamente el código fuente completo de esta función. Como verás, es bastante simple:
-```elixir
+```hcl
 package main
 
 import (
@@ -615,7 +615,7 @@ Como no tengo este dominio en Route53, no tengo el botón para agregar los regis
 <br />
 
 **Después de eso, probalo**
-```elixir
+```bash
 serverless invoke -f send_mail -d '{ "Email": "kainlite@gmail.com", "Message
 
 ": "test" }'
@@ -633,7 +633,7 @@ Después de presionar Enter, el mensaje apareció de inmediato en mi bandeja de 
 <br />
 
 **Otra opción es usar [httpie](https://devhints.io/httpie)**
-```elixir
+```bash
 echo '{ "email": "kainlite@gmail.com", "message": "test2" }' | http https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod/sendMail
 # OUTPUT:
 # HTTP/1.1 200 OK
@@ -643,7 +643,7 @@ echo '{ "email": "kainlite@gmail.com", "message": "test2" }' | http https://m8eb
 <br />
 
 **O [curl](https://devhints.io/curl)**
-```elixir
+```bash
 curl -i -X POST https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod/sendMail -d '{ "email": "kainlite@gmail.com", "message": "test3" }'
 # OUTPUT:
 # HTTP/2 200

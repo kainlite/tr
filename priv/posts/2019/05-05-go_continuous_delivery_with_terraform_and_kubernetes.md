@@ -26,7 +26,7 @@ Once there click generate token (give it a meaningful name to you), and make sur
 
 ##### **Terraform**
 As the next step it would be good to set the token for terraform, so let's examine all files and see what they are going to do, but first we're going to provide the secrets to our app via environment variables, and I've found quite useful to use `direnv` on many projects, so the content of the first file `.envrc` would look something like:
-```elixir
+```plaintext
 export TF_VAR_DO_TOKEN=insert_your_token_here
 
 ```
@@ -34,7 +34,7 @@ and after that you will need to allow it's execution by running `direnv allow`.
 <br />
 
 The first terraform file that we are going to check is `provider.tf`:
-```elixir
+```hcl
 # Configure the digitalocean provider with it's token
 variable "DO_TOKEN" {}
 
@@ -47,7 +47,7 @@ As we're using environment variables we need to declare it and then set it in th
 <br />
 
 Then the `kubernetes.tf` file:
-```elixir
+```hcl
 # Create the cluster
 resource "digitalocean_kubernetes_cluster" "dev-k8s" {
   name    = "dev-k8s"
@@ -67,7 +67,7 @@ This file will be the responsible of creating the kubernetes cluster, as it's ou
 <br />
 
 Next the file `lb.tf`:
-```elixir
+```hcl
 # Create a load balancer associated with our cluster
 resource "digitalocean_loadbalancer" "public" {
   name   = "loadbalancer-1"
@@ -94,7 +94,7 @@ This one is particularly interesting because it will provide a point of access t
 <br />
 
 And last but not least the `output.tf` file:
-```elixir
+```hcl
 # Export the kubectl configuration file
 resource "local_file" "kubernetes_config" {
   content  = "${digitalocean_kubernetes_cluster.dev-k8s.kube_config.0.raw_config}"
@@ -112,7 +112,7 @@ This file will print the kubernetes config file that we need to be able to use `
 <br />
 
 So what do we do with all of this?, first you will need to run `terraform init` inside the terraform folder to download plugins and providers, once that is done you can run `terraform plan` to see what changes terraform wants to make or `terraform apply` to do the changes. How is that going to look?:
-```elixir
+```hcl
 # Initialize terraform
 $ terraform init                                                                                                                                                                                             
                                                                                                                                                                                                                                                                                  
@@ -245,7 +245,7 @@ This will create our cluster in DigitalOcean, remember to destroy it after you'r
 
 ##### **Travis**
 We did some additions to our `.travis.yml` file, which are mostly to prepare `kubectl` and to also trigger a deployment if the build succeeded.
-```elixir
+```yaml
 language: go
 
 services:
@@ -282,7 +282,7 @@ This is how it should look in travis:
 ![image](/images/terraform-do-environment-variables.webp){:class="mx-auto"}
 
 Let's take a look at the generated kubernetes configuration and what values you should take into account:
-```elixir
+```yaml
 apiVersion: v1                                                                                                                                                                                                                                                                   
 clusters:                                                                                                                                                                                                                                                                        
 - cluster:                                                                                                                                                                                                                                                                       
@@ -328,7 +328,7 @@ Never do that, don't share your configuration or anybody will be able to use you
 
 ##### **Kubernetes**
 So after all that, we still need to have a deployment template to deploy our application, and it's a template because we need to replace the SHA of the current build in the manifest before committing it to the Kubernetes API, so let's check it `manifest.yml.template`:
-```elixir
+```yaml
 ---
 apiVersion: v1
 kind: Service
@@ -373,7 +373,7 @@ Here we expose our service in the port 30000 as a NodePort, and deploy the curre
 <br />
 ##### **Testing everything**
 Validate that the deployment went well by checking our kubernetes cluster:
-```elixir
+```bash
 $ kubectl get pods --kubeconfig=./kubeconfig.yaml                                                                                                                                                
 NAME                                        READY   STATUS    RESTARTS   AGE                                                                                                                                                                                                     
 whatismyip-go-deployment-5ff9894d8c-f48nx   1/1     Running   0          9s     
@@ -382,7 +382,7 @@ whatismyip-go-deployment-5ff9894d8c-f48nx   1/1     Running   0          9s
 <br />
 
 First we test the load balancer, and as we will see the ip is not right, it's the internal ip of the load balancer and not our public ip address.
-```elixir
+```bash
 $ curl -v 159.203.156.153
 *   Trying 159.203.156.153...                                                                                                                                                                                                                                                    
 * TCP_NODELAY set                                                                                                                                                                                                                                                                
@@ -404,7 +404,7 @@ $ curl -v 159.203.156.153
 <br />
 
 But if we hit our service directly we can see the correct IP address, this could be improved but it's left as an exercise for the avid reader ◕_◕.
-```elixir
+```bash
 $ curl -v 142.93.207.200:30000                                                                                                                                                                   
 *   Trying 142.93.207.200...                                                                                                                                                                                                                                                     
 * TCP_NODELAY set                                                                                                                                                                                                                                                                
@@ -478,7 +478,7 @@ Una vez allí, haz clic en "generate token" (dale un nombre significativo para t
 
 ##### **Terraform**
 El siguiente paso es configurar el token para Terraform. Examinemos todos los archivos y veamos qué harán, pero primero proporcionaremos los secretos a nuestra aplicación a través de variables de entorno. Yo he encontrado útil usar `direnv` en muchos proyectos, por lo que el contenido del primer archivo `.envrc` se vería algo así:
-```elixir
+```plaintext
 export TF_VAR_DO_TOKEN=insertar_tu_token_aquí
 
 ```
@@ -486,7 +486,7 @@ Después de eso, necesitarás permitir su ejecución ejecutando `direnv allow`.
 <br />
 
 El primer archivo de Terraform que vamos a revisar es `provider.tf`:
-```elixir
+```hcl
 # Configura el proveedor de DigitalOcean con su token
 variable "DO_TOKEN" {}
 
@@ -499,7 +499,7 @@ Como estamos utilizando variables de entorno, necesitamos declararlo y luego est
 <br />
 
 Luego, el archivo `kubernetes.tf`:
-```elixir
+```hcl
 # Crear el clúster
 resource "digitalocean_kubernetes_cluster" "dev-k8s" {
   name    = "dev-k8s"
@@ -519,7 +519,7 @@ Este archivo será el responsable de crear el clúster de Kubernetes. Como es nu
 <br />
 
 El siguiente archivo es `lb.tf`:
-```elixir
+```hcl
 # Crear un balanceador de carga asociado a nuestro clúster
 resource "digitalocean_loadbalancer" "public" {
   name   = "loadbalancer-1"
@@ -546,7 +546,7 @@ Este archivo es particularmente interesante porque proporcionará un punto de ac
 <br />
 
 Y finalmente, el archivo `output.tf`:
-```elixir
+```hcl
 # Exportar el archivo de configuración de kubectl
 resource "local_file" "kubernetes_config" {
   content  = "${digitalocean_kubernetes_cluster.dev-k8s.kube_config.0.raw_config}"
@@ -564,7 +564,7 @@ Este archivo imprimirá el archivo de configuración de Kubernetes que necesitam
 <br />
 
 ¿Qué hacemos con todo esto? Primero necesitarás ejecutar `terraform init` dentro de la carpeta de terraform para descargar los plugins y proveedores. Una vez hecho esto, puedes ejecutar `terraform plan` para ver qué cambios desea hacer terraform o `terraform apply` para aplicarlos. ¿Cómo se verá esto?:
-```elixir
+```hcl
 # Inicializar terraform
 $ terraform init
 ...
@@ -579,7 +579,7 @@ Esto creará nuestro clúster en DigitalOcean. Recuerda destruirlo después de u
 
 ##### **Travis**
 Hicimos algunas adiciones a nuestro archivo `.travis.yml`, que son principalmente para preparar `kubectl` y también para desencadenar un despliegue si la compilación tiene éxito.
-```elixir
+```yaml
 language: go
 
 services:
@@ -616,7 +616,7 @@ Así es como debería verse en Travis:
 ![image](/images/terraform-do-environment-variables.webp){:class="mx-auto"}
 
 Veamos la configuración generada de Kubernetes y qué valores debes tener en cuenta:
-```elixir
+```yaml
 apiVersion: v1
 clusters:
 - cluster:
@@ -646,7 +646,7 @@ odificando para guardarlo en Travis; lo hacemos en el archivo de configuración 
 
 ##### **Kubernetes**
 Después de todo eso, aún necesitamos tener una plantilla de despliegue para desplegar nuestra aplicación, y es una plantilla porque necesitamos reemplazar el SHA de la compilación actual en el manifiesto antes de enviarlo a la API de Kubernetes. Revisemos el archivo `manifest.yml.template`:
-```elixir
+```yaml
 ---
 apiVersion: v1
 kind: Service
@@ -691,7 +691,7 @@ Aquí exponemos nuestro servicio en el puerto 30000 como un NodePort y desplegam
 <br />
 ##### **Probando todo**
 Valida que el despliegue se haya realizado correctamente verificando nuestro clúster de Kubernetes:
-```elixir
+```bash
 $ kubectl get pods --kubeconfig=./kubeconfig.yaml
 NAME                                        READY   STATUS    RESTARTS   AGE
 whatismyip-go-deployment-5ff9894d8c-f48nx   1/1     Running   0          9s
@@ -700,7 +700,7 @@ whatismyip-go-deployment-5ff9894d8c-f48nx   1/1     Running   0          9s
 <br />
 
 Primero probamos el balanceador de carga, y como veremos, la IP no es correcta, es la IP interna del balanceador de carga y no nuestra dirección IP pública.
-```elixir
+```bash
 $ curl -v 159.203.156.153
 *   Trying 159.203.156.153...
 * TCP_NODELAY set
@@ -722,7 +722,7 @@ $ curl -v 159.203.156.153
 <br />
 
 Pero si accedemos directamente a nuestro servicio, podemos ver la dirección IP correcta, esto podría mejorarse pero lo dejamos como ejercicio para el lector ◕_◕.
-```elixir
+```bash
 $ curl -v 142.93.207.200:30000
 *   Trying 142.93.207.200...
 * TCP_NODELAY set

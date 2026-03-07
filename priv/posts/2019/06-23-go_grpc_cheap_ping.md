@@ -19,7 +19,7 @@ In this article we will explore gRPC with a cheap ping application, basically we
 
 ##### **Protobuf**
 As you might already know gRPC serializes data using [protocol buffers](https://developers.google.com/protocol-buffers/), We are just going to create a [Unary RPC](https://grpc.io/docs/guides/concepts/) as follows.
-```elixir
+```protobuf
 syntax = "proto3";
 
 service PingService {
@@ -40,7 +40,7 @@ With this file in place we are defining a service that will be able to send a si
 
 ##### **Generating the code**
 In order to be able to use protobuf we need to generate the code for the app that we're writing in this case for golang the command would be this one:
-```elixir
+```plaintext
  protoc -I ping/ ping/ping.proto --go_out=plugins=grpc:ping
 
 ```
@@ -49,7 +49,7 @@ This will give us a definition of the service and the required structs to carry 
 
 ##### **Client**
 The client does most of the work here, as you can see you can supply 2 arguments one to point to another host:port and the second to send a string of your liking, then it measures the time it takes to send and receive the message back and prints it to the screen with a similar line to what the actual `ping` command looks in linux.
-```elixir
+```go
 package main
 
 import (
@@ -103,7 +103,7 @@ func main() {
 
 ##### **Server**
 The server is a merely echo server since it will send back whatever you send to it and log it to the console, by default it will listen in port `50000`.
-```elixir
+```go
 package main
 
 import (
@@ -145,7 +145,7 @@ func main() {
 
 ##### **Testing it**
 ###### **Regular ping**
-```elixir
+```hcl
 $ ping localhost -c 4
 PING localhost(localhost (::1)) 56 data bytes
 64 bytes from localhost (::1): icmp_seq=1 ttl=64 time=0.145 ms
@@ -162,7 +162,7 @@ rtt min/avg/max/mdev = 0.141/0.148/0.154/0.005 ms
 
 ###### **Client**
 This is what we would see in the terminal while testing it.
-```elixir
+```bash
 $ go run ping_client/main.go                
 2019/06/23 18:01:02 8 characters roundtrip to (localhost:50000): seq=0 time=1.941841ms
 2019/06/23 18:01:03 8 characters roundtrip to (localhost:50000): seq=1 time=420.992µs
@@ -176,7 +176,7 @@ As you can see the initial connection takes a bit more time but after that the r
 
 ###### **Server**
 The server just echoes back and logs what received over the wire.
-```elixir
+```bash
 $ go run ping_server/main.go                       
 2019/06/23 18:01:02 Received: 00
 2019/06/23 18:01:03 Received: 00
@@ -220,7 +220,7 @@ En este artículo exploraremos gRPC con una aplicación sencilla de ping, básic
 
 ##### **Protobuf**
 Como probablemente ya sepas, gRPC serializa datos utilizando [protocol buffers](https://developers.google.com/protocol-buffers/). Vamos a crear un [RPC Unario](https://grpc.io/docs/guides/concepts/) de la siguiente manera.
-```elixir
+```protobuf
 syntax = "proto3";
 
 service PingService {
@@ -241,7 +241,7 @@ Con este archivo estamos definiendo un servicio que será capaz de enviar una ú
 
 ##### **Generando el código**
 Para poder utilizar protobuf necesitamos generar el código para la aplicación que estamos escribiendo, en este caso para golang, el comando sería el siguiente:
-```elixir
+```plaintext
  protoc -I ping/ ping/ping.proto --go_out=plugins=grpc:ping
 
 ```
@@ -250,7 +250,7 @@ Esto nos dará una definición del servicio y las estructuras necesarias para ma
 
 ##### **Cliente**
 El cliente realiza la mayor parte del trabajo aquí. Como puedes ver, puedes suministrar 2 argumentos: uno para apuntar a otro host:puerto y el segundo para enviar una cadena de texto a tu gusto. Luego mide el tiempo que tarda en enviar y recibir el mensaje de vuelta, y lo imprime en la pantalla con una línea similar a la del comando `ping` real en Linux.
-```elixir
+```go
 package main
 
 import (
@@ -304,7 +304,7 @@ func main() {
 
 ##### **Servidor**
 El servidor es simplemente un servidor de eco, ya que enviará de vuelta cualquier cosa que le envíes y lo registrará en la consola. De manera predeterminada, escuchará en el puerto `50000`.
-```elixir
+```go
 package main
 
 import (
@@ -346,7 +346,7 @@ func main() {
 
 ##### **Probándolo**
 ###### **Ping regular**
-```elixir
+```hcl
 $ ping localhost -c 4
 PING localhost(localhost (::1)) 56 data bytes
 64 bytes from localhost (::1): icmp_seq=1 ttl=64 time=0.145 ms
@@ -363,7 +363,7 @@ rtt min/avg/max/mdev = 0.141/0.148/0.154/0.005 ms
 
 ###### **Cliente**
 Esto es lo que veríamos en la terminal mientras lo probamos.
-```elixir
+```bash
 $ go run ping_client/main.go                
 2019/06/23 18:01:02 8 characters roundtrip to (localhost:50000): seq=0 time=1.941841ms
 2019/06/23 18:01:03 8 characters roundtrip to (localhost:50000): seq=1 time=420.992µs
@@ -377,7 +377,7 @@ Como puedes ver, la conexión inicial toma un poco más de tiempo, pero después
 
 ###### **Servidor**
 El servidor solo hace eco de lo que recibe y lo registra en la consola.
-```elixir
+```bash
 $ go run ping_server/main.go                       
 2019/06/23 18:01:02 Received: 00
 2019/06/23 18:01:03 Received: 00

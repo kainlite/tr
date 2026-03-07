@@ -71,7 +71,7 @@ make sure masked is marked but not protected, protected is only used when you wa
 
 ##### **Gitlab-CI config**
 After that we only need to add the code to the repo and that will trigger a build, the file needs to be called `.gitlab-ci.yml`
-```elixir
+```yaml
 image: golang:1.13.7-alpine3.11
 
 stages:
@@ -233,7 +233,7 @@ Asegurate de que esté marcado como "masked" pero no como "protected". "Protecte
 
 ##### **Config de Gitlab-CI**
 Después de eso, solo necesitamos agregar el código al repo y eso desencadenará una construcción. El archivo debe llamarse `.gitlab-ci.yml`.
-```elixir
+```yaml
 image: golang:1.13.7-alpine3.11
 
 stages:

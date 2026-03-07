@@ -61,7 +61,7 @@ Phew, that's a lot of names and terminology at once, let's get started with the 
 
 ### Let's get started
 This command will generate the following folder structure `ks init wordpress`:
-```elixir
+```hcl
 INFO Using context "minikube" from kubeconfig file "~/.kube/config"
 INFO Creating environment "default" with namespace "default", pointing to "version:v1.12.4" cluster at address "https://192.168.99.100:8443"
 INFO Generating ksonnet-lib data at path '~/k8s-examples/wordpress/lib/ksonnet-lib/v1.12.4'
@@ -76,7 +76,7 @@ vendor          <--- Here is where the installed packages/apps go, it can be see
 <br />
 
 Let's generate a _deployed-service_ and inspect it's context:
-```elixir
+```bash
 $ ks generate deployed-service wordpress \
   --image bitnami/wordpress:5.0.2 \
   --type ClusterIP
@@ -87,7 +87,7 @@ At the moment of this writing the latest version of Wordpress is 5.0.2, it's alw
 <br />
 
 Let's see how our component looks like:
-```elixir
+```plaintext
 local env = std.extVar("__ksonnet/environments");
 local params = std.extVar("__ksonnet/params").components.wordpress;
 [
@@ -151,7 +151,7 @@ It's just another template for some known resources, a [service](https://kuberne
 
 <br />
 If we run `ks show default`:
-```elixir
+```yaml
 ---
 apiVersion: v1
 kind: Service
@@ -191,7 +191,7 @@ spec:
 ```
 <br />
 We will see what our package will generate in *YAML* with some good defaults. And by default if you remember from the definitions a component needs a params file to fill the blanks in this case it is `components/params.libsonnet`:
-```elixir
+```yaml
 {
   global: {
     // User-defined global parameters; accessible to all component and environments, Ex:
@@ -215,7 +215,7 @@ But that's not enough to run wordpress is it?, No is not, we need a database wit
 <br />
 
 The next step would be to create another component:
-```elixir
+```bash
 $ ks generate deployed-service mariadb \
   --image bitnami/mariadb:10.1.37 \
   --type ClusterIP
@@ -227,7 +227,7 @@ The latest stable version of MariaDB 10.1 GA at the moment of this writting is 1
 
 Then we will need to add a persistent volume and also tell Wordpress to use this MariaDB instance. How do we do that, we will need to modify a few files, like this (in order to re-use things I placed the mysql variables in the global section, for this example that will simplify things, but it might not be the best approach for a production environment):
 The resulting `components/params.json` will be:
-```elixir
+```yaml
 {
   global: {
     // User-defined global parameters; accessible to all component and environments, Ex:
@@ -262,7 +262,7 @@ The resulting `components/params.json` will be:
 <br />
 
 The resulting `components/wordpress.jsonnet` will be:
-```elixir
+```plaintext
 local env = std.extVar("__ksonnet/environments");
 local params = std.extVar("__ksonnet/params").components.wordpress;
 [
@@ -344,7 +344,7 @@ The only thing that changed here is `spec.containers.env` which wasn't present b
 <br />
 
 The resulting `components/mariadb.jsonnet` will be:
-```elixir
+```plaintext
 local env = std.extVar("__ksonnet/environments");
 local params = std.extVar("__ksonnet/params").components.mariadb;
 [
@@ -450,7 +450,7 @@ This post only scratched the surface of what Ksonnet and Jsonnet can do, in anot
 <br />
 
 Let's clean up `ks delete default`:
-```elixir
+```plaintext
 INFO Deleting services mariadb
 INFO Deleting deployments mariadb
 INFO Deleting services wordpress
@@ -467,7 +467,7 @@ I'm not aware if Ksonnet supports releases and rollbacks like Helm, but it seems
 <br />
 
 If everything goes well, you should see something like this in the logs:
-```elixir
+```bash
 $ kubectl logs -f wordpress-5b4d6bd47c-bdtmw
 
 Welcome to the Bitnami wordpress container
@@ -614,7 +614,7 @@ Uf, son muchos nombres y terminología a la vez. Comencemos ya con el terminal.
 
 Este comando generará la siguiente estructura de carpetas `ks init wordpress`:
 
-```elixir
+```hcl
 INFO Using context "minikube" from kubeconfig file "~/.kube/config"
 INFO Creating environment "default" with namespace "default", pointing to "version:v1.12.4" cluster at address "https://192.168.99.100:8443"
 INFO Generating ksonnet-lib data at path '~/k8s-examples/wordpress/lib/ksonnet-lib/v1.12.4'
@@ -631,7 +631,7 @@ vendor          <--- Aquí es donde se instalan los paquetes/aplicaciones; puede
 
 Generemos un _deployed-service_ e inspeccionemos su contexto:
 
-```elixir
+```bash
 $ ks generate deployed-service wordpress \
       --image bitnami/wordpress:5.0.2 \
       --type ClusterIP
@@ -645,7 +645,7 @@ Al momento de escribir esto, la última versión de WordPress es 5.0.2. Siempre 
 
 Veamos cómo se ve nuestro componente:
 
-```elixir
+```plaintext
 local env = std.extVar("__ksonnet/environments");
 local params = std.extVar("__ksonnet/params").components.wordpress;
 [
@@ -712,7 +712,7 @@ Es solo otra plantilla para algunos recursos conocidos, un [Service](https://kub
 
 Si ejecutamos `ks show default`:
 
-```elixir
+```yaml
 ---
 apiVersion: v1
 kind: Service
@@ -755,7 +755,7 @@ spec:
 
 Veremos lo que nuestro paquete generará en *YAML* con algunos buenos valores predeterminados. Y por defecto, si recuerdas de las definiciones, un componente necesita un archivo de parámetros para llenar los espacios en blanco; en este caso es `components/params.libsonnet`:
 
-```elixir
+```yaml
 {
   global: {
     // Parámetros globales definidos por el usuario; accesibles para todos los componentes y entornos, Ej:
@@ -782,7 +782,7 @@ Pero eso no es suficiente para ejecutar WordPress, ¿verdad? No, no lo es. Neces
 
 El siguiente paso sería crear otro componente:
 
-```elixir
+```bash
 $ ks generate deployed-service mariadb \
       --image bitnami/mariadb:10.1.37 \
       --type ClusterIP
@@ -798,7 +798,7 @@ Luego necesitaremos agregar un volumen persistente y también decirle a WordPres
 
 El `components/params.json` resultante será:
 
-```elixir
+```yaml
 {
   global: {
     // Parámetros globales definidos por el usuario; accesibles para todos los componentes y entornos, Ej:
@@ -835,7 +835,7 @@ El `components/params.json` resultante será:
 
 El `components/wordpress.jsonnet` resultante será:
 
-```elixir
+```plaintext
 local env = std.extVar("__ksonnet/environments");
 local params = std.extVar("__ksonnet/params").components.wordpress;
 [
@@ -920,7 +920,7 @@ Lo único que cambió aquí es `spec.containers.env`, que no estaba presente ant
 
 El `components/mariadb.jsonnet` resultante será:
 
-```elixir
+```plaintext
 local env = std.extVar("__ksonnet/environments");
 local params = std.extVar("__ksonnet/params").components.mariadb;
 [
@@ -1031,7 +1031,7 @@ Esta publicación solo rasca la superficie de lo que Ksonnet y Jsonnet pueden ha
 
 Limpiemos con `ks delete default`:
 
-```elixir
+```plaintext
 INFO Deleting services mariadb
 INFO Deleting deployments mariadb
 INFO Deleting services wordpress
@@ -1052,7 +1052,7 @@ No estoy al tanto de si Ksonnet soporta lanzamientos y rollbacks como Helm, pero
 
 Si todo va bien, deberías ver algo como esto en los logs:
 
-```elixir
+```bash
 $ kubectl logs -f wordpress-5b4d6bd47c-bdtmw
 
 Welcome to the Bitnami wordpress container

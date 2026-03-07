@@ -46,7 +46,7 @@ The source for this article is here [TypeScript Operator](https://github.com/kai
 #### Creating the cluster
 
 We will need a cluster to run and test our operator, so kind is pretty straight forward and lightweight enough to run anywhere.
-```elixir
+```plaintext
 ...
 ```
 <br />
@@ -54,7 +54,7 @@ We will need a cluster to run and test our operator, so kind is pretty straight 
 #### Creating our operator
 
 Creating all necessary resources for our operator to work
-```elixir
+```plaintext
 ❯ kustomize build resources/ | kubectl apply -f -
 namespace/ts-operator created
 customresourcedefinition.apiextensions.k8s.io/mycustomresources.custom.example.com created
@@ -82,7 +82,7 @@ ts-operator          ts-operator-86dbcd9f9c-xwgdt                 0/1     Contai
 #### Deploying our operator
 
 Creating our custom resource to see the operator in action
-```elixir
+```plaintext
 ❯ kubectl apply -f resources/mycustomresource-sample.yaml
 mycustomresource.custom.example.com/mycustomresource-sample created
 
@@ -114,7 +114,7 @@ mycustomresource.custom.example.com "mycustomresource-sample" deleted
 #### Logs from the operator
 
 Example logs based in the creation, update and deletion of our custom resource
-```elixir
+```plaintext
 ❯ node_modules/ts-node/dist/bin.js src/index.ts
 7/22/2021, 8:51:54 PM: Watching API
 7/22/2021, 8:51:54 PM: Received event in phase ADDED.
@@ -142,7 +142,7 @@ In TypeScript or JavaScript you have to handle more things which can be easily d
 #### Building and pushing (docker image)
 
 In this case we don't have to do that it will be managed by actions using the free container registry that they provide, it will build and push the image matching the branch name, notice that it is fully transparent, you don't need to configure anything on the repo, you can see the result [here](https://github.com/kainlite/ts-operator/pkgs/container/ts-operator).
-```elixir
+```yaml
 name: Create and publish a Docker image
 
 on:
@@ -195,7 +195,7 @@ jobs:
 #### Local development
 
 Bonus: if you want to run the operator locally when developing or debugging you can do so easily with `ts-node`, like this:
-```elixir
+```plaintext
 ❯ node_modules/ts-node/dist/bin.js src/index.ts
 7/22/2021, 8:51:54 PM: Watching API
 7/22/2021, 8:51:54 PM: Received event in phase ADDED.
@@ -212,7 +212,7 @@ Note that I did not add all the code from the resources folder or the setup for 
 ### Now let's see the code
 
 Enough words, let's see code, I have added comments and changed the original code a bit
-```elixir
+```hcl
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import * as k8s from "@kubernetes/client-node";
@@ -412,7 +412,7 @@ main();
 #### The `deployment.json` file
 
 This file basically is what gets deployed when we create our custom resource
-```elixir
+```json
 {
   "apiVersion": "apps/v1",
   "kind": "Deployment",
@@ -451,7 +451,7 @@ This file basically is what gets deployed when we create our custom resource
 #### And finally our custom resource
 
 This is how we tell our operator that we need our operator to create some resources for a given task
-```elixir
+```yaml
 apiVersion: custom.example.com/v1
 kind: MyCustomResource
 metadata:
@@ -470,7 +470,7 @@ For more details and to see how everything fits together I encourage you to clon
 ### Cleaning up
 
 To clean up the operator from the cluster you can do this
-```elixir
+```plaintext
 ❯ kubectl delete -f resources/mycustomresource-sample.yaml
 ❯ kustomize build resources/ | kubectl delete -f -
 namespace "ts-operator" deleted
@@ -565,7 +565,7 @@ El código fuente para este artículo está aquí [TypeScript Operator](https://
 #### Creando el clúster
 
 Vamos a necesitar un clúster para ejecutar y probar nuestro operador, así que kind es una opción muy simple y liviana para correr en cualquier lugar.
-```elixir
+```plaintext
 
 ```
 <br />
@@ -573,7 +573,7 @@ Vamos a necesitar un clúster para ejecutar y probar nuestro operador, así que 
 #### Creando nuestro operador
 
 Creando todos los recursos necesarios para que nuestro operador funcione.
-```elixir
+```plaintext
 ❯ kustomize build resources/ | kubectl apply -f -
 namespace/ts-operator created
 customresourcedefinition.apiextensions.k8s.io/mycustomresources.custom.example.com created
@@ -600,7 +600,7 @@ ts-operator          ts-operator-86dbcd9f9c-xwgdt                 0/1     Contai
 
 #### Desplegando nuestro operador
 Creando nuestro recurso para ver el operador en accion:
-```elixir
+```plaintext
 ❯ kubectl apply -f resources/mycustomresource-sample.yaml
 mycustomresource.custom.example.com/mycustomresource-sample created
 
@@ -632,7 +632,7 @@ mycustomresource.custom.example.com "mycustomresource-sample" deleted
 #### Logs 
 
 Lo que pasa en la API a medida que nuestro operador trabaja
-```elixir
+```plaintext
 ❯ node_modules/ts-node/dist/bin.js src/index.ts
 7/22/2021, 8:51:54 PM: Watching API
 7/22/2021, 8:51:54 PM: Received event in phase ADDED.
@@ -661,7 +661,7 @@ En TypeScript o JavaScript tenés que manejar más cosas, aunque estas pueden se
 #### Compilación y push (imagen docker)
 
 En este caso, no tenemos que hacerlo manualmente, ya que será gestionado por las acciones de Github usando el registro de contenedores gratuito que proporcionan. Se encargará de construir y hacer push de la imagen coincidiendo con el nombre de la branch. Notá que es completamente transparente; no necesitás configurar nada adicional en el repositorio. Podés ver el resultado [aquí](https://github.com/kainlite/ts-operator/pkgs/container/ts-operator).
-```elixir
+```yaml
 name: Create and publish a Docker image
 
 on:
@@ -716,7 +716,7 @@ jobs:
 ### Bonus: Ejecutando el operador localmente para desarrollo o depuración
 
 Si querés ejecutar el operador localmente mientras desarrollás o depurás, podés hacerlo fácilmente con `ts-node`, de esta manera:
-```elixir
+```plaintext
 ❯ node_modules/ts-node/dist/bin.js src/index.ts
 7/22/2021, 8:51:54 PM: Watching API
 7/22/2021, 8:51:54 PM: Received event in phase ADDED.
@@ -733,7 +733,7 @@ Notá que no incluí todo el código de la carpeta `resources` o la configuraci�
 ### Ahora veamos el código
 
 Suficiente texto, ¡vamos a ver código! He agregado comentarios y cambiado un poco el código original.
-```elixir
+```hcl
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import * as k8s from "@kubernetes/client-node";
@@ -933,7 +933,7 @@ main();
 #### El archivo `deployment.json` 
 
 Esto es lo que se despliega en Kubernetes cuando usamos nuestro nuevo recurso
-```elixir
+```json
 {
   "apiVersion": "apps/v1",
   "kind": "Deployment",
@@ -972,7 +972,7 @@ Esto es lo que se despliega en Kubernetes cuando usamos nuestro nuevo recurso
 #### Y finalmente nuestro recurso personalizado
 
 Así es como le indicamos a nuestro operador que necesitamos que cree algunos recursos para una tarea específica:
-```elixir
+```yaml
 apiVersion: custom.example.com/v1
 kind: MyCustomResource
 metadata:
@@ -990,7 +990,7 @@ Para más detalles y para ver cómo todo encaja, te animo a clonar el repositori
 ### Limpieza
 
 Para eliminar el operador del clúster podés hacer lo siguiente:
-```elixir
+```plaintext
 ❯ kubectl delete -f resources/mycustomresource-sample.yaml
 ❯ kustomize build resources/ | kubectl delete -f -
 namespace "ts-operator" deleted

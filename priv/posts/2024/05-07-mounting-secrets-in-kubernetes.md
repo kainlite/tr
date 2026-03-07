@@ -24,7 +24,7 @@ First we will explore how to create and expose secrets as environment variables,
 is really useful as the format is really easy to follow and maintain, lets see an example:
 
 
-```elixir
+```plaintext
 ❯ kubectl create secret generic supersecret -n example --from-literal=MY_SUPER_ENVVAR=a_secret --from-literal=ANOTHER_ENVVAR=just_another_secret
 secret/supersecret created
 ```
@@ -32,7 +32,7 @@ secret/supersecret created
 
 Lets check the contents of the secret, it maintains a similar shape as we defined, be sure to check the help of kubectl
 as it contains many examples of how to pass data into the actual secret.
-```elixir
+```yaml
 ❯ kubectl get secret supersecret -o yaml
 apiVersion: v1
 data:
@@ -57,7 +57,7 @@ common and useful when you don't need all keys to be mounted in all pods for exa
 configurations, pay special attention to the `valueFrom` section, the name indicates the name of the secret and the key
 how it is stored inside the `data` block of the same, this also works with ConfigMaps as you might have guessed, instead
 of `secretKeyRef` use `configMapKeyRef`.
-```elixir
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -91,7 +91,7 @@ spec:
 
 And the result would be: 
 
-```elixir
+```bash
 ❯ kubectl -n example exec -ti example-64f956f9c9-fxn28 -- env | grep ENV
 MY_SUPER_ENVVAR=a_secret
 ```
@@ -104,7 +104,7 @@ In this second example, we will mount all values from the secret as environment 
 the right format in the secret, and there is a super-handy keyword for that: `envFrom` and it also works with
 ConfigMaps, instead of using `secretRef` you would need to specify: `configMapRef`.
 
-```elixir
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -135,7 +135,7 @@ spec:
 
 And the result would be: 
 
-```elixir
+```bash
 ❯ kubectl -n example exec -ti example-584757d47f-gbxgq -- env | grep ENV
 ANOTHER_ENVVAR=just_another_secret
 MY_SUPER_ENVVAR=a_secret
@@ -151,7 +151,7 @@ For this case we will use a new secret, with a json file in it stored as the key
 filename, this is pretty handy, there could be multiple files stored there and we could mount all of them at once, or
 not:
 
-```elixir
+```yaml
 ❯ cat test.json
 {
   "key1": "value1",
@@ -175,7 +175,7 @@ type: Opaque
 <br />
 
 Now lets use our new secret:
-```elixir
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -211,7 +211,7 @@ spec:
 
 And the result would be: 
 
-```elixir
+```bash
 ❯ kubectl -n example exec -ti example-5b9c58b7f9-zv9nr -- cat /var/mysecrets/test.json
 {
   "key1": "value1",
@@ -226,7 +226,7 @@ Sometimes you just need a specific config as a file in a specific path, imagine 
 to be present in some file for you app to read. 
 
 
-```elixir
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -266,7 +266,7 @@ spec:
 
 And the result would be: 
 
-```elixir
+```bash
 ❯ kubectl -n example exec -ti example-59f565fbbf-cgk5c -- cat /var/myapp/server.config
 {
   "key1": "value1",
@@ -285,7 +285,7 @@ possible error or mistake.
 
 Example with the wrong secret name (do note that I cleaned up the output a bit to make it more readable): 
 
-```elixir
+```yaml
 ❯ kubectl -n example describe pod example-58bbc5464f-2mcv7
 Name:             example-58bbc5464f-2mcv7
 Namespace:        example
@@ -357,14 +357,14 @@ Este será un artículo corto explorando las diferentes formas en las que podés
 
 Primero exploraremos cómo crear y exponer secretos como variables de entorno, probablemente la forma más utilizada, ya que el formato es fácil de seguir y mantener. Veamos un ejemplo:
 
-```elixir
+```plaintext
 ❯ kubectl create secret generic supersecret -n example --from-literal=MY_SUPER_ENVVAR=a_secret --from-literal=ANOTHER_ENVVAR=just_another_secret
 secret/supersecret created
 ```
 <br/> 
 
 Veamos el contenido del secreto, mantiene una forma similar a como lo definimos. Asegurate de revisar la ayuda de `kubectl`, ya que contiene muchos ejemplos de cómo pasar datos dentro del secreto real.
-```elixir
+```yaml
 ❯ kubectl get secret supersecret -o yaml
 apiVersion: v1
 data:
@@ -385,7 +385,7 @@ Todo bien hasta ahora, pero ¿cómo usamos realmente ese secreto? Vamos a crear 
 
 En este ejemplo, tenemos un StatefulSet que monta un secreto usando una clave específica como una variable de entorno. Esto es bastante común y útil cuando no necesitas que todas las claves se monten en todos los pods, por ejemplo, o cuando usas configuraciones compartidas. Presta especial atención a la sección `valueFrom`, donde el nombre indica el nombre del secreto y la clave cómo está almacenada dentro del bloque `data` del mismo. Esto también funciona con ConfigMaps, como probablemente hayas adivinado; en lugar de `secretKeyRef`, usa `configMapKeyRef`.
 
-```elixir
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -419,7 +419,7 @@ spec:
 
 Y el resultado seria: 
 
-```elixir
+```bash
 ❯ kubectl -n example exec -ti example-64f956f9c9-fxn28 -- env | grep ENV
 MY_SUPER_ENVVAR=a_secret
 ```
@@ -430,7 +430,7 @@ MY_SUPER_ENVVAR=a_secret
 
 En este segundo ejemplo, vamos a montar todos los valores del secreto como variables de entorno, por lo que es importante tener el formato correcto en el secreto. Para esto, hay una palabra clave súper útil: `envFrom`, y también funciona con ConfigMaps. En lugar de usar `secretRef`, tendrías que especificar: `configMapRef`.
 
-```elixir
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -461,7 +461,7 @@ spec:
 
 El resultado seria: 
 
-```elixir
+```bash
 ❯ kubectl -n example exec -ti example-584757d47f-gbxgq -- env | grep ENV
 ANOTHER_ENVVAR=just_another_secret
 MY_SUPER_ENVVAR=a_secret
@@ -474,7 +474,7 @@ En algunos casos, tu aplicación podría necesitar un archivo de configuración 
 
 Para este ejemplo, usaremos un nuevo secreto que contiene un archivo JSON almacenado bajo la clave `test.json`, que será el nombre real del archivo. Esto es bastante útil, ya que podrías tener múltiples archivos almacenados allí y podrías montarlos todos de una vez, o solo algunos:
 
-```elixir
+```yaml
 ❯ cat test.json
 {
   "key1": "value1",
@@ -498,7 +498,7 @@ type: Opaque
 <br />
 
 Veamos el secreto:
-```elixir
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -534,7 +534,7 @@ spec:
 
 Y el resultado seria: 
 
-```elixir
+```bash
 ❯ kubectl -n example exec -ti example-5b9c58b7f9-zv9nr -- cat /var/mysecrets/test.json
 {
   "key1": "value1",
@@ -546,7 +546,7 @@ Y el resultado seria:
 ### Cuarto escenario: una clave de un secreto como un archivo individual
 
 A veces solo necesitas una configuración específica como archivo en una ruta particular. Imagina un archivo de configuración JSON o una cadena que debe estar presente en un archivo para que tu aplicación lo lea.
-```elixir
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -586,7 +586,7 @@ spec:
 
 Y el resultado seria: 
 
-```elixir
+```bash
 ❯ kubectl -n example exec -ti example-59f565fbbf-cgk5c -- cat /var/myapp/server.config
 {
   "key1": "value1",
@@ -601,7 +601,7 @@ Lo increíblemente útil de este enfoque es que podés montar el archivo como lo
 
 Ejemplo con el nombre del secreto incorrecto (he limpiado un poco el output para que sea más legible):
 
-```elixir
+```yaml
 ❯ kubectl -n example describe pod example-58bbc5464f-2mcv7
 Name:             example-58bbc5464f-2mcv7
 Namespace:        example

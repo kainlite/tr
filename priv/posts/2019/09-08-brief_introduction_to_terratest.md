@@ -20,7 +20,7 @@ In this article we will see the basics to have tests for your terraform code usi
 
 ##### **The code**
 There are comments all over the code to explain each part, but what I want to highlight here is the pattern being used with the module `test-structure`, this module allows us to split the test in sections and skip parts that we don't need or want to run, so we have 3 stages here: `cleanup`, `deploy`, and `validate`, this lets you use `SKIP_stage`, for example `SKIP_cleanup` when you run your tests with `go test -timeout 90m .` (I added some extra bits, that I usually use, like timeout by default it's 10 minutes I believe and it's often too short), to only run `validate` and `cleanup`, it can be useful while developing a module to test without having to wait for everything to be re-created.
-```elixir
+```hcl
 package test
 
 import (
@@ -120,7 +120,7 @@ Some high level notes on each stage:
 
 ##### **Dep**
 Currently terratest uses dep, so you will need this file `Gopkg.toml` and `dep` installed to be able to install the dependencies with `dep ensure -v`.
-```elixir
+```plaintext
 [[constraint]]
   name = "github.com/gruntwork-io/terratest"
   version = "0.18.6"
@@ -129,7 +129,7 @@ Currently terratest uses dep, so you will need this file `Gopkg.toml` and `dep` 
 
 ##### **Dockerfile**
 Also you can use this small dockerfile that does all that for you, in this example using the code from the previously mentioned article.
-```elixir
+```dockerfile
 FROM golang:alpine
 MAINTAINER "kainlite <kainlite@gmail.com>"
 
@@ -157,7 +157,7 @@ CMD ["go", "test", " -timeout", "90m", "."]
 
 ##### **Manually testing it**
 First we check that the URL actually works, and that everything is in place.
-```elixir
+```bash
 $ curl https://api.skynetng.pw/app/health
 # OUTPUT:
 # {"status":"healthy"}
@@ -165,7 +165,7 @@ $ curl https://api.skynetng.pw/app/health
 <br />
 
 Next we can test it using our validate stage, using terratest:
-```elixir
+```bash
 $ SKIP_deploy=true SKIP_cleanup=true go test -timeout 90m .
 # OUTPUT:
 # ok      github.com/kainlite/test        1.117s
@@ -206,7 +206,7 @@ En este artículo vamos a ver los conceptos básicos para realizar tests en tu c
 
 ##### **El código**
 Hay comentarios por todo el código para explicar cada parte, pero lo que quiero destacar acá es el patrón que usamos con el módulo `test-structure`. Este módulo nos permite dividir el test en secciones y saltarnos partes que no necesitemos o que no queramos correr. Tenemos 3 etapas: `cleanup`, `deploy` y `validate`. Esto te permite usar `SKIP_etapa`, por ejemplo, `SKIP_cleanup` cuando corras tus tests con `go test -timeout 90m .` (agregué algunos bits adicionales que suelo usar, como el timeout, que por defecto creo que es de 10 minutos y suele ser demasiado corto), para correr solo `validate` y `cleanup`. Esto es útil cuando estás desarrollando un módulo y querés testear sin tener que esperar a que todo se recree.
-```elixir
+```hcl
 package test
 
 import (
@@ -306,7 +306,7 @@ Algunas notas generales sobre cada etapa:
 
 ##### **Dep**
 Actualmente terratest usa `dep`, por lo que vas a necesitar este archivo `Gopkg.toml` y tener `dep` instalado para poder instalar las dependencias con `dep ensure -v`.
-```elixir
+```plaintext
 [[constraint]]
   name = "github.com/gruntwork-io/terratest"
   version = "0.18.6"
@@ -315,7 +315,7 @@ Actualmente terratest usa `dep`, por lo que vas a necesitar este archivo `Gopkg.
 
 ##### **Dockerfile**
 También podés usar este pequeño `Dockerfile` que hace todo por vos. En este ejemplo estamos usando el código del artículo previamente mencionado.
-```elixir
+```dockerfile
 FROM golang:alpine
 MAINTAINER "kainlite <kainlite@gmail.com>"
 
@@ -343,7 +343,7 @@ CMD ["go", "test", " -timeout", "90m", "."]
 
 ##### **Testeándolo manualmente**
 Primero verificamos que la URL realmente funcione y que todo esté en su lugar.
-```elixir
+```bash
 $ curl https://api.skynetng.pw/app/health
 # OUTPUT:
 # {"status":"healthy"}
@@ -351,7 +351,7 @@ $ curl https://api.skynetng.pw/app/health
 <br />
 
 Luego podemos testearlo usando nuestra etapa `validate`, utilizando terratest:
-```elixir
+```bash
 $ SKIP_deploy=true SKIP_cleanup=true go test -timeout 90m .
 # OUTPUT:
 # ok      github.com/kainlite/test        1.117s

@@ -68,7 +68,7 @@ pipeline is to trigger the update for the environment.
 
 Imagine helm is being used to deploy the application so CI would have something like: 
 
-```elixir
+```plaintext
 helm upgrade --install my-release -n my-namespace --set='image.tag'="${{ github.sha }}" 
 ```
 
@@ -293,7 +293,7 @@ Un cambio en el repositorio dispara una construcción en CI, que luego se pushea
 
 Imaginate que se está usando Helm para desplegar la aplicación, entonces CI tendría algo como:
 
-```elixir
+```plaintext
 helm upgrade --install my-release -n my-namespace --set='image.tag'="${{ github.sha }}" 
 ```
 

@@ -25,7 +25,7 @@ You can find the chat bot: [article here](/blog/go-echobot), and the repo: [here
 <br />
 
 First of all we need to install the gitkube binary in our machine and then the CRD in our kubernetes cluster:
-```elixir
+```bash
 $ kubectl create -f https://storage.googleapis.com/gitkube/gitkube-setup-stable.yaml
 customresourcedefinition.apiextensions.k8s.io "remotes.gitkube.sh" created
 serviceaccount "gitkube" created
@@ -41,14 +41,14 @@ Note that there are 2 ways to install gitkube into our cluster, using the manife
 <br />
 
 To install the gitkube binary, the easiest way is to do:
-```elixir
+```bash
 curl https://raw.githubusercontent.com/hasura/gitkube/master/gimme.sh | sudo bash
 ```
 This will download and copy the binary into: `/usr/local/bin`, as a general rule I recommend reading whatever you are going to pipe into bash in your terminal to avoid potential dangers of _the internet_.
 
 <br />
 Then we need to generate (and then create it in the cluster) a file called `remote.yaml` (or any name you like), it's necessary in order to tell gitkube how to deploy our application once we `git push` it:
-```elixir
+```dockerfile
 $ gitkube remote generate -f remote.yaml
 Remote name: minikube
 namespace: default
@@ -67,7 +67,7 @@ And this will yield the following `remote.yaml` file that we then need to create
 <br />
 
 The actual file `remote.yaml`:
-```elixir
+```yaml
 apiVersion: gitkube.sh/v1alpha1
 kind: Remote
 metadata:
@@ -101,7 +101,7 @@ There are a few details to have in mind here, the _deployment_ name because gitk
 <br />
 
 The last step would be to finally create the resource:
-```elixir
+```bash
 $ gitkube remote create -f remote.yaml
 INFO[0000] remote minikube created
 INFO[0000] waiting for remote url
@@ -114,7 +114,7 @@ INFO[0000] remote url: ssh://default-minikube@10.98.213.202/~/git/default-miniku
 <br />
 
 After adding the new remote called _minikube_  we have everything ready to go, so let's test it and see what happens:
-```elixir
+```yaml
 $ git push minikube master
 Enumerating objects: 10, done.
 Counting objects: 100% (10/10), done.
@@ -214,7 +214,7 @@ Quite a lot happened there, first of all gitkubed checked out the commit from th
 <br />
 
 The last step would be to verify that the pod was actually updated, so we can inspect the pod configuration with `kubectl describe pod echobot-654cdbfb99-g4bwv`:
-```elixir
+```yaml
  $ kubectl describe pod echobot-654cdbfb99-g4bwv
 Name:               echobot-654cdbfb99-g4bwv
 Namespace:          default
@@ -308,7 +308,7 @@ Puedes encontrar el chat bot: [artículo aquí](/blog/go-echobot), y el reposito
 <br />
 
 En primer lugar, necesitamos instalar el binario de Gitkube en nuestra máquina y luego el CRD en nuestro clúster de Kubernetes:
-```elixir
+```bash
 $ kubectl create -f https://storage.googleapis.com/gitkube/gitkube-setup-stable.yaml
 customresourcedefinition.apiextensions.k8s.io "remotes.gitkube.sh" created
 serviceaccount "gitkube" created
@@ -324,14 +324,14 @@ Nota que hay 2 formas de instalar Gitkube en nuestro clúster: usando los manifi
 <br />
 
 Para instalar el binario de Gitkube, la forma más sencilla es hacer:
-```elixir
+```bash
 curl https://raw.githubusercontent.com/hasura/gitkube/master/gimme.sh | sudo bash
 ```
 Esto descargará y copiará el binario en: `/usr/local/bin`. Como regla general, recomiendo leer lo que vas a canalizar a bash en tu terminal para evitar posibles peligros de _internet_.
 
 <br />
 Luego, necesitamos generar (y luego crearlo en el clúster) un archivo llamado `remote.yaml` (o cualquier nombre que prefieras). Es necesario para indicarle a Gitkube cómo desplegar nuestra aplicación una vez que hagamos `git push`:
-```elixir
+```dockerfile
 $ gitkube remote generate -f remote.yaml
 Remote name: minikube
 namespace: default
@@ -350,7 +350,7 @@ Y esto generará el siguiente archivo `remote.yaml` que luego necesitamos crear 
 <br />
 
 El archivo real `remote.yaml`:
-```elixir
+```yaml
 apiVersion: gitkube.sh/v1alpha1
 kind: Remote
 metadata:
@@ -384,7 +384,7 @@ Hay algunos detalles a tener en cuenta aquí: el nombre del _deployment_ porque 
 <br />
 
 El último paso sería finalmente crear el recurso:
-```elixir
+```bash
 $ gitkube remote create -f remote.yaml
 INFO[0000] remote minikube created
 INFO[0000] waiting for remote url
@@ -397,7 +397,7 @@ INFO[0000] remote url: ssh://default-minikube@10.98.213.202/~/git/default-miniku
 <br />
 
 Después de agregar el nuevo remoto llamado _minikube_, tenemos todo listo para comenzar, así que probémoslo y veamos qué sucede:
-```elixir
+```yaml
 $ git push minikube master
 Enumerating objects: 10, done.
 Counting objects: 100% (10/10), done.
@@ -497,7 +497,7 @@ Pasaron muchas cosas allí. En primer lugar, gitkubed revisó el commit de la ra
 <br />
 
 El último paso sería verificar que el pod realmente se actualizó, por lo que podemos inspeccionar la configuración del pod con `kubectl describe pod echobot-654cdbfb99-g4bwv`:
-```elixir
+```yaml
  $ kubectl describe pod echobot-654cdbfb99-g4bwv
 Name:               echobot-654cdbfb99-g4bwv
 Namespace:          default

@@ -49,12 +49,12 @@ This is fantastic for security (smaller attack surface) and performance (smaller
 ##### **The Problem**
 Let's say you have a Go application running in a distroless container and it's behaving strangely. Your natural instinct is:
 
-```elixir
+```plaintext
 kubectl exec -it my-pod -- /bin/sh
 ```
 
 But you're greeted with:
-```elixir
+```plaintext
 OCI runtime exec failed: exec failed: unable to start container process: 
 exec: "/bin/sh": executable file not found in $PATH: unknown
 ```
@@ -62,7 +62,7 @@ exec: "/bin/sh": executable file not found in $PATH: unknown
 <br />
 
 Even trying different shells won't help:
-```elixir
+```bash
 kubectl exec -it my-pod -- bash
 kubectl exec -it my-pod -- /bin/bash
 # Same error, different shell
@@ -80,7 +80,7 @@ Kubernetes 1.18+ introduced ephemeral containers, and `kubectl debug` makes them
 <br />
 
 Here's the basic syntax:
-```elixir
+```plaintext
 kubectl debug -it my-pod --image=ubuntu --target=my-container
 ```
 
@@ -107,7 +107,7 @@ Here's the full debugging workflow:
 <br />
 
 ##### **Step 1: Create the Debug Container**
-```elixir
+```plaintext
 kubectl debug -it my-pod --image=ubuntu --target=my-container --share-processes
 ```
 
@@ -118,7 +118,7 @@ You'll be dropped into a shell in the Ubuntu container. The `--share-processes` 
 <br />
 
 ##### **Step 2: Verify Process Sharing**
-```elixir
+```plaintext
 ps aux
 ```
 
@@ -127,13 +127,13 @@ You should see both your application process (PID 1) and the shell processes fro
 <br />
 
 ##### **Step 3: Access the Main Container's Filesystem**
-```elixir
+```plaintext
 ls /proc/1/root/
 ```
 
 This shows you the filesystem of your distroless container! You can now navigate and inspect files:
 
-```elixir
+```bash
 # Check your application binary
 ls -la /proc/1/root/app
 
@@ -152,7 +152,7 @@ ls -la /proc/1/root/app/
 ##### **Step 4: Creating a Proper User Environment**
 Sometimes you might want to work more comfortably. Here's how to set up a proper user environment in your debug container:
 
-```elixir
+```bash
 # Update package list and install useful tools
 apt update && apt install -y curl wget netstat-nat procps tree
 
@@ -176,7 +176,7 @@ Once you have access, here are some powerful debugging techniques:
 <br />
 
 **Network Debugging:**
-```elixir
+```bash
 # Check what your app is listening on
 netstat -tlnp
 
@@ -190,7 +190,7 @@ nslookup your-service
 <br />
 
 **File System Investigation:**
-```elixir
+```bash
 # Check disk usage
 du -sh /proc/1/root/*
 
@@ -204,7 +204,7 @@ find /proc/1/root/ -name "*.conf" -o -name "*.yaml" -o -name "*.json"
 <br />
 
 **Process Analysis:**
-```elixir
+```bash
 # Check what files your app has open
 lsof -p 1
 
@@ -220,7 +220,7 @@ cat /proc/1/status | grep -E "(VmSize|VmRSS|VmPeak)"
 ##### **Real-World Example**
 Let me show you a complete example. Let's say you have a Go application in a distroless container that's failing health checks:
 
-```elixir
+```bash
 # First, identify the problematic pod
 kubectl get pods
 NAME                     READY   STATUS    RESTARTS   AGE
@@ -259,7 +259,7 @@ If you're running an older Kubernetes version (< 1.18) or your cluster doesn't s
 <br />
 
 **Option 1: Add a debug sidecar to your pod spec**
-```elixir
+```yaml
 apiVersion: v1
 kind: Pod
 spec:
@@ -278,7 +278,7 @@ spec:
 <br />
 
 **Option 2: Use kubectl cp to get files out**
-```elixir
+```bash
 # Copy files from the container to investigate locally
 kubectl cp my-pod:/app/config.json ./config.json
 kubectl cp my-pod:/var/log/ ./logs/
@@ -295,7 +295,7 @@ Make sure you're using `--share-processes` or that `shareProcessNamespace: true`
 
 **Permission denied accessing /proc/1/root:**
 This can happen if your debug container doesn't have sufficient privileges. Try:
-```elixir
+```plaintext
 ls -hal /prot/1
 ```
 To determine the UID/GID and create an user with these values to be able to read/write.
@@ -304,7 +304,7 @@ To determine the UID/GID and create an user with these values to be able to read
 
 **Main container isn't PID 1:**
 If your app isn't running as PID 1, find the correct process:
-```elixir
+```bash
 ps aux | grep your-app-name
 # Use the correct PID instead of 1
 ls /proc/PID/root/
@@ -336,7 +336,7 @@ Here are some best practices I've learned over the years:
 ##### **Creating a Debug Container Template**
 You might want to create a pre-configured debug image for your team:
 
-```elixir
+```dockerfile
 FROM ubuntu:22.04
 
 RUN apt update && apt install -y \
@@ -360,7 +360,7 @@ CMD ["/bin/bash"]
 <br />
 
 Build and push this to your registry, then use it for debugging:
-```elixir
+```plaintext
 kubectl debug -it my-pod --image=your-registry/debug-toolkit:latest
 ```
 
@@ -433,12 +433,12 @@ Esto es fantástico para seguridad (menor superficie de ataque) y performance (i
 ##### **El Problema**
 Digamos que tenés una aplicación Go corriendo en un contenedor distroless y se está comportando extraño. Tu instinto natural es:
 
-```elixir
+```plaintext
 kubectl exec -it mi-pod -- /bin/sh
 ```
 
 Pero te recibe con:
-```elixir
+```plaintext
 OCI runtime exec failed: exec failed: unable to start container process: 
 exec: "/bin/sh": executable file not found in $PATH: unknown
 ```
@@ -446,7 +446,7 @@ exec: "/bin/sh": executable file not found in $PATH: unknown
 <br />
 
 Incluso intentar diferentes shells no ayuda:
-```elixir
+```bash
 kubectl exec -it mi-pod -- bash
 kubectl exec -it mi-pod -- /bin/bash
 # Mismo error, diferente shell
@@ -464,7 +464,7 @@ Kubernetes 1.18+ introdujo contenedores efímeros, y `kubectl debug` los hace f�
 <br />
 
 Acá está la sintaxis básica:
-```elixir
+```plaintext
 kubectl debug -it mi-pod --image=ubuntu --target=mi-contenedor
 ```
 
@@ -491,7 +491,7 @@ Acá está el flujo completo de debugging:
 <br />
 
 ##### **Paso 1: Crear el Contenedor de Debug**
-```elixir
+```plaintext
 kubectl debug -it mi-pod --image=ubuntu --target=mi-contenedor --share-processes
 ```
 
@@ -502,7 +502,7 @@ Vas a caer en una shell en el contenedor Ubuntu. La flag `--share-processes` ase
 <br />
 
 ##### **Paso 2: Verificar el Compartir de Procesos**
-```elixir
+```plaintext
 ps aux
 ```
 
@@ -511,13 +511,13 @@ Deberías ver tanto tu proceso de aplicación (PID 1) como los procesos de shell
 <br />
 
 ##### **Paso 3: Acceder al Filesystem del Contenedor Principal**
-```elixir
+```plaintext
 ls /proc/1/root/
 ```
 
 ¡Esto te muestra el filesystem de tu contenedor distroless! Ahora podés navegar e inspeccionar archivos:
 
-```elixir
+```bash
 # Verificar tu binario de aplicación
 ls -la /proc/1/root/app
 
@@ -536,7 +536,7 @@ ls -la /proc/1/root/workspace/
 ##### **Paso 4: Crear un Entorno de Usuario Apropiado**
 A veces podrías querer trabajar más cómodamente. Acá está cómo configurar un entorno de usuario apropiado en tu contenedor de debug:
 
-```elixir
+```bash
 # Actualizar lista de paquetes e instalar herramientas útiles
 apt update && apt install -y curl wget netstat-nat procps tree
 
@@ -560,7 +560,7 @@ Una vez que tenés acceso, acá hay algunas técnicas de debugging poderosas:
 <br />
 
 **Debugging de Red:**
-```elixir
+```bash
 # Verificar en qué está escuchando tu app
 netstat -tlnp
 
@@ -574,7 +574,7 @@ nslookup tu-servicio
 <br />
 
 **Investigación del Sistema de Archivos:**
-```elixir
+```bash
 # Verificar uso de disco
 du -sh /proc/1/root/*
 
@@ -588,7 +588,7 @@ find /proc/1/root/ -name "*.conf" -o -name "*.yaml" -o -name "*.json"
 <br />
 
 **Análisis de Procesos:**
-```elixir
+```bash
 # Verificar qué archivos tiene abiertos tu app
 lsof -p 1
 
@@ -604,7 +604,7 @@ cat /proc/1/status | grep -E "(VmSize|VmRSS|VmPeak)"
 ##### **Ejemplo del Mundo Real**
 Te muestro un ejemplo completo. Digamos que tenés una aplicación Go en un contenedor distroless que está fallando los health checks:
 
-```elixir
+```bash
 # Primero, identificar el pod problemático
 kubectl get pods
 NAME                     READY   STATUS    RESTARTS   AGE
@@ -643,7 +643,7 @@ Si estás corriendo una versión anterior de Kubernetes (< 1.18) o tu cluster no
 <br />
 
 **Opción 1: Agregar un sidecar de debug a tu spec de pod**
-```elixir
+```yaml
 apiVersion: v1
 kind: Pod
 spec:
@@ -662,7 +662,7 @@ spec:
 <br />
 
 **Opción 2: Usar kubectl cp para sacar archivos**
-```elixir
+```bash
 # Copiar archivos del contenedor para investigar localmente
 kubectl cp mi-pod:/app/config.json ./config.json
 kubectl cp mi-pod:/var/log/ ./logs/
@@ -679,7 +679,7 @@ Asegurate de usar `--share-processes` o que `shareProcessNamespace: true` esté 
 
 **Permiso denegado accediendo /proc/1/root:**
 Esto puede pasar si tu contenedor de debug no tiene privilegios suficientes. Probá:
-```elixir
+```plaintext
 ls -hal /proc/1
 ```
 Para determinar que UID/GID y luego crea un usuario con esos valores para poder leer/escribir.
@@ -688,7 +688,7 @@ Para determinar que UID/GID y luego crea un usuario con esos valores para poder 
 
 **El contenedor principal no es PID 1:**
 Si tu app no está corriendo como PID 1, encontrá el proceso correcto:
-```elixir
+```bash
 ps aux | grep nombre-de-tu-app
 # Usar el PID correcto en lugar de 1
 ls /proc/PID/root/
@@ -720,7 +720,7 @@ Acá hay algunas mejores prácticas que aprendí a lo largo de los años:
 ##### **Crear un Template de Contenedor de Debug**
 Podrías querer crear una imagen de debug preconfigurada para tu equipo:
 
-```elixir
+```dockerfile
 FROM ubuntu:22.04
 
 RUN apt update && apt install -y \
@@ -744,7 +744,7 @@ CMD ["/bin/bash"]
 <br />
 
 Construir y pushear esto a tu registry, después usarlo para debugging:
-```elixir
+```plaintext
 kubectl debug -it mi-pod --image=tu-registry/debug-toolkit:latest
 ```
 

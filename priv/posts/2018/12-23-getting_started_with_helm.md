@@ -18,14 +18,14 @@ This tutorial will show you how to create a simple chart and also how to deploy 
 <br />
 
 Create the chart:
-```elixir
+```plaintext
 helm create hello-world
 ```
 Always use valid DNS names if you are going to have services, otherwise you will have issues later on.
 <br />
 
 Inspect the contents, as you will notice every resource is just a kubernetes resource with some placeholders and basic logic to get something more reusable:
-```elixir
+```bash
 $ cd hello-world
 
 charts       <--- Dependencies, charts that your chart depends on.
@@ -37,7 +37,7 @@ Note: the following link explains the basics of [dependencies](https://docs.helm
 <br />
 
 The file `values.yaml` by default will look like the following snippet:
-```elixir
+```yaml
 replicaCount: 1
 
 image:
@@ -73,7 +73,7 @@ affinity: {}
 <br />
 
 The next step would be to check the `templates` folder:
-```elixir
+```plaintext
 deployment.yaml  <--- Standard kubernetes deployment with go templates variables.
 _helpers.tpl     <--- This file defines some common variables.
 ingress.yaml     <--- Ingress route, etc.
@@ -84,7 +84,7 @@ Go [templates](https://blog.gopheracademy.com/advent-2017/using-go-templates/) b
 
 <br />
 Let's check the [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) file:
-```elixir
+```yaml
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
@@ -141,7 +141,7 @@ As you can see everything will get replaced by what you define in the `values.ya
 <br />
 
 Let's check the [service](https://kubernetes.io/docs/concepts/services-networking/service/) file:
-```elixir
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -165,7 +165,7 @@ spec:
 
 <br />
 Let's check the [ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) file:
-```elixir
+```yaml
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "hello-world.fullname" . -}}
 {{- $ingressPath := .Values.ingress.path -}}
@@ -209,7 +209,7 @@ The ingress file is one of the most interesting ones in my humble opinion becaus
 <br />
 
 After checking that everything is up to our needs the only thing missing is to finally deploy it to kubernetes (But first let's install tiller):
-```elixir
+```bash
 $ helm init
 $HELM_HOME has been configured at /home/gabriel/.helm.
 
@@ -224,7 +224,7 @@ Note that many of the complains that Helm receives are because of the admin-y ca
 <br />
 
 Deploy our chart:
-```elixir
+```bash
 $ helm install --name my-nginx -f values.yaml .
 NAME:   my-nginx
 LAST DEPLOYED: Sun Dec 23 00:30:11 2018
@@ -254,7 +254,7 @@ Our deployment was successful and we can see that our pod is waiting to be sched
 <br />
 
 Let's check that our service is there:
-```elixir
+```bash
 $ kubectl get services
 NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
 kubernetes             ClusterIP   10.96.0.1       <none>        443/TCP   1h
@@ -263,7 +263,7 @@ my-nginx-hello-world   ClusterIP   10.111.222.70   <none>        80/TCP    5m
 
 <br />
 And now we can test that everything is okay by running another pod in interactive mode, for example:
-```elixir
+```nginx
 $ kubectl run -i --tty alpine --image=alpine -- sh
 If you don't see a command prompt, try pressing enter.
 
@@ -330,7 +330,7 @@ And voila we see our nginx deployed there and accessible via service name to our
 <br />
 
 Our current deployment can be checked like this:
-```elixir
+```bash
 $ helm ls
 NAME            REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
 my-nginx        1               Sun Dec 23 00:30:11 2018        DEPLOYED        hello-world-0.1.0       1.0             default
@@ -338,7 +338,7 @@ my-nginx        1               Sun Dec 23 00:30:11 2018        DEPLOYED        
 <br />
 
 The last example would be to upgrade our deployment, lets change the `tag` in the `values.yaml` file from `stable` to `mainline` and update also the metadata file (`Chart.yaml`) to let Helm know that this is a new version of our chart.
-```elixir
+```bash
  $ helm upgrade my-nginx . -f values.yaml
 Release "my-nginx" has been upgraded. Happy Helming!
 LAST DEPLOYED: Sun Dec 23 00:55:22 2018
@@ -370,7 +370,7 @@ Note that I always specify the -f values.yaml just for explicitness.
 <br />
 
 It seems that our upgrade went well, let's see what Helm sees
-```elixir
+```bash
 $ helm ls
 NAME            REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
 my-nginx        2               Sun Dec 23 00:55:22 2018        DEPLOYED        hello-world-0.1.1       1.0             default
@@ -378,13 +378,13 @@ my-nginx        2               Sun Dec 23 00:55:22 2018        DEPLOYED        
 <br />
 
 But before we go let's validate that it did deployed the nginx version that we wanted to have:
-```elixir
+```bash
 $ kubectl exec my-nginx-hello-world-c5cdcc95c-shgc6 -- /usr/sbin/nginx -v
 nginx version: nginx/1.15.7
 ```
 <br />
 At the moment of this writing mainline is 1.15.7, we could rollback to the previous version by doing:
-```elixir
+```bash
 $ helm rollback my-nginx 1
 Rollback was a success! Happy Helming!
 ```
@@ -392,21 +392,21 @@ Basically this command needs a deployment name `my-nginx` and the revision numbe
 <br />
 
 Let's check the versions again:
-```elixir
+```bash
 $ kubectl exec my-nginx-hello-world-6f948db8d5-bsml2 -- /usr/sbin/nginx -v
 nginx version: nginx/1.14.2
 ```
 <br />
 
 Let's clean up:
-```elixir
+```bash
 $ helm del --purge my-nginx
 release "my-nginx" deleted
 ```
 <br />
 
 If you need to see what will be sent to the kubernetes API then you can use the following command (sometimes it's really useful for debugging or to inject a sidecar using pipes):
-```elixir
+```yaml
 $ helm template . -name my-nginx -f values.yaml
 # Source: hello-world/templates/service.yaml
 apiVersion: v1
@@ -457,7 +457,7 @@ En este tutorial vamos a ver como usar [Helm](https://helm.sh/), el cluster de d
 <br />
 
 Creando el [chart](https://helm.sh/es/docs/topics/charts/):
-```elixir
+```plaintext
 helm create hello-world
 ```
 Siempre hay que tener en cuenta las restricciones de [DNS](https://man7.org/linux/man-pages/man7/hostname.7.html) a la hora de elegir nombres, ya que esto puede traer problemas
@@ -465,7 +465,7 @@ despues.
 <br />
 
 Inspeccionemos el contenido, como podemos ver son recursos de kubernetes similar a los templates de go:
-```elixir
+```bash
 $ cd hello-world
 
 charts       <--- Dependencies, charts that your chart depends on.
@@ -477,7 +477,7 @@ Nota: este link explica lo basico de manejo de [dependencias](https://docs.helm.
 <br />
 
 El archivo `values.yaml` por defecto se ve asi:
-```elixir
+```yaml
 replicaCount: 1
 
 image:
@@ -513,7 +513,7 @@ affinity: {}
 <br />
 
 El proximo paso es revisar la carpeta `templates`:
-```elixir
+```plaintext
 deployment.yaml  <--- Recurso deployment estandar de kubernetes con variables de go templates.
 _helpers.tpl     <--- En este archivo se definen funciones y variables comunes.
 ingress.yaml     <--- Recurso ingress.
@@ -524,7 +524,7 @@ Go [templates](https://blog.gopheracademy.com/advent-2017/using-go-templates/) b
 
 <br />
 Revisemos el archivo [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/):
-```elixir
+```yaml
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
@@ -582,7 +582,7 @@ un helper o variable extra.
 <br />
 
 Sigamos con el archivo [service](https://kubernetes.io/docs/concepts/services-networking/service/):
-```elixir
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -606,7 +606,7 @@ spec:
 
 <br />
 Luego el archivo [ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/):
-```elixir
+```yaml
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "hello-world.fullname" . -}}
 {{- $ingressPath := .Values.ingress.path -}}
@@ -650,7 +650,7 @@ Este es probablemente el archivo mas interesante por que hace uso de variables l
 <br />
 
 Desplegando nuestro chart:
-```elixir
+```bash
 $ helm install --name my-nginx -f values.yaml .
 NAME:   my-nginx
 LAST DEPLOYED: Sun Dec 23 00:30:11 2018
@@ -680,7 +680,7 @@ Nuestro despliegue parece exitoso, ya que vemos el pod con estado Pending inmedi
 <br />
 
 Revisando el servicio:
-```elixir
+```bash
 $ kubectl get services
 NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
 kubernetes             ClusterIP   10.96.0.1       <none>        443/TCP   1h
@@ -689,7 +689,7 @@ my-nginx-hello-world   ClusterIP   10.111.222.70   <none>        80/TCP    5m
 
 <br />
 Podemos probar desde otro pod de manera interactiva si todo funciona correctamente:
-```elixir
+```nginx
 $ kubectl run -i --tty alpine --image=alpine -- sh
 If you don't see a command prompt, try pressing enter.
 
@@ -756,7 +756,7 @@ y voila, como podemos ver nuestro chart de nginx funciona perfectamente.
 <br />
 
 Podemos verificar el estado via helm de esta manera:
-```elixir
+```bash
 $ helm ls
 NAME            REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
 my-nginx        1               Sun Dec 23 00:30:11 2018        DEPLOYED        hello-world-0.1.0       1.0             default
@@ -764,7 +764,7 @@ my-nginx        1               Sun Dec 23 00:30:11 2018        DEPLOYED        
 <br />
 
 Actualizemos nuestro despliegue cambiando el `tag` en el archivo `values.yaml` de `stable` a `mainline` y tambien actualizemos la metadata en `Chart.yaml` para mantener la version de nuestro chart en buenas condiciones.
-```elixir
+```bash
  $ helm upgrade my-nginx . -f values.yaml
 Release "my-nginx" has been upgraded. Happy Helming!
 LAST DEPLOYED: Sun Dec 23 00:55:22 2018
@@ -795,7 +795,7 @@ NOTES:
 <br />
 
 Parece que todo salio bien, como podemos ver cambio la revision y la version del chart
-```elixir
+```bash
 $ helm ls
 NAME            REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
 my-nginx        2               Sun Dec 23 00:55:22 2018        DEPLOYED        hello-world-0.1.1       1.0             default
@@ -803,14 +803,14 @@ my-nginx        2               Sun Dec 23 00:55:22 2018        DEPLOYED        
 <br />
 
 Ahora verifiquemos que la version de nginx es la que nosotros especificamos:
-```elixir
+```bash
 $ kubectl exec my-nginx-hello-world-c5cdcc95c-shgc6 -- /usr/sbin/nginx -v
 nginx version: nginx/1.15.7
 ```
 <br />
 al momento de escribir esto la version mainline es 1.15.7, podemos hacer "rollback" si algo no salio bien con helm de
 esta manera:
-```elixir
+```bash
 $ helm rollback my-nginx 1
 Rollback was a success! Happy Helming!
 ```
@@ -818,21 +818,21 @@ Hay varias formas de hacer rollback, en este caso para nuestro chart `my-nginx` 
 <br />
 
 Revisemos la version de nginx de nuevo:
-```elixir
+```bash
 $ kubectl exec my-nginx-hello-world-6f948db8d5-bsml2 -- /usr/sbin/nginx -v
 nginx version: nginx/1.14.2
 ```
 <br />
 
 Siempre es una buena idea limpiar todo cuando terminamos de probar algo:
-```elixir
+```bash
 $ helm del --purge my-nginx
 release "my-nginx" deleted
 ```
 <br />
 
 Si necesitas depurar o ver los templates a medida que vas trabajando en ellos podes hacer lo siguiente:
-```elixir
+```yaml
 $ helm template . -n name -f values.yaml
 # Source: hello-world/templates/service.yaml
 apiVersion: v1

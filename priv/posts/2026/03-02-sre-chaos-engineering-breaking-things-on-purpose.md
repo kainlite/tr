@@ -86,7 +86,7 @@ Install it with Helm:
 
 <br />
 
-```elixir
+```sql
 helm repo add chaos-mesh https://charts.chaos-mesh.org
 helm repo update
 
@@ -108,7 +108,7 @@ into a GitOps workflow with ArgoCD.
 
 <br />
 
-```elixir
+```yaml
 # chaos/pod-kill.yaml
 apiVersion: chaos-mesh.org/v1alpha1
 kind: PodChaos
@@ -139,7 +139,7 @@ readiness probe, users should not notice anything. If they do, you found a probl
 
 <br />
 
-```elixir
+```yaml
 # chaos/network-delay.yaml
 apiVersion: chaos-mesh.org/v1alpha1
 kind: NetworkChaos
@@ -180,7 +180,7 @@ This is incredibly useful for testing timeout configurations and retry logic.
 
 <br />
 
-```elixir
+```yaml
 # chaos/network-partition.yaml
 apiVersion: chaos-mesh.org/v1alpha1
 kind: NetworkChaos
@@ -217,7 +217,7 @@ show a friendly error page? Does it recover when the network comes back? These a
 
 <br />
 
-```elixir
+```yaml
 # chaos/cpu-stress.yaml
 apiVersion: chaos-mesh.org/v1alpha1
 kind: StressChaos
@@ -248,7 +248,7 @@ This burns 80% CPU in one pod. With proper resource limits and HPA, your cluster
 
 <br />
 
-```elixir
+```yaml
 # chaos/dns-failure.yaml
 apiVersion: chaos-mesh.org/v1alpha1
 kind: DNSChaos
@@ -286,7 +286,7 @@ Install Litmus:
 
 <br />
 
-```elixir
+```plaintext
 helm repo add litmuschaos https://litmuschaos.github.io/litmus-helm
 helm repo update
 
@@ -301,7 +301,7 @@ A Litmus workflow lets you chain multiple chaos experiments together with valida
 
 <br />
 
-```elixir
+```yaml
 # litmus/workflow-resilience-test.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
@@ -422,7 +422,7 @@ Here is how to plan and run a game day:
 
 <br />
 
-```elixir
+```bash
 # game-days/2026-02-25-checklist.md
 # Game Day: February 25, 2026
 
@@ -500,7 +500,7 @@ stops automatically:
 
 <br />
 
-```elixir
+```yaml
 # chaos/continuous-chaos.yaml
 apiVersion: chaos-mesh.org/v1alpha1
 kind: Schedule
@@ -530,7 +530,7 @@ the SLO impact:
 
 <br />
 
-```elixir
+```bash
 # Only silence the page alert, not the SLO recording
 # This way you can see the SLO impact without getting paged
 amtool silence add --alertmanager.url=http://alertmanager:9093 \
@@ -563,7 +563,7 @@ app with `RELEASE_DISTRIBUTION=name`), test what happens when nodes lose connect
 
 <br />
 
-```elixir
+```yaml
 # chaos/cluster-partition.yaml
 apiVersion: chaos-mesh.org/v1alpha1
 kind: NetworkChaos
@@ -774,7 +774,7 @@ Instalalo con Helm:
 
 <br />
 
-```elixir
+```sql
 helm repo add chaos-mesh https://charts.chaos-mesh.org
 helm repo update
 
@@ -796,7 +796,7 @@ encajan perfectamente en un flujo de GitOps con ArgoCD.
 
 <br />
 
-```elixir
+```yaml
 # chaos/pod-kill.yaml
 apiVersion: chaos-mesh.org/v1alpha1
 kind: PodChaos
@@ -827,7 +827,7 @@ probe adecuado, los usuarios no deberían notar nada. Si lo notan, encontraste u
 
 <br />
 
-```elixir
+```yaml
 # chaos/network-delay.yaml
 apiVersion: chaos-mesh.org/v1alpha1
 kind: NetworkChaos
@@ -868,7 +868,7 @@ Es increíblemente útil para probar configuraciones de timeout y lógica de rei
 
 <br />
 
-```elixir
+```yaml
 # chaos/network-partition.yaml
 apiVersion: chaos-mesh.org/v1alpha1
 kind: NetworkChaos
@@ -905,7 +905,7 @@ una página de error amigable? ¿Se recupera cuando la red vuelve? Son preguntas
 
 <br />
 
-```elixir
+```yaml
 # chaos/cpu-stress.yaml
 apiVersion: chaos-mesh.org/v1alpha1
 kind: StressChaos
@@ -937,7 +937,7 @@ problemas.
 
 <br />
 
-```elixir
+```yaml
 # chaos/dns-failure.yaml
 apiVersion: chaos-mesh.org/v1alpha1
 kind: DNSChaos
@@ -976,7 +976,7 @@ Un workflow de Litmus te permite encadenar múltiples experimentos con pasos de 
 
 <br />
 
-```elixir
+```yaml
 # litmus/workflow-resilience-test.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
@@ -1047,7 +1047,7 @@ Acá cómo planificar y ejecutar un game day:
 
 <br />
 
-```elixir
+```bash
 # game-days/2026-02-25-checklist.md
 # Game Day: 25 de Febrero, 2026
 
@@ -1130,7 +1130,7 @@ supervisor lo reinicia. Esto es genial para la resiliencia pero significa que ne
 
 <br />
 
-```elixir
+```yaml
 # chaos/cluster-partition.yaml
 apiVersion: chaos-mesh.org/v1alpha1
 kind: NetworkChaos

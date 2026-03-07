@@ -37,7 +37,7 @@ Also if you are interested how I got the idea to make this operator check this [
 
 ##### Create the project
 In this step we need to create the kubebuilder project, so in an empty folder we run:
-```elixir
+```hcl
 $ go mod init techsquad.rocks
 go: creating new go.mod: module techsquad.rocks
 
@@ -57,7 +57,7 @@ $ kubebuilder create api
 
 ##### Create the API
 Next let's create an API, something for us to have control of (our controller).
-```elixir
+```bash
 $ kubebuilder create api --group forward --version v1beta1 --kind Map
 Create Resource [y/n]
 y
@@ -74,7 +74,7 @@ go build -o bin/manager main.go
 
 ```
 <br />
-```elixir
+```bash
 $ kubebuilder create api --group forward --version v1beta1 --kind Map
 Create Resource [y/n]
 y
@@ -95,7 +95,7 @@ Right until here we only have some boilerplate and basic or empty project with d
 
 ##### Add our code to the mix
 First we will add it to `api/v1beta1/map_types.go`, which will add our fields to our type.
-```elixir
+```go
 /*
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -171,7 +171,7 @@ Basically we just edited the `MapSpec` and the `MapStatus` struct.
 <br />
 
 Now we need to add the code to our controller in `controllers/map_controller.go`
-```elixir
+```yaml
 /*
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -348,7 +348,7 @@ In this controller we added two functions one to create a pod and modified basic
 
 ##### Starting the cluster
 Now we will use [Kind](https://github.com/kubernetes-sigs/kind) to create a local cluster to test
-```elixir
+```yaml
 $ kind create cluster --name test-cluster-1
 Creating cluster "test-cluster-1" ...
  ✓ Ensuring node image (kindest/node:v1.16.3) 🖼 
@@ -370,7 +370,7 @@ it could be that easy!?!?! yes, it is!
 
 ##### Running our operator locally
 For testing you can run your operator locally like this:
-```elixir
+```nginx
 $ make run
 /home/kainlite/Webs/go/bin/controller-gen object:headerFile=./hack/boilerplate.go.txt paths="./..."
 go fmt ./...
@@ -389,7 +389,7 @@ go run ./main.go
 
 ##### Testing it
 First we spin up a pod, and launch `nc -l -p 8000`
-```elixir
+```bash
 $ kubectl run -it --rm --restart=Never alpine --image=alpine sh
 If you don't see a command prompt, try pressing enter.
 
@@ -419,7 +419,7 @@ test
 
 Then we edit our manifest and apply it, check that everything is in place, and do the port-forward and launch another `nc localhost 8000` to test if everything went well.
 First the manifest
-```elixir
+```yaml
 $ cat config/samples/forward_v1beta1_map.yaml 
 apiVersion: forward.techsquad.rocks/v1beta1
 kind: Map
@@ -434,7 +434,7 @@ spec:
 ```
 <br />
 Then the port-forward and test
-```elixir
+```bash
 $ kubectl apply -f config/samples/forward_v1beta1_map.yaml
 map.forward.techsquad.rocks/mapsample configured
 
@@ -456,7 +456,7 @@ test
 
 ##### Making it publicly ready
 Here we just build and push the docker image to dockerhub or our favorite public registry.
-```elixir
+```bash
 $ make docker-build docker-push IMG=kainlite/forward:0.0.1
 /home/kainlite/Webs/go/bin/controller-gen object:headerFile=./hack/boilerplate.go.txt paths="./..."
 go fmt ./...
@@ -534,7 +534,7 @@ Además, si te interesa saber cómo surgió la idea de hacer este operador, pod�
 
 ##### Crear el proyecto
 En este paso, necesitamos crear el proyecto con kubebuilder. Así que, en una carpeta vacía, ejecutamos:
-```elixir
+```hcl
 $ go mod init techsquad.rocks
 go: creating new go.mod: module techsquad.rocks
 
@@ -554,7 +554,7 @@ $ kubebuilder create api
 
 ##### Creamos la API
 Creamos la API, el corazon de nuestro controlador.
-```elixir
+```bash
 $ kubebuilder create api --group forward --version v1beta1 --kind Map
 Create Resource [y/n]
 y
@@ -571,7 +571,7 @@ go build -o bin/manager main.go
 
 ```
 <br />
-```elixir
+```bash
 $ kubebuilder create api --group forward --version v1beta1 --kind Map
 Create Resource [y/n]
 y
@@ -592,7 +592,7 @@ Hasta acá solo tenemos algo de código base y un proyecto básico o vacío con 
 
 ##### Empecemos...
 Primero agregamos los tipos `api/v1beta1/map_types.go`.
-```elixir
+```go
 /*
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -668,7 +668,7 @@ Editamos `MapSpec` y `MapStatus`.
 <br />
 
 Ahora necesitamos darle vida a nuestro controlador `controllers/map_controller.go`
-```elixir
+```yaml
 /*
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -846,7 +846,7 @@ En este controlador, agregamos dos funciones: una para crear un pod y modificamo
 
 ##### **Iniciando el cluster**
 Ahora vamos a usar [Kind](https://github.com/kubernetes-sigs/kind) para crear un cluster local para pruebas
-```elixir
+```yaml
 $ kind create cluster --name test-cluster-1
 Creating cluster "test-cluster-1" ...
  ✓ Ensuring node image (kindest/node:v1.16.3) 🖼 
@@ -868,7 +868,7 @@ Thanks for using kind! 😊
 
 ##### **Ejecutando nuestro operador localmente**
 Para pruebas, podés correr tu operador localmente así:
-```elixir
+```nginx
 $ make run
 /home/kainlite/Webs/go/bin/controller-gen object:headerFile=./hack/boilerplate.go.txt paths="./..."
 go fmt ./...
@@ -887,7 +887,7 @@ go run ./main.go
 
 ##### **Probándolo**
 Primero levantamos un pod y lanzamos `nc -l -p 8000`
-```elixir
+```bash
 $ kubectl run -it --rm --restart=Never alpine --image=alpine sh
 If you don't see a command prompt, try pressing enter.
 
@@ -917,7 +917,7 @@ test
 
 Luego editamos nuestro manifest y lo aplicamos. Verificamos que todo esté en orden, hacemos el port-forward y lanzamos otro `nc localhost 8000` para probar si todo salió bien.
 Primero el manifest:
-```elixir
+```yaml
 $ cat config/samples/forward_v1beta1_map.yaml 
 apiVersion: forward.techsquad.rocks/v1beta1
 kind: Map
@@ -932,7 +932,7 @@ spec:
 ```
 <br />
 Luego hacemos el port-forward y la prueba:
-```elixir
+```bash
 $ kubectl apply -f config/samples/forward_v1beta1_map.yaml
 map.forward.techsquad.rocks/mapsample configured
 
@@ -954,7 +954,7 @@ test
 
 ##### **Haciéndolo público**
 Ahora simplemente construimos y subimos la imagen de Docker a DockerHub o a nuestro registro público favorito.
-```elixir
+```bash
 $ make docker-build docker-push IMG=kainlite/forward:0.0.1
 /home/kainlite/Webs/go/bin/controller-gen object:headerFile=./hack/boilerplate.go.txt paths="./..."
 go fmt ./...

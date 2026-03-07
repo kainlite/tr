@@ -43,7 +43,7 @@ Wallaby operates by automating interactions within a real web browser. This allo
 ##### **Installation**
 
 Add Wallaby as a dependency in your `mix.exs` file:
-```elixir
+```plaintext
 {:wallaby, "~> 0.30", runtime: false, only: :test}
 ```
 Then install it with `mix deps.get`
@@ -57,7 +57,7 @@ To use Wallaby, adjust the following settings in your `config/test.exs` file:
 * Wallaby Configuration: Add a Wallaby configuration block, replacing `tr` with your application's name:
 <br />
 
-```elixir
+```yaml
 config :tr, TrWeb.Endpoint,
   ...
   server: true
@@ -77,7 +77,7 @@ config :wallaby,
 * **Add Wallaby Configuration:** Near the top of your `lib/tr_web/endpoint.ex` file, insert the following configuration block. Be sure to replace `tr` with your actual application name.
 * **Modify Socket Configuration:** Within the socket function of your endpoint, add a `user_agent` field to establish a link between the browser session and the database.
 
-```elixir
+```plaintext
  if Application.compile_env(:tr, :sql_sandbox) do
     plug Phoenix.Ecto.SQL.Sandbox
   end
@@ -94,7 +94,7 @@ The next step is to setup the router, basically we need to setup the `on_mount` 
 to do it, and we will see both because this application uses the phoenix generated authentication.
 
 The first block makes sure that all the default LiveView sessions uses the hook.
-```elixir
+```plaintext
   live_session :default, on_mount: TrWeb.Hooks.AllowEctoSandbox do
     scope "/blog", TrWeb do
       pipe_through :browser
@@ -108,7 +108,7 @@ The first block makes sure that all the default LiveView sessions uses the hook.
 <br />
 
 The second block adds the same hook for all the remaining LiveViews, specifying it in the `on_mount`.
-```elixir
+```plaintext
   ## Authentication routes
   scope "/", TrWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
@@ -192,7 +192,7 @@ end
 <br />
 
 One of the last steps before we can run a test is to set the right case for us `test/support/feature_case.ex`: 
-```elixir
+```yaml
 defmodule TrWeb.FeatureCase do
   @moduledoc """
   Integration / Feature base configuration
@@ -224,7 +224,7 @@ end
 
 by defining a login helper function here, you create a convenient way to simulate  logged-in user sessions directly within your tests. This is crucial for testing features that require authentication.
 
-```elixir
+```hcl
 ExUnit.start()
 Ecto.Adapters.SQL.Sandbox.mode(Tr.Repo, :manual)
 
@@ -271,7 +271,7 @@ Why the Change?
 
 **Ensuring Consistency:** Setting `async: false` for LiveView tests helps guarantee that each LiveView test sees a consistent view of the database. This prevents unexpected outcomes that could happen with multiple concurrent LiveView tests.
 
-```elixir
+```plaintext
   use TrWeb.ConnCase, async: false
 ```
 <br />
@@ -281,7 +281,7 @@ Why the Change?
 In this example we run 2 browsers with logged in users and verify that they can send a message and receive it in real
 time, you will also see examples how to select and interact with different elements and run some assertions.
 
-```elixir
+```yaml
 defmodule TrWeb.Integration.PostIntegrationTest do
   use TrWeb.FeatureCase, async: false
   use Wallaby.Feature
@@ -353,7 +353,7 @@ To see the results head over to the checks page [here](https://github.com/kainli
 
 When you want Wallaby tests to run automatically as part of your continuous integration (CI) system, there's one important setup step: **installing browser drivers.**
 
-```elixir
+```yaml
       - uses: nanasess/setup-chromedriver@v2
       - run: |
           export DISPLAY=:99
@@ -423,7 +423,7 @@ Wallaby opera automatizando interacciones dentro de un navegador web real. Esto 
 ##### **Instalación**
 
 Agrega Wallaby como dependencia en tu archivo `mix.exs`:
-```elixir
+```plaintext
 {:wallaby, "~> 0.30", runtime: false, only: :test}
 ```
 Luego instálalo con `mix deps.get`.
@@ -436,7 +436,7 @@ Para usar Wallaby, ajusta los siguientes parámetros en tu archivo `config/test.
 * SQL Sandbox: Establece `sql_sandbox: true` para pruebas aisladas de base de datos.
 * Configuración de Wallaby: Agrega un bloque de configuración de Wallaby, reemplazando `tr` con el nombre de tu aplicación:
 <br />
-```elixir
+```yaml
 config :tr, TrWeb.Endpoint,
   ...
   server: true
@@ -456,7 +456,7 @@ config :wallaby,
 * **Agregar Configuración de Wallaby:** Cerca de la parte superior de tu archivo `lib/tr_web/endpoint.ex`, inserta el siguiente bloque de configuración. Asegúrate de reemplazar `tr` con el nombre de tu aplicación real.
 * **Modificar Configuración del Socket:** Dentro de la función `socket` de tu endpoint, agrega un campo `user_agent` para establecer un vínculo entre la sesión del navegador y la base de datos.
 
-```elixir
+```plaintext
  if Application.compile_env(:tr, :sql_sandbox) do
     plug Phoenix.Ecto.SQL.Sandbox
   end
@@ -473,7 +473,7 @@ La configuración de `user_agent` dentro del bloque `socket` asegura que Wallaby
 El siguiente paso es configurar el router. Básicamente, necesitamos establecer el hook `on_mount` en `live_session`. Hay dos formas de hacerlo, y veremos ambas porque esta aplicación utiliza la autenticación generada por Phoenix.
 
 El primer bloque asegura que todas las sesiones predeterminadas de LiveView utilicen el hook.
-```elixir
+```plaintext
   live_session :default, on_mount: TrWeb.Hooks.AllowEctoSandbox do
     scope "/blog", TrWeb do
       pipe_through :browser
@@ -487,7 +487,7 @@ El primer bloque asegura que todas las sesiones predeterminadas de LiveView util
 
 El segundo bloque añade el mismo hook para todas las demás `LiveViews`, especificándolo en el `on_mount`.
 
-```elixir
+```plaintext
   ## Authentication routes
   scope "/", TrWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
@@ -573,7 +573,7 @@ end
 <br />
 
 El ultimo paso es tener un caso de uso para probar `test/support/feature_case.ex`: 
-```elixir
+```yaml
 defmodule TrWeb.FeatureCase do
   @moduledoc """
   Integration / Feature base configuration
@@ -605,7 +605,7 @@ end
 
 Definimos una funcion para iniciar sesion y de esa manera poder testear usuarios autenticados mas facilmente.
 
-```elixir
+```hcl
 ExUnit.start()
 Ecto.Adapters.SQL.Sandbox.mode(Tr.Repo, :manual)
 
@@ -652,7 +652,7 @@ end
 
 **Asegurando consistencia:** Establecer `async: false` en las pruebas de LiveView ayuda a garantizar que cada prueba tenga una vista consistente de la base de datos. Esto previene resultados inesperados que podrían surgir con múltiples pruebas de LiveView corriendo al mismo tiempo.
 
-```elixir
+```plaintext
   use TrWeb.ConnCase, async: false
 ```
 <br />
@@ -660,7 +660,7 @@ end
 ##### **Corriendo una prueba** 
 
 En este ejemplo, ejecutamos 2 navegadores con usuarios logueados y verificamos que puedan enviar un mensaje y recibirlo en tiempo real. También verás ejemplos de cómo seleccionar e interactuar con diferentes elementos y correr algunas validaciones.
-```elixir
+```yaml
 defmodule TrWeb.Integration.PostIntegrationTest do
   use TrWeb.FeatureCase, async: false
   use Wallaby.Feature
@@ -732,7 +732,7 @@ Para ver los resultados dirigite a la página de comprobaciones [aquí](https://
 
 Si querés que las pruebas de Wallaby se ejecuten automáticamente como parte de tu sistema de integración continua (CI), hay un paso importante: **instalar los drivers del navegador.**
 
-```elixir
+```yaml
       - uses: nanasess/setup-chromedriver@v2
       - run: |
           export DISPLAY=:99

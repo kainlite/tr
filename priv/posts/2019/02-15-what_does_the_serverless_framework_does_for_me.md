@@ -22,7 +22,7 @@ The [serverless framework](https://serverless.com/) is a nice tool to manage all
 
 ### **Let's take the golang example for a spin**
 So let's generate a project with the serverless framework and see everything that it does for us.
-```elixir
+```yaml
 mkdir foo && cd "$_" &&  serverless create -t aws-go
 # OUTPUT:
 # Serverless: Generating boilerplate...
@@ -44,7 +44,7 @@ Okay all peachy but what just happened? We initialized a serverless framework pr
 <br />
 
 **Let's take a look at the files**
-```elixir
+```bash
 tree .
 # OUTPUT:
 # ├── hello
@@ -60,7 +60,7 @@ We got a manifest `serverless.yml` a `Makefile` (which you can use to build your
 <br />
 
 **The manifest file indicates a lot of things, I will add comments to the _code_**
-```elixir
+```yaml
 frameworkVersion: ">=1.28.0 <2.0.0"
 
 provider:
@@ -92,7 +92,7 @@ functions:
 <br />
 
 **Let's take a look at the hello function / file**
-```elixir
+```go
 package main
 
 import (
@@ -143,7 +143,7 @@ This function only returns some text with some headers, every lambda function re
 <br />
 
 ##### **Let's deploy it**
-```elixir
+```bash
 serverless deploy
 # OUTPUT:
 # Serverless: WARNING: Missing "tenant" and "app" properties in serverless.yml. Without these properties, you can not publish the service to the Serverless Platform.
@@ -177,7 +177,7 @@ So a lot happened here, the deploy function compiled our binary, packaged it, up
 <br />
 
 **And test it**
-```elixir
+```hcl
 curl -v https://cfr9zyw3r1.execute-api.us-east-1.amazonaws.com/dev/hello
 # OUTPUT:
 # *   Trying 99.84.27.2...
@@ -235,7 +235,7 @@ As expected we can see the headers x-my-company-func-reply and the json object t
 <br />
 
 ### **Cleanup**
-```elixir
+```bash
 serverless remove
 # OUTPUT:
 # Serverless: WARNING: Missing "tenant" and "app" properties in serverless.yml. Without these properties, you can not publish the service to the Serverless Platform.
@@ -284,7 +284,7 @@ El [framework serverless](https://serverless.com/) es una excelente herramienta 
 
 ### **Probemos el ejemplo en Go**
 Vamos a generar un proyecto con el framework serverless y ver todo lo que hace por nosotros.
-```elixir
+```yaml
 mkdir foo && cd "$_" &&  serverless create -t aws-go
 # OUTPUT:
 # Serverless: Generating boilerplate...
@@ -306,7 +306,7 @@ Te tiré un poco de magia de la línea de comandos con el `$_` (significa el pri
 <br />
 
 ### **Veamos los archivos**
-```elixir
+```bash
 tree .
 # OUTPUT:
 # ├── hello
@@ -322,7 +322,7 @@ Tenemos un manifiesto `serverless.yml`, un `Makefile` (que podés usar para comp
 <br />
 
 ### **El archivo del manifiesto indica muchas cosas, le agregaré comentarios al _código_**
-```elixir
+```yaml
 frameworkVersion: ">=1.28.0 <2.0.0"
 
 provider:
@@ -354,7 +354,7 @@ functions:
 <br />
 
 ### **Veamos la función hello**
-```elixir
+```go
 package main
 
 import (
@@ -405,7 +405,7 @@ Esta función simplemente devuelve un texto con algunos encabezados. Cada funci�
 <br />
 
 ##### **Vamos a desplegarlo**
-```elixir
+```bash
 serverless deploy
 # OUTPUT:
 # Serverless: Packaging service...
@@ -437,7 +437,7 @@ Entonces, pasó mucho aquí: el comando `deploy` compiló nuestro binario, lo em
 <br />
 
 ##### **Y lo probamos**
-```elixir
+```bash
 curl -v https://cfr9zyw3r1.execute-api.us-east-1.amazonaws.com/dev/hello
 # OUTPUT:
 # *   Trying 99.84.27.2...
@@ -448,7 +448,7 @@ Como era de esperar, podemos ver los encabezados `x-my-company-func-reply` y el 
 <br />
 
 ### **Limpiar todo**
-```elixir
+```bash
 serverless remove
 # OUTPUT:
 # Serverless: Removing Stack...

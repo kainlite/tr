@@ -42,7 +42,7 @@ Then look for the right binary for your architecture, in this case ARM64:
 <br />
 
 Jump into the node, go to `/usr/local/bin`, and then:
-```elixir
+```bash
 mv k3s k3s.backup
 wget https://github.com/k3s-io/k3s/releases/download/v1.29.1%2Bk3s2/k3s-arm64
 mv k3s-arm64 k3s
@@ -58,13 +58,13 @@ sudo systemctl restart k3s-agent
 
 ##### **How does it work?**
 First you need to install it, I won't delve into much detail but I went with the classic kubectl command:
-```elixir
+```plaintext
 kubectl apply -f https://raw.githubusercontent.com/rancher/system-upgrade-controller/master/manifests/system-upgrade-controller.yaml
 ``` 
 <br />
 
 After that we need to label the nodes that you want to upgrade
-```elixir
+```plaintext
 kubectl label node inst-759va-k3s-workers k3s-upgrade=true
 kubectl label node inst-0uk8y-k3s-servers k3s-upgrade=true
 kubectl label node inst-sd4tu-k3s-workers k3s-upgrade=true
@@ -73,7 +73,7 @@ kubectl label node inst-ziim5-k3s-servers k3s-upgrade=true
 <br />
 
 Then the final bit, the plan for the controller, save this as `upgrade.yaml` and apply it with kubectl:
-```elixir
+```yaml
 apiVersion: upgrade.cattle.io/v1
 kind: Plan
 metadata:
@@ -97,7 +97,7 @@ Once that's applied the upgrade will start node by node, once it's complete you 
 new version as expected, there are some things that can block the progress on some nodes so pay attention to that as
 mentioned at the beggining of the article, but if everything goes well you should see something like this:
 
-```elixir
+```bash
 ❯ kubectl get pods -A | grep upgrade
 system-upgrade     system-upgrade-controller-5b5c68955d-dq7rm           1/1     Running     5 (66m ago)    19h
 
@@ -142,13 +142,13 @@ En esta breve actualización, voy a hacer que todos los nodos puedan conectarse 
 
 ##### **Actualizando paquetes**
 Para que esto funcione, necesitás agregar en `mix.exs`:
-```elixir
+```plaintext
     {:libcluster, "~> 3.3"},
 ``` 
 <br />
 
 Actualizá tu archivo `lib/tr/application.ex` para iniciar libcluster:
-```elixir
+```yaml
     topologies = Application.get_env(:libcluster, :topologies, [])
 
     children = [
@@ -159,7 +159,7 @@ Actualizá tu archivo `lib/tr/application.ex` para iniciar libcluster:
 <br />
 
 Luego necesitás actualizar tu archivo `config/prod.exs` para indicarle a libcluster qué buscar en el clúster:
-```elixir
+```yaml
 # Configuración de Libcluster
 config :libcluster,
   topologies: [
@@ -177,7 +177,7 @@ config :libcluster,
 <br />
 
 Config para desarrollo `config/dev.exs`:
-```elixir
+```yaml
 config :libcluster,
   topologies: [
     example: [
@@ -194,7 +194,7 @@ config :libcluster,
 
 Eso es suficiente para que Elixir intente encontrar los otros pods y conectarse a los nodos. Sin embargo, necesitamos permitir esa comunicación y dejar que los pods lean la información de la API de Kubernetes. A continuación, agregá estos permisos a tu despliegue en `05-role.yaml`:
 
-```elixir
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -221,7 +221,7 @@ roleRef:
 <br />
 
 Luego en tu archivo `02-deployment.yaml`:
-```elixir
+```yaml
         env:
         - name: POD_IP
           valueFrom:
@@ -231,7 +231,7 @@ Luego en tu archivo `02-deployment.yaml`:
 <br />
 
 Y un servicio para facilitar las cosas `03-service.yaml` (puerto epmd):
-```elixir
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -247,27 +247,27 @@ Esto es para establecer las variables de entorno correctas para que la aplicaci�
 <br />
 
 Antes de seguir, asegurate de generar los archivos de release:
-```elixir
+```plaintext
 mix release.init
 ```
 <br />
 
 Ahora actualizá tu archivo `rel/env.sh.eex` para que se vea así:
-```elixir
+```bash
 export RELEASE_DISTRIBUTION=name
 export RELEASE_NODE=<%= @release.name %>@${POD_IP}
 ```
 <br />
 
 Si todo salió bien, deberías ver algo como esto en los logs:
-```elixir
+```plaintext
 tr-deployment-6cf5c65b56-ndrgm tr 04:13:13.411 [info] [libcluster:erlang_nodes_in_k8s] connected to :"tr@10.42.1.217"
 tr-deployment-6cf5c65b56-ndrgm tr 04:13:13.416 [info] [libcluster:erlang_nodes_in_k8s] connected to :"tr@10.42.3.185"
 ```
 <br />
 
 Si querés validarlo localmente, usá este comando desde `iex`:
-```elixir
+```plaintext
 ❯ iex --name a@127.0.0.1 --cookie secret -S mix
 
 ❯ iex --name b@127.0.0.1 --cookie secret -S mix

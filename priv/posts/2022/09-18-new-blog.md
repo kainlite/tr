@@ -26,7 +26,7 @@ but sooner or late it will be here, but first let's take a look how all this is 
 ##### **Generating the app**
 We need to install hex locally, then the Phoenix generator, and then our app, we also generated a Dockerfile for our
 production deployment.
-```elixir
+```bash
 mix local.hex
 mix archive.install hex phx_new
 # Create the app
@@ -37,7 +37,7 @@ mix phx.gen.release --docker
 <br />
 
 Don't forget about Ecto and the DB:
-```elixir
+```plaintext
 mix ecto.create
 mix ecto.migrate
 ```
@@ -92,7 +92,7 @@ Web3 puede que no sea la solución definitiva, pero resuelve algunos problemas i
 
 ##### **Generando la app**
 Necesitamos instalar hex localmente, luego el generador de Phoenix y después nuestra app. También generamos un Dockerfile para el despliegue en producción.
-```elixir
+```bash
 mix local.hex
 mix archive.install hex phx_new
 # Crear la app
@@ -103,7 +103,7 @@ mix phx.gen.release --docker
 <br />
 
 No te olvides de Ecto y la base de datos:
-```elixir
+```plaintext
 mix ecto.create
 mix ecto.migrate
 ```

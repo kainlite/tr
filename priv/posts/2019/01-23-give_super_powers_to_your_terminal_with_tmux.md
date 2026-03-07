@@ -30,7 +30,7 @@ In order to create a session and attach to it you need to execute `tmux new -s m
 
 ##### **Prefix**
 I don't use the default prefix that is: `CTRL-b`, I use `CTRL-a` like in screen.
-```elixir
+```bash
 # Use ctrl-a instead of ctrl-b
 set -g prefix C-a
 unbind C-b
@@ -53,7 +53,7 @@ With `tmux ls` we can list active sessions, also tmux has a command mode (`CTRL-
 
 ##### **Defaults**
 Some helpful settings, for example start windows at 1 instead of 0, renumber on exit also makes it easier with windows.
-```elixir
+```bash
 # Start window numbers at 1 to match keyboard order with tmux window order
 set -g base-index 1
 
@@ -73,7 +73,7 @@ set -g mouse on
 
 ##### **Movement**
 I move between windows with `CTRL+h` and `CTRL+l`, and between panes with `CTRL-a [hjkl]`.
-```elixir
+```bash
 # Move between windows
 bind-key -n C-h prev
 bind-key -n C-l next
@@ -92,7 +92,7 @@ bind l select-pane -R
 
 ##### **Configuration**
 A handy trick if you are testing the configuration is to reload it from the file with `CTRL-a r`
-```elixir
+```bash
 # Force a reload of the config file
 unbind r
 bind r source-file ~/.tmux.conf \; display "Reloaded!"
@@ -101,7 +101,7 @@ bind r source-file ~/.tmux.conf \; display "Reloaded!"
 
 ##### **Panes**
 Everything is nice and shiny, but how do I open a pane or a new window?
-```elixir
+```bash
 # Horizontal and vertical splits
 unbind |
 bind | split-window -h
@@ -113,7 +113,7 @@ You an also re-order the panes with `CTRL-a SPACE`
 <br />
 
 You can also re-order windows with `SHIFT-Left Arrow` and `SHIFT-Right Arrow`.
-```elixir
+```bash
 # Swap windows
 bind-key -n S-Left swap-window -t -1
 bind-key -n S-Right swap-window -t +1
@@ -122,7 +122,7 @@ bind-key -n S-Right swap-window -t +1
 
 ##### **Status bar**
 The status bar and the colors, it's fairly simple but I like it.
-```elixir
+```bash
 # Status bar has a dim gray background
 set-option -g status-bg colour234
 set-option -g status-fg colour0
@@ -155,7 +155,7 @@ And as you can imagine you can paste with `CTRL-a p`, this is really handy when 
 <br />
 
 It also copies to the clipboard buffer, using xsel.
-```elixir
+```bash
 # Make copy mode more vim like
 bind Escape copy-mode
 unbind p
@@ -177,7 +177,7 @@ If you want to learn more about tmux a good place to start is the [Arch Linux wi
 
 ##### **notes**
 Sometimes you can have issues with the keys `HOME` and `END`, this can help with that.
-```elixir
+```bash
 # Home / End patch
 bind -n End send-key C-e
 bind -n Home send-key C-a
@@ -223,7 +223,7 @@ Para crear una sesión y adjuntarla, necesitás ejecutar `tmux new -s mi-sesion`
 
 ##### **Prefijo**
 No uso el prefijo por defecto que es `CTRL-b`, uso `CTRL-a` como en screen.
-```elixir
+```bash
 # Usar ctrl-a en lugar de ctrl-b
 set -g prefix C-a
 unbind C-b
@@ -246,7 +246,7 @@ Con `tmux ls` podemos listar las sesiones activas. También tmux tiene un modo d
 
 ##### **Valores predeterminados**
 Algunas configuraciones útiles, como por ejemplo, empezar las ventanas en 1 en lugar de 0, y renumerarlas al salir, también facilita el manejo de las ventanas.
-```elixir
+```bash
 # Empezar a numerar las ventanas desde 1 para que coincidan con el orden del teclado
 set -g base-index 1
 
@@ -266,7 +266,7 @@ set -g mouse on
 
 ##### **Movimiento**
 Me muevo entre ventanas con `CTRL+h` y `CTRL+l`, y entre paneles con `CTRL-a [hjkl]`.
-```elixir
+```bash
 # Moverse entre ventanas
 bind-key -n C-h prev
 bind-key -n C-l next
@@ -285,7 +285,7 @@ bind l select-pane -R
 
 ##### **Configuración**
 Un truco útil si estás probando la configuración es recargarla desde el archivo con `CTRL-a r`.
-```elixir
+```bash
 # Forzar la recarga del archivo de configuración
 unbind r
 bind r source-file ~/.tmux.conf \; display "¡Recargado!"
@@ -294,7 +294,7 @@ bind r source-file ~/.tmux.conf \; display "¡Recargado!"
 
 ##### **Paneles**
 Todo muy lindo, pero ¿cómo abro un panel o una nueva ventana?
-```elixir
+```bash
 # Divisiones horizontal y vertical
 unbind |
 bind | split-window -h
@@ -306,7 +306,7 @@ También podés reordenar los paneles con `CTRL-a SPACE`.
 <br />
 
 También podés reordenar ventanas con `SHIFT-Flecha Izquierda` y `SHIFT-Flecha Derecha`.
-```elixir
+```bash
 # Intercambiar ventanas
 bind-key -n S-Left swap-window -t -1
 bind-key -n S-Right swap-window -t +1
@@ -315,7 +315,7 @@ bind-key -n S-Right swap-window -t +1
 
 ##### **Barra de estado**
 La barra de estado y los colores son bastante simples, pero me gustan.
-```elixir
+```bash
 # Barra de estado con fondo gris oscuro
 set-option -g status-bg colour234
 set-option -g status-fg colour0
@@ -348,7 +348,7 @@ Y como te imaginarás, podés pegar con `CTRL-a p`. Esto es muy útil cuando cop
 <br />
 
 También copia al buffer del portapapeles usando xsel.
-```elixir
+```bash
 # Hacer el modo copia más parecido a vim
 bind Escape copy-mode
 unbind p
@@ -370,7 +370,7 @@ Si querés aprender más sobre tmux, un buen lugar para empezar es la [wiki de A
 
 ##### **Notas**
 A veces podés tener problemas con las teclas `HOME` y `END`, esto te puede ayudar con eso.
-```elixir
+```bash
 # Parche para Home / End
 bind -n End send-key C-e
 bind -n Home send-key C-a

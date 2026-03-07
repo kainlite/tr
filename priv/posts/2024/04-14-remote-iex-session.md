@@ -42,7 +42,7 @@ there are likely many more options but we will explore these two.
 In this scenario we will use our local stack to connect to the remote instances or cluster, how do we do so? figure that
 the port-forward is sorted out or you have a allowlist in place for your IP address or connection, in kubernetes we can
 do it like this, first lets validate that we can reach the remote instances:
-```elixir
+```plaintext
 ❯ epmd -names
 epmd: up and running on port 4369 with data:
 name rem-1ed8-tr at port 35229
@@ -51,13 +51,13 @@ name tr at port 44091
 Then you will need the cookie in order to connect to the cluster, you can fetch that from your environment variables or
 secrets, the cookie is used as the grouping mechanism rather than a password in a beam cluster, when that is done you
 can connect like this:
-```elixir
+```plaintext
 ssh user@remote -L4369:localhost:4369 -L44091:localhost:44091
 ```
 Do note that you need to use the port of the app/node that you want to connect to.
 
 In kubernetes you would need two port-forward commands: 
-```elixir
+```plaintext
 kubectl -n tr port-forward pod/tr-xxxx 4369:4369 &
 kubectl -n tr port-forward pod/tr-xxxx 44091:44091 &
 ```
@@ -152,20 +152,20 @@ Probablemente haya muchas más opciones, pero exploraremos estas dos.
 
 ### **Port-forward**
 En este escenario, usaremos nuestra stack local para conectarnos a las instancias o clúster remoto. ¿Cómo hacemos eso? Suponiendo que el port-forward está resuelto o tenés una lista blanca de IPs en su lugar, en Kubernetes lo podemos hacer así. Primero, validemos que podemos alcanzar las instancias remotas:
-```elixir
+```plaintext
 ❯ epmd -names
 epmd: up and running on port 4369 with data:
 name rem-1ed8-tr at port 35229
 name tr at port 44091
 ```
 Luego, necesitarás el cookie para conectarte al clúster, lo podés obtener de tus variables de entorno o secretos. El cookie se usa como mecanismo de agrupación en lugar de una contraseña en un clúster BEAM. Una vez hecho esto, podés conectarte así:
-```elixir
+```plaintext
 ssh user@remote -L4369:localhost:4369 -L44091:localhost:44091
 ```
 Tené en cuenta que necesitás usar el puerto de la app/nodo al que querés conectarte.
 
 En Kubernetes necesitarías dos comandos de port-forward:
-```elixir
+```plaintext
 kubectl -n tr port-forward pod/tr-xxxx 4369:4369 &
 kubectl -n tr port-forward pod/tr-xxxx 44091:44091 &
 ```

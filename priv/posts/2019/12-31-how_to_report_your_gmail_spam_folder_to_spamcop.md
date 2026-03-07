@@ -28,7 +28,7 @@ The source code can be found [here](https://github.com/kainlite/spamcop)
 
 ##### **Code**
 I have added some comments along the code to make things easy to understand
-```elixir
+```go
 package main
 
 import (
@@ -248,7 +248,7 @@ func main() {
 <br />
 
 ##### **Running it**
-```elixir
+```bash
 $ spam
 2019/12/31 17:45:14 Processing 2 messages...
 Message sent!
@@ -309,7 +309,7 @@ El código fuente lo podés encontrar [aquí](https://github.com/kainlite/spamco
 
 ##### **Código**
 He agregado algunos comentarios en el código para que sea más fácil de entender.
-```elixir
+```go
 package main
 
 import (
@@ -529,7 +529,7 @@ func main() {
 <br />
 
 ##### **Ejecutándolo**
-```elixir
+```bash
 $ spam
 2019/12/31 17:45:14 Procesando 2 mensajes...
 Mensaje enviado!

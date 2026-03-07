@@ -55,13 +55,13 @@ The bad parts about the `ValidatingAdmissionWebhook`:
 
 If you intend to use it as a plain service:
 
-```elixir
+```bash
 $ go get github.com/kainlite/kube-image-bouncer
 ```
 <br />
 
 You can also use this [Docker image](https://hub.docker.com/r/kainlite/kube-image-bouncer/):
-```elixir
+```bash
 $ docker pull kainlite/kube-image-bouncer
 ```
 <br />
@@ -71,7 +71,7 @@ We can rely in the kubernetes CA to generate the certificate that we need, if yo
 <br />
 
 Create a CSR:
-```elixir
+```nginx
 $ cat <<EOF | cfssl genkey - | cfssljson -bare server
 {
   "hosts": [
@@ -97,7 +97,7 @@ EOF
 <br />
 
 Then apply it to the cluster
-```elixir
+```yaml
 $ cat <<EOF | kubectl apply -f -
 apiVersion: certificates.k8s.io/v1
 kind: CertificateSigningRequest
@@ -115,7 +115,7 @@ EOF
 <br />
 
 Approve and get your certificate for later use
-```elixir
+```bash
 $ kubectl get csr image-bouncer-webhook.default -o jsonpath='{.status.certificate}' | base64 --decode > server.crt
 ```
 <br />
@@ -127,13 +127,13 @@ we need to take care of other details add this to your hosts file in the master 
 <br />
 
 We use this name because it has to match with the names from the certificate, since this will run outside kuberntes and it could even be externally available, we just fake it with a hosts entry
-```elixir
+```bash
 $ echo "127.0.0.1 image-bouncer-webhook.default.svc" >> /etc/hosts
 ```
 <br />
 
 Also in the apiserver you need to update it with these settings:
-```elixir
+```plaintext
 --admission-control-config-file=/etc/kubernetes/kube-image-bouncer/admission_configuration.json
 --enable-admission-plugins=ImagePolicyWebhook
 ```
@@ -141,7 +141,7 @@ If you did this method you don't need to create the `validating-webhook-configur
 <br />
 
 Create an admission control configuration file named `/etc/kubernetes/kube-image-bouncer/admission_configuration.json` file with the following contents:
-```elixir
+```json
 {
   "imagePolicy": {
      "kubeConfigFile": "/etc/kubernetes/kube-image-bouncer/kube-image-bouncer.yml",
@@ -156,7 +156,7 @@ Adjust the defaults if you want to allow images by default.
 
 <br />
 Create a kubeconfig file `/etc/kubernetes/kube-image-bouncer/kube-image-bouncer.yml` with the following contents:
-```elixir
+```yaml
 apiVersion: v1
 kind: Config
 clusters:
@@ -181,7 +181,7 @@ This configuration file instructs the API server to reach the webhook server at 
 <br />
 
 Be aware that you need to be sitting in the folder with the certs for that to work:
-```elixir
+```bash
 $ docker run --rm -v `pwd`/server-key.pem:/certs/server-key.pem:ro -v `pwd`/server.crt:/certs/server.crt:ro -p 1323:1323 --network host kainlite/kube-image-bouncer -k /certs/server-key.pem -c /certs/server.crt
 ```
 <br />
@@ -190,7 +190,7 @@ $ docker run --rm -v `pwd`/server-key.pem:/certs/server-key.pem:ro -v `pwd`/serv
 
 If you are going this path, all you need to do is generate the certificates, everything else can be done with kubectl, first of all you have to create a tls secret holding the webhook certificate and key (we just generated this in the previous step):
 
-```elixir
+```bash
 $ kubectl create secret tls tls-image-bouncer-webhook \
   --key server-key.pem \
   --cert server.pem
@@ -198,19 +198,19 @@ $ kubectl create secret tls tls-image-bouncer-webhook \
 <br />
 
 Then create a kubernetes deployment for the `image-bouncer-webhook`:
-```elixir
+```bash
 $ kubectl apply -f kubernetes/image-bouncer-webhook.yaml
 ```
 <br />
 
 Finally create `ValidatingWebhookConfiguration` that makes use of our webhook endpoint, you can use this but be sure to update the caBundle with the `server.crt` content in base64:
-```elixir
+```bash
 $ kubectl apply -f kubernetes/validating-webhook-configuration.yaml
 ```
 <br />
 
 Or you can can simply generate the `validating-webhook-configuration.yaml` file like this and apply it in one go:
-```elixir
+```yaml
 $ cat <<EOF | kubectl apply -f -
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
@@ -243,17 +243,17 @@ This could be easily automated (helm chart coming soon...), changes can take a b
 #### Testing
 
 Both paths should work the same way and you will see a similar error message, example:
-```elixir
+```plaintext
 Error creating: pods "nginx-latest-sdsmb" is forbidden: image policy webhook backend denied one or more images: Images using latest tag are not allowed
 ```
 or
-```elixir
+```plaintext
 Warning  FailedCreate  23s (x15 over 43s)  replication-controller  Error creating: admission webhook "image-bouncer-webhook.default.svc" denied the request: Images using latest tag are not allowed
 ```
 <br />
 
 Create a nginx-versioned RC to validate that versioned releases still work:
-```elixir
+```yaml
 $ cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: ReplicationController
@@ -279,7 +279,7 @@ EOF
 
 <br />
 Ensure/check the replication controller is actually running:
-```elixir
+```bash
 $ kubectl get rc
 NAME              DESIRED   CURRENT   READY     AGE
 nginx-versioned   1         1         0         2h
@@ -287,7 +287,7 @@ nginx-versioned   1         1         0         2h
 
 <br />
 Now create one for nginx-latest to validate that our controller/webhook can actually reject pods with images using the latest tag:
-```elixir
+```yaml
 $ cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: ReplicationController
@@ -313,7 +313,7 @@ EOF
 
 <br />
 If we check the pod it should not be created and the RC should show something similar to the following output, you can also check with `kubectl get events --sort-by='{.lastTimestamp}'`:
-```elixir
+```yaml
 $ kubectl describe rc nginx-latest
 Name:         nginx-latest
 Namespace:    default
@@ -346,13 +346,13 @@ Events:
 #### Debugging
 It's always useful to see the apiserver logs if you are using the admission controller path since it will log there why did it fail, and also the logs from the image-bouncer, for example:
 apiserver
-```elixir
+```plaintext
 W0107 17:39:00.619560       1 dispatcher.go:142] rejected by webhook "image-bouncer-webhook.default.svc": &errors.StatusError{ErrStatus:v1.Status{TypeMeta:v1.TypeMeta{Kind:"", APIVersion:""}, ListMeta:v1.ListMeta{ SelfLink:"", ResourceVersion:"", Continue:"", RemainingItemCount:(*int64)(nil)}, Status:"Failure", Message:"admission webhook \"image-bouncer-webhook.default.svc\" denied the request: Images using latest tag are not allowed", Reason:"", Details:(*v1.StatusDetails)(nil), Code:400}}
 ```
 <br />
 
 kube-image-bouncer:
-```elixir
+```plaintext
 echo: http: TLS handshake error from 127.0.0.1:49414: remote error: tls: bad certificate
 method=POST, uri=/image_policy?timeout=30s, status=200
 method=POST, uri=/image_policy?timeout=30s, status=200
@@ -366,7 +366,7 @@ Lets take a really brief look at the critical parts of creating an admission con
 <br />
 
 This is a section of the `main.go` as we can see we are handling two `POST` paths with different methods, and some other validations, what we need to know is that the we will receive a POST method call with a JSON payload and that we need to convert to an admission controller review request.
-```elixir
+```go
     app.Action = func(c *cli.Context) error {
         e := echo.New()
         e.POST("/image_policy", handlers.PostImagePolicy())
@@ -409,7 +409,7 @@ This is a section of the `main.go` as we can see we are handling two `POST` path
 <br />
 
 This is a section from `handlers/validating_admission.go`, basically it parses and validates if the image should be allowed or not and then it sends an [AdmissionReponse](https://pkg.go.dev/k8s.io/api/admission/v1beta1) back with the flag `Allowed` set to true or false. If you want to learm more about the different types used here you can explore the [v1beta1.Admission Documentation](https://pkg.go.dev/k8s.io/api/admission/v1beta1)
-```elixir
+```yaml
 func PostValidatingAdmission() echo.HandlerFunc {
     return func(c echo.Context) error {
         var admissionReview v1beta1.AdmissionReview
@@ -563,13 +563,13 @@ Por otro lado, el [ValidatingAdmissionWebhook](https://kubernetes.io/docs/refere
 
 Si querés usarlo como un servicio simple:
 
-```elixir
+```bash
 $ go get github.com/kainlite/kube-image-bouncer
 ```
 <br />
 
 También podés usar esta [imagen Docker](https://hub.docker.com/r/kainlite/kube-image-bouncer/):
-```elixir
+```bash
 $ docker pull kainlite/kube-image-bouncer
 ```
 <br />
@@ -580,7 +580,7 @@ Podemos apoyarnos en el CA de Kubernetes para generar los certificados que neces
 <br />
 
 Creá un CSR:
-```elixir
+```nginx
 $ cat <<EOF | cfssl genkey - | cfssljson -bare server
 {
   "hosts": [
@@ -606,7 +606,7 @@ EOF
 <br />
 
 Luego aplicalo en el clúster:
-```elixir
+```yaml
 $ cat <<EOF | kubectl apply -f -
 apiVersion: certificates.k8s.io/v1
 kind: CertificateSigningRequest
@@ -624,7 +624,7 @@ EOF
 <br />
 
 Aprobá y obtené tu certificado para usarlo más adelante:
-```elixir
+```bash
 $ kubectl get csr image-bouncer-webhook.default -o jsonpath='{.status.certificate}' | base64 --decode > server.crt
 ```
 <br />
@@ -635,13 +635,13 @@ Hay dos maneras de desplegar este controller (webhook). Para que esto funcione, 
 <br />
 
 Usamos este nombre porque tiene que coincidir con los nombres del certificado. Dado que este se ejecutará fuera de Kubernetes (y podría incluso estar disponible externamente), simplemente lo falsificamos con una entrada en `/etc/hosts`:
-```elixir
+```bash
 $ echo "127.0.0.1 image-bouncer-webhook.default.svc" >> /etc/hosts
 ```
 
 
 Además, en el apiserver necesitás actualizarlo con estas configuraciones:
-```elixir
+```plaintext
 --admission-control-config-file=/etc/kubernetes/kube-image-bouncer/admission_configuration.json
 --enable-admission-plugins=ImagePolicyWebhook
 ```
@@ -650,7 +650,7 @@ Si seguís este método, no necesitás crear el recurso `validating-webhook-conf
 <br />
 
 Creá un archivo de configuración de control de admisión llamado `/etc/kubernetes/kube-image-bouncer/admission_configuration.json` con el siguiente contenido:
-```elixir
+```json
 {
   "imagePolicy": {
      "kubeConfigFile": "/etc/kubernetes/kube-image-bouncer/kube-image-bouncer.yml",
@@ -665,7 +665,7 @@ Ajustá los valores predeterminados si querés permitir imágenes por defecto.
 
 <br />
 Creá un archivo kubeconfig `/etc/kubernetes/kube-image-bouncer/kube-image-bouncer.yml` con el siguiente contenido:
-```elixir
+```yaml
 apiVersion: v1
 kind: Config
 clusters:
@@ -691,7 +691,7 @@ Este archivo de configuración le indica al API server que debe conectarse al se
 <br />
 
 Asegurate de estar en la carpeta que contiene los certificados para que funcione:
-```elixir
+```bash
 $ docker run --rm -v `pwd`/server-key.pem:/certs/server-key.pem:ro -v `pwd`/server.crt:/certs/server.crt:ro -p 1323:1323 --network host kainlite/kube-image-bouncer -k /certs/server-key.pem -c /certs/server.crt
 ```
 <br />
@@ -700,7 +700,7 @@ $ docker run --rm -v `pwd`/server-key.pem:/certs/server-key.pem:ro -v `pwd`/serv
 
 Si optás por esta ruta, todo lo que necesitás hacer es generar los certificados; todo lo demás puede hacerse con `kubectl`. Primero debés crear un secreto TLS que contenga el certificado y la clave del webhook (que generamos en el paso anterior):
 
-```elixir
+```bash
 $ kubectl create secret tls tls-image-bouncer-webhook \
   --key server-key.pem \
   --cert server.pem
@@ -708,7 +708,7 @@ $ kubectl create secret tls tls-image-bouncer-webhook \
 <br />
 
 Luego creá un despliegue de Kubernetes para el `image-bouncer-webhook`:
-```elixir
+```bash
 $ kubectl apply -f kubernetes/image-bouncer-webhook.yaml
 ```
 
@@ -716,14 +716,14 @@ $ kubectl apply -f kubernetes/image-bouncer-webhook.yaml
 
 Finalmente, creá la `ValidatingWebhookConfiguration` que utiliza nuestro endpoint del webhook. Podés usar este archivo, pero asegurate de actualizar el campo `caBundle` con el contenido de `server.crt` en formato base64:
 
-```elixir
+```bash
 $ kubectl apply -f kubernetes/validating-webhook-configuration.yaml
 ```
 
 <br />
 
 O también podés generar el archivo `validating-webhook-configuration.yaml` directamente y aplicarlo de una sola vez como sigue:
-```elixir
+```yaml
 $ cat <<EOF | kubectl apply -f -
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
@@ -755,18 +755,18 @@ Este proceso se puede automatizar fácilmente (estoy trabajando en un **Helm cha
 #### Pruebas
 
 Ambos métodos deberían funcionar de la misma manera y vas a ver un mensaje de error similar al siguiente ejemplo:
-```elixir
+```plaintext
 Error creating: pods "nginx-latest-sdsmb" is forbidden: image policy webhook backend denied one or more images: Images using latest tag are not allowed
 ```
 o
-```elixir
+```plaintext
 Warning  FailedCreate  23s (x15 over 43s)  replication-controller  Error creating: admission webhook "image-bouncer-webhook.default.svc" denied the request: Images using latest tag are not allowed
 ```
 <br />
 
 Creá un **ReplicationController (RC)** para nginx con una versión específica para validar que los lanzamientos con versiones funcionen correctamente:
 
-```elixir
+```yaml
 $ cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: ReplicationController
@@ -792,7 +792,7 @@ EOF
 
 <br />
 Verificando que esta corriendo:
-```elixir
+```bash
 $ kubectl get rc
 NAME              DESIRED   CURRENT   READY     AGE
 nginx-versioned   1         1         0         2h
@@ -800,7 +800,7 @@ nginx-versioned   1         1         0         2h
 
 <br />
 Ahora creemos un despliegue de nginx usando `latest` para validar que funciona:
-```elixir
+```yaml
 $ cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: ReplicationController
@@ -827,7 +827,7 @@ EOF
 <br />
 Si verificamos el pod, no debería crearse, y el **ReplicationController (RC)** debería mostrar algo similar al siguiente resultado. También podés verificarlo con el comando `kubectl get events --sort-by='{.lastTimestamp}'`:
 
-```elixir
+```yaml
 $ kubectl describe rc nginx-latest
 Name:         nginx-latest
 Namespace:    default
@@ -865,7 +865,7 @@ Es muy útil revisar los logs del **apiserver** si estás utilizando el camino d
 
 **apiserver:**
 
-```elixir
+```plaintext
 W0107 17:39:00.619560       1 dispatcher.go:142] rejected by webhook "image-bouncer-webhook.default.svc": &errors.StatusError{ErrStatus:v1.Status{TypeMeta:v1.TypeMeta{Kind:"", APIVersion:""}, ListMeta:v1.ListMeta{ SelfLink:"", ResourceVersion:"", Continue:"", RemainingItemCount:(*int64)(nil)}, Status:"Failure", Message:"admission webhook \"image-bouncer-webhook.default.svc\" denied the request: Images using latest tag are not allowed", Reason:"", Details:(*v1.StatusDetails)(nil), Code:400}}
 ```
 
@@ -873,7 +873,7 @@ W0107 17:39:00.619560       1 dispatcher.go:142] rejected by webhook "image-boun
 
 **kube-image-bouncer:**
 
-```elixir
+```plaintext
 echo: http: TLS handshake error from 127.0.0.1:49414: remote error: tls: bad certificate
 method=POST, uri=/image_policy?timeout=30s, status=200
 method=POST, uri=/image_policy?timeout=30s, status=200
@@ -890,7 +890,7 @@ Echemos un vistazo rápido a las partes críticas de la creación de un **admiss
 
 Esta es una sección del archivo `main.go`. Como podemos ver, estamos manejando dos rutas **POST** con diferentes métodos y algunas otras validaciones. Lo que debemos saber es que recibiremos una llamada **POST** con un **JSON** como payload que necesitamos convertir en una solicitud de revisión del **admission controller**.
 
-```elixir
+```go
     app.Action = func(c *cli.Context) error {
         e := echo.New()
         e.POST("/image_policy", handlers.PostImagePolicy())
@@ -935,7 +935,7 @@ Esta es una sección del archivo `handlers/validating_admission.go`. Básicament
 
 Si querés aprender más sobre los diferentes tipos utilizados aquí, podés explorar la documentación de **[v1beta1.Admission](https://pkg.go.dev/k8s.io/api/admission/v1beta1)**.
 
-```elixir
+```yaml
 func PostValidatingAdmission() echo.HandlerFunc {
     return func(c echo.Context) error {
         var admissionReview v1beta1.AdmissionReview

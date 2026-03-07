@@ -44,7 +44,7 @@ examples.
 
 Lets create a new Rust project with Cargo, as you might notice we will get a very basic project that will help us get 
 get started:
-```elixir
+```bash
 ❯ cargo new rcv
      Created binary (application) `rcv` package
      
@@ -60,7 +60,7 @@ I was thinking in processing markdown files and show them as html, so that's bas
 optimal but it is good enough to illustrate the example, first lets add some crates for the webserver 
 ([Actix](https://actix.rs/docs/server/)) and converting [markdown to html](https://github.com/johannhof/markdown.rs).
 
-```elixir
+```bash
 [package]
 name = "rcv"
 version = "0.1.0"
@@ -77,7 +77,7 @@ markdown = "0.3"
 #### Lets add some code
 This simple snippet only listens for `GET` requests to `/` and logs a line with the unix timestamp and IP and returns 
 the contents of the file `cv.md` which is my Curriculum Vitae.
-```elixir
+```plaintext
 use actix_web::{get, App, HttpResponse, HttpServer};
 use actix_web::{HttpRequest, Responder};
 use std::fs;
@@ -121,7 +121,7 @@ async fn main() -> std::io::Result<()> {
 
 #### Example logs
 Example logs 
-```elixir
+```plaintext
 [1662136558][127.0.0.1]: Processing cv request...
 [1662136591][127.0.0.1]: Processing cv request...
 
@@ -136,7 +136,7 @@ This Dockerfile can be optimized and secured in many ways, but for the sake of s
 working on something, also we will provide the security at runtime via kubernetes APIs.
 We need to consider two things here, first we need to create an ARM32v7 binary using Rust, then we need a Docker image
 for that architecture so that's basically what the Dockerfile does.
-```elixir
+```dockerfile
 ## builder
 FROM rust:1.63.0 as builder
 
@@ -171,7 +171,7 @@ CMD ["/usr/src/app/rcv"]
 
 #### Building and pushing (docker image)
 So lets build it and push it [here](https://hub.docker.com/repository/docker/kainlite/rcv).
-```elixir
+```sql
 ❯ docker build . -f Dockerfile.armv7
 Sending build context to Docker daemon  894.2MB
 Step 1/14 : FROM rust:1.63.0 as builder
@@ -466,7 +466,7 @@ armv7-2: digest: sha256:86be73465a5e4819b97d4aafe8195b977a4e9b1d6ff3780315972ad2
 ### lets quickly review the manifests
 The manifests are fairly simple, you can see them there, as you can see we are restricting the user and privileges of
 the container using the SecurityContext of the pod and the container.
-```elixir
+```yaml
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -533,7 +533,7 @@ spec:
 #### Deploying it
 Assuming you already have a cluster up and running, this can be deployed like this, you will see a deployment, a service
 and the ingress resources, you will also need to have a DNS entry if you want to use it like I did there:
-```elixir
+```plaintext
 ❯ kubectl apply -f manifests/
 deployment.apps/rcv-deployment created
 ingress.networking.k8s.io/rcv-ingress created
@@ -565,7 +565,7 @@ make your own.
 
 ### Cleaning up
 To clean up the resources you can do this:
-```elixir
+```plaintext
 ❯ kubectl delete -f manifests
 deployment.apps "rcv-deployment" deleted
 ingress.networking.k8s.io "rcv-ingress" deleted
@@ -630,7 +630,7 @@ El clúster es opcional, si tenés algún dispositivo usando Linux en ARM32v7 o 
 #### Creando el proyecto
 
 Vamos a crear un nuevo proyecto de Rust con Cargo, como notarás obtendremos un proyecto muy básico que nos ayudará a comenzar:
-```elixir
+```bash
 ❯ cargo new rcv
      Created binary (application) `rcv` package
      
@@ -644,7 +644,7 @@ Cargo.toml  src
 #### Nuestro ejemplo y las dependencias
 Estaba pensando en procesar archivos markdown y mostrarlos como HTML, así que básicamente eso es lo que hace el código. Está lejos de ser óptimo, pero es lo suficientemente bueno para ilustrar el ejemplo. Primero, vamos a agregar algunos crates para el servidor web ([Actix](https://actix.rs/docs/server/)) y para convertir [markdown a html](https://github.com/johannhof/markdown.rs).
 
-```elixir
+```bash
 [package]
 name = "rcv"
 version = "0.1.0"
@@ -661,7 +661,7 @@ markdown = "0.3"
 #### Vamos a agregar algo de código
 
 Este simple snippet solo escucha solicitudes `GET` en `/`, registra una línea con la marca de tiempo en Unix y la IP, y devuelve el contenido del archivo `cv.md`, que es mi Currículum Vitae.
-```elixir
+```plaintext
 use actix_web::{get, App, HttpResponse, HttpServer};
 use actix_web::{HttpRequest, Responder};
 use std::fs;
@@ -704,7 +704,7 @@ async fn main() -> std::io::Result<()> {
 ```
 
 #### logs
-```elixir
+```plaintext
 [1662136558][127.0.0.1]: Processing cv request...
 [1662136591][127.0.0.1]: Processing cv request...
 
@@ -717,7 +717,7 @@ En este punto tenemos lo suficiente para ejecutar y probar localmente, pero ¿qu
 Este Dockerfile se puede optimizar y asegurar de muchas maneras, pero para simplificar es suficiente para empezar a trabajar en algo. Además, proporcionaremos la seguridad en tiempo de ejecución a través de las APIs de Kubernetes. 
 
 Tenemos que considerar dos cosas aquí: primero, necesitamos crear un binario ARM32v7 usando Rust, y luego necesitamos una imagen de Docker para esa arquitectura. Eso es básicamente lo que hace el Dockerfile.
-```elixir
+```dockerfile
 ## builder
 FROM rust:1.63.0 as builder
 
@@ -752,7 +752,7 @@ CMD ["/usr/src/app/rcv"]
 
 #### Usando docker para armar la imagen y subirla al registro (docker image)
 Se puede encontrar [aqui](https://hub.docker.com/repository/docker/kainlite/rcv).
-```elixir
+```sql
 ❯ docker build . -f Dockerfile.armv7
 Sending build context to Docker daemon  894.2MB
 Step 1/14 : FROM rust:1.63.0 as builder
@@ -1047,7 +1047,7 @@ armv7-2: digest: sha256:86be73465a5e4819b97d4aafe8195b977a4e9b1d6ff3780315972ad2
 ### Revisemos rápidamente los manifiestos
 
 Los manifiestos son bastante simples, podés verlos aquí. Como podés observar, estamos restringiendo el usuario y los privilegios del contenedor usando el `SecurityContext` del pod y del contenedor.
-```elixir
+```yaml
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1114,7 +1114,7 @@ spec:
 #### Desplegándolo
 
 Asumiendo que ya tenés un clúster en funcionamiento, esto se puede desplegar de la siguiente manera. Verás un deployment, un service y los recursos de ingress. También vas a necesitar una entrada DNS si querés usarlo como lo hice aquí:
-```elixir
+```plaintext
 ❯ kubectl apply -f manifests/
 deployment.apps/rcv-deployment created
 ingress.networking.k8s.io/rcv-ingress created
@@ -1142,7 +1142,7 @@ Para más detalles y ver cómo encaja todo, te animo a clonar el repositorio, pr
 
 ### Limpiando los recursos
 Para limpiar los recursos podés hacer esto:
-```elixir
+```plaintext
 ❯ kubectl delete -f manifests
 deployment.apps "rcv-deployment" deleted
 ingress.networking.k8s.io "rcv-ingress" deleted

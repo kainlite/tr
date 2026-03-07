@@ -28,7 +28,7 @@ So what happened there? Basically when you want to end the file or the input you
 
 If you want to copy and paste something there you go:
 
-```elixir
+```bash
 
 # Normal concatenation to stdout
 cat test-1.txt test-2.txt 
@@ -64,7 +64,7 @@ There are many more things that you can do with netcat and is usually really hel
 <br />
 
 If you want to copy and paste something there you go:
-```elixir
+```bash
 ### Example one
 # Server
 # -l means listen, and -p to specify the port
@@ -117,7 +117,7 @@ Basically with socat your imagination is the limit in what you can do.
 <br />
 
 If you want to copy and paste something there you go:
-```elixir
+```bash
 # Example one
 # Redirect a port or port-forward
 # since socat always need two addresses (it can be sockets, whatever)
@@ -215,7 +215,7 @@ Como ya habrás adivinado o ya sabrás, `cat` es para con-cat-enar cosas. Cuando
 
 Si querés copiar y pegar algo, aquí lo tenés:
 
-```elixir
+```bash
 
 # Concatenación normal a stdout
 cat test-1.txt test-2.txt 
@@ -251,7 +251,7 @@ Hay muchas más cosas que podés hacer con `netcat` y suele ser realmente útil 
 <br />
 
 Si querés copiar y pegar algo, acá lo tenés:
-```elixir
+```bash
 ### Ejemplo uno
 # Servidor
 # -l significa escuchar, y -p para especificar el puerto
@@ -304,7 +304,7 @@ Básicamente, con `socat` el límite es tu imaginación en cuanto a lo que podé
 <br />
 
 Si querés copiar y pegar algo, acá lo tenés:
-```elixir
+```bash
 # Ejemplo uno
 # Redirigir un puerto o hacer un port-forward
 # dado que `socat` siempre necesita dos direcciones (pueden ser sockets, lo que sea)

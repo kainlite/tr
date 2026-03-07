@@ -22,7 +22,7 @@ Before you start make sure you already have your account configured for [awscli]
 
 ##### **Configuration files**
 First of all we need to get our terraform file or files (in a normal case scenario, but since this is a hello world it is easier to have everything in the same file), I have added some comments of what each part does as you can see.
-```elixir
+```hcl
 # Set the region where the lambda function will be created
 variable "aws_region" {
   default = "us-east-1"
@@ -76,7 +76,7 @@ EOF
 
 ##### **The code itself**
 Then we need the code that we need or want to run there.
-```elixir
+```javascript
 // 'Hello World' nodejs6.10 runtime AWS Lambda function
 exports.handler = (event, context, callback) => {
     console.log('Hello world!');
@@ -88,7 +88,7 @@ exports.handler = (event, context, callback) => {
 
 ##### **Initialize terraform**
 First of all we will need to initialize terraform like in the gist below, this will download the necessary plugins that we used in the code, otherwise it won't be able to run.
-```elixir
+```hcl
 $ terraform init                                                                                                                                                                                                                           
                                                                                                                                                                                                                                                                                  
 Initializing provider plugins...                                                                                                                                                                                                                                                 
@@ -122,7 +122,7 @@ commands will detect it and remind you to do so if necessary.
 
 ##### **Apply the changes**
 The next step would be to apply the changes, you can also plan to an outfile and then apply from that file, but also apply works, this command will take care of doing everything that we defined, it will archive the code, the IAM role and the function itself.
-```elixir
+```hcl
 $ terraform apply
 data.archive_file.lambda_zip: Refreshing state...
 
@@ -235,7 +235,7 @@ Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
 
 ##### **Running the function**
 Then the last step would be to run our function to see if it actually works, in this case we're using the awscli but you can use the AWS console as well, the result will be the same.
-```elixir
+```yaml
 $ aws lambda invoke --function-name$ test_lambda --invocation-type RequestResponse --log-type Tail - | jq '.LogResult' -r | base64 --decode                                                                                                
 START RequestId: 760a31c6-8ba4-48ac-9a8f-0cf0ec7bf7ac Version: $LATEST
 2019-04-27T20:14:23.630Z        760a31c6-8ba4-48ac-9a8f-0cf0ec7bf7ac    Hello world!
@@ -247,7 +247,7 @@ REPORT RequestId: 760a31c6-8ba4-48ac-9a8f-0cf0ec7bf7ac  Duration: 75.06 ms      
 <br />
 ##### **Clean up**
 Remember to clean up before leaving.
-```elixir
+```hcl
 $ terraform destroy
 data.archive_file.lambda_zip: Refreshing state...
 aws_iam_role.iam_for_lambda_tf: Refreshing state... (ID: iam_for_lambda_tf)
@@ -315,7 +315,7 @@ Antes de comenzar, asegurate de tener tu cuenta configurada para [awscli](https:
 
 ##### **Archivos de configuración**
 Primero, necesitamos obtener nuestro archivo o archivos de Terraform (en un caso normal sería más de un archivo, pero como es un "hello world" es más fácil tener todo en el mismo archivo). Agregué algunos comentarios sobre qué hace cada parte.
-```elixir
+```hcl
 # Configura la región donde se creará la función Lambda
 variable "aws_region" {
   default = "us-east-1"
@@ -369,7 +369,7 @@ EOF
 
 ##### **El código en sí**
 Luego necesitamos el código que queremos ejecutar.
-```elixir
+```javascript
 // Función AWS Lambda "Hello World" en nodejs6.10
 exports.handler = (event, context, callback) => {
     console.log('Hello world!');
@@ -380,7 +380,7 @@ exports.handler = (event, context, callback) => {
 
 ##### **Inicializar Terraform**
 Primero necesitamos inicializar Terraform como en el gist a continuación. Esto descargará los plugins necesarios que usamos en el código; de lo contrario, no podrá ejecutarse.
-```elixir
+```hcl
 $ terraform init                                                                                                                                                                                                                           
                                                                                                                                                                                                                                                                                  
 Initializing provider plugins...                                                                                                                                                                                                                                                 
@@ -394,7 +394,7 @@ Terraform has been successfully initialized!
 
 ##### **Aplicar los cambios**
 El siguiente paso sería aplicar los cambios. Podés planificar en un archivo de salida y luego aplicar desde ese archivo, pero también podés usar simplemente el comando `apply`. Este comando se encargará de hacer todo lo que definimos: archivará el código, creará el rol IAM y la función Lambda.
-```elixir
+```hcl
 $ terraform apply
 data.archive_file.lambda_zip: Refreshing state...
 ...
@@ -405,7 +405,7 @@ Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
 
 ##### **Ejecutar la función**
 El último paso sería ejecutar nuestra función para ver si funciona. En este caso, estamos usando awscli, pero también podés hacerlo desde la consola de AWS.
-```elixir
+```yaml
 $ aws lambda invoke --function-name test_lambda --invocation-type RequestResponse --log-type Tail - | jq '.LogResult' -r | base64 --decode                                                                                                
 START RequestId: 760a31c6-8ba4-48ac-9a8f-0cf0ec7bf7ac Version: $LATEST
 2019-04-27T20:14:23.630Z        760a31c6-8ba4-48ac-9a8f-0cf0ec7bf7ac    Hello world!
@@ -416,7 +416,7 @@ REPORT RequestId: 760a31c6-8ba4-48ac-9a8f-0cf0ec7bf7ac  Duration: 75.06 ms      
 
 ##### **Limpiar**
 Acordate de limpiar todo antes de salir.
-```elixir
+```hcl
 $ terraform destroy
 ...
 Destroy complete! Resources: 2 destroyed.

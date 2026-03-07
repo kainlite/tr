@@ -51,7 +51,7 @@ is way simpler than the ones from the previous article, since it runs natively
 as ARM32v7, the main difference is the base image being `arm32v7/rust:1.63.0`, this can be further extended for more
 architectures, see this [article](https://devopstales.github.io/home/running_and_building_multi_arch_containers/) for 
 more information.
-```elixir
+```dockerfile
 ## builder
 FROM arm32v7/rust:1.63.0 as builder
 
@@ -80,7 +80,7 @@ CMD ["/usr/src/app/rcv"]
 After installing the required packages you will still need to perform some simple steps in order for it to work with
 docker and buildah, the first command is needed for docker to be able to use the required QEMU emulation and the second
 is just to validate that everything works fine
-```elixir
+```bash
 ❯ docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 Setting /usr/bin/qemu-alpha-static as binfmt interpreter for alpha
 Setting /usr/bin/qemu-arm-static as binfmt interpreter for arm
@@ -129,7 +129,7 @@ armv7l
 ##### Short names error
 If you get an error about short names when pulling images add the following line to your `/etc/containers/registries.conf`
 file
-```elixir
+```plaintext
 unqualified-search-registries = ["docker.io"]
 
 ```
@@ -137,7 +137,7 @@ unqualified-search-registries = ["docker.io"]
 
 #### Lets build it
 For the build we will use buildah because it is smarter than docker for this kind of scenarios.
-```elixir
+```sql
 ❯ buildah build -f Dockerfile.armv7v2 .
 [1/2] STEP 1/5: FROM arm32v7/rust:1.63.0 AS builder
 WARNING: image platform ({arm linux  [] v7}) does not match the expected platform ({amd64 linux  [] })
@@ -456,7 +456,7 @@ f9fe5e59b8d124fe147ef045ceb9195421a2613e48df91f48875ed11c1d9f5de
 
 #### Lets test it
 After building it, we can push it to the docker daemon and then run it and test it from another terminal
-```elixir
+```bash
 ❯ buildah push f9fe5e59b8d docker-daemon:rcv:f9fe5e59b8d
 Getting image source signatures
 Copying blob b74e98d1b921 done
@@ -550,7 +550,7 @@ Este artículo puede considerarse una parte 2 de [Running Rust on ARM32v7K3S Ora
 
 #### El nuevo Dockerfile
 Vas a notar que este [Dockerfile](https://raw.githubusercontent.com/kainlite/rcv/master/Dockerfile.armv7v2) es mucho más simple que los de artículos anteriores, ya que se ejecuta de manera nativa como ARM32v7. La principal diferencia es que usa la imagen base `arm32v7/rust:1.63.0`, y este enfoque puede ser extendido para más arquitecturas. Consultá este [artículo](https://devopstales.github.io/home/running_and_building_multi_arch_containers/) para más información.
-```elixir
+```dockerfile
 ## builder
 FROM arm32v7/rust:1.63.0 as builder
 
@@ -587,7 +587,7 @@ docker run --rm -t arm32v7/ubuntu uname -m
 ```
 
 Si ves que el sistema te devuelve algo como `armv7l`, entonces todo está configurado correctamente para emular la arquitectura ARM32v7 usando Docker.
-```elixir
+```bash
 ❯ docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 Setting /usr/bin/qemu-alpha-static as binfmt interpreter for alpha
 Setting /usr/bin/qemu-arm-static as binfmt interpreter for arm
@@ -635,7 +635,7 @@ armv7l
 
 ##### Error de nombres cortos
 Si recibes un error sobre nombres cortos al intentar descargar imágenes, agrega la siguiente línea a tu archivo `/etc/containers/registries.conf`:
-```elixir
+```plaintext
 unqualified-search-registries = ["docker.io"]
 ```
 <br />
@@ -643,7 +643,7 @@ unqualified-search-registries = ["docker.io"]
 #### Vamos a construirlo
 Para la compilación utilizaremos **Buildah**, ya que es más inteligente que Docker para este tipo de escenarios.
 
-```elixir
+```sql
 ❯ buildah build -f Dockerfile.armv7v2 .
 [1/2] STEP 1/5: FROM arm32v7/rust:1.63.0 AS builder
 WARNING: image platform ({arm linux  [] v7}) does not match the expected platform ({amd64 linux  [] })
@@ -962,7 +962,7 @@ f9fe5e59b8d124fe147ef045ceb9195421a2613e48df91f48875ed11c1d9f5de
 
 #### Probando
 Una vez la imagen esta lista la podemos copiar al docker daemon para poder usarla
-```elixir
+```bash
 ❯ buildah push f9fe5e59b8d docker-daemon:rcv:f9fe5e59b8d
 Getting image source signatures
 Copying blob b74e98d1b921 done

@@ -58,7 +58,7 @@ SLIs are:
 
 The important thing here is the "proportion" part. SLIs are expressed as ratios:
 
-```elixir
+```plaintext
 SLI = good events / total events
 ```
 
@@ -66,7 +66,7 @@ SLI = good events / total events
 
 For example, for an HTTP service:
 
-```elixir
+```bash
 # Availability SLI
 availability = (total_requests - 5xx_errors) / total_requests
 
@@ -105,7 +105,7 @@ workloads in Kubernetes, you probably already have Prometheus or a compatible sy
 
 For a typical web service, you want to expose a histogram that tracks request duration and status:
 
-```elixir
+```yaml
 # If your application uses Prometheus client, expose something like:
 # histogram: http_request_duration_seconds (with labels: method, path, status)
 # counter: http_requests_total (with labels: method, path, status)
@@ -119,7 +119,7 @@ For a typical web service, you want to expose a histogram that tracks request du
 With those metrics in Prometheus, you can define recording rules that calculate the SLI ratios. Here is an
 example of Prometheus recording rules for an HTTP availability SLI:
 
-```elixir
+```yaml
 # prometheus-rules.yaml
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
@@ -149,7 +149,7 @@ spec:
 
 And for a latency SLI:
 
-```elixir
+```yaml
 # prometheus-rules-latency.yaml
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
@@ -191,7 +191,7 @@ from a simple SLO definition.
 
 Here is an SLO definition for our service:
 
-```elixir
+```yaml
 # slos/tr-web.yaml
 apiVersion: sloth.slok.dev/v1
 kind: PrometheusServiceLevel
@@ -253,7 +253,7 @@ spec:
 
 Then you generate the Prometheus rules:
 
-```elixir
+```plaintext
 sloth generate -i slos/tr-web.yaml -o prometheus-rules/tr-web-slo.yaml
 ```
 
@@ -279,7 +279,7 @@ to your cluster.
 
 Here is the repository structure:
 
-```elixir
+```plaintext
 slo-configs/
 ├── slos/
 │   ├── tr-web.yaml            # Sloth SLO definitions
@@ -298,7 +298,7 @@ slo-configs/
 
 The ArgoCD Application manifest:
 
-```elixir
+```yaml
 # argocd/application.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -332,7 +332,7 @@ file you changed last week.
 
 You can also set up a CI step to automatically regenerate the Prometheus rules when the SLO definitions change:
 
-```elixir
+```yaml
 # .github/workflows/generate-slos.yaml
 name: Generate SLO Rules
 
@@ -385,7 +385,7 @@ tr-web?" and getting an actual answer from your live Prometheus data.
 An MCP server is essentially an API that exposes tools an AI can call. You can build one that wraps your
 Prometheus and Kubernetes APIs:
 
-```elixir
+```nginx
 // mcp-sre-server/src/main.rs
 // A simplified example of an MCP server for SRE queries
 
@@ -469,7 +469,7 @@ you get natural language access to your SRE data:
 
 You can also build MCP tools that integrate with ArgoCD:
 
-```elixir
+```plaintext
 #[derive(Tool)]
 #[tool(name = "argocd_sync_status", description = "Check ArgoCD sync status for SLO configs")]
 struct ArgoCDSyncStatus;
@@ -516,7 +516,7 @@ impl RollbackDeployment {
 
 The MCP server config in your Claude Code settings would look something like:
 
-```elixir
+```json
 {
   "mcpServers": {
     "sre-tools": {
@@ -542,7 +542,7 @@ patterns that work well in practice:
 
 Use error budgets as deployment gates. If the error budget is below a threshold, block deployments automatically:
 
-```elixir
+```yaml
 # In your CI pipeline
 - name: Check error budget
   run: |
@@ -561,7 +561,7 @@ Use error budgets as deployment gates. If the error budget is below a threshold,
 
 When an SLO is breached, automatically create an issue or incident:
 
-```elixir
+```yaml
 # alertmanager-config.yaml
 receivers:
   - name: slo-breach
@@ -583,7 +583,7 @@ route:
 
 Automate weekly SLO reporting to keep the team informed:
 
-```elixir
+```yaml
 # A CronJob that queries Prometheus and sends a summary to Slack
 apiVersion: batch/v1
 kind: CronJob
@@ -735,7 +735,7 @@ más comunes son:
 
 Lo importante acá es la parte de "proporción". Los SLIs se expresan como ratios:
 
-```elixir
+```plaintext
 SLI = eventos_buenos / eventos_totales
 ```
 
@@ -743,7 +743,7 @@ SLI = eventos_buenos / eventos_totales
 
 Por ejemplo, para un servicio HTTP:
 
-```elixir
+```bash
 # SLI de Disponibilidad
 disponibilidad = (requests_totales - errores_5xx) / requests_totales
 
@@ -784,7 +784,7 @@ cargas de trabajo en Kubernetes, probablemente ya tenés Prometheus o un sistema
 
 Para un servicio web típico, querés exponer un histograma que rastree la duración de las requests y el estado:
 
-```elixir
+```yaml
 # Si tu aplicación usa el cliente de Prometheus, exponé algo como:
 # histogram: http_request_duration_seconds (con labels: method, path, status)
 # counter: http_requests_total (con labels: method, path, status)
@@ -798,7 +798,7 @@ Para un servicio web típico, querés exponer un histograma que rastree la durac
 Con esas métricas en Prometheus, podés definir recording rules que calculen los ratios del SLI. Acá hay un
 ejemplo de reglas de Prometheus para un SLI de disponibilidad HTTP:
 
-```elixir
+```yaml
 # prometheus-rules.yaml
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
@@ -828,7 +828,7 @@ spec:
 
 Y para un SLI de latencia:
 
-```elixir
+```yaml
 # prometheus-rules-latency.yaml
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
@@ -870,7 +870,7 @@ que necesitás a partir de una definición simple de SLO.
 
 Acá hay una definición de SLO para nuestro servicio:
 
-```elixir
+```yaml
 # slos/tr-web.yaml
 apiVersion: sloth.slok.dev/v1
 kind: PrometheusServiceLevel
@@ -932,7 +932,7 @@ spec:
 
 Después generás las reglas de Prometheus:
 
-```elixir
+```plaintext
 sloth generate -i slos/tr-web.yaml -o prometheus-rules/tr-web-slo.yaml
 ```
 
@@ -958,7 +958,7 @@ sincronice con tu cluster.
 
 Acá está la estructura del repositorio:
 
-```elixir
+```plaintext
 slo-configs/
 ├── slos/
 │   ├── tr-web.yaml            # Definiciones de SLO de Sloth
@@ -977,7 +977,7 @@ slo-configs/
 
 El manifiesto de Application de ArgoCD:
 
-```elixir
+```yaml
 # argocd/application.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -1012,7 +1012,7 @@ archivo que cambiaste la semana pasada.
 También podés configurar un paso de CI para regenerar automáticamente las reglas de Prometheus cuando cambian las
 definiciones de SLO:
 
-```elixir
+```yaml
 # .github/workflows/generate-slos.yaml
 name: Generate SLO Rules
 
@@ -1065,7 +1065,7 @@ presupuesto de error me queda para tr-web?" y obtener una respuesta real de tus 
 Un servidor MCP es esencialmente una API que expone herramientas que una IA puede llamar. Podés construir uno que
 envuelva tus APIs de Prometheus y Kubernetes:
 
-```elixir
+```plaintext
 // mcp-sre-server/src/main.rs
 // Un ejemplo simplificado de un servidor MCP para consultas de SRE
 
@@ -1149,7 +1149,7 @@ Después tenés acceso en lenguaje natural a tus datos de SRE:
 
 También podés construir herramientas MCP que se integren con ArgoCD:
 
-```elixir
+```plaintext
 #[derive(Tool)]
 #[tool(name = "argocd_sync_status", description = "Verificar estado de sincronización de ArgoCD")]
 struct ArgoCDSyncStatus;
@@ -1196,7 +1196,7 @@ impl RollbackDeployment {
 
 La configuración del servidor MCP en tu configuración de Claude Code se vería algo así:
 
-```elixir
+```json
 {
   "mcpServers": {
     "sre-tools": {
@@ -1223,7 +1223,7 @@ algunos patrones que funcionan bien en la práctica:
 Usá presupuestos de error como puertas de despliegue. Si el presupuesto de error está por debajo de un umbral,
 bloqueá despliegues automáticamente:
 
-```elixir
+```yaml
 # En tu pipeline de CI
 - name: Verificar presupuesto de error
   run: |
@@ -1242,7 +1242,7 @@ bloqueá despliegues automáticamente:
 
 Cuando se rompe un SLO, creá automáticamente un issue o incidente:
 
-```elixir
+```yaml
 # alertmanager-config.yaml
 receivers:
   - name: slo-breach
@@ -1264,7 +1264,7 @@ route:
 
 Automatizá reportes semanales de SLO para mantener al equipo informado:
 
-```elixir
+```yaml
 # Un CronJob que consulta Prometheus y envía un resumen a Slack
 apiVersion: batch/v1
 kind: CronJob

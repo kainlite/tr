@@ -27,7 +27,7 @@ In the examples I will be using [minikube](https://kubernetes.io/docs/tasks/tool
 
 ### Let's get started
 This time I'm not going to deploy another wordpress instance but a simple Slack echo bot made with go:
-```elixir
+```go
 package main
 
 import (
@@ -92,7 +92,7 @@ As you can see it's the simplest example from the readme of the [Go Slack API](h
 
 Here you can see the `Dockerfile`, for security we create an app user for the build and for running it, and to save space and bandwidth we only ship what we need using a multi-stage build:
 
-```elixir
+```dockerfile
 # Build
 FROM golang:1.11.2-alpine as builder
 
@@ -121,7 +121,7 @@ There are a few more files in there, you can see the full sources [here](https:/
 <br />
 
 Okay, enough boilerplate let's get to business, so let's create a new ksonnet application:
-```elixir
+```hcl
 $ ks init echobot
 INFO Using context "minikube" from kubeconfig file "~/.kube/config"
 INFO Creating environment "default" with namespace "default", pointing to "version:v1.8.0" cluster at address "https://192.168.99.100:8443"
@@ -130,7 +130,7 @@ INFO Generating ksonnet-lib data at path '~/Webs/echobot/echobot/lib/ksonnet-lib
 <br />
 
 And now let's grab a template and modify it accordingly to be able to create the deployment for the bot `components/echobot.jsonnet`:
-```elixir
+```yaml
 // Import KSonnet library
 local params = std.extVar('__ksonnet/params').components.demo;
 local k = import 'k.libsonnet';
@@ -178,7 +178,7 @@ k.core.v1.list.new(resources)
 <br />
 
 Note that I have uploaded that image to docker hub so you can use it to follow the example if you want, after that just replace `really-long-token` with your token, and then do:
-```elixir
+```bash
 $ ks apply default
 INFO Applying deployments echobot
 INFO Creating non-existent deployments echobot
@@ -191,7 +191,7 @@ And now if we check our deployment and pod, we should see something like this:
 <br />
 
 And in the logs:
-```elixir
+```yaml
 $ kubectl get pods
 NAME                               READY     STATUS    RESTARTS   AGE
 echobot-7456f7d7dd-twg4r           1/1       Running   0          53s
@@ -249,7 +249,7 @@ En los ejemplos estaré usando [minikube](https://kubernetes.io/docs/tasks/tools
 ### Empecemos
 
 Esta vez no voy a desplegar otra instancia de WordPress sino un simple bot de eco de Slack hecho con Go:
-```elixir
+```go
 package main
 
 import (
@@ -314,7 +314,7 @@ Como puedes ver, es el ejemplo más simple del archivo readme del proyecto [Go S
 
 Aquí puedes ver el `Dockerfile`; por seguridad, creamos un usuario de aplicación para la compilación y para ejecutarlo, y para ahorrar espacio y ancho de banda, solo enviamos lo que necesitamos usando una compilación de múltiples etapas:
 
-```elixir
+```dockerfile
 # Build
 FROM golang:1.11.2-alpine as builder
 
@@ -344,7 +344,7 @@ Hay algunos archivos más allí; puedes ver las fuentes completas [aquí](https:
 
 Bien, suficiente código repetitivo, vamos al grano, así que creemos una nueva aplicación ksonnet:
 
-```elixir
+```hcl
 $ ks init echobot
 INFO Using context "minikube" from kubeconfig file "~/.kube/config"
 INFO Creating environment "default" with namespace "default", pointing to "version:v1.8.0" cluster at address "https://192.168.99.100:8443"
@@ -354,7 +354,7 @@ INFO Generating ksonnet-lib data at path '~/Webs/echobot/echobot/lib/ksonnet-lib
 
 Y ahora tomemos una plantilla y modifiquémosla adecuadamente para poder crear el despliegue para el bot `components/echobot.jsonnet`:
 
-```elixir
+```yaml
 // Import KSonnet library
 local params = std.extVar('__ksonnet/params').components.demo;
 local k = import 'k.libsonnet';
@@ -403,7 +403,7 @@ k.core.v1.list.new(resources)
 
 Ten en cuenta que he subido esa imagen a Docker Hub, así que puedes usarla para seguir el ejemplo si quieres; después de eso, simplemente reemplaza `really-long-token` con tu token, y luego haz:
 
-```elixir
+```bash
 $ ks apply default
 INFO Applying deployments echobot
 INFO Creating non-existent deployments echobot
@@ -417,7 +417,7 @@ Y ahora, si verificamos nuestro despliegue y pod, deberíamos ver algo como esto
 
 Y en los logs:
 
-```elixir
+```yaml
 $ kubectl get pods
 NAME                               READY     STATUS    RESTARTS   AGE
 echobot-7456f7d7dd-twg4r           1/1       Running   0          53s

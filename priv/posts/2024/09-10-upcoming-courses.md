@@ -55,7 +55,7 @@ With just a few calls to this module we can safely encrypt and decrypt the conte
 what it looks like:
 <br />
 
-```elixir
+```yaml
 %{
   title: "Master Docker from scratch (coming soon...)",
   author: "Gabriel Garrido",
@@ -74,7 +74,7 @@ what it looks like:
 <br />
 
 Then we have our vault configured (it is just a Genserver giving us encrypt/decrypt capabilities given a particular key), that will be this particular module:
-```elixir
+```hcl
 defmodule Tr.Vault do
   @moduledoc """
   This module is responsible for interfacing with the vault
@@ -172,7 +172,7 @@ end
 <br />
 
 The last step would be to just decrypt and render the content:
-```elixir
+```xml
     <%= cond do %>
       <% @post.sponsored && @current_user && Tr.SponsorsCache.sponsor?(@current_user.github_username) -> %>
         <br />
@@ -244,7 +244,7 @@ Mencioné que todo iba a ser de código abierto, incluso este blog o plataforma 
 Con solo algunas llamadas a este módulo, podemos encriptar y desencriptar el contenido de una página dada. Por ejemplo, así es como se ve:
 <br />
 
-```elixir
+```yaml
 %{
   title: "Domina Docker desde cero (próximamente...)",
   author: "Gabriel Garrido",
@@ -359,7 +359,7 @@ end
 <br />
 
 El último paso sería simplemente desencriptar y renderizar el contenido:
-```elixir
+```xml
     <%= cond do %>
       <% @post.sponsored && @current_user && Tr.SponsorsCache.sponsor?(@current_user.github_username) -> %>
         <br />

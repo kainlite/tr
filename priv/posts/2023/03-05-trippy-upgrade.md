@@ -29,7 +29,7 @@ this helps figure out everything that you need to do in order to get on the new 
 
 ##### **Upgrading packages**
 Upgrade packages manually in `mix.exs`:
-```elixir
+```plaintext
     {:phoenix, "~> 1.7.1"},
     {:phoenix_live_view, "~> 0.18.3"},
     {:phoenix_live_dashboard, "~> 0.7.2"},
@@ -38,7 +38,7 @@ If you have `phoenix` and `gettext` from your `:compilers` line in `mix.exs` rem
 <br />
 
 Update your `.formatter.exs`
-```elixir
+```yaml
 [
   import_deps: [:ecto, :phoenix],
   subdirectories: ["priv/*/migrations"],
@@ -52,7 +52,7 @@ Some things that can get a bit tricky, so these have been copied directly from t
 > Phoenix.LiveView.Helpers has been soft deprecated and all relevant functionality has been migrated. You must import Phoenix.Component where you previously imported Phoenix.LiveView.Helpers when upgrading (such as in your lib/app_web.ex). You may also need to import Phoenix.Component where you also imported Phoenix.LiveView and some of its functions have been moved to Phoenix.Component.
 
 > live_title_tag has also been renamed to live_title as a function component. Update your root.html.heex layout to use the new component:
-```elixir
+```plaintext
 -   <%= live_title_tag assigns[:page_title] || "Onesixfifteen", suffix: " · Phoenix Framework" %>
 +   <.live_title suffix=" · Phoenix Framework">
 +     <%= assigns[:page_title] || "MyApp" %>
@@ -110,7 +110,7 @@ Antes de continuar, asegúrate de revisar la página del lanzamiento para obtene
 
 ##### **Actualizando paquetes**
 Actualizá los paquetes manualmente en `mix.exs`:
-```elixir
+```plaintext
     {:phoenix, "~> 1.7.1"},
     {:phoenix_live_view, "~> 0.18.3"},
     {:phoenix_live_dashboard, "~> 0.7.2"},
@@ -119,7 +119,7 @@ Si tenés `phoenix` y `gettext` en la línea de `:compilers` en `mix.exs`, elimi
 <br />
 
 Actualizá tu `.formatter.exs`
-```elixir
+```yaml
 [
   import_deps: [:ecto, :phoenix],
   subdirectories: ["priv/*/migrations"],
@@ -133,7 +133,7 @@ Algunas cosas pueden ser un poco complicadas, por lo que las he copiado directam
 > Phoenix.LiveView.Helpers ha sido suavemente deprecado y toda la funcionalidad relevante se ha migrado. Debés importar Phoenix.Component donde antes importabas Phoenix.LiveView.Helpers al actualizar (como en tu archivo lib/app_web.ex). También es posible que debas importar Phoenix.Component donde también importabas Phoenix.LiveView, ya que algunas de sus funciones se han movido a Phoenix.Component.
 
 > live_title_tag también se ha renombrado a live_title como un componente funcional. Actualizá tu layout root.html.heex para usar el nuevo componente:
-```elixir
+```plaintext
 -   <%= live_title_tag assigns[:page_title] || "Onesixfifteen", suffix: " · Phoenix Framework" %>
 +   <.live_title suffix=" · Phoenix Framework">
 +     <%= assigns[:page_title] || "MyApp" %>

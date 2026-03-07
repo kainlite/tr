@@ -67,7 +67,7 @@ SLIs (latency, availability, quality), not on infrastructure metrics.
 
 <br />
 
-```elixir
+```yaml
 # BAD: alerting on cause
 - alert: HighCPUUsage
   expr: node_cpu_seconds_total > 0.9
@@ -131,7 +131,7 @@ PagerDuty's Terraform provider:
 
 <br />
 
-```elixir
+```hcl
 # on-call/main.tf
 resource "pagerduty_schedule" "platform_primary" {
   name      = "Platform Team - Primary"
@@ -216,7 +216,7 @@ You can pull these metrics from PagerDuty's API and feed them into your dashboar
 
 <br />
 
-```elixir
+```yaml
 # on-call-health/cronjob.yaml
 apiVersion: batch/v1
 kind: CronJob
@@ -281,7 +281,7 @@ Here is a structure that works well:
 
 <br />
 
-```elixir
+```plaintext
 runbooks/
 ├── tr-web-high-latency.md
 ├── tr-web-high-error-rate.md
@@ -368,7 +368,7 @@ Here is a pattern using Alertmanager webhooks and a simple automation controller
 
 <br />
 
-```elixir
+```yaml
 # alertmanager-config.yaml
 receivers:
   - name: auto-remediation
@@ -391,7 +391,7 @@ The remediation controller receives the webhook and creates a Kubernetes Job:
 
 <br />
 
-```elixir
+```python
 # remediation-controller/handler.py
 from kubernetes import client, config
 import json
@@ -464,7 +464,7 @@ Store your postmortem template in Git and generate new postmortems from it:
 
 <br />
 
-```elixir
+```bash
 # postmortems/template.md
 # Postmortem: [TITLE]
 
@@ -522,7 +522,7 @@ You can automate the creation of a postmortem document when a SEV-1 incident is 
 
 <br />
 
-```elixir
+```bash
 # postmortem-bot/create.sh
 #!/bin/bash
 # Triggered by PagerDuty webhook when a SEV-1 incident is resolved
@@ -573,7 +573,7 @@ on completion rates weekly:
 
 <br />
 
-```elixir
+```bash
 # action-item-tracker/report.sh
 #!/bin/bash
 # Run weekly to report on postmortem action item completion
@@ -631,7 +631,7 @@ Map these to your SLO burn rates:
 
 <br />
 
-```elixir
+```yaml
 # severity-mapping.yaml
 # Based on Sloth-generated multi-burn-rate alerts
 
@@ -680,7 +680,7 @@ of the main channels:
 
 <br />
 
-```elixir
+```python
 # incident-bot/create_channel.py
 import slack_sdk
 import datetime
@@ -724,7 +724,7 @@ updated by your incident bot works fine:
 
 <br />
 
-```elixir
+```bash
 # status-page/update.sh
 #!/bin/bash
 # Update status page during an incident
@@ -754,7 +754,7 @@ manage incidents through natural language:
 
 <br />
 
-```elixir
+```plaintext
 #[derive(Tool)]
 #[tool(name = "create_incident", description = "Create a new incident with severity and description")]
 struct CreateIncident {
@@ -972,7 +972,7 @@ Alertá por los SLIs (latencia, disponibilidad, calidad), no por métricas de in
 
 <br />
 
-```elixir
+```yaml
 # MAL: alertando por causa
 - alert: HighCPUUsage
   expr: node_cpu_seconds_total > 0.9
@@ -1037,7 +1037,7 @@ ejemplo usando el provider de Terraform para PagerDuty:
 
 <br />
 
-```elixir
+```hcl
 # on-call/main.tf
 resource "pagerduty_schedule" "platform_primary" {
   name      = "Platform Team - Primary"
@@ -1123,7 +1123,7 @@ Podés sacar estas métricas de la API de PagerDuty y meterlas en tus dashboards
 
 <br />
 
-```elixir
+```yaml
 # on-call-health/cronjob.yaml
 apiVersion: batch/v1
 kind: CronJob
@@ -1188,7 +1188,7 @@ Acá hay una estructura que funciona bien:
 
 <br />
 
-```elixir
+```plaintext
 runbooks/
 ├── tr-web-high-latency.md
 ├── tr-web-high-error-rate.md
@@ -1205,7 +1205,7 @@ Y acá cómo se ve un buen runbook:
 
 <br />
 
-```elixir
+```bash
 # TR-Web Alta Latencia - Runbook
 
 ## Alerta
@@ -1277,7 +1277,7 @@ Acá hay un patrón usando webhooks de Alertmanager y un controlador simple de a
 
 <br />
 
-```elixir
+```yaml
 # alertmanager-config.yaml
 receivers:
   - name: auto-remediation
@@ -1300,7 +1300,7 @@ El controlador de remediación recibe el webhook y crea un Job de Kubernetes:
 
 <br />
 
-```elixir
+```python
 # remediation-controller/handler.py
 from kubernetes import client, config
 import json
@@ -1373,7 +1373,7 @@ Almacená tu template de postmortem en Git y generá nuevos postmortems a partir
 
 <br />
 
-```elixir
+```bash
 # postmortems/template.md
 # Postmortem: [TÍTULO]
 
@@ -1431,7 +1431,7 @@ Podés automatizar la creación de un documento de postmortem cuando se resuelve
 
 <br />
 
-```elixir
+```bash
 # postmortem-bot/create.sh
 #!/bin/bash
 # Disparado por webhook de PagerDuty cuando se resuelve un incidente SEV-1
@@ -1483,7 +1483,7 @@ reportá las tasas de completitud semanalmente:
 
 <br />
 
-```elixir
+```bash
 # action-item-tracker/report.sh
 #!/bin/bash
 # Correr semanalmente para reportar completitud de acciones de postmortem
@@ -1541,7 +1541,7 @@ Mapeá estos a tus tasas de quemado de SLO:
 
 <br />
 
-```elixir
+```yaml
 # severity-mapping.yaml
 # Basado en alertas multi-tasa-de-quemado generadas por Sloth
 
@@ -1590,7 +1590,7 @@ incidente fuera de los canales principales:
 
 <br />
 
-```elixir
+```python
 # incident-bot/create_channel.py
 import slack_sdk
 import datetime
@@ -1634,7 +1634,7 @@ sitio simple de GitHub Pages que se actualice por tu bot de incidentes funciona 
 
 <br />
 
-```elixir
+```bash
 # status-page/update.sh
 #!/bin/bash
 # Actualizar página de estado durante un incidente
@@ -1664,7 +1664,7 @@ que te permitan manejar incidentes a través de lenguaje natural:
 
 <br />
 
-```elixir
+```plaintext
 #[derive(Tool)]
 #[tool(name = "create_incident", description = "Crear un nuevo incidente con severidad y descripción")]
 struct CreateIncident {

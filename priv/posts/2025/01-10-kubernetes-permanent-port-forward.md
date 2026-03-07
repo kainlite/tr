@@ -26,7 +26,7 @@ client will auto-detect the default context.
 
 ##### **Configuration**
 First, lets check the configuration to see what it looks like and declare what we want to connect to...
-```elixir
+```yaml
 - name: "argocd-ui"                                 # identifier for the logs
   target: "argocd-server.argocd"                    # deployment_name.namespace
   ports:
@@ -58,7 +58,7 @@ that's what the cli tool needs.
 
 ##### **Test it**
 What would it look to run it?
-```elixir
+```plaintext
 ❯ RUST_LOG=info kube-forward -c config.yaml -e
 2025-01-10T23:53:38.711212Z  INFO kube_forward: Setting up port-forward for argocd-ui
 2025-01-10T23:53:39.346540Z  INFO kube_forward: Setting up port-forward for postgres
@@ -74,7 +74,7 @@ observability fan, and well, `-c` is pretty self-explanatory.
 <br />
 
 That would look something like this:
-```elixir
+```bash
 ❯ curl localhost:9292/metrics
 # TYPE port_forward_connection_successes_total counter
 port_forward_connection_successes_total{service="kube-forward",forward="postgres"} 21
@@ -94,7 +94,7 @@ port_forward_connected{service="kube-forward",forward="postgres"} 1
 ##### **The code**
 At the moment of this writing the code looks something like this (I will put only 2 files, there are more types, etc
 but with these you will get the idea of what the code is doing and how), this is the `main.rs` file.
-```elixir
+```javascript
 use anyhow::Result;
 use clap::Parser;
 use kube::Client;
@@ -193,7 +193,7 @@ Which basically sets everything up and start the process of set up the port-forw
 <br />
 In this file we have all the functions that do the heavy-lifting to setup and maintain the port-forwards thanks to
 `kube-rs`:
-```elixir
+```hcl
 use socket2::{SockRef, TcpKeepalive};
 
 use kube::{
@@ -677,7 +677,7 @@ Un par de cosas: asegurate de que los puertos que estás usando estén libres y 
 
 ##### **Configuración**
 Primero, vamos a chusmear la configuración para ver cómo es y declarar a qué nos queremos conectar...
-```elixir
+```yaml
 - name: "argocd-ui"                                 # identificador para los logs
   target: "argocd-server.argocd"                    # nombre_deploy.namespace
   ports:
@@ -709,7 +709,7 @@ el tiempo, pero por ahora asi es como funciona.
 
 ##### **Probando**
 Que deberiamos ver?
-```elixir
+```plaintext
 ❯ RUST_LOG=info kube-forward -c config.yaml -e
 2025-01-10T23:53:38.711212Z  INFO kube_forward: Setting up port-forward for argocd-ui
 2025-01-10T23:53:39.346540Z  INFO kube_forward: Setting up port-forward for postgres
@@ -725,7 +725,7 @@ es bastante intuitivo.
 <br />
 
 Las metricas se verian algo asi (completamente innecesario):
-```elixir
+```bash
 ❯ curl localhost:9292/metrics
 # TYPE port_forward_connection_successes_total counter
 port_forward_connection_successes_total{service="kube-forward",forward="postgres"} 21
@@ -745,7 +745,7 @@ port_forward_connected{service="kube-forward",forward="postgres"} 1
 ##### **El codigo**
 Al momento de escribir esto asi es como se ve, solo voy a poner los 2 archivos principales `main.rs` y `forward.rs`, hay
 mas archivos con tipos y otras cosas, pero toda la logica y lo principal esta aca.
-```elixir
+```javascript
 use anyhow::Result;
 use clap::Parser;
 use kube::Client;
@@ -843,7 +843,7 @@ Basicamente configura todo e inicia el proceso para configurar los port-forwards
 <br />
 
 El archivo mas critico es `forward.rs` que se ve algo asi, en este arhivo es donde se configura todo gracias a `kube-rs`:
-```elixir
+```hcl
 use socket2::{SockRef, TcpKeepalive};
 
 use kube::{

@@ -27,7 +27,7 @@ We will be working with the chat bot again you can see the original [article her
 <br />
 
 Let's tell our kubectl to use our recently downloaded config:
-```elixir
+```bash
 $ export KUBECONFIG=/home/kainlite/Downloads/k8s-1-13-1-do-2-nyc1-1546545313076-kubeconfig.yaml
 $ kubectl get nodes -o wide
 
@@ -39,14 +39,14 @@ Your config might have a slightly different name, but it should be similar. We c
 <br />
 
 But let's cut to the chase, we are here for _Skaffold_:
-```elixir
+```bash
 curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v0.20.0/skaffold-linux-amd64 && chmod +x skaffold && sudo mv skaffold /usr/local/bin
 ```
 You can install the binary using the provided line (linux) or downloading it from the [releases page](https://github.com/GoogleContainerTools/skaffold/releases).
 <br />
 
 Once installed we can see the [examples](https://github.com/GoogleContainerTools/skaffold/tree/master/examples), I will be using the getting-started example:
-```elixir
+```yaml
 apiVersion: skaffold/v1beta2
 kind: Config
 build:
@@ -61,7 +61,7 @@ With very litle YAML we can accomplish a lot.
 <br />
 
 We need a manifest file that matches that pattern so skaffold can deploy/re-deploy our application, so let's generate one with `kubectl run echobot --image=kainlite/echobot --dry-run -o yaml`
-```elixir
+```yaml
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -96,7 +96,7 @@ The above command can be used to generate any kind of k8s resource :), I strippe
 <br />
 
 Then the only thing left to do is testing that everything works properly:
-```elixir
+```yaml
 $ skaffold build
 
 Starting build...
@@ -199,7 +199,7 @@ As we can see skaffold build not only did the docker build but also tagged and p
 <br />
 
 But wait, we need to deploy that to our cluster, right on:
-```elixir
+```yaml
 $ skaffold deploy
 Starting build...
 Building [kainlite/echobot]...
@@ -277,7 +277,7 @@ Deploy does a lot like with gitkube, it build the image, pushes it to the regist
 <br />
 
 After a few seconds we can see that our deployment has been triggered and we have a new pod being created for it.
-```elixir
+```bash
 $ kubectl get pods
 NAME                       READY     STATUS              RESTARTS   AGE
 echobot-57fdcccf76-4qwvq   0/1       ContainerCreating   0          5s
@@ -287,7 +287,7 @@ Skaffold also has another nice option that it's called _dev_ it watches the fold
 <br />
 
 Let's clean up and call it a day:
-```elixir
+```bash
 $ skaffold delete
 Cleaning up...
 deployment.extensions "echobot" deleted
@@ -337,7 +337,7 @@ Estaremos trabajando nuevamente con el chatbot; puedes ver el [artículo origina
 
 Digámosle a nuestro kubectl que use nuestra configuración descargada recientemente:
 
-```elixir
+```bash
 $ export KUBECONFIG=/home/kainlite/Downloads/k8s-1-13-1-do-2-nyc1-1546545313076-kubeconfig.yaml
 $ kubectl get nodes -o wide
 
@@ -351,7 +351,7 @@ Tu configuración podría tener un nombre ligeramente diferente, pero debería s
 
 Pero vayamos al grano, estamos aquí por _Skaffold_:
 
-```elixir
+```bash
 curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v0.20.0/skaffold-linux-amd64 && chmod +x skaffold && sudo mv skaffold /usr/local/bin
 ```
 
@@ -360,7 +360,7 @@ Puedes instalar el binario usando la línea proporcionada (Linux) o descargándo
 
 Una vez instalado, podemos ver los [ejemplos](https://github.com/GoogleContainerTools/skaffold/tree/master/examples); estaré usando el ejemplo de "getting-started":
 
-```elixir
+```yaml
 apiVersion: skaffold/v1beta2
 kind: Config
 build:
@@ -377,7 +377,7 @@ Con muy poco YAML podemos lograr mucho.
 
 Necesitamos un archivo de manifiesto que coincida con ese patrón para que skaffold pueda desplegar/re-desplegar nuestra aplicación, así que generemos uno con `kubectl run echobot --image=kainlite/echobot --dry-run -o yaml`
 
-```elixir
+```yaml
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -414,7 +414,7 @@ El comando anterior puede usarse para generar cualquier tipo de recurso de k8s :
 
 Entonces, lo único que queda por hacer es probar que todo funcione correctamente:
 
-```elixir
+```bash
 $ skaffold build
 
 Starting build...
@@ -443,7 +443,7 @@ Como podemos ver, `skaffold build` no solo hizo el build de Docker, sino que tam
 
 Pero espera, necesitamos desplegar eso en nuestro clúster, vamos a ello:
 
-```elixir
+```bash
 $ skaffold deploy
 Starting build...
 Building [kainlite/echobot]...
@@ -458,7 +458,7 @@ Deploy complete in 5.676513226s
 
 Después de unos segundos, podemos ver que nuestro despliegue ha sido activado y tenemos un nuevo pod siendo creado para él.
 
-```elixir
+```bash
 $ kubectl get pods
 NAME                       READY     STATUS              RESTARTS   AGE
 echobot-57fdcccf76-4qwvq   0/1       ContainerCreating   0          5s
@@ -470,7 +470,7 @@ Skaffold también tiene otra opción interesante llamada _dev_; observa la carpe
 
 Limpiemos y terminemos por hoy:
 
-```elixir
+```bash
 $ skaffold delete
 Cleaning up...
 deployment.extensions "echobot" deleted
@@ -508,7 +508,7 @@ Estaremos trabajando nuevamente con el chatbot; puedes ver el [artículo origina
 
 Digámosle a nuestro kubectl que use nuestra configuración descargada recientemente:
 
-```elixir
+```bash
 $ export KUBECONFIG=/home/kainlite/Downloads/k8s-1-13-1-do-2-nyc1-1546545313076-kubeconfig.yaml
 $ kubectl get nodes -o wide
 
@@ -522,7 +522,7 @@ Tu configuración podría tener un nombre ligeramente diferente, pero debería s
 
 Pero vayamos al grano, estamos aquí por _Skaffold_:
 
-```elixir
+```bash
 curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v0.20.0/skaffold-linux-amd64 && chmod +x skaffold && sudo mv skaffold /usr/local/bin
 ```
 
@@ -531,7 +531,7 @@ Puedes instalar el binario usando la línea proporcionada (Linux) o descargándo
 
 Una vez instalado, podemos ver los [ejemplos](https://github.com/GoogleContainerTools/skaffold/tree/master/examples); estaré usando el ejemplo de "getting-started":
 
-```elixir
+```yaml
 apiVersion: skaffold/v1beta2
 kind: Config
 build:
@@ -548,7 +548,7 @@ Con muy poco YAML podemos lograr mucho.
 
 Necesitamos un archivo de manifiesto que coincida con ese patrón para que skaffold pueda desplegar/re-desplegar nuestra aplicación, así que generemos uno con `kubectl run echobot --image=kainlite/echobot --dry-run -o yaml`
 
-```elixir
+```yaml
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -585,7 +585,7 @@ El comando anterior puede usarse para generar cualquier tipo de recurso de k8s :
 
 Entonces, lo único que queda por hacer es probar que todo funcione correctamente:
 
-```elixir
+```bash
 $ skaffold build
 
 Starting build...
@@ -614,7 +614,7 @@ Como podemos ver, `skaffold build` no solo hizo el build de Docker, sino que tam
 
 Pero espera, necesitamos desplegar eso en nuestro clúster, vamos a ello:
 
-```elixir
+```bash
 $ skaffold deploy
 Starting build...
 Building [kainlite/echobot]...
@@ -629,7 +629,7 @@ Deploy complete in 5.676513226s
 
 Después de unos segundos, podemos ver que nuestro despliegue ha sido activado y tenemos un nuevo pod siendo creado para él.
 
-```elixir
+```bash
 $ kubectl get pods
 NAME                       READY     STATUS              RESTARTS   AGE
 echobot-57fdcccf76-4qwvq   0/1       ContainerCreating   0          5s
@@ -641,7 +641,7 @@ Skaffold también tiene otra opción interesante llamada _dev_; observa la carpe
 
 Limpiemos y terminemos por hoy:
 
-```elixir
+```bash
 $ skaffold delete
 Cleaning up...
 deployment.extensions "echobot" deleted

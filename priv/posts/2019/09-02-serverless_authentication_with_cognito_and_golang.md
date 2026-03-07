@@ -22,7 +22,7 @@ In this example I used terraform 0.12, and I kind of liked the new changes, it f
 <br />
 
 ##### Cognito
-```elixir
+```hcl
 resource "aws_cognito_user_pool" "pool" {
   name = "api-skynetng-pw"
 
@@ -56,7 +56,7 @@ As we can see it's really simple to have a cognito user pool working, the most i
 
 ##### ACM
 Next let's see how we manage the certificate creation using ACM.
-```elixir
+```hcl
 #####################
 # SSL custom domain #
 #####################
@@ -87,7 +87,7 @@ Here basically we create the certificate using `aws_acm_certificate` and validat
 
 ##### Route53
 Here we just create an alias record for the API Gateway and the validation record.
-```elixir
+```hcl
 data "aws_route53_zone" "zone" {
   name = substr(var.domain_name, 4, -1)
 }
@@ -117,7 +117,7 @@ resource "aws_route53_record" "cert_validation" {
 
 ##### API Gateway
 While this file might seem relatively simple, the API Gateway has many features and can get really complex really fast, basically what we are doing here is creating an API with a resource that accepts all method types and proxy that as it is to our lambda function.
-```elixir
+```hcl
 # https://www.terraform.io/docs/providers/aws/guides/serverless-with-aws-lambda-and-api-gateway.html
 
 resource "aws_api_gateway_rest_api" "lambda-api" {
@@ -174,7 +174,7 @@ resource "aws_lambda_permission" "lambda_permission" {
 
 ##### Lambda
 This file has the lambda function definition, the policy and the roles needed, basically the policy is to be able to log to CloudWatch and to inspect with X-Ray, then the log group to store the logs will set the retention period by default 7 days.
-```elixir
+```hcl
 resource "aws_lambda_function" "api" {
   filename      = "../src/main.zip"
   function_name = replace(var.domain_name, ".", "-")
@@ -239,7 +239,7 @@ resource "aws_cloudwatch_log_group" "lambda-api" {
 
 ##### Variables and locals
 First the variables file with the default values
-```elixir
+```hcl
 variable "profile_name" {
   default = "default"
 }
@@ -286,7 +286,7 @@ variable "environment_variables" {
 <br />
 
 And last the locals file, in this small snippet we are just making a map with a computed value and the values that can come from a variable which can be quite useful in many scenarios where you don't know all the information in advance or something is dynamically assigned:
-```elixir
+```plaintext
 locals {
   computed_environment_variables = {
     "COGNITO_CLIENT_ID" = aws_cognito_user_pool_client.client.id
@@ -299,7 +299,7 @@ locals {
 
 ##### Deployment scripts
 There is a small bash script to make it easier to run the deployment, AKA as compiling the code, zipping it, and running terraform to update our function or whatever we changed.
-```elixir
+```hcl
 #!/bin/bash
 set -u
 source config.sh
@@ -333,7 +333,7 @@ cd ..
 
 ##### **Go**
 The good thing is that everything is code, but we don't have to manage any server, we just consume services from AWS completely from code, isn't that amazing?, I apologize for the length of the file, but you will notice that it's very repetitive, in most functions we load the AWS configuration, we make a request and return a response, we're also using Gin as a router, which is pretty straight-forward and easy to use, we have only one authenticated path (`/user/profile`), and we also have another unauthenticated path which is a health check (`/app/health`), the other two paths (`/user` and `/user/validate`) are exclusively for the user creation process with cognito.
-```elixir
+```dockerfile
 package main
 
 import (
@@ -523,7 +523,7 @@ All logs go to CloudWatch and you can also use X-Ray to diagnose issues.
 
 ##### **Testing it**
 So we're going to hit the API to create, validate, and query the empty profile of the user from the terminal using curl.
-```elixir
+```bash
 # Create the account
 $ curl https://api.skynetng.pw/user -X POST -d '{ "username": "kainlite+test@gmail.com", "password": "Testing123@"  }'
 OUTPUT:
@@ -643,7 +643,7 @@ En este ejemplo utilicé Terraform 0.12, y me gustaron bastante los nuevos cambi
 <br />
 
 ##### Cognito
-```elixir
+```hcl
 resource "aws_cognito_user_pool" "pool" {
   name = "api-skynetng-pw"
 
@@ -677,7 +677,7 @@ Como podemos ver, es realmente simple tener un pool de usuarios de Cognito funci
 
 ##### ACM
 Ahora, veamos cómo gestionamos la creación del certificado utilizando ACM.
-```elixir
+```hcl
 #####################
 # SSL custom domain #
 #####################
@@ -708,7 +708,7 @@ Aquí, básicamente, creamos el certificado utilizando `aws_acm_certificate` y l
 
 ##### Route53
 En esta sección simplemente creamos un registro alias para el API Gateway y el registro de validación.
-```elixir
+```hcl
 data "aws_route53_zone" "zone" {
   name = substr(var.domain_name, 4, -1)
 }
@@ -738,7 +738,7 @@ resource "aws_route53_record" "cert_validation" {
 
 ##### API Gateway
 Aunque este archivo puede parecer relativamente simple, el API Gateway tiene muchas funcionalidades y puede volverse realmente complejo rápidamente. Básicamente, lo que estamos haciendo aquí es crear una API con un recurso que acepta todos los tipos de métodos y los envía tal cual a nuestra función Lambda.
-```elixir
+```hcl
 # https://www.terraform.io/docs/providers/aws/guides/serverless-with-aws-lambda-and-api-gateway.html
 
 resource "aws_api_gateway_rest_api" "lambda-api" {
@@ -795,7 +795,7 @@ resource "aws_lambda_permission" "lambda_permission" {
 
 ##### Lambda
 Este archivo contiene la definición de la función Lambda, la política y los roles necesarios. Básicamente, la política permite registrar en CloudWatch y realizar inspecciones con X-Ray. Luego, el grupo de logs se encarga de almacenar los registros, configurando el período de retención, que por defecto es de 7 días.
-```elixir
+```hcl
 resource "aws_lambda_function" "api" {
   filename      = "../src/main.zip"
   function_name = replace(var.domain_name, ".", "-")
@@ -860,7 +860,7 @@ resource "aws_cloudwatch_log_group" "lambda-api" {
 
 ##### Variables 
 Algunas variables necesarias
-```elixir
+```hcl
 variable "profile_name" {
   default = "default"
 }
@@ -907,7 +907,7 @@ variable "environment_variables" {
 <br />
 
 Y por último, el archivo de locales. En este pequeño fragmento, simplemente estamos creando un mapa con un valor calculado y los valores que pueden provenir de una variable, lo cual puede ser muy útil en muchos escenarios donde no se tiene toda la información de antemano o algo se asigna dinámicamente:
-```elixir
+```plaintext
 locals {
   computed_environment_variables = {
     "COGNITO_CLIENT_ID" = aws_cognito_user_pool_client.client.id
@@ -920,7 +920,7 @@ locals {
 
 ##### Scripts de despliegue
 Hay un pequeño script en bash para facilitar la ejecución del despliegue, también conocido como compilar el código, comprimirlo en un zip y ejecutar terraform para actualizar nuestra función o lo que sea que hayamos modificado.
-```elixir
+```hcl
 #!/bin/bash
 set -u
 source config.sh
@@ -954,7 +954,7 @@ cd ..
 
 ##### **Go**
 Lo bueno es que todo es código, pero no tenemos que gestionar ningún servidor, simplemente consumimos los servicios de AWS directamente desde el código, ¿no es increíble? Disculpen la longitud del archivo, pero van a notar que es muy repetitivo. En la mayoría de las funciones, cargamos la configuración de AWS, hacemos una solicitud y devolvemos una respuesta. También estamos usando Gin como enrutador, que es bastante directo y fácil de usar. Tenemos solo un endpoint autenticado (`/user/profile`), y otro sin autenticación que es un chequeo de salud (`/app/health`). Los otros dos paths (`/user` y `/user/validate`) son exclusivamente para el proceso de creación de usuario con cognito.
-```elixir
+```dockerfile
 package main
 
 import (
@@ -1144,7 +1144,7 @@ Todos los logs se envían a CloudWatch y también podés usar X-Ray para diagnos
 
 ##### **Probándolo**
 Vamos a usar el terminal con `curl` para crear, validar y consultar el perfil vacío del usuario en la API.
-```elixir
+```bash
 # Create the account
 $ curl https://api.skynetng.pw/user -X POST -d '{ "username": "kainlite+test@gmail.com", "password": "Testing123@"  }'
 OUTPUT:

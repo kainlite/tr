@@ -51,7 +51,7 @@ Here is how to set them for our Elixir application:
 
 <br />
 
-```elixir
+```yaml
 # deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -105,7 +105,7 @@ everything looks fine from a resource usage perspective.
 
 <br />
 
-```elixir
+```yaml
 # Option A: With CPU limits (safe but can cause throttling)
 resources:
   requests:
@@ -140,7 +140,7 @@ Install VPA:
 
 <br />
 
-```elixir
+```bash
 git clone https://github.com/kubernetes/autoscaler.git
 cd autoscaler/vertical-pod-autoscaler
 ./hack/vpa-up.sh
@@ -152,7 +152,7 @@ Create a VPA resource in recommendation mode (safest to start):
 
 <br />
 
-```elixir
+```yaml
 # vpa/tr-web-vpa.yaml
 apiVersion: autoscaling.k8s.io/v1
 kind: VerticalPodAutoscaler
@@ -183,7 +183,7 @@ After a few days of collecting data, check the recommendations:
 
 <br />
 
-```elixir
+```bash
 kubectl describe vpa tr-web-vpa
 
 # Output will look like:
@@ -224,7 +224,7 @@ you can also scale on custom metrics from Prometheus.
 
 <br />
 
-```elixir
+```yaml
 # hpa/tr-web-hpa.yaml
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -283,7 +283,7 @@ more responsive. This requires the Prometheus Adapter:
 
 <br />
 
-```elixir
+```bash
 # Install Prometheus Adapter
 helm install prometheus-adapter prometheus-community/prometheus-adapter \
   --namespace monitoring \
@@ -296,7 +296,7 @@ Configure the adapter to expose your SLI metrics to the Kubernetes metrics API:
 
 <br />
 
-```elixir
+```yaml
 # prometheus-adapter/config.yaml
 rules:
   - seriesQuery: 'http_requests_total{namespace!="",pod!=""}'
@@ -325,7 +325,7 @@ Then create an HPA that scales on requests per second per pod:
 
 <br />
 
-```elixir
+```yaml
 # hpa/tr-web-hpa-custom.yaml
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -376,7 +376,7 @@ Install KEDA:
 
 <br />
 
-```elixir
+```plaintext
 helm repo add kedacore https://kedacore.github.io/charts
 helm repo update
 
@@ -391,7 +391,7 @@ helm install keda kedacore/keda \
 
 <br />
 
-```elixir
+```yaml
 # keda/tr-web-scaledobject.yaml
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
@@ -436,7 +436,7 @@ planning directly to your SLOs.
 
 <br />
 
-```elixir
+```yaml
 # keda/tr-web-cron-scaledobject.yaml
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
@@ -495,7 +495,7 @@ Key considerations:
 
 <br />
 
-```elixir
+```yaml
 # Buffer pod to keep spare capacity
 apiVersion: apps/v1
 kind: Deployment
@@ -548,7 +548,7 @@ Install k6:
 
 <br />
 
-```elixir
+```bash
 # On Arch Linux
 sudo pacman -S k6
 
@@ -562,7 +562,7 @@ docker run --rm -i grafana/k6 run - <script.js
 
 <br />
 
-```elixir
+```yaml
 // load-tests/blog-basic.js
 import http from 'k6/http';
 import { check, sleep } from 'k6';
@@ -612,7 +612,7 @@ export default function () {
 
 <br />
 
-```elixir
+```yaml
 // load-tests/search-load.js
 import http from 'k6/http';
 import { check, sleep } from 'k6';
@@ -656,7 +656,7 @@ This is the most important load test. It validates that your HPA kicks in correc
 
 <br />
 
-```elixir
+```yaml
 // load-tests/autoscale-validation.js
 import http from 'k6/http';
 import { check, sleep } from 'k6';
@@ -713,7 +713,7 @@ Run the test while watching your HPA:
 
 <br />
 
-```elixir
+```bash
 # Terminal 1: Run the load test
 k6 run --env BASE_URL=https://your-app.example.com load-tests/autoscale-validation.js
 
@@ -754,7 +754,7 @@ Beyond autoscaling, capacity planning is an ongoing practice:
 
 <br />
 
-```elixir
+```bash
 # Grafana query: CPU utilization trend over 30 days
 avg_over_time(
   sum(rate(container_cpu_usage_seconds_total{pod=~"tr-web.*"}[5m]))
@@ -889,7 +889,7 @@ Acá cómo configurarlos para nuestra aplicación Elixir:
 
 <br />
 
-```elixir
+```yaml
 # deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -943,7 +943,7 @@ debuggear porque todo parece bien desde la perspectiva de uso de recursos.
 
 <br />
 
-```elixir
+```yaml
 # Opción A: Con CPU limits (seguro pero puede causar throttling)
 resources:
   requests:
@@ -978,7 +978,7 @@ Creá un recurso VPA en modo recomendación (lo más seguro para arrancar):
 
 <br />
 
-```elixir
+```yaml
 # vpa/tr-web-vpa.yaml
 apiVersion: autoscaling.k8s.io/v1
 kind: VerticalPodAutoscaler
@@ -1009,7 +1009,7 @@ Después de unos días recolectando datos, revisá las recomendaciones:
 
 <br />
 
-```elixir
+```bash
 kubectl describe vpa tr-web-vpa
 
 # La salida se ve así:
@@ -1044,7 +1044,7 @@ también podés escalar por métricas custom de Prometheus.
 
 <br />
 
-```elixir
+```yaml
 # hpa/tr-web-hpa.yaml
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -1103,7 +1103,7 @@ mucho más responsivo. Esto requiere el Prometheus Adapter:
 
 <br />
 
-```elixir
+```yaml
 # Creá un HPA que escale por requests por segundo por pod:
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -1155,7 +1155,7 @@ externas.
 
 <br />
 
-```elixir
+```yaml
 # keda/tr-web-scaledobject.yaml
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
@@ -1200,7 +1200,7 @@ réplicas para absorber la carga. Esto conecta la planificación de capacidad di
 
 <br />
 
-```elixir
+```yaml
 # keda/tr-web-cron-scaledobject.yaml
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
@@ -1240,7 +1240,7 @@ excelente herramienta de pruebas de carga que hace fácil definir escenarios.
 
 <br />
 
-```elixir
+```yaml
 // load-tests/blog-basic.js
 import http from 'k6/http';
 import { check, sleep } from 'k6';
@@ -1293,7 +1293,7 @@ Esta es la prueba de carga más importante. Valida que tu HPA arranca correctame
 
 <br />
 
-```elixir
+```yaml
 // load-tests/autoscale-validation.js
 import http from 'k6/http';
 import { check, sleep } from 'k6';
@@ -1349,7 +1349,7 @@ Corré la prueba mientras mirás tu HPA:
 
 <br />
 
-```elixir
+```bash
 # Terminal 1: Correr la prueba de carga
 k6 run --env BASE_URL=https://your-app.example.com load-tests/autoscale-validation.js
 

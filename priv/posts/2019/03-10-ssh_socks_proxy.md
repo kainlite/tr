@@ -21,13 +21,13 @@ SOCKS is an Internet protocol that exchanges network packets between a client an
 <br />
 
 **The command**
-```elixir
+```plaintext
 ssh -D 9999 -Nn ec2-user@54.210.37.203
 ```
 <br />
 
 For example I started a EC2 instance for this example and this is the output from curl:
-```elixir
+```bash
 $ curl --socks4 localhost:9999 icanhazip.com
 # OUTPUT:
 # 54.210.37.203
@@ -36,7 +36,7 @@ $ curl --socks4 localhost:9999 icanhazip.com
 
 ##### **The parameters and their meaning**
 I extracted a portion of the meaning of parameter from the man page, but in a nutshell it means dynamic port forward without a shell.
-```elixir
+```plaintext
 -N Do not execute a remote command. This is useful for just forwarding ports.
 -n Redirects stdin from /dev/null (actually, prevents reading from stdin). This must be used when ssh is run in the background.
 -D Specifies a local “dynamic” application-level port forwarding.  This works by allocating a socket to listen to port on the local side, optionally bound to the specified bind_address.
@@ -76,13 +76,13 @@ SOCKS es un protocolo de Internet que intercambia paquetes de red entre un clien
 <br />
 
 **El comando**
-```elixir
+```plaintext
 ssh -D 9999 -Nn ec2-user@54.210.37.203
 ```
 <br />
 
 Por ejemplo, inicié una instancia EC2 para este ejemplo y este es el resultado de curl:
-```elixir
+```bash
 $ curl --socks4 localhost:9999 icanhazip.com
 # OUTPUT:
 # 54.210.37.203
@@ -91,7 +91,7 @@ $ curl --socks4 localhost:9999 icanhazip.com
 
 ##### **Los parámetros y su significado**
 Saqué una porción del significado de los parámetros de la página del manual, pero en resumen significa reenvío dinámico de puerto sin ejecutar un shell.
-```elixir
+```plaintext
 -N No ejecuta un comando remoto. Esto es útil solo para redirigir puertos.
 -n Redirige stdin desde /dev/null (evita leer desde stdin). Esto debe usarse cuando SSH se ejecuta en segundo plano.
 -D Especifica un reenvío de puerto “dinámico” a nivel de aplicación. Funciona asignando un socket para escuchar en un puerto del lado local, opcionalmente enlazado a la dirección especificada (bind_address).

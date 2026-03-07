@@ -23,7 +23,7 @@ In order to make the example easier I have created this [repo](https://github.co
 
 ##### **Terraform**
 First of all we need to get our terraform code, as you can see it's a simple ec2 instance in AWS, but the instance type doesn't exist, we will fix that in a bit.
-```elixir
+```hcl
 resource "aws_instance" "ec2_test" {
   ami           = "ari-67b95e0e"
   instance_type = "t1.medium"
@@ -34,7 +34,7 @@ resource "aws_instance" "ec2_test" {
 
 ##### **Github Workflow**
 Since we're using Github we can take advantage of [Actions](https://github.com/features/actions) in order to run a linter for our code and mark our PR if something is wrong.
-```elixir
+```hcl
 name: reviewdog
 on: [pull_request]
 jobs:
@@ -120,7 +120,7 @@ Para hacer el ejemplo más simple, creé este [repo](https://github.com/kainlite
 
 ##### **Terraform**
 Primero necesitamos nuestro código de terraform. Como podés ver, es una instancia ec2 simple en AWS, pero el tipo de instancia no existe, lo vamos a arreglar en un momento.
-```elixir
+```hcl
 resource "aws_instance" "ec2_test" {
   ami           = "ari-67b95e0e"
   instance_type = "t1.medium"
@@ -131,7 +131,7 @@ resource "aws_instance" "ec2_test" {
 
 ##### **Github Workflow**
 Ya que estamos usando Github, podemos aprovechar [Actions](https://github.com/features/actions) para correr un linter para nuestro código y marcar nuestro PR si algo está mal.
-```elixir
+```hcl
 name: reviewdog
 on: [pull_request]
 jobs:

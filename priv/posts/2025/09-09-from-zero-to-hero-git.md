@@ -30,7 +30,7 @@ The reflog (reference log) is Git's safety net. It records every change to HEAD 
 <br />
 
 Let's start by looking at what's in your reflog:
-```elixir
+```bash
 git reflog
 # or for more detail
 git reflog show HEAD
@@ -39,7 +39,7 @@ git reflog show HEAD
 <br />
 
 You'll see something like this:
-```elixir
+```plaintext
 3f7a8b9 (HEAD -> main) HEAD@{0}: commit: Add new feature
 8d4c2e1 HEAD@{1}: rebase -i (finish): returning to refs/heads/main
 8d4c2e1 HEAD@{2}: rebase -i (pick): Update documentation
@@ -68,7 +68,7 @@ Let's say you're rebasing and things go horribly wrong. Maybe you accidentally d
 <br />
 
 **Scenario: Messed up interactive rebase**
-```elixir
+```bash
 # You did an interactive rebase
 git rebase -i HEAD~5
 
@@ -79,7 +79,7 @@ git rebase -i HEAD~5
 <br />
 
 **Recovery using reflog:**
-```elixir
+```bash
 # First, check where you were before the rebase
 git reflog
 
@@ -97,7 +97,7 @@ git reset --hard HEAD@{5}
 <br />
 
 **Pro tip:** Always check what you're resetting to first:
-```elixir
+```bash
 # See what's at that reflog entry
 git show HEAD@{5}
 
@@ -113,7 +113,7 @@ Accidentally ran `git reset --hard` and lost commits? They're not gone, just unr
 <br />
 
 **Scenario: Accidental hard reset**
-```elixir
+```bash
 # You had important work
 git log --oneline
 # abc123 Important feature
@@ -129,7 +129,7 @@ git reset --hard HEAD~2
 <br />
 
 **Recovery process:**
-```elixir
+```bash
 # Step 1: Find the lost commits in reflog
 git reflog
 # You'll see something like:
@@ -151,7 +151,7 @@ git cherry-pick def456
 
 **Creating a recovery branch:**
 Sometimes you want to explore the lost commits without affecting your current branch:
-```elixir
+```bash
 # Create a new branch from the lost commit
 git branch recovery-branch abc123
 
@@ -172,7 +172,7 @@ Deleted a branch by mistake? As long as it wasn't deleted on the remote and forc
 <br />
 
 **Scenario: Accidental branch deletion**
-```elixir
+```bash
 # You had a feature branch
 git branch
 # * main
@@ -189,7 +189,7 @@ git branch -D feature-awesome
 **Recovery methods:**
 
 **Method 1: If you see the SHA in the deletion message**
-```elixir
+```bash
 # Git tells you the SHA when deleting
 # Just recreate the branch from that commit
 git branch feature-awesome 5a3f8c9
@@ -201,7 +201,7 @@ git checkout -b feature-awesome 5a3f8c9
 <br />
 
 **Method 2: Using reflog to find the branch**
-```elixir
+```bash
 # Search reflog for the branch name
 git reflog show --all | grep feature-awesome
 
@@ -215,7 +215,7 @@ git checkout -b feature-awesome-recovered <sha>
 <br />
 
 **Method 3: If you recently checked out the branch**
-```elixir
+```bash
 # Git tracks branch checkouts
 git reflog | grep checkout
 
@@ -234,7 +234,7 @@ Cherry-picking lets you take specific commits from one branch and apply them to 
 <br />
 
 **Basic cherry-pick:**
-```elixir
+```sql
 # You're on main branch and want a specific commit from feature branch
 git checkout main
 
@@ -253,7 +253,7 @@ git cherry-pick abc123
 <br />
 
 **Cherry-picking multiple commits:**
-```elixir
+```bash
 # Pick a range of commits
 git cherry-pick abc123..def456
 
@@ -267,7 +267,7 @@ git cherry-pick feature~3..feature
 <br />
 
 **Handling cherry-pick conflicts:**
-```elixir
+```bash
 # Start cherry-pick
 git cherry-pick abc123
 
@@ -288,7 +288,7 @@ git cherry-pick --abort
 <br />
 
 **Cherry-pick options:**
-```elixir
+```bash
 # Cherry-pick but don't commit (stage changes only)
 git cherry-pick -n abc123
 
@@ -307,7 +307,7 @@ git cherry-pick -x abc123
 ##### **Advanced Reflog Techniques**
 
 **Searching through reflog:**
-```elixir
+```bash
 # Find all commits with specific message
 git reflog --grep="feature"
 
@@ -324,7 +324,7 @@ git reflog show --all
 <br />
 
 **Time-based recovery:**
-```elixir
+```bash
 # See where HEAD was yesterday
 git show HEAD@{yesterday}
 
@@ -341,7 +341,7 @@ git show main@{1.week.ago}
 <br />
 
 **Cleaning up after recovery:**
-```elixir
+```bash
 # After recovering commits, clean up duplicate branches
 git branch --merged | grep -v main | xargs git branch -d
 
@@ -357,7 +357,7 @@ git fsck --unreachable
 ##### **Real-World Recovery Scenarios**
 
 **Scenario 1: Lost work after force push**
-```elixir
+```bash
 # Someone force-pushed to the remote
 git pull
 # Your local work seems gone!
@@ -376,7 +376,7 @@ git rebase origin/main my-saved-work
 <br />
 
 **Scenario 2: Recovering a specific file version**
-```elixir
+```bash
 # You need a file from a deleted commit
 git reflog
 # Find the commit: abc123
@@ -391,7 +391,7 @@ git checkout abc123 -- path/to/file.js
 <br />
 
 **Scenario 3: Undo last few operations**
-```elixir
+```bash
 # You did several operations and want to undo them all
 git reflog
 # See your last "safe" point
@@ -408,7 +408,7 @@ git reset --hard HEAD@{10}
 ##### **Best Practices and Safety Tips**
 
 **1. Always create backup branches before dangerous operations:**
-```elixir
+```bash
 # Before rebasing
 git branch backup-before-rebase
 
@@ -422,7 +422,7 @@ git branch backup-before-merge
 <br />
 
 **2. Use git stash for temporary safety:**
-```elixir
+```bash
 # Save current work before experimenting
 git stash save "Before trying dangerous operation"
 
@@ -437,7 +437,7 @@ git stash pop
 <br />
 
 **3. Configure reflog to keep entries longer:**
-```elixir
+```bash
 # Keep reflog entries for 180 days
 git config gc.reflogExpire 180.days
 
@@ -485,7 +485,7 @@ When should you use cherry-pick instead of merge or rebase?
 ##### **Troubleshooting Common Issues**
 
 **"fatal: ambiguous argument 'HEAD@{n}'"**
-```elixir
+```bash
 # Escape the braces in some shells
 git reset --hard 'HEAD@{1}'
 # or
@@ -495,7 +495,7 @@ git reset --hard HEAD@\{1\}
 <br />
 
 **"warning: reflog of 'branch' references pruned commits"**
-```elixir
+```bash
 # The commits are still there, just unreachable
 # Find them with
 git fsck --unreachable | grep commit
@@ -508,7 +508,7 @@ git branch recovered <unreachable-sha>
 <br />
 
 **"error: could not apply abc123"**
-```elixir
+```bash
 # Cherry-pick conflict
 # See what's conflicting
 git status
@@ -578,7 +578,7 @@ El reflog (registro de referencias) es la red de seguridad de Git. Registra cada
 <br />
 
 Empecemos viendo qué hay en tu reflog:
-```elixir
+```bash
 git reflog
 # o para más detalle
 git reflog show HEAD
@@ -587,7 +587,7 @@ git reflog show HEAD
 <br />
 
 Vas a ver algo así:
-```elixir
+```plaintext
 3f7a8b9 (HEAD -> main) HEAD@{0}: commit: Agregar nueva función
 8d4c2e1 HEAD@{1}: rebase -i (finish): returning to refs/heads/main
 8d4c2e1 HEAD@{2}: rebase -i (pick): Actualizar documentación
@@ -616,7 +616,7 @@ Digamos que estás haciendo rebase y las cosas salen horriblemente mal. Tal vez 
 <br />
 
 **Escenario: Rebase interactivo arruinado**
-```elixir
+```bash
 # Hiciste un rebase interactivo
 git rebase -i HEAD~5
 
@@ -627,7 +627,7 @@ git rebase -i HEAD~5
 <br />
 
 **Recuperación usando reflog:**
-```elixir
+```bash
 # Primero, verificá dónde estabas antes del rebase
 git reflog
 
@@ -645,7 +645,7 @@ git reset --hard HEAD@{5}
 <br />
 
 **Tip pro:** Siempre verificá a qué estás haciendo reset primero:
-```elixir
+```bash
 # Ver qué hay en esa entrada del reflog
 git show HEAD@{5}
 
@@ -661,7 +661,7 @@ git log HEAD@{5} --oneline -10
 <br />
 
 **Escenario: Reset hard accidental**
-```elixir
+```bash
 # Tenías trabajo importante
 git log --oneline
 # abc123 Función importante
@@ -677,7 +677,7 @@ git reset --hard HEAD~2
 <br />
 
 **Proceso de recuperación:**
-```elixir
+```bash
 # Paso 1: Encontrar los commits perdidos en reflog
 git reflog
 # Vas a ver algo como:
@@ -699,7 +699,7 @@ git cherry-pick def456
 
 **Creando un branch de recuperación:**
 A veces querés explorar los commits perdidos sin afectar tu branch actual:
-```elixir
+```bash
 # Crear un nuevo branch desde el commit perdido
 git branch branch-recuperacion abc123
 
@@ -720,7 +720,7 @@ git merge branch-recuperacion
 <br />
 
 **Escenario: Eliminación accidental de branch**
-```elixir
+```bash
 # Tenías un feature branch
 git branch
 # * main
@@ -737,7 +737,7 @@ git branch -D feature-increible
 **Métodos de recuperación:**
 
 **Método 1: Si ves el SHA en el mensaje de eliminación**
-```elixir
+```bash
 # Git te dice el SHA al borrar
 # Solo recreá el branch desde ese commit
 git branch feature-increible 5a3f8c9
@@ -749,7 +749,7 @@ git checkout -b feature-increible 5a3f8c9
 <br />
 
 **Método 2: Usando reflog para encontrar el branch**
-```elixir
+```bash
 # Buscar en reflog el nombre del branch
 git reflog show --all | grep feature-increible
 
@@ -763,7 +763,7 @@ git checkout -b feature-increible-recuperado <sha>
 <br />
 
 **Método 3: Si recientemente hiciste checkout del branch**
-```elixir
+```bash
 # Git rastrea los checkouts de branches
 git reflog | grep checkout
 
@@ -782,7 +782,7 @@ Cherry-picking te permite tomar commits específicos de un branch y aplicarlos a
 <br />
 
 **Cherry-pick básico:**
-```elixir
+```bash
 # Estás en el branch main y querés un commit específico del branch feature
 git checkout main
 
@@ -801,7 +801,7 @@ git cherry-pick abc123
 <br />
 
 **Cherry-picking múltiples commits:**
-```elixir
+```bash
 # Elegir un rango de commits
 git cherry-pick abc123..def456
 
@@ -815,7 +815,7 @@ git cherry-pick feature~3..feature
 <br />
 
 **Manejando conflictos en cherry-pick:**
-```elixir
+```bash
 # Iniciar cherry-pick
 git cherry-pick abc123
 
@@ -836,7 +836,7 @@ git cherry-pick --abort
 <br />
 
 **Opciones de cherry-pick:**
-```elixir
+```bash
 # Cherry-pick pero no commitear (solo stagear cambios)
 git cherry-pick -n abc123
 
@@ -855,7 +855,7 @@ git cherry-pick -x abc123
 ##### **Técnicas Avanzadas de Reflog**
 
 **Buscando en el reflog:**
-```elixir
+```bash
 # Encontrar todos los commits con mensaje específico
 git reflog --grep="feature"
 
@@ -872,7 +872,7 @@ git reflog show --all
 <br />
 
 **Recuperación basada en tiempo:**
-```elixir
+```bash
 # Ver dónde estaba HEAD ayer
 git show HEAD@{yesterday}
 
@@ -889,7 +889,7 @@ git show main@{1.week.ago}
 <br />
 
 **Limpiando después de recuperar:**
-```elixir
+```bash
 # Después de recuperar commits, limpiar branches duplicados
 git branch --merged | grep -v main | xargs git branch -d
 
@@ -905,7 +905,7 @@ git fsck --unreachable
 ##### **Escenarios de Recuperación del Mundo Real**
 
 **Escenario 1: Trabajo perdido después de force push**
-```elixir
+```bash
 # Alguien hizo force-push al remoto
 git pull
 # ¡Tu trabajo local parece haberse ido!
@@ -924,7 +924,7 @@ git rebase origin/main mi-trabajo-salvado
 <br />
 
 **Escenario 2: Recuperando una versión específica de archivo**
-```elixir
+```bash
 # Necesitás un archivo de un commit borrado
 git reflog
 # Encontrar el commit: abc123
@@ -939,7 +939,7 @@ git checkout abc123 -- ruta/al/archivo.js
 <br />
 
 **Escenario 3: Deshacer las últimas operaciones**
-```elixir
+```bash
 # Hiciste varias operaciones y querés deshacerlas todas
 git reflog
 # Ver tu último punto "seguro"
@@ -956,7 +956,7 @@ git reset --hard HEAD@{10}
 ##### **Mejores Prácticas y Tips de Seguridad**
 
 **1. Siempre crear branches de backup antes de operaciones peligrosas:**
-```elixir
+```bash
 # Antes de rebase
 git branch backup-antes-rebase
 
@@ -970,7 +970,7 @@ git branch backup-antes-merge
 <br />
 
 **2. Usar git stash para seguridad temporal:**
-```elixir
+```bash
 # Guardar trabajo actual antes de experimentar
 git stash save "Antes de intentar operación peligrosa"
 
@@ -985,7 +985,7 @@ git stash pop
 <br />
 
 **3. Configurar reflog para mantener entradas más tiempo:**
-```elixir
+```bash
 # Mantener entradas de reflog por 180 días
 git config gc.reflogExpire 180.days
 
@@ -1033,7 +1033,7 @@ git config gc.reflogExpireUnreachable 60.days
 ##### **Solucionando Problemas Comunes**
 
 **"fatal: ambiguous argument 'HEAD@{n}'"**
-```elixir
+```bash
 # Escapar las llaves en algunos shells
 git reset --hard 'HEAD@{1}'
 # o
@@ -1043,7 +1043,7 @@ git reset --hard HEAD@\{1\}
 <br />
 
 **"warning: reflog of 'branch' references pruned commits"**
-```elixir
+```bash
 # Los commits siguen ahí, solo inalcanzables
 # Encontrarlos con
 git fsck --unreachable | grep commit
@@ -1056,7 +1056,7 @@ git branch recuperado <sha-inalcanzable>
 <br />
 
 **"error: could not apply abc123"**
-```elixir
+```bash
 # Conflicto de cherry-pick
 # Ver qué está en conflicto
 git status

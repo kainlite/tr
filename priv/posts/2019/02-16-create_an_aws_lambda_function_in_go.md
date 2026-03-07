@@ -16,7 +16,7 @@ In this article we will create a lambda function and an API Gateway route like w
 <br />
 
 ##### **Let's see the code one more time**
-```elixir
+```go
 package main
 
 import (
@@ -68,13 +68,13 @@ With that code as a starting point, now we need to build, package, upload, and d
 <br />
 
 **Build**
-```elixir
+```plaintext
 GOOS=linux go build main.go
 ```
 <br />
 
 **Package**
-```elixir
+```bash
 zip main.zip ./main
 # OUTPUT:
 #   adding: main (deflated 51%)
@@ -88,7 +88,7 @@ Then select Lambda, assign a name and a description and then get the ARN for thi
 <br />
 
 **Upload / Deploy**
-```elixir
+```bash
 aws lambda create-function \
   --region us-east-1 \
   --function-name helloworld \
@@ -122,7 +122,7 @@ Note that your function-name must match the name of your Lambda handler name (Ha
 <br />
 
 **Test the function**
-```elixir
+```bash
 aws lambda invoke --function-name helloworld --log-type Tail /dev/stdout
 # OUTPUT:
 # {"statusCode":200,"headers":{"Content-Type":"application/json","X-MyCompany-Func-Reply":"hello-handler"},"body":"{\"message\":\"Go Serverless v1.0! Your function executed successfully!\"}"}{
@@ -135,7 +135,7 @@ Everything looks about right, so what's next? We will eventually need to communi
 <br />
 
 **Check the logs**
-```elixir
+```bash
 echo "U1RBUlQgUmVxdWVzdElkOiBmZTRmMWE4Zi1kYzAyLTQyYWQtYjBlYy0wMjA5YjY4MDY1YWQgVmVyc2lvbjogJExBVEVTVApFTkQgUmVxdWVzdElkOiBmZTRmMWE4Zi1kYzAyLTQyYWQtYjBlYy0wMjA5YjY4MDY1YWQKUkVQT1JUIFJlcXVlc3RJZDogZmU0ZjFhOGYtZGMwMi00MmFkLWIwZWMtMDIwOWI2ODA2NWFkCUR1cmF0aW9uOiAxMy4xOSBtcwlCaWxsZWQgRHVyYXRpb246IDEwMCBtcyAJTWVtb3J5IFNpemU6IDEyOCBNQglNYXggTWVtb3J5IFVzZWQ6IDQ1IE1CCQo=" | base64 -d
 # OUTPUT:
 # START RequestId: fe4f1a8f-dc02-42ad-b0ec-0209b68065ad Version: $LATEST
@@ -161,7 +161,7 @@ The endpoint will show as follows (Click on API Gateway):
 <br />
 
 **Test the API**
-```elixir
+```hcl
 curl -v https://r8efasfb26.execute-api.us-east-1.amazonaws.com/default/helloworld
 # OUTPUT:
 # *   Trying 54.236.123.239...
@@ -245,7 +245,7 @@ En este artículo vamos a crear una función Lambda y una ruta en API Gateway, c
 <br />
 
 ### **Veamos el código nuevamente**
-```elixir
+```go
 package main
 
 import (
@@ -297,13 +297,13 @@ Con este código como punto de partida, ahora necesitamos compilar, empaquetar, 
 <br />
 
 ### **Compilar**
-```elixir
+```plaintext
 GOOS=linux go build main.go
 ```
 <br />
 
 ### **Empaquetar**
-```elixir
+```bash
 zip main.zip ./main
 # OUTPUT:
 #   adding: main (deflated 51%)
@@ -317,7 +317,7 @@ Luego selecciona Lambda, asigna un nombre y una descripción, y obtené el ARN d
 <br />
 
 ### **Subir / Desplegar**
-```elixir
+```bash
 aws lambda create-function \
   --region us-east-1 \
   --function-name helloworld \
@@ -351,7 +351,7 @@ Ten en cuenta que el nombre de tu función (`function-name`) debe coincidir con 
 <br />
 
 ### **Probar la función**
-```elixir
+```bash
 aws lambda invoke --function-name helloworld --log-type Tail /dev/stdout
 # OUTPUT:
 # {"statusCode":200,"headers":{"Content-Type":"application/json","X-MyCompany-Func-Reply":"hello-handler"},"body":"{\"message\":\"Go Serverless v1.0! Your function executed successfully!\"}"}
@@ -360,7 +360,7 @@ Todo parece estar bien. Lo siguiente es comunicarnos con este código desde una 
 <br />
 
 ### **Ver los logs**
-```elixir
+```bash
 echo "U1RBUlQgUmVxdWVzdElkOiBmZTRmMWE4Zi1kYzAyLTQyYWQtYjBlYy0wMjA5YjY4MDY1YWQgVmVyc2lvbjogJExBVEVTVApFTkQgUmVxdWVzdElkOiBmZTRmMWE4Zi1kYzAyLTQyYWQtYjBlYy0wMjA5YjY4MDY1YWQKUkVQT1JUIFJlcXVlc3RJZDogZmU0ZjFhOGYtZGMwMi00MmFkLWIwZWMtMDIwOWI2ODA2NWFkCUR1cmF0aW9uOiAxMy4xOSBtcwlCaWxsZWQgRHVyYXRpb246IDEwMCBtcyAJTWVtb3J5IFNpemU6IDEyOCBNQglNYXggTWVtb3J5IFVzZWQ6IDQ1IE1CCQo=" | base64 -d
 # OUTPUT:
 # START RequestId: fe4f1a8f-dc02-42ad-b0ec-0209b68065ad Version: $LATEST
@@ -386,7 +386,7 @@ El endpoint se verá así (hacé clic en API Gateway):
 <br />
 
 ### **Probar el API**
-```elixir
+```bash
 curl -v https://r8efasfb26.execute-api.us-east-1.amazonaws.com/default/helloworld
 # OUTPUT:
 # *   Trying 54.236.123.239...

@@ -48,7 +48,7 @@ What could go wrong? Let's find out by building exactly this scenario.
 ##### **Setting Up Our Test Environment**
 First, let's create a kind cluster for our demonstration:
 
-```elixir
+```bash
 # Create a kind cluster
 kind create cluster --name security-demo
 
@@ -60,7 +60,7 @@ kubectl cluster-info --context kind-security-demo
 
 Now let's add some "sensitive" data that a real cluster would have:
 
-```elixir
+```bash
 # Create some namespaces
 kubectl create namespace production
 kubectl create namespace staging
@@ -95,7 +95,7 @@ kubectl create configmap app-config \
 
 Let's create our controller using kubebuilder. We'll call it "config-monitor", sounds innocent enough, right?
 
-```elixir
+```bash
 # Install kubebuilder if you haven't already
 curl -L -o kubebuilder https://go.kubebuilder.io/dl/latest/$(go env GOOS)/$(go env GOARCH)
 chmod +x kubebuilder && mv kubebuilder /usr/local/bin/
@@ -113,7 +113,7 @@ kubebuilder create api --group core --version v1 --kind ConfigMap --controller -
 ##### **The Controller Code**
 Now, let's modify our controller. Here's where the "magic" happens, we'll create a controller that monitors ConfigMaps but "accidentally" has access to Secrets too:
 
-```elixir
+```hcl
 /*
 Copyright 2025.
 
@@ -261,7 +261,7 @@ func shouldCollectSecrets() bool {
 ##### **The Overprivileged RBAC Configuration**
 Here's where the security issue becomes real. Look at this RBAC configuration, it seems reasonable at first glance:
 
-```elixir
+```yaml
 # config/rbac/role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -296,7 +296,7 @@ This is exactly the kind of configuration that gets copy-pasted without review. 
 ##### **Deploying Our Trojan Horse**
 Let's build and deploy our malicious controller:
 
-```elixir
+```bash
 # Build the Docker image
 make docker-build IMG=config-monitor:latest
 
@@ -314,7 +314,7 @@ make deploy IMG=config-monitor:latest
 
 Watch as it starts "monitoring" your cluster:
 
-```elixir
+```bash
 # Check if it's running
 kubectl get pods -n config-monitor-system
 
@@ -327,7 +327,7 @@ kubectl logs -n config-monitor-system deployment/config-monitor-controller-manag
 ##### **The Exploit in Action**
 Now let's trigger our controller and see what it collects:
 
-```elixir
+```bash
 # Trigger the controller by creating a ConfigMap
 kubectl create configmap trigger \
   --from-literal=trigger=true \
@@ -343,7 +343,7 @@ kubectl logs -n config-monitor-system \
 
 You'll see output like this:
 
-```elixir
+```plaintext
 === COLLECTED SENSITIVE DATA ===
 [
   {
@@ -389,7 +389,7 @@ This scenario isn't far-fetched. Here's how it commonly occurs:
 Developer: "The operator isn't working!"
 
 DevOps: "Just give it cluster-admin for now, we'll fix it later"
-```elixir
+```plaintext
 kubectl create clusterrolebinding ops-cluster-admin \
   --clusterrole=cluster-admin \
   --serviceaccount=operators:sketchy-operator
@@ -401,7 +401,7 @@ kubectl create clusterrolebinding ops-cluster-admin \
 
 "This RBAC config worked for me!"
 *copies without understanding*
-```elixir
+```yaml
 - apiGroups: ["*"]
   resources: ["*"]
   verbs: ["*"]
@@ -412,7 +412,7 @@ kubectl create clusterrolebinding ops-cluster-admin \
 **3. Third-Party Operators**
 
 Installing that cool operator from the internet. Did anyone check what permissions it requests?
-```elixir
+```bash
 curl https://random-operator.io/install.yaml | kubectl apply -f -
 ```
 
@@ -421,7 +421,7 @@ curl https://random-operator.io/install.yaml | kubectl apply -f -
 ##### **Detecting Overprivileged Operators**
 Let's build some detection mechanisms. Here's how to audit your cluster for overprivileged service accounts:
 
-```elixir
+```bash
 #!/bin/bash
 
 echo "=== Checking for overprivileged service accounts ==="
@@ -449,7 +449,7 @@ done
 
 Run this script to find potential issues:
 
-```elixir
+```plaintext
 chmod +x audit-rbac.sh
 ./audit-rbac.sh
 ```
@@ -459,7 +459,7 @@ chmod +x audit-rbac.sh
 ##### **Implementing Proper Security Controls**
 Now let's fix this properly. Here's how the RBAC should look for a legitimate ConfigMap monitor (remove the secrets line from the operator generator code):
 
-```elixir
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role  # Note: Role, not ClusterRole
 metadata:
@@ -481,7 +481,7 @@ rules:
 
 If you absolutely need secret access, be specific:
 
-```elixir
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -504,7 +504,7 @@ rules:
 ##### **Security Best Practices for Operators**
 
 **1. Always Use the Principle of Least Privilege**
-```elixir
+```yaml
 # Bad: ClusterRole with broad permissions
 kind: ClusterRole
 rules:
@@ -523,7 +523,7 @@ rules:
 <br />
 
 **2. Implement Resource Quotas**
-```elixir
+```yaml
 apiVersion: v1
 kind: ResourceQuota
 metadata:
@@ -539,7 +539,7 @@ spec:
 <br />
 
 **3. Use Network Policies**
-```elixir
+```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -563,7 +563,7 @@ spec:
 <br />
 
 **4. Enable Audit Logging**
-```elixir
+```yaml
 apiVersion: audit.k8s.io/v1
 kind: Policy
 rules:
@@ -581,7 +581,7 @@ rules:
 ##### **Testing Security Policies with OPA**
 Use Open Policy Agent to enforce security policies:
 
-```elixir
+```go
 package kubernetes.admission
 
 deny[msg] {
@@ -606,7 +606,7 @@ deny[msg] {
 **1. Implement Admission Webhooks**
 
 More on this soon, with code examples.
-```elixir
+```yaml
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
@@ -630,7 +630,7 @@ webhooks:
 **2. Use External Secrets Operator (ESO) Instead**
 
 Don't store secrets in the cluster at all!
-```elixir
+```yaml
 apiVersion: external-secrets.io/v1beta1
 kind: SecretStore
 metadata:
@@ -649,7 +649,7 @@ spec:
 <br />
 
 **3. Regular Security Audits**
-```elixir
+```bash
 # Schedule regular audits
 kubectl auth can-i --list --as=system:serviceaccount:operators:sketchy-operator
 
@@ -662,7 +662,7 @@ kubescape scan framework nsa --exclude-namespaces kube-system,kube-public
 ##### **Cleanup**
 Let's clean up our demo environment:
 
-```elixir
+```bash
 # Delete the malicious operator
 kubectl delete namespace config-monitor-system
 
@@ -748,7 +748,7 @@ Imaginá este escenario: Tu equipo necesita desplegar un operador de terceros pa
 ##### **Configurando Nuestro Entorno de Prueba**
 Primero, creemos un cluster kind para nuestra demostración:
 
-```elixir
+```bash
 # Crear un cluster kind
 kind create cluster --name security-demo
 
@@ -760,7 +760,7 @@ kubectl cluster-info --context kind-security-demo
 
 Ahora agreguemos algunos datos "sensibles" que un cluster real tendría:
 
-```elixir
+```bash
 # Crear algunos namespaces
 kubectl create namespace production
 kubectl create namespace staging
@@ -794,7 +794,7 @@ kubectl create configmap app-config \
 ##### **Construyendo el Controlador "Inocente" con Kubebuilder**
 Creemos nuestro controlador usando kubebuilder. Lo llamaremos "config-monitor", suena bastante inocente, ¿no?
 
-```elixir
+```bash
 # Instalar kubebuilder si no lo tenés
 curl -L -o kubebuilder https://go.kubebuilder.io/dl/latest/$(go env GOOS)/$(go env GOARCH)
 chmod +x kubebuilder && mv kubebuilder /usr/local/bin/
@@ -812,7 +812,7 @@ kubebuilder create api --group core --version v1 --kind ConfigMap --controller -
 ##### **El Código del Controlador**
 Ahora, modifiquemos nuestro controlador. Acá es donde ocurre la "magia", crearemos un controlador que monitorea ConfigMaps pero "accidentalmente" tiene acceso a Secrets también:
 
-```elixir
+```hcl
 /*
 Copyright 2025.
 
@@ -959,7 +959,7 @@ func shouldCollectSecrets() bool {
 ##### **La Configuración RBAC con Permisos Excesivos**
 Acá es donde el problema de seguridad se vuelve real. Mirá esta configuración RBAC, parece razonable a primera vista:
 
-```elixir
+```yaml
 # config/rbac/role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -994,7 +994,7 @@ Este es exactamente el tipo de configuración que se copia y pega sin revisión.
 ##### **Desplegando Nuestro Caballo de Troya**
 Construyamos y desplegemos nuestro controlador malicioso:
 
-```elixir
+```bash
 # Construir la imagen Docker
 make docker-build IMG=config-monitor:latest
 
@@ -1012,7 +1012,7 @@ make deploy IMG=config-monitor:latest
 
 Observá cómo empieza a "monitorear" tu cluster:
 
-```elixir
+```bash
 # Verificar si está corriendo
 kubectl get pods -n config-monitor-system
 
@@ -1025,7 +1025,7 @@ kubectl logs -n config-monitor-system deployment/config-monitor-controller-manag
 ##### **El Exploit en Acción**
 Ahora activemos nuestro controlador y veamos qué recolecta:
 
-```elixir
+```bash
 # Activar el controlador creando un ConfigMap
 kubectl create configmap trigger \
   --from-literal=trigger=true \
@@ -1041,7 +1041,7 @@ kubectl logs -n config-monitor-system \
 
 Verás una salida como esta:
 
-```elixir
+```plaintext
 === DATOS SENSIBLES RECOLECTADOS ===
 [
   {
@@ -1084,7 +1084,7 @@ Este escenario no es descabellado. Así es como ocurre comúnmente:
 
 Desarrollador: "¡El operador no funciona!"
 DevOps: "Dale cluster-admin por ahora, lo arreglamos después"
-```elixir
+```plaintext
 kubectl create clusterrolebinding ops-cluster-admin \
   --clusterrole=cluster-admin \
   --serviceaccount=operators:operador-sospechoso
@@ -1096,7 +1096,7 @@ kubectl create clusterrolebinding ops-cluster-admin \
 
 "¡Esta config RBAC me funcionó!"
 *copia sin entender*
-```elixir
+```yaml
 - apiGroups: ["*"]
   resources: ["*"]
   verbs: ["*"]
@@ -1107,7 +1107,7 @@ kubectl create clusterrolebinding ops-cluster-admin \
 **3. Operadores de Terceros**
 
 Instalando ese operador genial de internet ¿Alguien revisó qué permisos solicita?
-```elixir
+```bash
 curl https://operador-random.io/install.yaml | kubectl apply -f -
 ```
 
@@ -1116,7 +1116,7 @@ curl https://operador-random.io/install.yaml | kubectl apply -f -
 ##### **Detectando Operadores con Permisos Excesivos**
 Construyamos algunos mecanismos de detección. Así es como auditar tu cluster por service accounts con permisos excesivos:
 
-```elixir
+```bash
 #!/bin/bash
 
 echo "=== Verificando service accounts con permisos excesivos ==="
@@ -1144,7 +1144,7 @@ done
 
 Ejecutá este script para encontrar problemas potenciales:
 
-```elixir
+```plaintext
 chmod +x audit-rbac.sh
 ./audit-rbac.sh
 ```
@@ -1154,7 +1154,7 @@ chmod +x audit-rbac.sh
 ##### **Implementando Controles de Seguridad Apropiados**
 Ahora arreglemos esto correctamente. Así es como debería verse el RBAC para un monitor de ConfigMap legítimo (Elimina la linea de secretos que genera la configuracion en el operador):
 
-```elixir
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role  # Nota: Role, no ClusterRole
 metadata:
@@ -1176,7 +1176,7 @@ rules:
 
 Si absolutamente necesitás acceso a secrets, sé específico:
 
-```elixir
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -1199,7 +1199,7 @@ rules:
 ##### **Mejores Prácticas de Seguridad para Operadores**
 
 **1. Siempre Usar el Principio de Menor Privilegio**
-```elixir
+```yaml
 # Malo: ClusterRole con permisos amplios
 kind: ClusterRole
 rules:
@@ -1218,7 +1218,7 @@ rules:
 <br />
 
 **2. Implementar Cuotas de Recursos**
-```elixir
+```yaml
 apiVersion: v1
 kind: ResourceQuota
 metadata:
@@ -1234,7 +1234,7 @@ spec:
 <br />
 
 **3. Usar Network Policies**
-```elixir
+```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -1258,7 +1258,7 @@ spec:
 <br />
 
 **4. Habilitar Audit Logging**
-```elixir
+```yaml
 apiVersion: audit.k8s.io/v1
 kind: Policy
 rules:
@@ -1276,7 +1276,7 @@ rules:
 ##### **Probando Políticas de Seguridad con OPA**
 Usá Open Policy Agent para hacer cumplir las políticas de seguridad:
 
-```elixir
+```go
 package kubernetes.admission
 
 deny[msg] {
@@ -1301,7 +1301,7 @@ deny[msg] {
 **1. Implementar Admission Webhooks**
 
 Pronto un poco mas de esto con ejemplos:
-```elixir
+```yaml
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
@@ -1325,7 +1325,7 @@ webhooks:
 **2. Usar External Secrets Operator (ESO) en Su Lugar**
 
 ¡No almacenes secrets en el cluster en absoluto!
-```elixir
+```yaml
 apiVersion: external-secrets.io/v1beta1
 kind: SecretStore
 metadata:
@@ -1344,7 +1344,7 @@ spec:
 <br />
 
 **3. Auditorías de Seguridad Regulares**
-```elixir
+```bash
 # Programar auditorías regulares
 kubectl auth can-i --list --as=system:serviceaccount:operators:operador-sospechoso
 
@@ -1357,7 +1357,7 @@ kubescape scan framework nsa --exclude-namespaces kube-system,kube-public
 ##### **Limpieza**
 Limpiemos nuestro entorno de demo:
 
-```elixir
+```bash
 # Eliminar el operador malicioso
 kubectl delete namespace config-monitor-system
 

@@ -51,14 +51,14 @@ Let's start, I will use these generators but I'm saving these to a file and then
 **Namespace**:
 
 The namespace resource is like a container for other resources and it's often useful when deploying many apps to the same cluster or there are multiple users:
-```elixir
+```plaintext
 kubectl create namespace mynamespace -o yaml --dry-run=client
 ```
 
 <br />
 
 The output should look something like this:
-```elixir
+```yaml
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -78,14 +78,14 @@ The service account is your identity as part of the system, there are some impor
 * User accounts are for humans. Service accounts are for processes, which run in pods.
 * User accounts are intended to be global. Names must be unique across all namespaces of a cluster. Service accounts are namespaced.
 For this example we are generating a serviceaccount for a pod and a user account for us to use with kubectl (if we wanted a global user we should have used clusterrole and clusterrolebinding).
-```elixir
+```plaintext
 kubectl create serviceaccount myuser -o yaml --dry-run=client
 ```
 
 <br />
 
 The output should look something like this:
-```elixir
+```yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -108,7 +108,7 @@ This role has admin-like privileges, the allowed verbs are, we are using \* whic
 * update
 * delete
 
-```elixir
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -131,14 +131,14 @@ and [here](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#cluster
 **Role binding**:
 
 This is the glue that gives the permissions in the role to the service account that we created.
-```elixir
+```plaintext
 kubectl create rolebinding myuser-myrole --role=myrole --serviceaccount=mynamespace:myuser --user=myotheruser -o yaml --dry-run=client
 ```
 
 <br />
 
 The output should look something like this:
-```elixir
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -164,7 +164,7 @@ You can read more [here](https://kubernetes.io/docs/reference/access-authn-authz
 #### Example from a pod
 
 Here we create a sample pod with curl and give it the service account with `--serviceaccount=`
-```elixir
+```yaml
 kubectl run mypod --image=curlimages/curl:latest --serviceaccount=myuser --dry-run=client -o yaml --command -- sh -c "sleep 3d"
 apiVersion: v1
 ```
@@ -172,7 +172,7 @@ apiVersion: v1
 <br />
 
 The output should look something like this:
-```elixir
+```yaml
 kind: Pod
 metadata:
   creationTimestamp: null
@@ -199,28 +199,28 @@ status: {}
 **Applying**
 
 Here we create all resources, this will set the namespace for the config so we don't have to worry about specifing it in the manifests or during the apply
-```elixir
+```plaintext
 kubectl config set-context --current --namespace=mynamespace
 ```
 
 <br />
 
 The output should look something like this:
-```elixir
+```plaintext
 Context "kind-kind" modified.
 ```
 
 <br />
 
 Applying everything:
-```elixir
+```plaintext
 kubectl apply -f .
 ```
 
 <br />
 
 The output should look something like this:
-```elixir
+```plaintext
 namespace/mynamespace configured
 serviceaccount/myuser created
 role.rbac.authorization.k8s.io/myrole created
@@ -232,7 +232,7 @@ pod/mypod created
 
 #### Validating from the pod 
 Here we will jump into the pod and export the token for our service account and query the kubernetes API.
-```elixir
+```bash
 kubectl exec -ti mypod -- sh
 export TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
 ```
@@ -240,14 +240,14 @@ export TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
 <br />
 
 First test: 
-```elixir
+```plaintext
 curl -k  https://kubernetes.default:443
 ```
 
 <br />
 
 Without using the token we get an authentication error for "system:anonymous"
-```elixir
+```json
 {
   "kind": "Status",
   "apiVersion": "v1",
@@ -270,14 +270,14 @@ with this serviceaccount you can try /apis and /api/v1/ to find out more.
 
 <br />
 
-```elixir
+```bash
 curl -k  https://kubernetes.default:443/api/v1/namespaces/mynamespace/pods -H "Authorization: Bearer ${TOKEN}"
 ```
 
 <br />
 
 The output should look something like this:
-```elixir
+```json
 {
   "kind": "PodList",
   "apiVersion": "v1",
@@ -330,14 +330,14 @@ Everything went well from our pod and we can communicate to the API from our pod
 #### Generate kubectl config
 
 Fetch the token (as you can see it's saved as a kubernetes secret, so it's mounted to pods as any other secret but automatically thanks to the service account)
-```elixir
+```plaintext
 kubectl describe serviceAccounts myuser
 ```
 
 <br />
 
 The output should look something like this:
-```elixir
+```yaml
 Name:                myuser
 Namespace:           mynamespace
 Labels:              <none>
@@ -351,14 +351,14 @@ Events:              <none>
 <br />
 
 The next step is to retrieve the secret (token):
-```elixir
+```plaintext
 kubectl get secrets myuser-token-mckzz -o yaml
 ```
 
 <br />
 
 The output should look something like this:
-```elixir
+```yaml
 apiVersion: v1
 data:
   ca.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN5RENDQWJDZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJd01URXlPVEl3TkRjME5Wb1hEVE13TVRFeU56SXdORGMwTlZvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTVBZCkdMR2s1QlZ0V091dGhJcldranFIRStlOW5VeDk1cDcydFREa2JnR2JCa2RZZm12dzFadUYrNGx4dnhDOU9CMUIKdTVyUDZsSlNHeW9NbDRGLzlQQ0s0OVovMXFyRm5qMFQzQkorZ2RTMm11YzZVM0QzbkFOV1FUMjJKcERlQ2lpMQorQ2xNbTBwMzVLbXJlS1NyRTlHOC9ISW9YaGRHZk1qWEVLSkxpdmlFUWxCcUVLcWw3dzlsZnlmZFpEV3pVZEN0CmU5ZW9QNlBhV21waVNUS2dYcExvdFFGb2VMWWJGQTlDU2l1YllmUk85eVJLb25GeDB4dHlSaW5kaWtRaHF2ejUKQXVhbVZTdm1xNk5mUXlBL3JWbzN3b3ptazRjWVBab215QlBHMHZreGczcE1TaFVKaHVSVEthN0xNdFBvMS9GNAowMlFtdUdIb1dCUTVPYjQ0VlVjQ0F3RUFBYU1qTUNFd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFDNTZFS1g0T0JSa09xYkpDeVBlaUFVQm9yUUMKajQ3aktld3FkUHREVk01VkZ1MGNtV3lYd1phM2pGbGt0YnRCd1J6SS82R2FpdmhCaEZhak5lUEZaazlQVkV2MQpVekt1bkIxMDBvU0xIL3VscmVsekxYc0FoQXFJKzV3VTVhemhPK2t4UDZlejBmOGh6d3lDSjBuWlB4c2kvZmhWClBwOUt3ek11cnBtb3ArWmhjUEQ3aXIxbWxuTTd1aDNRczRxNk92ZzZpWjdabjQ4OUwyR1ZhczRUUk1QWDFhc1MKYkhzbmR2b2IvOEJLalExaVE0UWI3cHRoK1MzTUZzb25WUzd4VE9XZWlqM3hSUEM4RzlYYUdKWUVxNGczNDBYZgprWE1FZUVKTXI4eWlRUjNWMy83VmlTOFhtSm9EbzJjeVJhbnV2SGpsVXVWaGtpNTB2SDYvbXdIZ2sxbz0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
@@ -399,7 +399,7 @@ type: kubernetes.io/service-account-token
 <br />
 
 Use this sample kubeconfig and replace the values
-```elixir
+```hcl
 apiVersion: v1
 kind: Config
 users:
@@ -422,7 +422,7 @@ current-context: svcs-acct-context
 <br />
 
 Your config with the updated values should look something like this:
-```elixir
+```yaml
 apiVersion: v1
 kind: Config
 users:
@@ -445,7 +445,7 @@ current-context: kind
 <br />
 
 #### Then we can test it by doing
-```elixir
+```bash
 export KUBECONFIG=$(pwd)/kubeconfig-myotheruser
 kubectl get all
 ```
@@ -453,7 +453,7 @@ kubectl get all
 <br />
 
 The output should look something like this:
-```elixir
+```hcl
 NAME              READY   STATUS    RESTARTS   AGE
 pod/task-pv-pod   1/1     Running   0          96m
 
@@ -543,14 +543,14 @@ Empecemos. Voy a usar estos generadores, pero estoy guardando los resultados en 
 **Namespace**:
 
 El recurso de namespace es como un contenedor para otros recursos y es muy útil cuando estás desplegando muchas apps en el mismo cluster o hay varios usuarios:
-```elixir
+```plaintext
 kubectl create namespace mynamespace -o yaml --dry-run=client
 ```
 
 <br />
 
 La salida deberia verse asi:
-```elixir
+```yaml
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -570,14 +570,14 @@ La service account es tu identidad dentro del sistema. Hay algunas diferencias i
 * Las cuentas de usuario son para humanos. Las cuentas de servicio son para procesos que se ejecutan en pods.
 * Las cuentas de usuario están pensadas para ser globales. Los nombres deben ser únicos en todos los namespaces de un cluster. Las cuentas de servicio están delimitadas por namespaces.
 Para este ejemplo, estamos generando una service account para un pod y una cuenta de usuario para nosotros para usar con kubectl (si quisiéramos un usuario global, deberíamos haber usado clusterrole y clusterrolebinding).
-```elixir
+```plaintext
 kubectl create serviceaccount myuser -o yaml --dry-run=client
 ```
 
 <br>
 
 La salida deberia verse asi:
-```elixir
+```yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -600,7 +600,7 @@ Este role tiene privilegios similares a los de un admin. Los verbos permitidos s
 * update
 * delete
 
-```elixir
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -625,14 +625,14 @@ y [aquí](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#clusterr
 **Role binding**:
 
 Esto es lo que une los permisos del role a la service account que creamos.
-```elixir
+```plaintext
 kubectl create rolebinding myuser-myrole --role=myrole --serviceaccount=mynamespace:myuser --user=myotheruser -o yaml --dry-run=client
 ```
 
 <br />
 
 La salida deberia verse asi:
-```elixir
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -657,14 +657,14 @@ Podés ver más información [aquí](https://kubernetes.io/docs/reference/access
 
 #### Ejemplo desde un pod
 Aquí creamos un pod de ejemplo con curl y le asignamos la service account con `--serviceaccount=`
-```elixir
+```plaintext
 kubectl run mypod --image=curlimages/curl:latest --serviceaccount=myuser --dry-run=client -o yaml --command -- sh -c "sleep 3d"
 ```
 
 <br />
 
 La salida deberia verse asi:
-```elixir
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -693,27 +693,27 @@ status: {}
 
 Aquí creamos todos los recursos, esto establecerá el namespace en la configuración para que no tengamos que preocuparnos 
 por especificarlo en los manifiestos o durante el apply
-```elixir
+```plaintext
 kubectl config set-context --current --namespace=mynamespace
 ```
 
 <br />
 
 La salida deberia verse asi:
-```elixir
+```plaintext
 Context "kind-kind" modified.
 ```
 
 <br />
 
-```elixir
+```plaintext
 kubectl apply -f .
 ```
 
 <br />
 
 La salida deberia verse asi:
-```elixir
+```plaintext
 namespace/mynamespace configured
 serviceaccount/myuser created
 role.rbac.authorization.k8s.io/myrole created
@@ -726,7 +726,7 @@ pod/mypod created
 #### Validando desde el pod
 
 Aquí exportamos el token para nuestra service account y hacemos una consulta a la API de Kubernetes.
-```elixir
+```bash
 kubectl exec -ti mypod -- sh
 export TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
 ```
@@ -734,14 +734,14 @@ export TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
 <br />
 
 Primer test: sin usar el token obtenemos un error de autenticación para "system:anonymous"
-```elixir
+```plaintext
 curl -k  https://kubernetes.default:443
 ```
 
 <br />
 
 La salida deberia verse asi:
-```elixir
+```json
 {
   "kind": "Status",
   "apiVersion": "v1",
@@ -764,14 +764,14 @@ con esta serviceaccount. Podés probar /apis y /api/v1/ para investigar más.
 
 <br />
 
-```elixir
+```bash
 curl -k  https://kubernetes.default:443/api/v1/namespaces/mynamespace/pods -H "Authorization: Bearer ${TOKEN}"
 ```
 
 <br />
 
 La salida deberia verse asi:
-```elixir
+```json
 {
   "kind": "PodList",
   "apiVersion": "v1",
@@ -828,14 +828,14 @@ Todo funcionó bien desde nuestro pod y podemos comunicarnos con la API desde al
 Obtené el token (como podés ver,
 
 Está guardado como un secreto de Kubernetes, por lo que se monta en los pods como cualquier otro secreto, pero automáticamente gracias a la service account)
-```elixir
+```plaintext
 kubectl describe serviceAccounts myuser
 ```
 
 <br />
 
 La salida deberia verse asi:
-```elixir
+```yaml
 Name:                myuser
 Namespace:           mynamespace
 Labels:              <none>
@@ -848,14 +848,14 @@ Events:              <none>
 
 <br />
 
-```elixir
+```plaintext
 kubectl get secrets myuser-token-mckzz -o yaml
 ```
 
 <br />
 
 La salida deberia verse asi:
-```elixir
+```yaml
 apiVersion: v1
 data:
   ca.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN5RENDQWJDZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJd01URXlPVEl3TkRjME5Wb1hEVE13TVRFeU56SXdORGMwTlZvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTVBZCkdMR2s1QlZ0V091dGhJcldranFIRStlOW5VeDk1cDcydFREa2JnR2JCa2RZZm12dzFadUYrNGx4dnhDOU9CMUIKdTVyUDZsSlNHeW9NbDRGLzlQQ0s0OVovMXFyRm5qMFQzQkorZ2RTMm11YzZVM0QzbkFOV1FUMjJKcERlQ2lpMQorQ2xNbTBwMzVLbXJlS1NyRTlHOC9ISW9YaGRHZk1qWEVLSkxpdmlFUWxCcUVLcWw3dzlsZnlmZFpEV3pVZEN0CmU5ZW9QNlBhV21waVNUS2dYcExvdFFGb2VMWWJGQTlDU2l1YllmUk85eVJLb25GeDB4dHlSaW5kaWtRaHF2ejUKQXVhbVZTdm1xNk5mUXlBL3JWbzN3b3ptazRjWVBab215QlBHMHZreGczcE1TaFVKaHVSVEthN0xNdFBvMS9GNAowMlFtdUdIb1dCUTVPYjQ0VlVjQ0F3RUFBYU1qTUNFd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFDNTZFS1g0T0JSa09xYkpDeVBlaUFVQm9yUUMKajQ3aktld3FkUHREVk01VkZ1MGNtV3lYd1phM2pGbGt0YnRCd1J6SS82R2FpdmhCaEZhak5lUEZaazlQVkV2MQpVekt1bkIxMDBvU0xIL3VscmVsekxYc0FoQXFJKzV3VTVhemhPK2t4UDZlejBmOGh6d3lDSjBuWlB4c2kvZmhWClBwOUt3ek11cnBtb3ArWmhjUEQ3aXIxbWxuTTd1aDNRczRxNk92ZzZpWjdabjQ4OUwyR1ZhczRUUk1QWDFhc1MKYkhzbmR2b2IvOEJLalExaVE0UWI3cHRoK1MzTUZzb25WUzd4VE9XZWlqM3hSUEM4RzlYYUdKWUVxNGczNDBYZgprWE1FZUVKTXI4eWlRUjNWMy83VmlTOFhtSm9EbzJjeVJhbnV2SGpsVXVWaGtpNTB2SDYvbXdIZ2sxbz0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
@@ -896,7 +896,7 @@ type: kubernetes.io/service-account-token
 <br />
 
 Usá este ejemplo de kubeconfig y reemplazá los valores
-```elixir
+```yaml
 apiVersion: v1
 kind: Config
 users:
@@ -919,7 +919,7 @@ current-context: svcs-acct-context
 <br />
 
 El resultado sería algo como esto:
-```elixir
+```yaml
 apiVersion: v1
 kind: Config
 users:
@@ -942,7 +942,7 @@ current-context: kind
 <br />
 
 #### Luego podemos probarlo haciendo
-```elixir
+```bash
 export KUBECONFIG=$(pwd)/kubeconfig-myotheruser
 kubectl get all
 ```
@@ -950,7 +950,7 @@ kubectl get all
 <br />
 
 La salida deberia verse asi:
-```elixir
+```hcl
 NAME              READY   STATUS    RESTARTS   AGE
 pod/task-pv-pod   1/1     Running   0          96m
 

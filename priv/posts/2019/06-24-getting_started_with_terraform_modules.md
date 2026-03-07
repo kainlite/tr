@@ -22,7 +22,7 @@ A module can be any folder with a `main.tf` file in it, yes, that is the only _r
 <br />
 
 Before moving on let's see the folder structure of our project:
-```elixir
+```plaintext
 ├── account.json
 ├── LICENSE
 ├── main.tf
@@ -40,7 +40,7 @@ Before moving on let's see the folder structure of our project:
 ##### **Okay enough talking, show me the code**
 ###### **The project**
 Let's start with the `main.tf` that will call our module, notice that I added a few additional comments but it's pretty much straight forward, we set the provider, then we define some variables, call our module and print some output (output can also be used to pass data between modules).
-```elixir
+```hcl
 # Set the provider to be able to talk to GCP
 provider "google" {
   credentials = "${file("account.json")}"
@@ -85,7 +85,7 @@ output "kubernetes-version" {
 <br />
 
 Then `terraform.tfvars` has some values to override the defaults that we defined:
-```elixir
+```plaintext
 project_name = "testingcontainerengine"
 cluster_name = "demo-cluster"
 region = "us-east1"
@@ -96,7 +96,7 @@ zone = "us-east1-c"
 
 ###### **The module**
 Now into the module itself, this module will create a GKE cluster, and while it's not a good practice to have a module as a wrapper but for this example we will forget about that rule for a while, this is the `main.tf` file:
-```elixir
+```hcl
 # Create the cluster
 resource "google_container_cluster" "gke-cluster" {
   name               = "${var.cluster_name}"
@@ -109,7 +109,7 @@ resource "google_container_cluster" "gke-cluster" {
 <br />
 
 The `variables.tf` file:
-```elixir
+```hcl
 variable "cluster_name" {
   default = "terraform-module-demo"
   type    = "string"
@@ -129,7 +129,7 @@ variable "region" {
 <br />
 
 And finally the `outputs.tf` file:
-```elixir
+```hcl
 output "k8s_endpoint" {
   value = "${google_container_cluster.gke-cluster.endpoint}"
 }
@@ -160,7 +160,7 @@ Notice that we have a lot more outputs than the one we decided to print out, but
 
 ###### **Testing it**
 First we need to initialize our project so terraform can put modules, provider files, etc in place, it's a good practice to version things and to move between versions that way everything can be tested and if something is not working as expected you can always rollback to the previous state.
-```elixir
+```hcl
 $ terraform init 
 Initializing the backend...
 
@@ -192,7 +192,7 @@ commands will detect it and remind you to do so if necessary.
 <br />
 
 Then we will just run it.
-```elixir
+```hcl
  $ terraform apply
 
 An execution plan has been generated and is shown below.
@@ -408,7 +408,7 @@ Un módulo puede ser cualquier carpeta que contenga un archivo `main.tf`. Sí, e
 <br />
 
 Antes de avanzar, veamos la estructura de carpetas de nuestro proyecto:
-```elixir
+```plaintext
 ├── account.json
 ├── LICENSE
 ├── main.tf
@@ -426,7 +426,7 @@ Antes de avanzar, veamos la estructura de carpetas de nuestro proyecto:
 ##### **Bueno, basta de hablar, mostrame el código**
 ###### **El proyecto**
 Empecemos con el archivo `main.tf` que va a llamar a nuestro módulo. Fijate que agregué algunos comentarios adicionales, pero es bastante directo: configuramos el proveedor, definimos algunas variables, llamamos a nuestro módulo y mostramos una salida (la salida también se puede usar para pasar datos entre módulos).
-```elixir
+```hcl
 # Configurar el proveedor para poder hablar con GCP
 provider "google" {
   credentials = "${file("account.json")}"
@@ -471,7 +471,7 @@ output "kubernetes-version" {
 <br />
 
 Después, el archivo `terraform.tfvars` tiene algunos valores para sobrescribir los predeterminados que definimos:
-```elixir
+```plaintext
 project_name = "testingcontainerengine"
 cluster_name = "demo-cluster"
 region = "us-east1"
@@ -482,7 +482,7 @@ zone = "us-east1-c"
 
 ###### **El módulo**
 Ahora veamos el propio módulo. Este módulo va a crear un clúster GKE, y aunque no es una buena práctica usar un módulo como un wrapper, para este ejemplo vamos a olvidar esa regla por un rato. Este es el archivo `main.tf`:
-```elixir
+```hcl
 # Crear el clúster
 resource "google_container_cluster" "gke-cluster" {
   name               = "${var.cluster_name}"
@@ -495,7 +495,7 @@ resource "google_container_cluster" "gke-cluster" {
 <br />
 
 El archivo `variables.tf`:
-```elixir
+```hcl
 variable "cluster_name" {
   default = "terraform-module-demo"
   type    = "string"
@@ -515,7 +515,7 @@ variable "region" {
 <br />
 
 Y finalmente el archivo `outputs.tf`:
-```elixir
+```hcl
 output "k8s_endpoint" {
   value = "${google_container_cluster.gke-cluster.endpoint}"
 }
@@ -546,7 +546,7 @@ Notá que tenemos muchos más outputs que el que decidimos mostrar, pero podés 
 
 ###### **Probándolo**
 Primero necesitamos inicializar nuestro proyecto para que Terraform pueda colocar los módulos, archivos de proveedor, etc. en su lugar. Es una buena práctica versionar las cosas y moverse entre versiones, de esa manera todo puede ser probado y, si algo no funciona como se espera, siempre podés hacer un rollback al estado anterior.
-```elixir
+```hcl
 $ terraform init 
 Initializing the backend...
 
@@ -578,7 +578,7 @@ commands will detect it and remind you to do so if necessary.
 <br />
 
 Luego simplemente lo ejecutamos.
-```elixir
+```hcl
  $ terraform apply
 
 An execution plan has been generated and is shown below.

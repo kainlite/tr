@@ -18,19 +18,19 @@ If you are already familiar with [Helm](https://helm.sh/), and the different typ
 
 How do I search for charts?:
 
-```elixir
+```bash
 $ helm search wordpress
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
 stable/wordpress        3.3.0           4.9.8           Web publishing platform for building blogs and websites.
 ```
 <br />
 Note that I'm not a fan of Wordpress or PHP itself, but it seems like the most common example everywhere. As we can see here it says stable/wordpress so we know that we're using the official repo in the folder stable, but what if we don't want that chart, but someone else provides one with more features or something that You like better. Let's use the one from [Bitnami](https://bitnami.com/stack/wordpress/helm), so if we check their page you can select different kind of deployments but for it to work we need to add another external repo:
-```elixir
+```plaintext
 helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
 <br />
 So if we search again we will now see two options (at the moment of this writing, the latest version is actually 5.0.2):
-```elixir
+```bash
 $ helm search wordpress
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
 bitnami/wordpress       5.0.2           5.0.2           Web publishing platform for building blogs and websites.
@@ -40,7 +40,7 @@ Let's check the [documentation](https://github.com/helm/charts/tree/master/stabl
 <br />
 
 Our example `values.yaml` will look like:
-```elixir
+```yaml
 wordpressBlogName: "Testing Helm Charts"
 persistence:
   size: 1Gi
@@ -49,14 +49,14 @@ ingress:
 ```
 <br />
 We will only change the blog name by default, the persistent volume size and also enable [ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) (Our app should be available through `wordpress.local` inside the cluster), if you are using minikube be sure to enable the [ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) addon.
-```elixir
+```bash
 $ minikube addons enable ingress
 ingress was successfully enabled
 ```
 <br />
 
 We can then install `stable/wordpress` or `bitnami/wordpress`, we will follow up with the one from Bitnami repo.
-```elixir
+```bash
 $ helm install bitnami/wordpress \
 --set image.repository=bitnami/wordpress \
 --set image.tag=5.0.2 \
@@ -66,7 +66,7 @@ As it's a common good practice to use specific versions we will do it here, it's
 <br />
 
 You should see something like:
-```elixir
+```bash
 NAME:   plucking-condor
 LAST DEPLOYED: Mon Dec 24 13:06:38 2018
 NAMESPACE: default
@@ -123,7 +123,7 @@ At this point we should a working wordpress installation, also move between vers
 <br />
 
 Now let's check that all resources are indeed working and that we can use our recently installed app.
-```elixir
+```bash
 $ kubectl get all
 NAME                                             READY     STATUS        RESTARTS   AGE
 pod/plucking-condor-mariadb-0                    1/1       Running       0          12m
@@ -147,7 +147,7 @@ You can deploy it to a custom namespace (In this case I deployed it to the defau
 <br />
 
 If you use minikube then ingress will expose a nodeport that we can find using `minikube service list` then using the browser or curl to navigate our freshly installed wordpress.
-```elixir
+```bash
  $ minikube service list
 |-------------|---------------------------|--------------------------------|
 |  NAMESPACE  |           NAME            |              URL               |
@@ -172,7 +172,7 @@ Sample screenshot:
 As long as we have the [persistent volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) our data should be preserved in this case the PV is used for tha database, but we could add another volume to preserve images, etc.
 
 Clean everything up:
-```elixir
+```plaintext
 helm del --purge plucking-condor
 ```
 
@@ -220,19 +220,19 @@ Si ya estás familiarizado con Helm y los diferentes tipos de workloads/tipos de
 ¿Cómo busco charts?:
 <br />
 
-```elixir
+```bash
 $ helm search wordpress
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
 stable/wordpress        3.3.0           4.9.8           Web publishing platform for building blogs and websites.
 ```
 <br />
 Nota que no soy fan de WordPress o PHP en sí, pero parece ser el ejemplo más común en todas partes. Como vemos aquí, dice stable/wordpress, así que sabemos que estamos usando el repositorio oficial en la carpeta 'stable'. Pero, ¿y si no queremos ese chart, sino que alguien más proporciona uno con más características o algo que te guste más? Usemos el de [Bitnami](https://bitnami.com/stack/wordpress/helm). Si revisamos su página, puedes seleccionar diferentes tipos de despliegues, pero para que funcione necesitamos añadir otro repositorio externo:
-```elixir
+```plaintext
 helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
 <br />
 sí que si buscamos de nuevo, ahora veremos dos opciones (en el momento de escribir esto, la versión más reciente es en realidad la 5.0.2): 
-```elixir
+```bash
 $ helm search wordpress
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
 bitnami/wordpress       5.0.2           5.0.2           Web publishing platform for building blogs and websites.
@@ -242,7 +242,7 @@ Revisemos la [documentación](https://github.com/helm/charts/tree/master/stable/
 <br />
 
 Nuestro ejemplo de `values.yaml` se verá así:
-```elixir
+```yaml
 wordpressBlogName: "Testing Helm Charts"
 persistence:
   size: 1Gi
@@ -251,14 +251,14 @@ ingress:
 ```
 <br />
 Solo cambiaremos el nombre del blog por defecto, el tamaño del volumen persistente y también habilitaremos [ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) (nuestra aplicación debería estar disponible a través de `wordpress.local` dentro del clúster). Si estás usando Minikube, asegúrate de habilitar el addon de [ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/).
-```elixir
+```bash
 $ minikube addons enable ingress
 ingress was successfully enabled
 ```
 <br />
 
 Podemos entonces instalar `stable/wordpress` o `bitnami/wordpress`; continuaremos con el del repositorio de Bitnami.
-```elixir
+```bash
 $ helm install bitnami/wordpress \
 --set image.repository=bitnami/wordpress \
 --set image.tag=5.0.2 \
@@ -268,7 +268,7 @@ Como es una buena práctica usar versiones específicas, lo haremos aquí. Es me
 <br />
 
 Deberías ver algo como:
-```elixir
+```bash
 NAME:   plucking-condor
 LAST DEPLOYED: Mon Dec 24 13:06:38 2018
 NAMESPACE: default
@@ -325,7 +325,7 @@ En este punto deberíamos tener una instalación de WordPress funcionando y tamb
 <br />
 
 Ahora verifiquemos que todos los recursos están realmente funcionando y que podemos usar nuestra aplicación recién instalada.
-```elixir
+```bash
 $ kubectl get all
 NAME                                             READY     STATUS        RESTARTS   AGE
 pod/plucking-condor-mariadb-0                    1/1       Running       0          12m
@@ -351,7 +351,7 @@ Puedes desplegarlo en un espacio de nombres personalizado (en este caso lo despl
 <br />
 
 Si usas Minikube, entonces ingress expondrá un nodeport que podemos encontrar usando minikube service list y luego, usando el navegador o curl, navegar por nuestro WordPress recién instalado.
-```elixir
+```bash
  $ minikube service list
 |-------------|---------------------------|--------------------------------|
 |  NAMESPACE  |           NAME            |              URL               |
@@ -376,7 +376,7 @@ Ejemplo:
 Mientras tengamos el volumen persistente, nuestros datos deberían preservarse. En este caso, el PV se usa para la base de datos, pero podríamos agregar otro volumen para preservar imágenes, etc.
 
 Limpiando:
-```elixir
+```plaintext
 helm del --purge plucking-condor
 ```
 

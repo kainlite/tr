@@ -78,7 +78,7 @@ of the app with `eval` we can call our module in this case the function `Tr.Trac
 <br/> 
 Note: by default cronjobs keep the last 3 runs for successful jobs and 1 for failed jobs, that's configurable under the 
 keys: `.spec.successfulJobsHistoryLimit`, `.spec.failedJobsHistoryLimit`.
-```elixir
+```yaml
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -175,7 +175,7 @@ end
 Curious about how to talk to Ollama from elixir? 
 
 [lib/tr/ollama.ex](https://github.com/kainlite/tr/blob/master/lib/tr/ollama.ex)
-```elixir
+```hcl
 defmodule Tr.Ollama do
   @moduledoc """
   FROM orca-mini
@@ -298,7 +298,7 @@ Basta de preámbulos, vamos al grano. Hay cosas interesantes como el uso de `con
 <br/>
 Nota: por defecto, los cronjobs conservan las últimas 3 ejecuciones exitosas y 1 fallida, configurable bajo las claves: `.spec.successfulJobsHistoryLimit`, `.spec.failedJobsHistoryLimit`.
 
-```elixir
+```yaml
 apiVersion: batch/v1
 kind: CronJob
 metadata:

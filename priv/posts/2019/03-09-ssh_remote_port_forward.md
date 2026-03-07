@@ -20,14 +20,14 @@ Remote port forward basically let's you forward one port from your machine to a 
 <br />
 
 **The command**
-```elixir
+```plaintext
 ssh -Nn -R 3306:localhost:3306 user@example.com
 ```
 <br />
 
 **The parameters and their meaning**
 I extracted a portion of the meaning of parameter from the man page, but in a nutshell it means remote port forward without a shell.
-```elixir
+```plaintext
 -N Do not execute a remote command. This is useful for just forwarding ports.
 -n Redirects stdin from /dev/null (actually, prevents reading from stdin). This must be used when ssh is run in the background.
 -R Specifies that connections to the given TCP port or Unix socket on the remote (server) host are to be forwarded to the local side.
@@ -79,14 +79,14 @@ El reenvío de puertos remotos te permite redirigir un puerto desde tu máquina 
 <br />
 
 **El comando**
-```elixir
+```plaintext
 ssh -Nn -R 3306:localhost:3306 user@example.com
 ```
 <br />
 
 **Los parámetros y su significado**
 Saqué una porción del significado de los parámetros de la página del manual, pero en resumen significa reenvío de puerto remoto sin ejecutar un shell.
-```elixir
+```plaintext
 -N No ejecuta un comando remoto. Esto es útil solo para redirigir puertos.
 -n Redirige stdin desde /dev/null (evita leer desde stdin). Esto debe usarse cuando SSH se ejecuta en segundo plano.
 -R Especifica que las conexiones al puerto TCP o socket Unix en el host remoto (servidor) deben redirigirse hacia el lado local.

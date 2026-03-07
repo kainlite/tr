@@ -32,7 +32,7 @@ As you can see the configuration is fairly simple, you choose the branch that wi
 
 ##### **DNS**
 For the custom domain you need to create the following entries in your DNS `dig techsquad.rocks`, you can find these ips in [this page](https://help.github.com/articles/setting-up-an-apex-domain/):
-```elixir
+```plaintext
 techsquad.rocks.        300     IN      A       185.199.110.153
 techsquad.rocks.        300     IN      A       185.199.111.153
 techsquad.rocks.        300     IN      A       185.199.108.153
@@ -43,7 +43,7 @@ After a few minutes it should start working, and whatever you have in that repo 
 
 ##### **Go Hugo**
 Now to the interesting part, [Hugo](https://gohugo.io) let's you configure and customize several aspects of the generated files, first be sure to install hugo with your package manager or with go, the steps to create a blog are fairly simple:
-```elixir
+```bash
 hugo new site testing-hugo
 # OUTPUT:
 # Congratulations! Your new Hugo site is created in /home/kainlite/Webs/testing-hugo.
@@ -64,7 +64,7 @@ As I have shown in the tmux article, I like to have 2 panes one small pane where
 
 ##### **Publishing with git push**
 The most interesting part of this setup is the simple automation that I use to publish with `git push`, I created the following hook in the blog repo `.git/hooks/pre-push`:
-```elixir
+```bash
 #!/bin/bash
 
 COMMIT_MESSAGE=`git log -n 1 --pretty=format:%s ${local_ref}`
@@ -129,7 +129,7 @@ Como podés ver, la configuración es bastante sencilla. Elegís la rama que se 
 
 ##### **DNS**
 Para el dominio personalizado tenés que crear las siguientes entradas en tu DNS con `dig techsquad.rocks`. Podés encontrar estas IPs en [esta página](https://help.github.com/articles/setting-up-an-apex-domain/):
-```elixir
+```plaintext
 techsquad.rocks.        300     IN      A       185.199.110.153
 techsquad.rocks.        300     IN      A       185.199.111.153
 techsquad.rocks.        300     IN      A       185.199.108.153
@@ -140,7 +140,7 @@ Después de unos minutos debería empezar a funcionar, y lo que tengas en ese re
 
 ##### **Go Hugo**
 Ahora vamos a la parte interesante. [Hugo](https://gohugo.io) te permite configurar y personalizar varios aspectos de los archivos generados. Primero, asegurate de instalar Hugo con tu gestor de paquetes o con Go. Los pasos para crear un blog son bastante simples:
-```elixir
+```bash
 hugo new site testing-hugo
 # OUTPUT:
 # Congratulations! Your new Hugo site is created in /home/kainlite/Webs/testing-hugo.
@@ -161,7 +161,7 @@ Como mostré en el artículo sobre tmux, me gusta tener 2 paneles: un panel pequ
 
 ##### **Publicar con git push**
 La parte más interesante de esta configuración es la simple automatización que uso para publicar con `git push`. Creé el siguiente hook en el repositorio del blog: `.git/hooks/pre-push`:
-```elixir
+```bash
 #!/bin/bash
 
 COMMIT_MESSAGE=`git log -n 1 --pretty=format:%s ${local_ref}`

@@ -40,7 +40,7 @@ Also if you are interested how I got the idea to make this operator check this [
 
 ##### Create the project
 In this step we need to create the kubebuilder project, so in an empty folder we run (to create a go project):
-```elixir
+```hcl
 ❯ go mod init redbeard.team
 go: creating new go.mod: module redbeard.team
 ```
@@ -48,7 +48,7 @@ go: creating new go.mod: module redbeard.team
 <br />
 
 Then we initialize our kubebuilder project:
-```elixir
+```hcl
 ❯ kubebuilder init --domain redbeard.team --repo redbeard.team/forward
 INFO Writing kustomize manifests for you to edit...
 INFO Writing scaffold for you to edit...
@@ -64,7 +64,7 @@ $ kubebuilder create api
 
 ##### Create the API
 Next let's create an API, something for us to have control of (our controller).
-```elixir
+```yaml
 ❯ kubebuilder create api --group forward --version v1alpha1 --kind MapPort
 INFO Create Resource [y/n]
 y
@@ -96,7 +96,7 @@ but it won't do anything interesting, but it covers a lot of ground and mades ou
 
 ##### Add our code to the mix
 First we will add it to `api/v1alpha1/mapport_types.go`, which will add our fields to our type.
-```elixir
+```go
 /*
 Copyright 2024.
 
@@ -176,7 +176,7 @@ our deployments.
 <br />
 
 Now we need to add the code to our controller in `internal/controller/mapport_controller.go`
-```elixir
+```yaml
 /*
 Copyright 2024.
 
@@ -393,7 +393,7 @@ also notice the kubebuilder annotations which will generate the rbac config for 
 
 ##### Starting the cluster
 Now we will use [Kind](https://github.com/kubernetes-sigs/kind) to create a local cluster to test
-```elixir
+```yaml
 ❯ kind create cluster
 Creating cluster "kind" ...
  ✓ Ensuring node image (kindest/node:v1.30.0) 🖼
@@ -414,13 +414,13 @@ it could be that easy!?!?! yes, it is!
 
 ##### Running our operator locally
 For testing you can run your operator locally like this:
-```elixir
+```plaintext
 make install
 make run
 ```
 
 The output should look something like this:
-```elixir
+```nginx
 ~/Webs/forward/bin/controller-gen rbac:roleName=manager-role crd webhook paths="./..." output:crd:artifacts:config=config/crd/bases
 ~/Webs/forward/bin/controller-gen object:headerFile="hack/boilerplate.go.txt" paths="./..."
 go fmt ./...
@@ -438,7 +438,7 @@ go run ./cmd/main.go
 ##### Testing it
 First we spin up a pod, and launch `nc -l -p 8000`
 
-```elixir
+```bash
 $ kubectl run -it --rm --restart=Never alpine --image=alpine sh
 If you don't see a command prompt, try pressing enter.
 
@@ -470,7 +470,7 @@ Then we edit our manifest and apply it, check that everything is in place, and d
 another `nc localhost 8000` to test if everything went well.
 
 First the manifest
-```elixir
+```yaml
 $ cat config/samples/forward_v1alpha1_map.yaml 
 apiVersion: forward.techsquad.rocks/v1alpha1
 kind: MapPort
@@ -487,7 +487,7 @@ spec:
 <br />
 
 Then the port-forward and test
-```elixir
+```bash
 $ kubectl apply -f config/samples/forward_v1alpha1_map.yaml
 map.forward.techsquad.rocks/mapsample configured
 
@@ -510,12 +510,12 @@ test
 ##### Making it publicly ready
 Here we just build and push the docker image to dockerhub or our favorite public registry.
 
-```elixir
+```plaintext
 ❯ make docker-build docker-push IMG=kainlite/forward:0.0.2
 ```
 
 The output should look something like this:
-```elixir
+```bash
 docker build -t kainlite/forward:0.0.2 .
 [+] Building 42.6s (18/18) FINISHED                                                                                                                                                                   docker:default
  => [internal] load build definition from Dockerfile                                                                                                                                                            0.0s
@@ -653,7 +653,7 @@ Además, si te interesa saber cómo surgió la idea de hacer este operador, pod�
 
 ##### Crear el proyecto
 En este paso, necesitamos crear el proyecto con kubebuilder. Así que, en una carpeta vacía, ejecutamos:
-```elixir
+```hcl
 ❯ go mod init redbeard.team
 go: creating new go.mod: module redbeard.team
 ```
@@ -661,7 +661,7 @@ go: creating new go.mod: module redbeard.team
 <br />
 
 Luego inicializamos el proyecto con kubebuilder:
-```elixir
+```hcl
 ❯ kubebuilder init --domain redbeard.team --repo redbeard.team/forward
 INFO Writing kustomize manifests for you to edit...
 INFO Writing scaffold for you to edit...
@@ -677,7 +677,7 @@ $ kubebuilder create api
 
 ##### Creamos la API
 Creamos la API, el corazon de nuestro controlador.
-```elixir
+```yaml
 ❯ kubebuilder create api --group forward --version v1alpha1 --kind MapPort
 INFO Create Resource [y/n]
 y
@@ -708,7 +708,7 @@ de que exista una herramienta como esta.
 
 ##### Empecemos...
 Primero agregamos los tipos `api/v1alpha1/mapport_types.go`.
-```elixir
+```go
 /*
 Copyright 2024.
 
@@ -786,7 +786,7 @@ Editamos `MapPortSpec` y `MapPortStatus`.
 <br />
 
 Ahora necesitamos darle vida a nuestro controlador `internal/controller/mapport_controller.go`
-```elixir
+```yaml
 /*
 Copyright 2024.
 
@@ -1003,7 +1003,7 @@ En este controlador, agregamos dos funciones: una para crear un pod y modificamo
 
 ##### **Iniciando el cluster**
 Ahora vamos a usar [Kind](https://github.com/kubernetes-sigs/kind) para crear un cluster local para pruebas
-```elixir
+```yaml
 ❯ kind create cluster
 Creating cluster "kind" ...
  ✓ Ensuring node image (kindest/node:v1.30.0) 🖼
@@ -1024,13 +1024,13 @@ Not sure what to do next? 😅  Check out https://kind.sigs.k8s.io/docs/user/qui
 
 ##### **Ejecutando nuestro operador localmente**
 Para pruebas, podés correr tu operador localmente así:
-```elixir
+```plaintext
 make install
 make run
 ```
 
 La salida deberia verse similar a esto
-```elixir
+```nginx
 ~/Webs/forward/bin/controller-gen rbac:roleName=manager-role crd webhook paths="./..." output:crd:artifacts:config=config/crd/bases
 ~/Webs/forward/bin/controller-gen object:headerFile="hack/boilerplate.go.txt" paths="./..."
 go fmt ./...
@@ -1046,7 +1046,7 @@ go run ./cmd/main.go
 
 ##### **Probándolo**
 Primero levantamos un pod y lanzamos `nc -l -p 8000`
-```elixir
+```bash
 $ kubectl run -it --rm --restart=Never alpine --image=alpine sh
 If you don't see a command prompt, try pressing enter.
 
@@ -1076,7 +1076,7 @@ test
 
 Luego editamos nuestro manifest y lo aplicamos. Verificamos que todo esté en orden, hacemos el port-forward y lanzamos otro `nc localhost 8000` para probar si todo salió bien.
 Primero el manifest:
-```elixir
+```yaml
 $ cat config/samples/forward_v1alpha1_map.yaml 
 apiVersion: forward.techsquad.rocks/v1alpha1
 kind: MapPort
@@ -1091,7 +1091,7 @@ spec:
 ```
 <br />
 Luego hacemos el port-forward y la prueba:
-```elixir
+```bash
 $ kubectl apply -f config/samples/forward_v1beta1_map.yaml
 map.forward.techsquad.rocks/mapsample configured
 
@@ -1113,12 +1113,12 @@ test
 
 ##### **Haciéndolo público**
 Ahora simplemente construimos y subimos la imagen de Docker a DockerHub o a nuestro registry favorito.
-```elixir
+```plaintext
 ❯ make docker-build docker-push IMG=kainlite/forward:0.0.2
 ```
 
 La salida deberia ser algo asi:
-```elixir
+```bash
 docker build -t kainlite/forward:0.0.2 .
 [+] Building 42.6s (18/18) FINISHED                                                                                                                                                                   docker:default
  => [internal] load build definition from Dockerfile                                                                                                                                                            0.0s

@@ -26,7 +26,7 @@ This article will be part of a series, the idea is to get a fully serverless sit
 
 ##### **S3**
 **First of all we need to create a bucket**
-```elixir
+```bash
 aws s3api create-bucket --bucket techsquad-serverless-site --region us-east-1
 # OUTPUT:
 # {
@@ -37,7 +37,7 @@ We could serve directly from S3 but that can be expensive in a site with lots of
 <br />
 
 **For this setup to work we first need to create a cloud-front-origin-access-identity**
-```elixir
+```plaintext
 aws cloudfront create-cloud-front-origin-access-identity --cloud-front-origin-access-identity-config CallerReference=techsquad-serverless-site-cloudfront-origin,Comment=techsquad-serverless-site-cloudfront-origin
 {
     "Location": "https://cloudfront.amazonaws.com/2018-11-05/origin-access-identity/cloudfront/E3IJG9M5PO9BYE",
@@ -56,7 +56,7 @@ Our origin access identity was successfully created, we need to grab the S3Canon
 <br />
 
 **Limit access to your bucket with the following policy (save as bucket-policy.json)**
-```elixir
+```json
 {
    "Version":"2012-10-17",
    "Id":"PolicyForCloudFrontPrivateContent",
@@ -75,13 +75,13 @@ This policy will only allow CloudFront to fetch the files from the S3 bucket, be
 <br />
 
 **And then just attach that policy to the bucket**
-```elixir
+```plaintext
 aws s3api put-bucket-policy --bucket techsquad-serverless-site --policy file://bucket-policy.json
 ```
 <br />
 
 **I'm using an old example I created and probably will continue building upon it, copy the files (the source files are in [this github repo](https://github.com/kainlite/aws-serverless-s3-elm-example))**
-```elixir
+```plaintext
 aws s3 sync . s3://techsquad-serverless-site/
 ```
 So far so good, We have our S3 bucket ready.
@@ -89,7 +89,7 @@ So far so good, We have our S3 bucket ready.
 
 ##### **CloudFront**
 We will use this file to create our CF distribution (save it as distconfig.json or generate it with `aws cloudfront create-distribution --generate-cli-skeleton > /tmp/distconfig.json` and then replace the values: Id, DomainName, TargetOriginId, and the cname in Aliases.Items):
-```elixir
+```json
 {
   "CallerReference": "techsquad-serverless-site-distribution",
   "Aliases": {
@@ -144,7 +144,7 @@ We will leave most values in their defaults, but if you want to know more or cus
 <br />
 
 **Let's finally create the CloudFront distribution for our site**
-```elixir
+```bash
 aws cloudfront create-distribution --distribution-config file://distconfig.json
 # OUTPUT:
 # {
@@ -267,7 +267,7 @@ Woah a lot of details in there, but what we might need later is the ETAG if we w
 <br />
 
 **It might take a few minutes to initialize the distribution, you can check the progress with**
-```elixir
+```bash
 aws cloudfront list-distributions | jq ".DistributionList.Items[0].Status"
 # OUTPUT:
 # "InProgress"
@@ -277,7 +277,7 @@ Once it's ready the status will be: "Deployed", and now if we go to the CloudFro
 
 ##### **DNS**
 **The only thing missing is the record in the DNS (I don't have this domain name in Route53, shame on me but a CNAME will do for now), so let's add it and verify it using dig.**
-```elixir
+```bash
 dig serverless.techsquad.rocks
 # OUTPUT:
 # dig CNAME serverless.techsquad.rocks
@@ -309,7 +309,7 @@ In case you need to get some information some useful commands:\
 <br />
 
 **This command will give us the Id of our distribution**
-```elixir
+```hcl
 aws cloudfront list-distributions --output table --query 'DistributionList.Items[*].Id'
 # OUTPUT:
 # -------------------
@@ -321,7 +321,7 @@ aws cloudfront list-distributions --output table --query 'DistributionList.Items
 <br />
 
 **This one the ETag (needed to perform updates for example)**
-```elixir
+```bash
 aws cloudfront get-distribution-config --id EFJVJEPWAPGU2 | jq '. | .ETag'
 # OUTPUT:
 # "E2TPQRAUPJL2P3"
@@ -329,7 +329,7 @@ aws cloudfront get-distribution-config --id EFJVJEPWAPGU2 | jq '. | .ETag'
 <br />
 
 **And this one will save the current config in /tmp so we can update it.**
-```elixir
+```plaintext
 aws cloudfront get-distribution-config --id EFJVJEPWAPGU2 | jq '. | .DistributionConfig' > /tmp/curent-distribution-E2TPQRAUPJL2P
 ```
 <br />
@@ -373,7 +373,7 @@ Este artículo es parte de una serie, la idea es levantar un sitio completamente
 
 ##### **S3**
 **Primero necesitamos crear un bucket**
-```elixir
+```bash
 aws s3api create-bucket --bucket techsquad-serverless-site --region us-east-1
 # OUTPUT:
 # {
@@ -384,7 +384,7 @@ Podríamos servir directamente desde S3, pero eso puede volverse costoso en un s
 <br />
 
 **Para que esta configuración funcione, primero necesitamos crear una identidad de acceso de origen de CloudFront**
-```elixir
+```plaintext
 aws cloudfront create-cloud-front-origin-access-identity --cloud-front-origin-access-identity-config CallerReference=techsquad-serverless-site-cloudfront-origin,Comment=techsquad-serverless-site-cloudfront-origin
 {
     "Location": "https://cloudfront.amazonaws.com/2018-11-05/origin-access-identity/cloudfront/E3IJG9M5PO9BYE",
@@ -403,7 +403,7 @@ Nuestra identidad de acceso de origen se creó correctamente, necesitamos obtene
 <br />
 
 **Limitemos el acceso a tu bucket con la siguiente política (guardarla como bucket-policy.json)**
-```elixir
+```json
 {
    "Version":"2012-10-17",
    "Id":"PolicyForCloudFrontPrivateContent",
@@ -422,13 +422,13 @@ Esta política solo permitirá que CloudFront obtenga los archivos del bucket S3
 <br />
 
 **Luego simplemente adjuntamos esa política al bucket**
-```elixir
+```plaintext
 aws s3api put-bucket-policy --bucket techsquad-serverless-site --policy file://bucket-policy.json
 ```
 <br />
 
 **Estoy usando un ejemplo antiguo que creé y probablemente seguiré desarrollando a partir de él. Copiemos los archivos (los archivos fuente están en [este repositorio de GitHub](https://github.com/kainlite/aws-serverless-s3-elm-example))**
-```elixir
+```plaintext
 aws s3 sync . s3://techsquad-serverless-site/
 ```
 Hasta ahora todo bien. Tenemos nuestro bucket S3 listo.
@@ -436,7 +436,7 @@ Hasta ahora todo bien. Tenemos nuestro bucket S3 listo.
 
 ##### **CloudFront**
 Vamos a usar este archivo para crear nuestra distribución de CloudFront (guardalo como distconfig.json o generalo con `aws cloudfront create-distribution --generate-cli-skeleton > /tmp/distconfig.json` y luego reemplazá los valores: Id, DomainName, TargetOriginId y el cname en Aliases.Items):
-```elixir
+```json
 {
   "CallerReference": "techsquad-serverless-site-distribution",
   "Aliases": {
@@ -491,7 +491,7 @@ Dejamos la mayoría de los valores en sus predeterminados, pero si querés saber
 <br />
 
 **Finalmente, creemos la distribución de CloudFront para nuestro sitio**
-```elixir
+```bash
 aws cloudfront create-distribution --distribution-config file://distconfig.json
 # OUTPUT:
 # {
@@ -512,7 +512,7 @@ aws cloudfront create-distribution --distribution-config file://distconfig.json
 <br />
 
 **Puede tardar unos minutos en inicializarse la distribución. Podés verificar el progreso con**
-```elixir
+```bash
 aws cloudfront list-distributions | jq ".DistributionList.Items[0].Status"
 # OUTPUT:
 # "InProgress"
@@ -522,7 +522,7 @@ Una vez que esté lista, el estado será: "Deployed". Y ahora, si vamos a la URL
 
 ##### **DNS**
 **Lo único que falta es el registro en el DNS (No tengo este nombre de dominio en Route53, mala mía, pero un CNAME servirá por ahora). Así que lo añadimos y verificamos usando dig.**
-```elixir
+```bash
 dig serverless.techsquad.rocks
 # OUTPUT:
 # dig CNAME serverless.techsquad.rocks
@@ -556,7 +556,7 @@ En caso de que necesites obtener información, acá algunos comandos útiles:
 <br />
 
 **Este comando nos dará el Id de nuestra distribución**
-```elixir
+```hcl
 aws cloudfront list-distributions --output table --query 'DistributionList.Items[*].Id'
 # OUTPUT:
 # -------------------
@@ -568,7 +568,7 @@ aws cloudfront list-distributions --output table --query 'DistributionList.Items
 <br />
 
 **Este otro nos da el ETag (necesario para realizar actualizaciones, por ejemplo)**
-```elixir
+```bash
 aws cloudfront get-distribution-config --id EFJVJEPWAPGU2 | jq '. | .ETag'
 # OUTPUT:
 # "E2TPQRAUPJL2P3"
@@ -576,7 +576,7 @@ aws cloudfront get-distribution-config --id EFJVJEPWAPGU2 | jq '. | .ETag'
 <br />
 
 **Y este guardará la configuración actual en /tmp para que podamos actualizarla.**
-```elixir
+```plaintext
 aws cloudfront get-distribution-config --id EFJVJEPWAPGU2 | jq '. | .DistributionConfig' > /tmp/curent-distribution-E2TPQRAUPJL2P
 ```
 <br />

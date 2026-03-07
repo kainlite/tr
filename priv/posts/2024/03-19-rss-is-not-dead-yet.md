@@ -25,7 +25,7 @@ your app name.
 ##### **Configuration**
 First we need to accept the format, this happens in `lib/tr_web.ex`
 
-```elixir
+```plaintext
   formats: [:html, :json, :xml],
 ```
 <br />
@@ -48,7 +48,7 @@ basically the plug disables the layout for that action and the action renders th
 
 Before going into the template we need to add the route for it, first we add a pipeline to accept XML and then we define
 the routes that will serve the sitemap.
-```elixir
+```yaml
   pipeline :xml do
     plug :accepts, ["xml"]
   end
@@ -83,7 +83,7 @@ end
 
 And the last part of our configuration is the template itself `lib/tr_web/controllers/page_xml/index.xml.eex`, this will
 be used to generate the list of all posts with the relevant fields.
-```elixir
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
@@ -118,7 +118,7 @@ be used to generate the list of all posts with the relevant fields.
 
 You can also test it this way, remember that if you decide to use another module you will have to place that there
 instead of where the page controller tests are:
-```elixir
+```plaintext
   describe "GET /sitemap.xml" do
     test "accesses the sitemap in format xml", %{conn: conn} do
       conn = get(conn, "/sitemap.xml")
@@ -131,7 +131,7 @@ instead of where the page controller tests are:
 <br />
 
 Then you can provide your readers with a link like this one so your readers can discover your feed:
-```elixir
+```plaintext
 <.link rel="alternate" type="application/rss+xml" title="Blog Title" href={~p"/index.xml"}>
   RSS
 </.link>
@@ -173,7 +173,7 @@ El ejemplo estará basado en la configuración de este blog, pero sería lo mism
 ##### **Configuración**
 Primero necesitamos aceptar el formato, esto se hace en `lib/tr_web.ex`
 
-```elixir
+```plaintext
   formats: [:html, :json, :xml],
 ```
 <br />
@@ -193,7 +193,7 @@ Como estoy usando el controlador de página como índice del sitio, decidí reut
 <br />
 
 Antes de pasar a la plantilla, necesitamos agregar la ruta para ella. Primero agregamos un pipeline para aceptar XML y luego definimos las rutas que servirán el sitemap.
-```elixir
+```yaml
   pipeline :xml do
     plug :accepts, ["xml"]
   end
@@ -226,7 +226,7 @@ end
 <br />
 
 Y la última parte de nuestra configuración es la plantilla en sí, `lib/tr_web/controllers/page_xml/index.xml.eex`, que se utilizará para generar la lista de todos los posts con los campos relevantes.
-```elixir
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
@@ -256,7 +256,7 @@ Y la última parte de nuestra configuración es la plantilla en sí, `lib/tr_web
 <br />
 
 También podés probarlo de esta manera. Recordá que si decidís usar otro módulo, tendrás que colocarlo allí en lugar de donde están las pruebas del controlador de página:
-```elixir
+```plaintext
   describe "GET /sitemap.xml" do
     test "accede al sitemap en formato xml", %{conn: conn} do
       conn = get(conn, "/sitemap.xml")
@@ -269,7 +269,7 @@ También podés probarlo de esta manera. Recordá que si decidís usar otro mód
 <br />
 
 Luego podés ofrecer a tus lectores un enlace como este para que descubran tu feed:
-```elixir
+```plaintext
 <.link rel="alternate" type="application/rss+xml" title="Blog Title" href={~p"/index.xml"}>
   RSS
 </.link>

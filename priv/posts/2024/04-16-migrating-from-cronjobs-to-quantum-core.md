@@ -48,7 +48,7 @@ Some steps are required to make this cron work:
 <br/> 
 
 #### Add library to the deps in `mix.exs`
-```elixir
+```plaintext
   {:quantum, "~> 3.5"}
 ```
 Run `mix.deps get` to fetch the new dependency.
@@ -68,7 +68,7 @@ end
 Last but not least, start the app, otherwise our cron won't cron 😅, place it before the Endpoint, usually the Endpoint
 always would be the last thing that you want to start, so no client can reach the application before everything has been
 started and it is running as expected.
-```elixir
+```plaintext
     children = [
       # ...
       # Start the scheduler
@@ -80,7 +80,7 @@ started and it is running as expected.
 #### Configure your scheduled tasks `config/config.ex`
 Okay, that was easy, now the last step, configure the actual tasks, quantum supports several formats but I went with the
 classic MFA (Module-Function-Arguments).
-```elixir
+```yaml
 config :tr, Tr.Scheduler,
        jobs: [
          # Every 30 minutes
@@ -222,7 +222,7 @@ Algunos pasos son necesarios para que este cron funcione:
 <br/> 
 
 #### Agregar la librería a las dependencias en `mix.exs`
-```elixir
+```plaintext
   {:quantum, "~> 3.5"}
 ```
 Ejecutá `mix.deps get` para obtener la nueva dependencia.
@@ -240,7 +240,7 @@ end
 
 #### Agregarlo a la lista de hijos en el supervisor de la app `lib/tr/application.ex`
 Por último, pero no menos importante, iniciá la app, de lo contrario nuestro cron no funcionará 😅. Colocalo antes del Endpoint, ya que usualmente el Endpoint sería lo último que querés iniciar para que ningún cliente pueda alcanzar la aplicación antes de que todo esté en marcha y funcionando como se espera.
-```elixir
+```plaintext
     children = [
       # ...
       # Iniciar el scheduler
@@ -251,7 +251,7 @@ Por último, pero no menos importante, iniciá la app, de lo contrario nuestro c
 
 #### Configurar tus tareas programadas en `config/config.ex`
 Bien, eso fue fácil. Ahora el último paso: configurar las tareas reales. Quantum soporta varios formatos, pero yo usé el clásico MFA (Módulo-Función-Argumentos).
-```elixir
+```yaml
 config :tr, Tr.Scheduler,
        jobs: [
          # Cada 30 minutos

@@ -22,7 +22,7 @@ In this article we will actually create an example using mutual TLS and provisio
 
 ##### **Creating a cert for our new client**
 As we see here we need to enable kv version 1 on `/secret` for this to work, then we just create a secret and store it as a kubernetes secret for myapp, note that the CA was created in the previous article and we rely on these certificates so we can keep building on that.
-```elixir
+```bash
 # For this to work we need to enable the path /secret with kv version 1
 vault secrets enable -path=secret -version=1 kv
 
@@ -43,7 +43,7 @@ $ kubectl create secret generic myapp \
 
 ##### **Service account for kubernetes**
 In Kubernetes, a service account provides an identity for processes that run in a Pod so that the processes can contact the API server.
-```elixir
+```yaml
 $ cat vault-auth-service-account.yml
   ---
   apiVersion: rbac.authorization.k8s.io/v1beta1
@@ -68,7 +68,7 @@ $ kubectl apply --filename vault-auth-service-account.yml
 
 ##### **Vault policy**
 Then we need to set a read-only policy for our secrets, we don't want or app to be able to write or rewrite secrets.
-```elixir
+```bash
 # Create a policy file, myapp-kv-ro.hcl
 $ tee myapp-kv-ro.hcl <<EOF
 # If working with K/V v1
@@ -94,7 +94,7 @@ $ vault kv put secret/myapp/config username='appuser' \
 
 ##### **Kubernetes configuration**
 Set the environment variables to point to the running Minikube environment and enable the [kubernetes authentication method](https://www.vaultproject.io/docs/auth/kubernetes.html#configuration) and then validate it from a temporal Pod.
-```elixir
+```bash
 # Set VAULT_SA_NAME to the service account you created earlier
 $ export VAULT_SA_NAME=$(kubectl get sa vault-auth -o jsonpath="{.secrets[*]['name']}")
 
@@ -177,7 +177,7 @@ $ curl --request POST \
 
 ##### **The deployment and the consul-template configuration**
 If you check the volume mounts and the secrets we load the certificates we created initially and use them to fetch the secret from vault
-```elixir
+```hcl
 ---
 apiVersion: v1
 kind: Pod
@@ -304,7 +304,7 @@ spec:
 <br />
 
 This is where the magic happens so we're able to fetch secrets (thanks to that role and the token that then will be stored there)
-```elixir
+```bash
 # Uncomment this to have Agent run once (e.g. when running as an initContainer)
 exit_after_auth = true
 pid_file = "/home/vault/pidfile"
@@ -328,7 +328,7 @@ auto_auth {
 <br />
 
 And last but not least we create a file based in the template provided which our nginx container will render on the screen later, this is done using Consul Template.
-```elixir
+```xml
 vault {
   renew_token = false
   vault_agent_token_file = "/home/vault/.vault-token"
@@ -359,7 +359,7 @@ template {
 
 ##### **Test it!**
 The last step would be to test all that, so after having deployed the files to kubernetes we should see something like this
-```elixir
+```hcl
 # Finally let's create our app and see if we can fetch secrets from Vault
 $ kubectl apply -f example-k8s-spec.yml
 
@@ -459,7 +459,7 @@ In this article, we will create an example using mutual TLS and provision secret
 
 ##### **Creating a certificate for our new client**
 We need to enable kv version 1 on `/secret` for this to work, then create a secret and store it as a Kubernetes secret for our app (`myapp`). We use the certificates from the previous article, continuing to build on that.
-```elixir
+```bash
 # Enable kv version 1 on /secret path
 vault secrets enable -path=secret -version=1 kv
 
@@ -476,7 +476,7 @@ $ kubectl create secret generic myapp \
 
 ##### **Service account for Kubernetes**
 In Kubernetes, a service account provides an identity for processes running in a pod to communicate with the API server.
-```elixir
+```yaml
 $ cat vault-auth-service-account.yml
   ---
   apiVersion: rbac.authorization.k8s.io/v1beta1
@@ -500,7 +500,7 @@ $ kubectl apply --filename vault-auth-service-account.yml
 
 ##### **Vault policy**
 Now, we define a read-only policy for our secrets to ensure that our app can only read secrets, not modify them.
-```elixir
+```bash
 # Create a read-only policy file, myapp-kv-ro.hcl
 $ tee myapp-kv-ro.hcl <<EOF
 # If using K/V v1
@@ -524,7 +524,7 @@ $ vault kv put secret/myapp/config username='appuser' password='suP3rsec(et!' tt
 
 ##### **Kubernetes configuration**
 Next, we set environment variables for the Minikube environment and enable Kubernetes authentication for Vault. We validate the setup using a temporary pod.
-```elixir
+```bash
 # Set environment variables
 $ export VAULT_SA_NAME=$(kubectl get sa vault-auth -o jsonpath="{.secrets[*]['name']}")
 $ export SA_JWT_TOKEN=$(kubectl get secret $VAULT_SA_NAME -o jsonpath="{.data.token}" | base64 --decode)
@@ -556,7 +556,7 @@ $ curl -k https://vault/v1/sys/health | jq
 
 ##### **The deployment and consul-template configuration**
 The deployment mounts the certificates we created and uses them to fetch secrets from Vault.
-```elixir
+```hcl
 # Deployment YAML file (see example-k8s-spec.yml in the repo)
 ---
 apiVersion: v1
@@ -611,7 +611,7 @@ spec:
           mountPath: /usr/share/nginx/html
 ```
 The `vault-agent-config.hcl` handles token fetching and template rendering:
-```elixir
+```plaintext
 exit_after_auth = true
 auto_auth {
     method "kubernetes" {
@@ -622,7 +622,7 @@ auto_auth {
 }
 ```
 The `consul-template-config.hcl` renders a file with secrets:
-```elixir
+```xml
 vault {
   vault_agent_token_file = "/home/vault/.vault-token"
 }
@@ -645,7 +645,7 @@ template {
 
 ##### **Testing the setup**
 Now, let's deploy and test if the app is able to fetch secrets from Vault.
-```elixir
+```bash
 # Deploy the app
 $ kubectl apply -f example-k8s-spec.yml
 
