@@ -89,7 +89,7 @@ defmodule TrWeb.PostLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-4xl mx-auto overflow-x-hidden">
       <!-- Post header -->
       <div class="mb-6">
         <h1 class="text-2xl sm:text-3xl font-bold font-mono text-zinc-900 dark:text-zinc-100">

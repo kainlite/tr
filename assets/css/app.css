@@ -178,7 +178,7 @@
 @layer base {
   p,
   li {
-    @apply text-xl;
+    @apply text-base sm:text-lg lg:text-xl;
     @apply font-normal;
   }
   .thumb {
@@ -339,6 +339,7 @@
     letter-spacing: 0.01em;
     line-height: 1.6;
     background-color: #fafafa;
+    overflow-wrap: break-word;
   }
 
   .dark body {
@@ -710,24 +711,24 @@
     letter-spacing: -0.01em;
   }
   h1 {
-    font-size: 4.6rem;
+    font-size: clamp(2rem, 5vw, 4.6rem);
   }
   h2 {
-    font-size: 3.6rem;
+    font-size: clamp(1.6rem, 4vw, 3.6rem);
   }
   h3 {
-    font-size: 2.8rem;
+    font-size: clamp(1.4rem, 3.5vw, 2.8rem);
   }
   h4 {
-    font-size: 2.2rem;
+    font-size: clamp(1.25rem, 3vw, 2.2rem);
     letter-spacing: -0.08rem;
   }
   h5 {
-    font-size: 1.8rem;
+    font-size: clamp(1.1rem, 2.5vw, 1.8rem);
     letter-spacing: -0.05rem;
   }
   h6 {
-    font-size: 1.6rem;
+    font-size: clamp(1rem, 2vw, 1.6rem);
     letter-spacing: 0;
   }
   img {
