@@ -47,6 +47,9 @@ tags
 .claude
 /docs
 
+mix_lock_user1000
+mix_pubsub_user1000
+
 # Sandbox artifacts (Claude Code)
 .bash_profile
 .bashrc
