@@ -63,7 +63,7 @@ defmodule TrWeb.PostLiveTest do
       comment = hd(comments)
 
       lv
-      |> element("[phx-click=prepare_comment_form][phx-value-comment-id=#{comment.id}]")
+      |> element(~s([phx-click="prepare_comment_form"][phx-value-comment-id="#{comment.id}"]))
       |> render_click()
 
       resultreply =
@@ -84,7 +84,7 @@ defmodule TrWeb.PostLiveTest do
 
       # 2nd reply: click reply again on the parent comment
       lv
-      |> element("[phx-click=prepare_comment_form][phx-value-comment-id=#{comment.id}]")
+      |> element(~s([phx-click="prepare_comment_form"][phx-value-comment-id="#{comment.id}"]))
       |> render_click()
 
       resultreply2 =
