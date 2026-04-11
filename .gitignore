@@ -72,3 +72,5 @@ refs
 .idea
 .vscode
 .mcp.json
+
+.remember/

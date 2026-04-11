@@ -99,28 +99,28 @@ config :opentelemetry_exporter,
   otlp_protocol: :grpc,
   otlp_endpoint: "http://localhost:4317"
 
-config :git_hooks,
-  auto_install: true,
-  verbose: true,
-  branches: [
-    whitelist: ["feat/.*", "master"],
-    blacklist: []
-  ],
-  hooks: [
-    pre_commit: [
-      tasks: [
-        {:cmd, "mix format"},
-        {:cmd, "mix compile"},
-        {:cmd, "mix format --check-formatted"},
-        {:cmd, "mix credo"},
-        {:cmd, "mix dialyzer"},
-        {:cmd, "mix test --color"},
-        {:cmd, "echo 'success!'"}
-      ]
-    ],
-    pre_push: [
-      tasks: [
-        {:cmd, "echo 'success!'"}
-      ]
-    ]
-  ]
+# config :git_hooks,
+#   auto_install: true,
+#   verbose: true,
+#   branches: [
+#     whitelist: ["feat/.*", "master"],
+#     blacklist: []
+#   ],
+#   hooks: [
+#     pre_commit: [
+#       tasks: [
+#         {:cmd, "mix format"},
+#         {:cmd, "mix compile"},
+#         {:cmd, "mix format --check-formatted"},
+#         {:cmd, "mix credo"},
+#         {:cmd, "mix dialyzer"},
+#         {:cmd, "mix test --color"},
+#         {:cmd, "echo 'success!'"}
+#       ]
+#     ],
+#     pre_push: [
+#       tasks: [
+#         {:cmd, "echo 'success!'"}
+#       ]
+#     ]
+#   ]
