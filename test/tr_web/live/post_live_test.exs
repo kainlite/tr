@@ -47,6 +47,7 @@ defmodule TrWeb.PostLiveTest do
 
       slug = "upgrading-k3s-with-system-upgrade-controller"
 
+      # Post a parent comment
       result =
         form(lv, "#comment_form", %{
           "comment" => %{
@@ -57,11 +58,13 @@ defmodule TrWeb.PostLiveTest do
 
       render_submit(result)
 
-      # 1st reply
+      # 1st reply: click reply to set parent_comment_id in socket assigns
       comments = Tr.Post.get_comments_for_post(slug)
       comment = hd(comments)
 
-      assign(conn, :parent_comment_id, comment.id)
+      lv
+      |> element("[phx-click=prepare_comment_form][phx-value-comment-id=#{comment.id}]")
+      |> render_click()
 
       resultreply =
         form(lv, "#comment_form", %{
@@ -71,17 +74,18 @@ defmodule TrWeb.PostLiveTest do
           }
         })
 
-      render_submit(resultreply, %{"comment" => %{"parent_comment_id" => comment.id}})
+      render_submit(resultreply)
 
       comments = Tr.Post.get_comments_for_post(slug)
-      reply = Enum.at(comments, 1)
+      reply = Enum.find(comments, &(&1.body =~ "some random reply"))
 
       assert Enum.count(comments) == 2
       assert reply.parent_comment_id == comment.id
-      assert reply.body =~ "some random reply"
 
-      # 2nd reply
-      assign(conn, :parent_comment_id, reply.id)
+      # 2nd reply: click reply again on the parent comment
+      lv
+      |> element("[phx-click=prepare_comment_form][phx-value-comment-id=#{comment.id}]")
+      |> render_click()
 
       resultreply2 =
         form(lv, "#comment_form", %{
@@ -91,14 +95,13 @@ defmodule TrWeb.PostLiveTest do
           }
         })
 
-      render_submit(resultreply2, %{"comment" => %{"parent_comment_id" => comment.id}})
+      render_submit(resultreply2)
 
       comments = Tr.Post.get_comments_for_post(slug)
-      reply2 = Enum.at(comments, 2)
+      reply2 = Enum.find(comments, &(&1.body =~ "some random reply 2"))
 
       assert Enum.count(comments) == 3
       assert reply2.parent_comment_id == comment.id
-      assert reply2.body =~ "some random reply 2"
     end
 
     test "can like a post", %{conn: conn} do
