@@ -65,6 +65,7 @@ defmodule TrWeb.Router do
 
     get "/index.xml", PageController, :rss_feed
     get "/sitemap.xml", PageController, :xml_sitemap
+    get "/llms.txt", PageController, :llms_txt
   end
 
   scope "/:locale", TrWeb do

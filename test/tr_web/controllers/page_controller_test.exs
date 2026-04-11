@@ -61,6 +61,20 @@ defmodule TrWeb.PageControllerTest do
     end
   end
 
+  describe "GET /llms.txt" do
+    test "serves llms.txt with correct format", %{conn: conn} do
+      conn = get(conn, "/llms.txt")
+
+      body = response(conn, 200)
+      assert response_content_type(conn, :text)
+      assert body =~ "# SegFault"
+      assert body =~ "Gabriel Garrido"
+      assert body =~ "## DevOps from Zero to Hero Series"
+      assert body =~ "## SRE Series"
+      assert body =~ "## Optional"
+    end
+  end
+
   describe "GET /index.json" do
     test "accesses the sitemap in format json", %{conn: conn} do
       conn = get(conn, "/en/index.json")

@@ -3,7 +3,7 @@ defmodule TrWeb.PageController do
 
   alias Tr.Blog
 
-  plug :put_layout, false when action in [:rss_feed, :xml_sitemap, :json_sitemap]
+  plug :put_layout, false when action in [:rss_feed, :xml_sitemap, :json_sitemap, :llms_txt]
 
   def xml_sitemap(conn, _params) do
     en_posts = Blog.posts("en")
@@ -128,6 +128,62 @@ defmodule TrWeb.PageController do
     |> assign(:og_hreflang_en, TrWeb.Endpoint.url() <> "/en/blog/tags/#{tag}")
     |> assign(:og_hreflang_es, TrWeb.Endpoint.url() <> "/es/blog/tags/#{tag}")
     |> render(posts: Blog.by_tag(Gettext.get_locale(TrWeb.Gettext), tag))
+  end
+
+  def llms_txt(conn, _params) do
+    en_posts = Blog.posts("en")
+    base_url = TrWeb.Endpoint.url()
+
+    # Group posts by series/tag
+    devops_posts = Enum.filter(en_posts, &("devops" in &1.tags))
+    sre_posts = Enum.filter(en_posts, &("sre" in &1.tags))
+
+    already_listed = devops_posts ++ sre_posts
+
+    kubernetes_posts =
+      en_posts
+      |> Enum.filter(&("kubernetes" in &1.tags))
+      |> Enum.reject(&(&1 in already_listed))
+
+    other_posts = Enum.reject(en_posts, &(&1 in (already_listed ++ kubernetes_posts)))
+
+    content = """
+    # SegFault
+
+    > Technical blog by Gabriel Garrido covering DevOps, Kubernetes, AWS, Terraform, Docker, CI/CD,
+    > SRE, GitHub Actions, Elixir, and cloud-native technologies. All articles include practical,
+    > hands-on examples with working code. Content is bilingual (English and Spanish).
+
+    The blog features two comprehensive series: "DevOps from Zero to Hero" (20 articles from beginner
+    to production-ready) and "SRE" (14 articles on advanced site reliability engineering). It also
+    includes deep dives on containers, GitOps, security, observability, and infrastructure as code.
+
+    ## DevOps from Zero to Hero Series
+
+    #{render_post_list(devops_posts, base_url)}
+
+    ## SRE Series
+
+    #{render_post_list(sre_posts, base_url)}
+
+    ## Kubernetes and Cloud Native
+
+    #{render_post_list(kubernetes_posts, base_url)}
+
+    ## Optional
+
+    #{render_post_list(other_posts, base_url)}
+    """
+
+    conn
+    |> put_resp_content_type("text/plain")
+    |> send_resp(200, content)
+  end
+
+  defp render_post_list(posts, base_url) do
+    Enum.map_join(posts, "\n", fn post ->
+      "- [#{post.title}](#{base_url}/en/blog/#{post.id}): #{post.description}"
+    end)
   end
 
   defp format_date(date) do
