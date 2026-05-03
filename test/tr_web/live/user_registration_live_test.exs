@@ -12,6 +12,15 @@ defmodule TrWeb.UserRegistrationLiveTest do
       assert html =~ "Log in"
     end
 
+    test "renders OAuth sign-up buttons", %{conn: conn} do
+      {:ok, _lv, html} = live(conn, ~p"/users/register")
+
+      assert html =~ "Continue with Google"
+      assert html =~ "Continue with GitHub"
+      assert html =~ "accounts.google.com"
+      assert html =~ "github.com/login/oauth"
+    end
+
     test "redirects if already logged in", %{conn: conn} do
       result =
         conn

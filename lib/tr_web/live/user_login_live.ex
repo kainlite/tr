@@ -19,6 +19,11 @@ defmodule TrWeb.UserLoginLive do
         </:subtitle>
       </.header>
 
+      <TrWeb.OAuthComponent.buttons
+        oauth_google_url={@oauth_google_url}
+        oauth_github_url={@oauth_github_url}
+      />
+
       <.simple_form for={@form} id="login_form" action={~p"/users/log_in"} phx-update="ignore">
         <.input field={@form[:email]} type="email" label={gettext("Email")} required />
         <.input field={@form[:password]} type="password" label={gettext("Password")} required />
@@ -42,6 +47,13 @@ defmodule TrWeb.UserLoginLive do
   def mount(_params, _session, socket) do
     email = Phoenix.Flash.get(socket.assigns.flash, :email)
     form = to_form(%{"email" => email}, as: "user")
-    {:ok, assign(socket, form: form), temporary_assigns: [form: form]}
+
+    socket =
+      socket
+      |> assign(form: form)
+      |> assign(:oauth_google_url, ElixirAuthGoogle.generate_oauth_url(TrWeb.Endpoint.url()))
+      |> assign(:oauth_github_url, ElixirAuthGithub.login_url(%{scopes: ["user:email"]}))
+
+    {:ok, socket, temporary_assigns: [form: form]}
   end
 end

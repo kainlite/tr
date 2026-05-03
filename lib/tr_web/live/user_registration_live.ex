@@ -22,6 +22,11 @@ defmodule TrWeb.UserRegistrationLive do
         </:subtitle>
       </.header>
 
+      <TrWeb.OAuthComponent.buttons
+        oauth_google_url={@oauth_google_url}
+        oauth_github_url={@oauth_github_url}
+      />
+
       <.simple_form
         for={@form}
         id="registration_form"
@@ -60,6 +65,8 @@ defmodule TrWeb.UserRegistrationLive do
       socket
       |> assign(trigger_submit: false, check_errors: false)
       |> assign_new(:display_name, fn -> get_display_name() end)
+      |> assign(:oauth_google_url, ElixirAuthGoogle.generate_oauth_url(TrWeb.Endpoint.url()))
+      |> assign(:oauth_github_url, ElixirAuthGithub.login_url(%{scopes: ["user:email"]}))
       |> assign_form(changeset)
 
     {:ok, socket, temporary_assigns: [form: nil]}

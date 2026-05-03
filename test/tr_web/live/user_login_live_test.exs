@@ -13,6 +13,15 @@ defmodule TrWeb.UserLoginLiveTest do
       assert html =~ "Forgot your password?"
     end
 
+    test "renders OAuth sign-in buttons", %{conn: conn} do
+      {:ok, _lv, html} = live(conn, ~p"/users/log_in")
+
+      assert html =~ "Continue with Google"
+      assert html =~ "Continue with GitHub"
+      assert html =~ "accounts.google.com"
+      assert html =~ "github.com/login/oauth"
+    end
+
     test "redirects if already logged in", %{conn: conn} do
       result =
         conn

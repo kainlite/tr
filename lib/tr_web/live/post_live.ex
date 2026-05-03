@@ -74,14 +74,6 @@ defmodule TrWeb.PostLive do
         :heart,
         get_styled_reaction(post.id, "heart", socket.assigns.current_user)
       )
-      |> assign(
-        :oauth_google_url,
-        ElixirAuthGoogle.generate_oauth_url(TrWeb.Endpoint.url())
-      )
-      |> assign(
-        :oauth_github_url,
-        ElixirAuthGithub.login_url(%{scopes: ["user:email"]})
-      )
 
     {:ok, socket, temporary_assigns: [form: nil]}
   end

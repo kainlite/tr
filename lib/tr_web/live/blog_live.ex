@@ -18,14 +18,6 @@ defmodule TrWeb.BlogLive do
       |> assign(:og_hreflang_es, TrWeb.Endpoint.url() <> "/es/blog")
       |> assign(:posts, posts)
       |> assign(:featured_post, featured_post)
-      |> assign(
-        :oauth_google_url,
-        ElixirAuthGoogle.generate_oauth_url(TrWeb.Endpoint.url())
-      )
-      |> assign(
-        :oauth_github_url,
-        ElixirAuthGithub.login_url(%{scopes: ["user:email"]})
-      )
     }
   end
 
