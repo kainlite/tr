@@ -15,17 +15,19 @@ defmodule Tr.Ollama do
   """
 
   def send(message) do
-    api = api()
-    p = %Ollamex.PromptRequest{model: "sentiments:latest", prompt: "MESSAGE " <> message}
+    client = client()
 
-    case Ollamex.generate_with_timeout(p, api) do
-      {:error, :timeout} -> false
-      {:ok, r} -> parse(r.response)
+    case Ollama.completion(client, model: "sentiments:latest", prompt: "MESSAGE " <> message) do
+      {:ok, %{"response" => response}} -> parse(response)
+      {:error, _reason} -> false
     end
   end
 
-  defp api do
-    Ollamex.API.new(System.get_env("OLLAMA_ENDPOINT", "http://localhost:11434/api"))
+  defp client do
+    Ollama.init(
+      base_url: System.get_env("OLLAMA_ENDPOINT", "http://localhost:11434/api"),
+      receive_timeout: 30_000
+    )
   end
 
   defp parse(r) do

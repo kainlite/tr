@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title><%= gettext "Learn about DevOps, Linux, Containers, Kubernetes, CI/CD, AWS | SegFault" %></title>
     <link><%= url(~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog") %></link>
@@ -20,6 +20,7 @@
         <link><%= url(~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{post.id}") %></link>
         <guid><%= url(~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/#{post.id}") %></guid>
         <description><![CDATA[ <%= post.description %> ]]></description>
+        <content:encoded><![CDATA[ <%= absolutize(post.body) %> ]]></content:encoded>
         <pubDate><%= post.date |> format_date %></pubDate>
       </item>
     <% end %>

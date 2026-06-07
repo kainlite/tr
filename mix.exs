@@ -79,7 +79,7 @@ defmodule Tr.MixProject do
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false},
       {:wallaby, "~> 0.30", runtime: false, only: :test},
-      {:ollamex, "0.2.0"},
+      {:ollama, "~> 0.9.0"},
       {:mimic, "~> 2.3.0", only: :test},
       {:bandit, "~> 1.0"},
       {:haystack, "~> 0.1.0"},

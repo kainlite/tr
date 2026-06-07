@@ -26,10 +26,31 @@ defmodule TrWeb.PageControllerTest do
 
       assert response_content_type(conn, :xml)
 
+      body = response(conn, 200)
+
       assert String.match?(
-               response(conn, 200),
+               body,
                ~r/<link>.*\/blog\/new-blog<\/link>/
              )
+
+      # The feed must carry the full post body via content:encoded so that
+      # off-site consumers (RSS readers, Substack import) get the whole article
+      # and not just the short description.
+      assert body =~ "xmlns:content=\"http://purl.org/rss/1.0/modules/content/\""
+      assert body =~ "<content:encoded>"
+      assert body =~ "This is my new blog"
+    end
+
+    test "RSS content:encoded rewrites root-relative image paths to absolute URLs", %{conn: conn} do
+      conn = get(conn, "/index.xml")
+
+      body = response(conn, 200)
+      base = TrWeb.Endpoint.url()
+
+      # Post bodies reference images as /images/... ; in the exported feed these
+      # must be absolute so they render off-site (e.g. when imported to Substack).
+      refute body =~ "src=\"/images/"
+      assert body =~ "src=\"#{base}/images/"
     end
 
     test "get all tags", %{conn: conn} do

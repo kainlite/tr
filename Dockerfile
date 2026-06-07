@@ -9,12 +9,12 @@
 #   - https://hub.docker.com/r/hexpm/elixir/tags - for the build image
 #   - https://hub.docker.com/_/debian?tab=tags&page=1&name=buster-20240612-slim - for the release image
 #   - https://pkgs.org/ - resource for finding needed packages
-#   - Ex: hexpm/elixir:1.19.0-erlang-28.0.2-debian-trixie-20260202-slim
-#   - https://hub.docker.com/r/hexpm/elixir/tags?name=1.19.0-erlang-28.0.2
+#   - Ex: hexpm/elixir:1.19.5-erlang-28.5.0.1-debian-bookworm-20260518-slim
+#   - https://hub.docker.com/r/hexpm/elixir/tags?name=1.19.5-erlang-28.5.0.1
 #
 ARG ELIXIR_VERSION=1.19.5
-ARG OTP_VERSION=28.3.2
-ARG DEBIAN_VERSION=bookworm-20260202-slim
+ARG OTP_VERSION=28.5.0.1
+ARG DEBIAN_VERSION=bookworm-20260518-slim
 
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
