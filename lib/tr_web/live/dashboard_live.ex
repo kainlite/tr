@@ -289,19 +289,30 @@ defmodule TrWeb.DashboardLive do
             </.link>
           </:col>
           <:col :let={tracker} label="LinkedIn">
-            <%= if tracker.linkedin_posted do %>
-              <span class="font-mono text-xs text-accent-light dark:text-accent">[posted]</span>
-            <% else %>
+            <div class="flex gap-2">
+              <%= if tracker.linkedin_posted do %>
+                <span class="font-mono text-xs text-accent-light dark:text-accent">[posted]</span>
+              <% else %>
+                <button
+                  phx-click="linkedin_post"
+                  phx-value-slug={tracker.slug}
+                  disabled={!@linkedin_configured}
+                  class="font-mono text-sm border border-terminal-300 dark:border-terminal-600 px-2 py-1 hover:border-accent-light dark:hover:border-accent disabled:opacity-50 disabled:cursor-not-allowed"
+                  data-confirm="Post to LinkedIn?"
+                >
+                  [post]
+                </button>
+              <% end %>
               <button
-                phx-click="linkedin_post"
+                id={"copy-li-" <> tracker.slug}
+                phx-hook="CopyHtml"
+                phx-click="linkedin_content"
                 phx-value-slug={tracker.slug}
-                disabled={!@linkedin_configured}
-                class="font-mono text-sm border border-terminal-300 dark:border-terminal-600 px-2 py-1 hover:border-accent-light dark:hover:border-accent disabled:opacity-50 disabled:cursor-not-allowed"
-                data-confirm="Post to LinkedIn?"
+                class="font-mono text-sm border border-terminal-300 dark:border-terminal-600 px-2 py-1 hover:border-accent-light dark:hover:border-accent"
               >
-                [post]
+                [copy]
               </button>
-            <% end %>
+            </div>
           </:col>
           <:col :let={tracker} label="Substack">
             <%= if tracker.substack_drafted do %>
@@ -405,6 +416,21 @@ defmodule TrWeb.DashboardLive do
          push_event(socket, "copy_to_clipboard", %{
            text: content.body_html,
            target: "copy-html-" <> slug
+         })}
+
+      {:error, reason} ->
+        {:noreply, socket |> put_flash(:error, "Failed to generate content: #{inspect(reason)}")}
+    end
+  end
+
+  @impl true
+  def handle_event("linkedin_content", %{"slug" => slug}, socket) do
+    case Tr.CrossPoster.LinkedIn.generate_content(slug) do
+      {:ok, content} ->
+        {:noreply,
+         push_event(socket, "copy_to_clipboard", %{
+           text: content.body_html,
+           target: "copy-li-" <> slug
          })}
 
       {:error, reason} ->
