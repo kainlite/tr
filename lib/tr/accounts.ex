@@ -58,11 +58,8 @@ defmodule Tr.Accounts do
 
       if is_nil(user) do
         random_password = :crypto.strong_rand_bytes(16)
-        faker = Faker.Superhero
-
-        name = faker.prefix() <> " " <> faker.name() <> " " <> faker.suffix()
-
-        avatar = Faker.Avatar.image_url()
+        name = Tr.Faker.display_name()
+        avatar = Tr.Faker.avatar_url()
 
         {:ok, user} =
           register_google_user(%{

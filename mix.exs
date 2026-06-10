@@ -74,7 +74,6 @@ defmodule Tr.MixProject do
       {:remote_ip, "~> 1.1"},
       {:logfmt, "~> 3.3"},
       {:poison, "~> 6.0"},
-      {:faker, "~> 0.18"},
       {:excoveralls, "~> 0.18", only: :test},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false},

@@ -73,7 +73,7 @@ defmodule TrWeb.UserRegistrationLive do
   end
 
   def handle_event("save", %{"user" => user_params}, socket) do
-    user_params = Map.put(user_params, "avatar_url", Faker.Avatar.image_url())
+    user_params = Map.put(user_params, "avatar_url", Tr.Faker.avatar_url())
 
     case Accounts.register_user(user_params) do
       {:ok, user} ->
@@ -107,8 +107,6 @@ defmodule TrWeb.UserRegistrationLive do
   end
 
   defp get_display_name() do
-    faker = Faker.Superhero
-
-    faker.prefix() <> " " <> faker.name() <> " " <> faker.suffix()
+    Tr.Faker.display_name()
   end
 end

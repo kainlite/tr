@@ -354,17 +354,19 @@ defmodule TrWeb.PostLive do
 
   @impl true
   def handle_event("save", %{"comment" => comment_params}, socket) do
+    current_user = socket.assigns.current_user
+
     params =
       Map.merge(
         %{
-          "user_id" => socket.assigns.current_user.id
+          "user_id" => current_user.id
         },
         comment_params
       )
 
-    current_user = socket.assigns.current_user
-
-    if current_user && !is_nil(current_user.confirmed_at) do
+    if is_nil(current_user.confirmed_at) do
+      {:noreply, socket |> put_flash(:error, gettext("You need to validate your account"))}
+    else
       case Tr.Post.create_comment(params) do
         {:ok, comment} ->
           # credo:disable-for-next-line Credo.Check.Refactor.Nesting
@@ -398,8 +400,6 @@ defmodule TrWeb.PostLive do
            |> assign_form(changeset)
            |> put_flash(:error, gettext("There is been an error saving your comment."))}
       end
-    else
-      {:noreply, socket |> put_flash(:error, gettext("You need to validate your account"))}
     end
   end
 
@@ -518,14 +518,10 @@ defmodule TrWeb.PostLive do
   end
 
   defp get_display_name(user) do
-    faker = Faker.Superhero
-
-    name = faker.prefix() <> " " <> faker.name() <> " " <> faker.suffix()
-
     if user && !is_nil(user.display_name) do
       user.display_name
     else
-      name
+      Tr.Faker.display_name()
     end
   end
 

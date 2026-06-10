@@ -5,7 +5,7 @@
 #   docker compose -f docker-compose.test.yml run --rm test
 #   docker compose -f docker-compose.test.yml run --rm test mix test test/tr_web/integration/
 
-ARG ELIXIR_VERSION=1.19.5
+ARG ELIXIR_VERSION=1.20.0
 ARG OTP_VERSION=28.5.0.1
 ARG DEBIAN_VERSION=bookworm-20260518-slim
 
