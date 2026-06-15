@@ -52,7 +52,7 @@ defmodule Tr.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 4.1"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 1.1.22"},
+      {:phoenix_live_view, "~> 1.2.1"},
       {:phoenix_view, "~> 2.0"},
       {:phoenix_live_dashboard, "~> 0.8.3"},
       {:floki, ">= 0.30.0", only: :test},
