@@ -21,7 +21,7 @@ defmodule Tr.LabsTest do
 
   test "tracks resolve to embedded labs only" do
     tracks = Labs.tracks()
-    assert length(tracks) > 0
+    assert tracks != []
 
     for track <- tracks do
       assert is_binary(track.title)
