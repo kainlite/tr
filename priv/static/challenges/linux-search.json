@@ -1,0 +1,16 @@
+{
+  "id": "linux-search",
+  "title": "Real lab: find the needle with grep",
+  "mode": "v86",
+  "image": "alpine",
+  "instruction": "Real Linux box. The folder /data has a bunch of files. Some contain the word 'apple'. Count HOW MANY files under /data contain 'apple', and write just that number into /root/answer. Then click Verify.",
+  "setup": "mkdir -p /data; printf 'i like apple pie\\n' > /data/a.txt; printf 'bananas\\n' > /data/b.txt; printf 'APPLE in caps and apple lower\\n' > /data/c.txt; printf 'cherry\\n' > /data/d.txt; printf 'pineapple counts too\\n' > /data/e.txt; echo '(scenario ready: files are in /data)'",
+  "verify": {
+    "command": "if [ \"$(cat /root/answer 2>/dev/null | tr -d '[:space:]')\" = 3 ]; then echo SEARCH_OK; else echo SEARCH_NO got=$(cat /root/answer 2>/dev/null); fi",
+    "wait_ms": 1500,
+    "expect_all": ["SEARCH_OK"],
+    "success": "Solved! `grep -rl apple /data | wc -l` = 3 (a.txt, c.txt, e.txt, case-sensitive grep skips the all-caps APPLE, but 'pineapple' contains 'apple'). grep -r searches recursively, -l lists matching files.",
+    "fail": "Not yet. Count files under /data containing 'apple' (lowercase) and put the number in /root/answer. There are 3."
+  },
+  "hint": "grep -rl apple /data | wc -l > /root/answer     (then: cat /root/answer)"
+}

@@ -34,6 +34,13 @@ $ curl --socks4 localhost:9999 icanhazip.com
 ```
 <br />
 
+##### **Try it yourself**
+Spin up a SOCKS proxy through a jump host and send traffic through it.
+
+<div id="ch-ssh-socks" phx-hook="Challenge" phx-update="ignore" data-challenge="ssh-socks-proxy" data-mode="scripted"></div>
+
+<br />
+
 ##### **The parameters and their meaning**
 I extracted a portion of the meaning of parameter from the man page, but in a nutshell it means dynamic port forward without a shell.
 ```plaintext

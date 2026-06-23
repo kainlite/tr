@@ -1,0 +1,15 @@
+{
+  "id": "helm-basics",
+  "title": "Challenge: install, upgrade, and roll back with Helm",
+  "mode": "scripted",
+  "prompt": "you@helm:~$ ",
+  "intro": "Helm is the package manager for Kubernetes: install a chart as a named 'release', upgrade it, and, when an upgrade goes wrong, roll it back instantly. Let's run that lifecycle. (Commands checked; output illustrative.)",
+  "steps": [
+    { "instruction": "Install the ./chart as a release named 'my-api'.", "match": ["^helm\\s+install\\s+my-api\\s+\\S+"], "success": "NAME: my-api\nLAST DEPLOYED: now\nSTATUS: deployed\nREVISION: 1", "fail": "helm install <release-name> <chart>", "hint": "helm install my-api ./chart" },
+    { "instruction": "List your Helm releases to see it.", "match": ["^helm\\s+(list|ls)\\b"], "success": "NAME     NAMESPACE  REVISION  STATUS    CHART\nmy-api   default    1         deployed  api-0.1.0", "fail": "List the releases.", "hint": "helm list" },
+    { "instruction": "Ship a change: upgrade 'my-api' to 3 replicas (override the value).", "match": ["^helm\\s+upgrade\\s+my-api", "(--set\\s+\\S*replica|-f\\b|--values)"], "success": "Release \"my-api\" has been upgraded. Happy Helming!\nREVISION: 2", "fail": "helm upgrade my-api <chart> --set replicaCount=3 (or -f values.yaml)", "hint": "helm upgrade my-api ./chart --set replicaCount=3" },
+    { "instruction": "That upgrade broke things. Roll 'my-api' back to revision 1.", "match": ["^helm\\s+rollback\\s+my-api\\s+1"], "success": "Rollback was a success! Happy Helming!  (now on revision 3, identical to revision 1)", "fail": "helm rollback <release> <revision>", "hint": "helm rollback my-api 1" },
+    { "instruction": "Clean up: uninstall the release.", "match": ["^helm\\s+(uninstall|delete|del)\\s+my-api"], "success": "release \"my-api\" uninstalled", "fail": "Uninstall the my-api release.", "hint": "helm uninstall my-api" }
+  ],
+  "done": "Solved! install → list → upgrade → rollback → uninstall. Helm tracks every release revision, so an upgrade is never a one-way door, `helm rollback` makes recovering instant."
+}

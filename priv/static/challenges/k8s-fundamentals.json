@@ -1,0 +1,15 @@
+{
+  "id": "k8s-fundamentals",
+  "title": "Challenge: your first Kubernetes workload",
+  "mode": "scripted",
+  "prompt": "you@kubectl:~$ ",
+  "intro": "Deploy an app, watch Kubernetes keep it running, scale it, and expose it, the core kubectl loop every cluster operator uses daily. (Commands checked; output illustrative, no real cluster needed.)",
+  "steps": [
+    { "instruction": "Create a Deployment named 'web' running the nginx image.", "match": ["^kubectl\\s+create\\s+deployment\\s+web", "(--image=|--image\\s+)nginx"], "success": "deployment.apps/web created", "fail": "kubectl create deployment <name> --image=<image>", "hint": "kubectl create deployment web --image=nginx" },
+    { "instruction": "List the pods to see the one Kubernetes created for you.", "match": ["^kubectl\\s+get\\s+pods?"], "success": "NAME                   READY   STATUS    RESTARTS   AGE\nweb-6f9c8d7b5c-2xk9p   1/1     Running   0          8s", "fail": "Show the pods.", "hint": "kubectl get pods" },
+    { "instruction": "Scale the deployment up to 3 replicas (for availability).", "match": ["^kubectl\\s+scale\\s+deployment(/|\\s+)web", "--replicas=3"], "success": "deployment.apps/web scaled", "fail": "kubectl scale deployment web --replicas=3", "hint": "kubectl scale deployment web --replicas=3" },
+    { "instruction": "Expose the deployment as a Service on port 80 so other pods can reach it.", "match": ["^kubectl\\s+expose\\s+deployment(/|\\s+)web", "--port(=|\\s+)80"], "success": "service/web exposed", "fail": "kubectl expose deployment web --port=80", "hint": "kubectl expose deployment web --port=80" },
+    { "instruction": "List the services to confirm 'web' got a stable ClusterIP.", "match": ["^kubectl\\s+get\\s+(svc|services?)"], "success": "NAME   TYPE        CLUSTER-IP      PORT(S)   AGE\nweb    ClusterIP   10.96.142.7     80/TCP    4s", "fail": "Show the services.", "hint": "kubectl get svc" }
+  ],
+  "done": "Solved! create deployment → get pods → scale → expose → get svc. A Deployment keeps your pods running and replaces them when they die; a Service gives them one stable address. That's the heart of Kubernetes."
+}

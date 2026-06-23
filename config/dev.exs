@@ -26,6 +26,7 @@ config :tr, TrWeb.Endpoint,
   secret_key_base: "z0OiA5F+dY+TmM84E+Cl0/BzJETmpoV/uxX1GccnAnINMIj61NA8nGZFkJLA0hdG",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    esbuild_v86: {Esbuild, :install_and_run, [:v86, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
 

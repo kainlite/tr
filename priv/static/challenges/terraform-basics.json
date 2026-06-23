@@ -1,0 +1,14 @@
+{
+  "id": "terraform-basics",
+  "title": "Challenge: your first Terraform apply",
+  "mode": "scripted",
+  "prompt": "you@infra:~$ ",
+  "intro": "Terraform turns infrastructure into code: you declare what you want, it figures out the changes and makes them. Run the core init → plan → apply loop, then tear it down. (Commands checked; output illustrative.)",
+  "steps": [
+    { "instruction": "Initialize the working directory (downloads providers, sets up the backend).", "match": ["^terraform\\s+init"], "success": "Initializing provider plugins...\n- Installing hashicorp/aws v5.x...\nTerraform has been successfully initialized!", "fail": "Initialize Terraform.", "hint": "terraform init" },
+    { "instruction": "Preview the changes Terraform would make, never apply blind.", "match": ["^terraform\\s+plan"], "success": "Plan: 3 to add, 0 to change, 0 to destroy.\n  + aws_vpc.main\n  + aws_subnet.public\n  + aws_instance.web", "fail": "Run a plan.", "hint": "terraform plan" },
+    { "instruction": "Apply the change to create the resources (auto-approve so it doesn't prompt).", "match": ["^terraform\\s+apply", "(-auto-approve|--auto-approve)"], "success": "aws_vpc.main: Creating...\naws_instance.web: Creation complete after 22s\n\nApply complete! Resources: 3 added, 0 changed, 0 destroyed.", "fail": "Apply with -auto-approve.", "hint": "terraform apply -auto-approve" },
+    { "instruction": "All done, destroy everything so it doesn't cost money.", "match": ["^terraform\\s+destroy", "(-auto-approve|--auto-approve)"], "success": "Destroy complete! Resources: 3 destroyed.", "fail": "Destroy with -auto-approve.", "hint": "terraform destroy -auto-approve" }
+  ],
+  "done": "Solved! init → plan → apply → destroy. The plan step is your safety check: it shows exactly what will change before anything happens. Real infrastructure, version-controlled and reproducible."
+}

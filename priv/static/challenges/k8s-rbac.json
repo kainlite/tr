@@ -1,0 +1,14 @@
+{
+  "id": "k8s-rbac",
+  "title": "Challenge: grant least-privilege access with RBAC",
+  "mode": "scripted",
+  "prompt": "you@kubectl:~$ ",
+  "intro": "User john.doe needs to read pods in the 'rbac-demo' namespace, and nothing more. You'll prove it's denied, grant exactly that with a Role + RoleBinding, and prove it now works. (Commands checked; output illustrative.)",
+  "steps": [
+    { "instruction": "First, confirm john.doe@example.com currently CANNOT list pods in rbac-demo.", "match": ["^kubectl\\s+auth\\s+can-i", "(get|list)\\s+pods", "rbac-demo", "--as=john\\.doe@example\\.com"], "success": "no", "fail": "Use kubectl auth can-i with --namespace=rbac-demo and --as=john.doe@example.com.", "hint": "kubectl auth can-i list pods --namespace=rbac-demo --as=john.doe@example.com" },
+    { "instruction": "Create a Role named 'pod-reader' in rbac-demo allowing get/list/watch on pods.", "match": ["^kubectl\\s+create\\s+role\\s+pod-reader", "--verb=get,list,watch", "--resource=pods", "(-n\\s+rbac-demo|--namespace=rbac-demo)"], "success": "role.rbac.authorization.k8s.io/pod-reader created", "fail": "kubectl create role pod-reader --verb=get,list,watch --resource=pods -n rbac-demo", "hint": "kubectl create role pod-reader --verb=get,list,watch --resource=pods -n rbac-demo" },
+    { "instruction": "Bind that Role to john.doe with a RoleBinding named 'pod-reader-binding'.", "match": ["^kubectl\\s+create\\s+rolebinding\\s+pod-reader-binding", "--role=pod-reader", "--user=john\\.doe@example\\.com", "(-n\\s+rbac-demo|--namespace=rbac-demo)"], "success": "rolebinding.rbac.authorization.k8s.io/pod-reader-binding created", "fail": "kubectl create rolebinding pod-reader-binding --role=pod-reader --user=john.doe@example.com -n rbac-demo", "hint": "kubectl create rolebinding pod-reader-binding --role=pod-reader --user=john.doe@example.com -n rbac-demo" },
+    { "instruction": "Now check again, can john.doe list pods in rbac-demo?", "match": ["^kubectl\\s+auth\\s+can-i", "(get|list)\\s+pods", "rbac-demo", "--as=john\\.doe@example\\.com"], "success": "yes  ✓, access granted, scoped to exactly pods in rbac-demo and nothing else", "fail": "Re-run the same auth can-i check.", "hint": "kubectl auth can-i list pods --namespace=rbac-demo --as=john.doe@example.com" }
+  ],
+  "done": "Solved! That's RBAC: a Role says WHAT (verbs on resources), a RoleBinding says WHO. Least privilege = grant the smallest Role that does the job, nothing wider."
+}

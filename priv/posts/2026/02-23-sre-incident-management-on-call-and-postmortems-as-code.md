@@ -273,7 +273,7 @@ spec:
 
 ##### **Runbooks as code**
 A runbook is a step-by-step guide for handling a specific alert or incident type. The best runbooks are not
-documents gathering dust in a wiki — they are executable code that lives next to your infrastructure.
+documents gathering dust in a wiki, they are executable code that lives next to your infrastructure.
 
 <br />
 
@@ -354,7 +354,7 @@ kubectl -n default logs deploy/tr-web --since=10m | grep "github_pool\|sponsors"
 <br />
 
 The key is that every diagnostic step has actual commands you can copy-paste. When you are half-asleep at 3am,
-you do not want to think — you want to follow steps.
+you do not want to think, you want to follow steps.
 
 <br />
 
@@ -557,7 +557,7 @@ gh pr create --title "Postmortem: $TITLE" --body "Auto-generated postmortem. Ple
 
 <br />
 
-This ensures that postmortems are never forgotten. The 48-hour rule is important — details fade fast, and if
+This ensures that postmortems are never forgotten. The 48-hour rule is important, details fade fast, and if
 you wait a week to write the postmortem, people will have forgotten crucial context.
 
 <br />
@@ -719,7 +719,7 @@ def create_incident_channel(incident_title, severity):
 
 **2. Status page updates**
 
-Keep users informed with a status page. You do not need a fancy tool — a simple GitHub Pages site that gets
+Keep users informed with a status page. You do not need a fancy tool, a simple GitHub Pages site that gets
 updated by your incident bot works fine:
 
 <br />
@@ -878,14 +878,14 @@ detected quickly, responded to efficiently, mitigated automatically when possibl
 
 <br />
 
-The tools we covered today — PagerDuty/Terraform for on-call, runbooks as code, auto-remediation with
-Kubernetes Jobs, blameless postmortems with templates, and MCP tools for incident coordination — are all
+The tools we covered today, PagerDuty/Terraform for on-call, runbooks as code, auto-remediation with
+Kubernetes Jobs, blameless postmortems with templates, and MCP tools for incident coordination, are all
 things you can start implementing today. You do not need to do everything at once. Pick the one that would
 have helped most in your last incident and start there.
 
 <br />
 
-In the next article we could explore observability in depth — distributed tracing with OpenTelemetry, log
+In the next article we could explore observability in depth, distributed tracing with OpenTelemetry, log
 aggregation, and building dashboards that actually help during incidents. But that is for another day.
 
 <br />
@@ -1180,7 +1180,7 @@ spec:
 
 ##### **Runbooks como código**
 Un runbook es una guía paso a paso para manejar un tipo específico de alerta o incidente. Los mejores runbooks
-no son documentos juntando polvo en una wiki — son código ejecutable que vive al lado de tu infraestructura.
+no son documentos juntando polvo en una wiki, son código ejecutable que vive al lado de tu infraestructura.
 
 <br />
 
@@ -1263,7 +1263,7 @@ kubectl -n default rollout restart deployment/tr-web
 <br />
 
 La clave es que cada paso de diagnóstico tiene comandos reales que podés copiar y pegar. Cuando estás medio
-dormido a las 3am, no querés pensar — querés seguir pasos.
+dormido a las 3am, no querés pensar, querés seguir pasos.
 
 <br />
 
@@ -1466,7 +1466,7 @@ gh pr create --title "Postmortem: $TITLE" --body "Postmortem auto-generado. Por 
 
 <br />
 
-Esto asegura que los postmortems nunca se olviden. La regla de las 48 horas es importante — los detalles se
+Esto asegura que los postmortems nunca se olviden. La regla de las 48 horas es importante, los detalles se
 pierden rápido, y si esperás una semana para escribir el postmortem, la gente se va a haber olvidado del
 contexto crucial.
 
@@ -1629,7 +1629,7 @@ def create_incident_channel(incident_title, severity):
 
 **2. Actualizaciones de página de estado**
 
-Mantené informados a los usuarios con una página de estado. No necesitás una herramienta sofisticada — un
+Mantené informados a los usuarios con una página de estado. No necesitás una herramienta sofisticada, un
 sitio simple de GitHub Pages que se actualice por tu bot de incidentes funciona perfecto:
 
 <br />
@@ -1789,14 +1789,14 @@ aprende de ellos siempre.
 
 <br />
 
-Las herramientas que cubrimos hoy — PagerDuty/Terraform para guardias, runbooks como código, auto-remediación
+Las herramientas que cubrimos hoy, PagerDuty/Terraform para guardias, runbooks como código, auto-remediación
 con Jobs de Kubernetes, postmortems sin culpas con templates, y herramientas MCP para coordinación de incidentes
-— son todas cosas que podés empezar a implementar hoy. No necesitás hacer todo de una. Elegí lo que más te
+, son todas cosas que podés empezar a implementar hoy. No necesitás hacer todo de una. Elegí lo que más te
 hubiera ayudado en tu último incidente y empezá por ahí.
 
 <br />
 
-En el próximo artículo podríamos explorar observabilidad en profundidad — trazabilidad distribuida con
+En el próximo artículo podríamos explorar observabilidad en profundidad, trazabilidad distribuida con
 OpenTelemetry, agregación de logs, y construir dashboards que realmente ayuden durante incidentes. Pero eso es
 para otro día.
 

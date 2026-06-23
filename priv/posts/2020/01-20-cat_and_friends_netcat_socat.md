@@ -174,6 +174,13 @@ More info:
 <br />
 
 
+##### **Try it on a real box**
+The terminal below is a real Alpine Linux box (netcat + socat included) running in your browser. Use socat to relay a port to a running service.
+
+<div id="ch-netcat-socat" phx-hook="Challenge" phx-update="ignore" data-challenge="netcat-socat-relay" data-mode="v86"></div>
+
+<br />
+
 ##### **Closing notes**
 Be sure to check the links if you want to learn more about each different tool and I hope you enjoyed it, see you on [twitter](https://twitter.com/kainlite) or [github](https://github.com/kainlite)!
 <br />

@@ -1,0 +1,24 @@
+{
+  "id": "ssh-remote-forward",
+  "title": "Challenge: SSH remote port forward",
+  "mode": "scripted",
+  "prompt": "you@laptop:~$ ",
+  "intro": "Your web app runs on your laptop at localhost:3000, but the laptop is behind NAT, nobody outside can reach it. You do have SSH access to a public box, bastion.example.com. Expose your app through it with a remote port forward.",
+  "steps": [
+    {
+      "instruction": "Open a remote forward so bastion.example.com:8080 points back to your laptop's localhost:3000, with no remote shell.",
+      "match": ["^ssh\\b", "-R\\s*8080:localhost:3000", "@bastion\\.example\\.com"],
+      "success": "Remote forward established: bastion.example.com:8080 -> your laptop's localhost:3000.",
+      "fail": "Use ssh -R REMOTE_PORT:HOST:PORT to user@bastion.example.com. Add -N for no remote shell.",
+      "hint": "ssh -N -R 8080:localhost:3000 user@bastion.example.com"
+    },
+    {
+      "instruction": "On the bastion, verify it reaches your app: run a client against its local port 8080.",
+      "match": ["(curl|wget|nc\\b)", "8080"],
+      "success": "<h1>It works, served from your laptop</h1>  (the request tunneled back to localhost:3000)",
+      "fail": "Run a client (e.g. curl) against localhost:8080 on the bastion.",
+      "hint": "curl http://localhost:8080"
+    }
+  ],
+  "done": "Solved! `ssh -R` exposed a service behind NAT through a public box. (For the bastion to listen on all interfaces, it needs GatewayPorts yes.)"
+}

@@ -330,6 +330,13 @@ git branch --merged main | grep -v "main" | xargs git branch -d
 
 <br />
 
+##### **Try it yourself**
+Run the core Git workflow, init, add, commit, branch, merge, in the terminal below.
+
+<div id="ch-git-basics" phx-hook="Challenge" phx-update="ignore" data-challenge="git-basics" data-mode="scripted"></div>
+
+<br />
+
 ##### **Closing notes**
 Version control is the backbone of how teams collaborate and how code reaches production safely. Getting your Git workflow right early saves enormous amounts of pain down the road.
 

@@ -366,6 +366,13 @@ kubectl debug -it my-pod --image=your-registry/debug-toolkit:latest
 
 <br />
 
+##### **Try it yourself**
+A distroless pod with no shell is misbehaving. Get inside it anyway with an ephemeral debug container.
+
+<div id="ch-k8s-debug" phx-hook="Challenge" phx-update="ignore" data-challenge="k8s-debug" data-mode="scripted"></div>
+
+<br />
+
 ##### **Conclusion**
 Debugging distroless containers doesn't have to be a nightmare. With `kubectl debug` and the `/proc/1/root` technique, you can investigate issues in even the most minimal containers. The key is understanding that you're not trying to add tools to the distroless container - you're bringing your own toolbox and accessing the container's filesystem from the outside.
 

@@ -522,6 +522,13 @@ git cherry-pick --abort
 
 <br />
 
+##### **Try it yourself**
+You "lost" a commit with a hard reset. Recover it using the reflog in the terminal below.
+
+<div id="ch-git-reflog" phx-hook="Challenge" phx-update="ignore" data-challenge="git-reflog-recovery" data-mode="scripted"></div>
+
+<br />
+
 ##### **Conclusion**
 Git's reflog is your safety net, and cherry-pick is your precision tool. Together, they make Git much less scary. Remember:
 

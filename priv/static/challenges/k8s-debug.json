@@ -1,0 +1,13 @@
+{
+  "id": "k8s-debug",
+  "title": "Challenge: debug a container that has no shell",
+  "mode": "scripted",
+  "prompt": "you@kubectl:~$ ",
+  "intro": "Your pod 'app' runs a distroless image, tiny and secure, but it has no shell, no ls, nothing to debug with. `kubectl exec` is useless here. Ephemeral debug containers to the rescue. (Commands checked; output illustrative.)",
+  "steps": [
+    { "instruction": "First, see the problem: try to get a shell in the 'app' pod.", "match": ["^kubectl\\s+exec", "app", "(sh|bash)"], "success": "OCI runtime exec failed: exec failed: unable to start container process: exec: \"sh\": executable file not found in $PATH   <- distroless has no shell", "fail": "Try kubectl exec -it app -- sh (it will fail, that's the point).", "hint": "kubectl exec -it app -- sh" },
+    { "instruction": "Attach an ephemeral debug container (busybox) that shares the process namespace of the 'app' container.", "match": ["^kubectl\\s+debug", "app", "--image=", "--target(=|\\s+)app"], "success": "Defaulting debug container name to debugger-7x2k.\nIf you don't see a command prompt, try pressing enter.\n/ #   <- you're in a busybox shell, alongside the app's processes", "fail": "Use kubectl debug with -it, an --image (e.g. busybox), and --target=app so it shares the namespace.", "hint": "kubectl debug -it app --image=busybox --target=app" },
+    { "instruction": "From the debug container, list processes to see the app running (it shares the PID namespace).", "match": ["^(ps|top)\\b"], "success": "PID   USER   TIME  COMMAND\n    1 root   0:00  /app/server --port 8080\n   14 root   0:00  ps aux   <- there's your distroless app (PID 1)", "fail": "List the running processes (e.g. ps aux).", "hint": "ps aux" }
+  ],
+  "done": "Solved! `kubectl debug --target` injects a throwaway container into a running pod, sharing its namespaces, so you can inspect distroless or scratch containers that ship with nothing. The app image stays minimal; debugging tools come and go on demand."
+}

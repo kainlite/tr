@@ -66,6 +66,17 @@ It looks something like this, as you can see I have a small tmux pane in the bot
 * If you are going to use unicode I recommend you to install the fonts from nerd-fonts.
 <br />
 
+### **Practice on a real Linux box**
+Hands-on drills on a real Linux machine running in your browser: tighten a file's permissions, hunt for text with grep, and stop a runaway process.
+
+<div id="ch-linux-perms" phx-hook="Challenge" phx-update="ignore" data-challenge="linux-permissions" data-mode="v86"></div>
+
+<div id="ch-linux-search" phx-hook="Challenge" phx-update="ignore" data-challenge="linux-search" data-mode="v86"></div>
+
+<div id="ch-linux-process" phx-hook="Challenge" phx-update="ignore" data-challenge="linux-process" data-mode="v86"></div>
+
+<br />
+
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 

@@ -1,0 +1,16 @@
+{
+  "id": "git-basics",
+  "title": "Challenge: your first Git workflow",
+  "mode": "scripted",
+  "prompt": "you@laptop:~/project$ ",
+  "intro": "You wrote some code and want to track it with Git, then build a feature on a branch and merge it back. Let's walk the core loop. (Type 'help' for a hint.)",
+  "steps": [
+    { "instruction": "Turn the current folder into a Git repository.", "match": ["^git\\s+init"], "success": "Initialized empty Git repository in ~/project/.git/", "fail": "Use git to initialize a new repository here.", "hint": "git init" },
+    { "instruction": "Stage all your changes so Git knows what to record.", "match": ["^git\\s+add\\s+(\\.|-A|--all|\\*)"], "success": "Changes staged.", "fail": "Stage everything with git add.", "hint": "git add ." },
+    { "instruction": "Record the staged changes as a commit with a message.", "match": ["^git\\s+commit", "-m"], "success": "[main (root-commit) a1b2c3d] initial commit\n 3 files changed, 42 insertions(+)", "fail": "Commit with a message using -m.", "hint": "git commit -m \"initial commit\"" },
+    { "instruction": "Create and switch to a new branch called 'feature'.", "match": ["^git\\s+(checkout\\s+-b|switch\\s+-c)\\s+feature"], "success": "Switched to a new branch 'feature'", "fail": "Create AND switch to a branch named feature in one command.", "hint": "git checkout -b feature   (or)  git switch -c feature" },
+    { "instruction": "You finished and committed the feature. Switch back to main.", "match": ["^git\\s+(checkout|switch)\\s+main"], "success": "Switched to branch 'main'", "fail": "Switch back to the main branch.", "hint": "git switch main   (or)  git checkout main" },
+    { "instruction": "Merge your feature branch into main.", "match": ["^git\\s+merge\\s+feature"], "success": "Updating a1b2c3d..d4e5f6a\nFast-forward, feature merged into main.", "fail": "Merge the feature branch into the current (main) branch.", "hint": "git merge feature" }
+  ],
+  "done": "Solved! init → add → commit → branch → merge is the backbone of every Git workflow."
+}

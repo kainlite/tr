@@ -1,0 +1,16 @@
+{
+  "id": "linux-process",
+  "title": "Real lab: find and kill a runaway process",
+  "mode": "v86",
+  "image": "alpine",
+  "instruction": "Real Linux box. A stray process is running the command `sleep 99999` and eating a slot you need. Find its PID (try `ps aux | grep sleep`) and kill it. Then click Verify.",
+  "setup": "sleep 99999 >/dev/null 2>&1 & echo $! > /tmp/.runaway; echo \"(a stray 'sleep 99999' process is now running)\"",
+  "verify": {
+    "command": "if kill -0 $(cat /tmp/.runaway 2>/dev/null) 2>/dev/null; then echo PROC_STILL_RUNNING; else echo PROC_GONE; fi",
+    "wait_ms": 1500,
+    "expect_all": ["PROC_GONE"],
+    "success": "Solved! You found a process and stopped it. ps/pgrep to find, kill (or pkill -f) to stop. Signals: kill sends TERM by default (polite); kill -9 sends KILL (forceful, last resort).",
+    "fail": "It's still running. Find the PID (ps aux | grep sleep, or pgrep -f 'sleep 99999') and kill it."
+  },
+  "hint": "pgrep -f 'sleep 99999'   to get the PID, then  kill <PID>     (or in one go: pkill -f 'sleep 99999')"
+}

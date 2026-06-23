@@ -1,0 +1,31 @@
+{
+  "id": "ssh-tunnels-local-forward",
+  "title": "Challenge: SSH local port forward",
+  "mode": "scripted",
+  "prompt": "you@laptop:~$ ",
+  "intro": "Scenario: a MySQL database runs on bastion host example.com and only listens on its own localhost:3306. A firewall blocks 3306 from the outside. Reach it from your laptop using an SSH local port forward. Type commands below; 'help' shows a hint, 'reset' starts over.",
+  "steps": [
+    {
+      "instruction": "Confirm you cannot reach the database directly yet. Try a client against your local port 3306.",
+      "match": ["(mysql|nc\\b|ncat|telnet|curl|nmap)", "3306"],
+      "success": "ERROR 2003 (HY000): Can't connect to MySQL server on '127.0.0.1:3306' (111 Connection refused)",
+      "fail": "Use a client (mysql / nc / telnet) pointed at port 3306 to prove it's unreachable.",
+      "hint": "Try:  nc -vz localhost 3306   (or)  mysql -h 127.0.0.1 -P 3306 -u root"
+    },
+    {
+      "instruction": "Open a local port forward: bind local 3306 to localhost:3306 on example.com, and don't open a remote shell.",
+      "match": ["^ssh\\b", "-L\\s*3306:localhost:3306", "@example\\.com"],
+      "success": "Tunnel established: localhost:3306 -> example.com -> localhost:3306. (no shell; running in foreground)",
+      "fail": "You need ssh with -L LOCAL:HOST:PORT to user@example.com. Add -N so no remote shell is opened.",
+      "hint": "ssh -N -L 3306:localhost:3306 user@example.com   ( -N = no remote command )"
+    },
+    {
+      "instruction": "Leave the tunnel running. In a new shell, connect to the database through your local port 3306.",
+      "match": ["(mysql|nc\\b|ncat|telnet|curl)", "3306"],
+      "success": "Welcome to the MySQL monitor.  Server version: 8.0.36\nConnected through the SSH tunnel, the firewall never saw your traffic.",
+      "fail": "Same client command as step 1, now it succeeds because the tunnel forwards your local 3306 to the remote database.",
+      "hint": "nc -vz localhost 3306   (or)  mysql -h 127.0.0.1 -P 3306 -u root"
+    }
+  ],
+  "done": "Solved! You forwarded a firewalled remote service to your laptop with `ssh -N -L 3306:localhost:3306 user@example.com`."
+}

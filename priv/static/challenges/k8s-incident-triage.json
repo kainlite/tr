@@ -1,0 +1,15 @@
+{
+  "id": "k8s-incident-triage",
+  "title": "Challenge: triage and roll back a bad deploy",
+  "mode": "scripted",
+  "prompt": "oncall@kubectl:~$ ",
+  "intro": "3 a.m. page: the 'api' deployment is down after a release. Triage it like an SRE, find the failure, confirm the cause, and roll back to the last good version. (Commands checked; output illustrative.)",
+  "steps": [
+    { "instruction": "Start with the blast radius: list the pods for the api.", "match": ["^kubectl\\s+get\\s+pods?"], "success": "NAME                   READY   STATUS             RESTARTS   AGE\napi-7d9f8c6b5-abc12    0/1     CrashLoopBackOff   5          3m   <- not healthy", "fail": "List the pods.", "hint": "kubectl get pods" },
+    { "instruction": "Find out WHY it's crashing: read the logs of the crashing pod.", "match": ["^kubectl\\s+logs\\b"], "success": "Error: cannot connect to database: getaddrinfo ENOTFOUND db-prod\n  the new release points at a hostname that doesn't exist", "fail": "Read the pod logs.", "hint": "kubectl logs api-7d9f8c6b5-abc12   (add --previous if it already restarted)" },
+    { "instruction": "It's a bad release. Check the deployment's rollout history to see the revisions.", "match": ["^kubectl\\s+rollout\\s+history\\s+deployment"], "success": "deployment.apps/api\nREVISION  CHANGE-CAUSE\n1         good release\n2         broke db host   <- current", "fail": "Show the rollout history of the api deployment.", "hint": "kubectl rollout history deployment/api" },
+    { "instruction": "Roll back to the previous, working revision, stop the bleeding first, debug later.", "match": ["^kubectl\\s+rollout\\s+undo\\s+deployment"], "success": "deployment.apps/api rolled back", "fail": "Undo the rollout on the api deployment.", "hint": "kubectl rollout undo deployment/api" },
+    { "instruction": "Confirm recovery: list the pods again.", "match": ["^kubectl\\s+get\\s+pods?"], "success": "NAME                   READY   STATUS    RESTARTS   AGE\napi-5c4b3a2f1-z9y8x    1/1     Running   0          12s   <- healthy again", "fail": "List the pods to confirm they're Running.", "hint": "kubectl get pods" }
+  ],
+  "done": "Solved! Triage order matters: assess (get pods) → diagnose (logs) → mitigate (rollback) → confirm. Restore service first; write the postmortem after."
+}

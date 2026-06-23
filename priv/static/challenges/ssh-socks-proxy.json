@@ -1,0 +1,24 @@
+{
+  "id": "ssh-socks-proxy",
+  "title": "Challenge: SSH dynamic (SOCKS) proxy",
+  "mode": "scripted",
+  "prompt": "you@laptop:~$ ",
+  "intro": "Instead of forwarding a single port, you want a general-purpose proxy that routes arbitrary traffic through a remote host, as if you were on its network. That's an SSH dynamic forward: a local SOCKS proxy.",
+  "steps": [
+    {
+      "instruction": "Start a SOCKS proxy on local port 1080 through jump.example.com, without a remote shell.",
+      "match": ["^ssh\\b", "-D\\s*1080", "@jump\\.example\\.com"],
+      "success": "SOCKS5 proxy listening on 127.0.0.1:1080 via jump.example.com.",
+      "fail": "Use ssh -D LOCAL_PORT to user@jump.example.com (add -N for no shell).",
+      "hint": "ssh -N -D 1080 user@jump.example.com"
+    },
+    {
+      "instruction": "Make a request through the proxy: curl an internal site using the SOCKS5 proxy on port 1080.",
+      "match": ["curl", "(socks5|1080)"],
+      "success": "Reached intranet.corp through jump.example.com, your traffic exited from the remote network.",
+      "fail": "Point curl at the SOCKS proxy, e.g. with --socks5 localhost:1080.",
+      "hint": "curl --socks5 localhost:1080 http://intranet.corp"
+    }
+  ],
+  "done": "Solved! `ssh -D` gives you a SOCKS proxy, one tunnel for any destination. Browsers and most tools can use it directly."
+}

@@ -1134,6 +1134,13 @@ This is especially valuable in production where you want to review changes befor
 
 <br />
 
+##### **Try it yourself**
+Run the Helm release lifecycle, install, upgrade, rollback, uninstall, in the guided terminal below.
+
+<div id="ch-helm" phx-hook="Challenge" phx-update="ignore" data-challenge="helm-basics" data-mode="scripted"></div>
+
+<br />
+
 ##### **Closing notes**
 Helm takes the pain out of managing Kubernetes applications. Instead of juggling raw YAML files
 across environments, you define your application once as a chart, parameterize the things that

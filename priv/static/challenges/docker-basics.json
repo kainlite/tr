@@ -1,0 +1,15 @@
+{
+  "id": "docker-basics",
+  "title": "Challenge: your first containers",
+  "mode": "scripted",
+  "prompt": "you@host:~$ ",
+  "intro": "Time to drive Docker: run a container, see it, peek inside, and clean up. (Commands are checked, not actually executed, so you can practice safely.)",
+  "steps": [
+    { "instruction": "Run an nginx container in the background (detached). Naming it 'web' will help later.", "match": ["^docker\\s+run", "(-d|--detach)", "nginx"], "success": "Unable to find image 'nginx:latest' locally\nlatest: Pulling from library/nginx\nStatus: Downloaded newer image for nginx:latest\n7f3a9c1b2d3e4f...", "fail": "Use docker run with -d (detached) and the nginx image. Add --name web to name it.", "hint": "docker run -d --name web nginx" },
+    { "instruction": "List the running containers to confirm it's up.", "match": ["^docker\\s+(ps|container\\s+ls)"], "success": "CONTAINER ID   IMAGE   STATUS         NAMES\n7f3a9c1b2d3e   nginx   Up 3 seconds   web", "fail": "Show the running containers.", "hint": "docker ps" },
+    { "instruction": "Open an interactive shell INSIDE the 'web' container.", "match": ["^docker\\s+exec", "(-it|-ti|-i\\s+-t)", "web", "(sh|bash)"], "success": "root@7f3a9c1b2d3e:/#   (you're inside the container now, type 'exit' to leave)", "fail": "Use docker exec with -it to get an interactive shell in 'web'.", "hint": "docker exec -it web bash" },
+    { "instruction": "Stop the container when you're done.", "match": ["^docker\\s+stop\\s+web"], "success": "web", "fail": "Stop the container named web.", "hint": "docker stop web" },
+    { "instruction": "Finally, remove the stopped container to clean up.", "match": ["^docker\\s+rm\\s+web"], "success": "web", "fail": "Remove the container named web.", "hint": "docker rm web" }
+  ],
+  "done": "Solved! run → ps → exec → stop → rm is the daily-driver loop. Everything else in Docker builds on these."
+}

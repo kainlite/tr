@@ -1,0 +1,15 @@
+{
+  "id": "netcat-socat-relay",
+  "title": "Real lab: relay a port with socat",
+  "mode": "v86",
+  "image": "alpine",
+  "instruction": "This is a real Alpine box with netcat and socat. A service answers on 127.0.0.1:8000 (try `curl 127.0.0.1:8000`). Use socat to open a NEW listening port 9999 that relays to that service, so `curl 127.0.0.1:9999` reaches it too. Background it with `&`, then click Verify.",
+  "verify": {
+    "command": "echo ---; curl -s --max-time 4 127.0.0.1:9999; echo ---",
+    "wait_ms": 5000,
+    "expect_all": ["TUNNEL_TARGET_OK"],
+    "success": "Solved! socat is relaying 9999 -> 8000. socat is the swiss-army knife for wiring sockets together.",
+    "fail": "Port 9999 isn't reaching the service yet. Start a socat relay from 9999 to 127.0.0.1:8000."
+  },
+  "hint": "socat TCP-LISTEN:9999,reuseaddr,fork TCP:127.0.0.1:8000 &     then check: curl 127.0.0.1:9999"
+}

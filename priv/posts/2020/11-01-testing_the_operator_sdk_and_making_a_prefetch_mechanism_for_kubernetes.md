@@ -688,10 +688,10 @@ func (r *PrefetchReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 ")
 		if errors.IsNotFound(err) {
 			// Request object not found, could have been deleted after
-			// reconcile request—return and don't requeue:
+			// reconcile request, return and don't requeue:
 			return reconcile.Result{}, client.IgnoreNotFound(err)
 		}
-		// Error reading the object—requeue the request:
+		// Error reading the object, requeue the request:
 		return reconcile.Result{}, err
 	}
 
@@ -1505,10 +1505,10 @@ func (r *PrefetchReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 ")
 		if errors.IsNotFound(err) {
 			// Request object not found, could have been deleted after
-			// reconcile request—return and don't requeue:
+			// reconcile request, return and don't requeue:
 			return reconcile.Result{}, client.IgnoreNotFound(err)
 		}
-		// Error reading the object—requeue the request:
+		// Error reading the object, requeue the request:
 		return reconcile.Result{}, err
 	}
 

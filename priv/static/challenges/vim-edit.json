@@ -1,0 +1,16 @@
+{
+  "id": "vim-edit",
+  "title": "Real lab: edit a file in vim",
+  "mode": "v86",
+  "image": "alpine",
+  "instruction": "Real Linux box with real vim. Open /root/notes.txt in vim, add a new line containing the word DONE, then save and quit. Click Verify once you're back at the shell prompt. (vim basics: press i to start typing, Esc to stop, then type :wq and Enter to save and quit.)",
+  "setup": "printf 'my notes\\n- buy milk\\n- learn vim\\n' > /root/notes.txt; echo '(scenario ready: /root/notes.txt created)'",
+  "verify": {
+    "command": "if grep -q DONE /root/notes.txt 2>/dev/null; then echo VIM_OK; else echo VIM_NO; fi",
+    "wait_ms": 1500,
+    "expect_all": ["VIM_OK"],
+    "success": "Solved! You opened, edited, and saved a real file in vim. i → type → Esc → :wq is the loop that gets you out of (and productive in) vim.",
+    "fail": "Not yet, /root/notes.txt needs a saved line containing DONE. In vim: press i, type DONE, press Esc, type :wq and Enter."
+  },
+  "hint": "vim /root/notes.txt → i → type DONE → Esc → :wq → Enter"
+}

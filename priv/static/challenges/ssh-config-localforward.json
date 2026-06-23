@@ -1,0 +1,17 @@
+{
+  "id": "ssh-config-localforward",
+  "title": "Real Linux shell: make the tunnel permanent in ~/.ssh/config",
+  "mode": "v86",
+  "instruction": "This is a REAL Linux box running entirely in your browser. Typing the long `ssh -L ...` every time is tedious, turn it into an alias. Create /root/.ssh/config with a Host entry named `db` that sets `HostName example.com` and `LocalForward 3306 localhost:3306`. Then click Verify. (Tip: busybox has vi, or just use printf/cat.)",
+  "verify": {
+    "command": "cat /root/.ssh/config 2>/dev/null; echo __ssh_cfg_end__",
+    "wait_ms": 1500,
+    "expect_all": [
+      "HostName\\s+example\\.com",
+      "LocalForward\\s+3306\\s+localhost:3306"
+    ],
+    "success": "Solved! With this config, `ssh db` opens the local forward automatically, no flags to remember.",
+    "fail": "Not yet. /root/.ssh/config must contain both 'HostName example.com' and 'LocalForward 3306 localhost:3306'."
+  },
+  "hint": "mkdir -p /root/.ssh && printf 'Host db\\n  HostName example.com\\n  LocalForward 3306 localhost:3306\\n' > /root/.ssh/config"
+}

@@ -302,10 +302,10 @@ func (r *MapPortReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 	if err != nil {
 		if errors.IsNotFound(err) {
 			// Request object not found, could have been deleted after
-			// reconcile request—return and don't requeue:
+			// reconcile request, return and don't requeue:
 			return ctrl.Result{}, nil
 		}
-		// Error reading the object—requeue the request:
+		// Error reading the object, requeue the request:
 		return ctrl.Result{}, err
 	}
 
@@ -912,10 +912,10 @@ func (r *MapPortReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 	if err != nil {
 		if errors.IsNotFound(err) {
 			// Request object not found, could have been deleted after
-			// reconcile request—return and don't requeue:
+			// reconcile request, return and don't requeue:
 			return ctrl.Result{}, nil
 		}
-		// Error reading the object—requeue the request:
+		// Error reading the object, requeue the request:
 		return ctrl.Result{}, err
 	}
 

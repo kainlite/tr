@@ -45,6 +45,14 @@ config :esbuild,
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ],
+  # Heavy, lazily-loaded bundle for the v86 (real Linux VM) challenge runner.
+  # Loaded on demand only on pages with a v86-mode challenge.
+  v86: [
+    args:
+      ~w(js/challenges/v86.js --bundle --target=es2017 --format=iife --outfile=../priv/static/assets/v86-runner.js),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 
 # Configure tailwind (the version is required)

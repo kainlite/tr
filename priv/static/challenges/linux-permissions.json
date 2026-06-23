@@ -1,0 +1,16 @@
+{
+  "id": "linux-permissions",
+  "title": "Real lab: lock down a file's permissions",
+  "mode": "v86",
+  "image": "alpine",
+  "instruction": "Real Linux box. A sensitive file at /root/secret.txt is currently readable by everyone, check its mode with `ls -l /root/secret.txt`. Lock it down so ONLY the owner can read and write it (no group, no others). Then click Verify.",
+  "setup": "printf 'launch codes: 0000\\n' > /root/secret.txt; chmod 644 /root/secret.txt; echo '(scenario ready: /root/secret.txt is world-readable)'",
+  "verify": {
+    "command": "if [ \"$(stat -c '%a' /root/secret.txt 2>/dev/null)\" = 600 ]; then echo PERM_OK; else echo PERM_NO mode=$(stat -c '%a' /root/secret.txt 2>/dev/null); fi",
+    "wait_ms": 1500,
+    "expect_all": ["PERM_OK"],
+    "success": "Solved! 600 means owner read+write and nobody else. chmod's three octal digits are owner/group/other, each a sum of read(4) + write(2) + execute(1).",
+    "fail": "Not there yet, /root/secret.txt must be mode 600 (owner rw, no access for group or others)."
+  },
+  "hint": "chmod 600 /root/secret.txt     (verify with: ls -l /root/secret.txt)"
+}

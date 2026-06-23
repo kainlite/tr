@@ -165,6 +165,13 @@ So, it was always a tab? yes! Any questions? Drop a comment 👇
 
 <br />
 
+##### **Try it on a real box**
+Open, edit, and save a file in real vim, running on a Linux box in your browser.
+
+<div id="ch-vim" phx-hook="Challenge" phx-update="ignore" data-challenge="vim-edit" data-mode="v86"></div>
+
+<br />
+
 ##### **Errata**
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 

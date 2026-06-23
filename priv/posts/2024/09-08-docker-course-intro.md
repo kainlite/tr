@@ -49,6 +49,13 @@ This page will only cover chapter 1.
 
 <br>
 
+#### **Try it yourself**
+Drive the Docker daily-driver loop, run, ps, exec, stop, rm, in the guided terminal below.
+
+<div id="ch-docker-basics" phx-hook="Challenge" phx-update="ignore" data-challenge="docker-basics" data-mode="scripted"></div>
+
+<br>
+
 Follow me on [LinkedIn](https://www.linkedin.com/in/gabrielgarrido/) and watch the video for free
 
 <br>

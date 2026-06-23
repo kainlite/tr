@@ -36,6 +36,20 @@ ssh -Nn -L 3306:172.16.16.200:3306 user@example.com
 This will give you access to the ip 172.16.16.200 and port 3306 in the remote network.
 <br />
 
+##### **Try it yourself**
+Walk through the scenario in the interactive terminal below: reach a firewalled remote database by setting up a local port forward.
+
+<div id="ch-ssh-local-forward" phx-hook="Challenge" phx-update="ignore" data-challenge="ssh-tunnels-local-forward" data-mode="scripted"></div>
+
+<br />
+
+##### **Now do it for real**
+The terminal below is a real Alpine Linux box with OpenSSH, running entirely in your browser (no servers). Set up an actual local port forward and reach a service through the tunnel.
+
+<div id="ch-ssh-tunnel-real" phx-hook="Challenge" phx-update="ignore" data-challenge="ssh-tunnel-local-forward-real" data-mode="v86"></div>
+
+<br />
+
 ##### **The parameters and their meaning**
 I extracted a portion of the meaning of parameter from the man page, but in a nutshell it means local port forward without a shell.
 ```plaintext
@@ -100,6 +114,13 @@ En este caso, estamos redirigiendo `localhost:3306` de la máquina remota a `loc
 ssh -Nn -L 3306:172.16.16.200:3306 user@example.com
 ```
 Esto te dará acceso a la IP 172.16.16.200 y al puerto 3306 en la red remota.
+<br />
+
+### **Probalo vos mismo**
+Seguí el escenario en la terminal interactiva de abajo: llegá a una base de datos remota detrás de un firewall configurando un reenvío de puerto local. (Las pistas están en inglés.)
+
+<div id="ch-ssh-local-forward-es" phx-hook="Challenge" phx-update="ignore" data-challenge="ssh-tunnels-local-forward" data-mode="scripted"></div>
+
 <br />
 
 ### **Los parámetros y su significado**

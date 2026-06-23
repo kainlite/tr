@@ -937,6 +937,13 @@ kind delete cluster --name my-cluster
 
 <br />
 
+##### **Try it yourself**
+Deploy, scale, and expose your first workload with kubectl in the guided terminal below.
+
+<div id="ch-k8s-fundamentals" phx-hook="Challenge" phx-update="ignore" data-challenge="k8s-fundamentals" data-mode="scripted"></div>
+
+<br />
+
 ##### **Closing notes**
 Kubernetes has a reputation for being complex, and it is true that the ecosystem is massive. But the
 core concepts are straightforward. You have Pods that run containers, Deployments that manage Pods,

@@ -1,0 +1,14 @@
+{
+  "id": "tmux-basics",
+  "title": "Challenge: tmux sessions that survive",
+  "mode": "scripted",
+  "prompt": "you@server:~$ ",
+  "intro": "The tmux superpower: start work in a session, detach, even disconnect, your programs keep running. Reconnect later and pick up exactly where you left off. Let's do that loop. (Commands are checked, not executed.)",
+  "steps": [
+    { "instruction": "Start a new tmux session named 'work'.", "match": ["^tmux\\s+new", "work"], "success": "[you're now inside tmux session 'work', a green status bar appears at the bottom]", "fail": "Create a new named session. Use -s to name it.", "hint": "tmux new -s work" },
+    { "instruction": "Detach from the session so it keeps running in the background. What do you press? (type it)", "match": ["(detach|C-?b\\s*d|ctrl-?b\\s*d|\\^b\\s*d)"], "success": "[detached (from session work)], your shell is back, but 'work' keeps running.", "fail": "Detach with the prefix key, then d. (Type 'C-b d' or 'detach'.)", "hint": "Press Ctrl-b then d   (here, just type: C-b d)" },
+    { "instruction": "List the tmux sessions to confirm 'work' is still alive.", "match": ["^tmux\\s+(ls|list-sessions)"], "success": "work: 1 windows (created Mon ...) [80x24]", "fail": "List the running tmux sessions.", "hint": "tmux ls" },
+    { "instruction": "Re-attach to the 'work' session.", "match": ["^tmux\\s+(attach|a)\\b", "work"], "success": "[re-attached to 'work', everything exactly as you left it]", "fail": "Attach back to the session named work.", "hint": "tmux attach -t work" }
+  ],
+  "done": "Solved! new → detach → ls → attach. This is why people run long jobs and remote work inside tmux: a dropped SSH connection can't kill your session."
+}

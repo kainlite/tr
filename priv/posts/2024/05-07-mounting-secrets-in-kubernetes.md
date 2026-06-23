@@ -331,6 +331,13 @@ do you have any questions? drop a comment :point_down:
 
 <br />
 
+##### **Try it yourself**
+Walk through both ways of consuming a Secret, env vars and mounted files, in the guided terminal below.
+
+<div id="ch-k8s-secrets" phx-hook="Challenge" phx-update="ignore" data-challenge="k8s-secrets" data-mode="scripted"></div>
+
+<br />
+
 ##### **Errata**
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 

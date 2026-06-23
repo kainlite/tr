@@ -794,3 +794,444 @@
   }
 
 }
+
+/* ---------------------------------------------------------------------------
+   Interactive challenge widget (scripted runner). Plain CSS (not Tailwind
+   utilities) because the markup is built in JS and would otherwise be purged.
+   The terminal pane is always dark (like a real terminal); the surrounding
+   frame adapts to the site's light/dark theme via the `.dark` class.
+--------------------------------------------------------------------------- */
+.tr-challenge {
+  margin: 1.5rem 0;
+  border: 1px solid #d1d1d1;
+  border-radius: 6px;
+  overflow: hidden;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: #fafafa;
+}
+.dark .tr-challenge {
+  border-color: #2a2a2a;
+  background: #111111;
+}
+
+.tr-challenge-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #e2e2e2;
+  background: #f0f0f0;
+}
+.dark .tr-challenge-head {
+  border-color: #2a2a2a;
+  background: #1a1a1a;
+}
+.tr-challenge-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #1a1a1a;
+}
+.dark .tr-challenge-title {
+  color: #e8e8e8;
+}
+.tr-challenge-badge {
+  font-size: 0.75rem;
+  padding: 0.1rem 0.5rem;
+  border: 1px solid #c9c9c9;
+  border-radius: 999px;
+  color: #555;
+  white-space: nowrap;
+}
+.dark .tr-challenge-badge {
+  border-color: #2a2a2a;
+  color: #9a9a9a;
+}
+.tr-challenge-badge-ok {
+  color: #0a7a2f;
+  border-color: #0a7a2f;
+}
+.dark .tr-challenge-badge-ok {
+  color: #38ef7d;
+  border-color: #38ef7d;
+}
+
+.tr-challenge-instruction {
+  padding: 0.6rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: #333;
+  background: #fff;
+  border-bottom: 1px solid #e2e2e2;
+}
+.dark .tr-challenge-instruction {
+  color: #cfcfcf;
+  background: #141414;
+  border-color: #2a2a2a;
+}
+
+.tr-term {
+  background: #0d0d0d;
+  color: #e6e6e6;
+  padding: 0.6rem 0.75rem;
+  max-height: 18rem;
+  overflow-y: auto;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.tr-term-line {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.tr-term-cmd {
+  color: #ffffff;
+}
+.tr-term-ok {
+  color: #38ef7d;
+}
+.tr-term-err {
+  color: #ff6b6b;
+}
+.tr-term-hint {
+  color: #f5d76e;
+}
+.tr-term-muted {
+  color: #9a9a9a;
+}
+
+.tr-term-form {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: #0d0d0d;
+  padding: 0 0.75rem 0.6rem;
+}
+.tr-term-prompt {
+  color: #38ef7d;
+  font-size: 0.85rem;
+  white-space: pre;
+}
+.tr-term-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.2rem 0;
+}
+.tr-term-input::placeholder {
+  color: #6a6a6a;
+}
+
+.tr-challenge-actions {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-top: 1px solid #e2e2e2;
+  background: #f0f0f0;
+}
+.dark .tr-challenge-actions {
+  border-color: #2a2a2a;
+  background: #1a1a1a;
+}
+.tr-challenge-btn {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+}
+.tr-challenge-btn:hover {
+  border-color: #0a7a2f;
+  color: #0a7a2f;
+}
+.dark .tr-challenge-btn {
+  background: #111;
+  border-color: #2a2a2a;
+  color: #cfcfcf;
+}
+.dark .tr-challenge-btn:hover {
+  border-color: #38ef7d;
+  color: #38ef7d;
+}
+
+/* ---------------------------------------------------------------------------
+   Scripted challenge terminal (polished). Looks like a real terminal: a title
+   bar with traffic-light dots + step progress, a prominent task line, and one
+   continuous terminal where the input cursor sits inline at the bottom.
+--------------------------------------------------------------------------- */
+.tr-scripted,
+.tr-v86 {
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+}
+.dark .tr-scripted,
+.dark .tr-v86 {
+  box-shadow: 0 0 0 1px #1f1f1f, 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.tr-term-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.75rem;
+  background: #ececec;
+  border-bottom: 1px solid #dadada;
+}
+.dark .tr-term-bar {
+  background: #1b1b1b;
+  border-color: #2a2a2a;
+}
+.tr-term-dots {
+  display: inline-flex;
+  gap: 0.35rem;
+  flex: 0 0 auto;
+}
+.tr-term-dots i {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: #cbcbcb;
+}
+.tr-term-dots i:nth-child(1) { background: #ff5f57; }
+.tr-term-dots i:nth-child(2) { background: #febc2e; }
+.tr-term-dots i:nth-child(3) { background: #28c840; }
+.tr-term-name {
+  flex: 1 1 auto;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dark .tr-term-name { color: #d8d8d8; }
+.tr-term-steps {
+  flex: 0 0 auto;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  padding: 0.12rem 0.55rem;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid #cfcfcf;
+  color: #666;
+  white-space: nowrap;
+}
+.dark .tr-term-steps {
+  background: #111;
+  border-color: #2f2f2f;
+  color: #9a9a9a;
+}
+.tr-term-steps-ok {
+  color: #0a7a2f;
+  border-color: #0a7a2f;
+}
+.dark .tr-term-steps-ok {
+  color: #38ef7d;
+  border-color: #38ef7d;
+}
+
+.tr-term-progress {
+  height: 3px;
+  background: #dcdcdc;
+}
+.dark .tr-term-progress { background: #222; }
+.tr-term-progress span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #11998e, #38ef7d);
+  transition: width 0.35s ease;
+}
+
+.tr-term-task {
+  padding: 0.7rem 0.85rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #2c2c2c;
+  background: #fff;
+  border-left: 3px solid #38ef7d;
+  border-bottom: 1px solid #e6e6e6;
+}
+.dark .tr-term-task {
+  color: #e2e2e2;
+  background: #151515;
+  border-bottom-color: #2a2a2a;
+}
+.tr-term-task-ok {
+  border-left-color: #28c840;
+  font-weight: 500;
+}
+
+.tr-scripted .tr-term {
+  background: #0c0c0c;
+  color: #e6e6e6;
+  padding: 0.7rem 0.85rem;
+  max-height: 21rem;
+  min-height: 6rem;
+  overflow-y: auto;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  cursor: text;
+}
+.tr-term-out { display: block; }
+.tr-scripted .tr-term-line {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.tr-term-cmd { color: #f4f4f4; }
+.tr-term-ok { color: #46e08a; }
+.tr-term-err { color: #ff6b6b; }
+.tr-term-hint { color: #f5d76e; font-style: italic; }
+.tr-term-muted { color: #8c8c8c; }
+
+.tr-term-cur {
+  display: flex;
+  align-items: baseline;
+  margin-top: 0.15rem;
+}
+.tr-term-ps {
+  color: #38ef7d;
+  white-space: pre;
+  flex: 0 0 auto;
+}
+.tr-scripted .tr-term-in,
+.tr-scripted .tr-term-in:focus {
+  flex: 1 1 auto;
+  min-width: 2ch;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  box-shadow: none;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-color: transparent;
+  color: #ffffff;
+  caret-color: #38ef7d;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  padding: 0;
+}
+.tr-scripted .tr-term-in::placeholder { color: #6a6a6a; }
+
+.tr-term-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.45rem 0.75rem;
+  background: #ececec;
+  border-top: 1px solid #dadada;
+}
+.dark .tr-term-foot {
+  background: #1b1b1b;
+  border-color: #2a2a2a;
+}
+.tr-term-foot-btns { display: inline-flex; gap: 0.4rem; }
+.tr-term-btn {
+  font-size: 0.74rem;
+  padding: 0.2rem 0.7rem;
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  background: #fff;
+  color: #444;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.tr-term-btn:hover {
+  border-color: #0a7a2f;
+  color: #0a7a2f;
+}
+.dark .tr-term-btn {
+  background: #111;
+  border-color: #2f2f2f;
+  color: #cfcfcf;
+}
+.dark .tr-term-btn:hover {
+  border-color: #38ef7d;
+  color: #38ef7d;
+}
+.tr-term-tip {
+  font-size: 0.7rem;
+  color: #8a8a8a;
+}
+.tr-term-tip b { color: #555; font-weight: 600; }
+.dark .tr-term-tip b { color: #bbb; }
+
+.tr-solved .tr-term-progress span {
+  background: #28c840;
+  box-shadow: 0 0 8px rgba(40, 200, 64, 0.6);
+}
+
+/* v86 (real Linux) widget body: shares the bar/task/foot chrome above, plus
+   its own screen, start button, and status line. */
+.tr-v86-screen {
+  background: #0c0c0c;
+  min-height: 6rem;
+}
+.tr-v86-screen .xterm {
+  padding: 0.45rem 0.55rem;
+}
+.tr-v86-start {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 2.4rem 1rem;
+  background: #0c0c0c;
+  border: none;
+  color: #38ef7d;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.tr-v86-start:hover {
+  background: #151515;
+  color: #5ff39a;
+}
+.tr-v86-status {
+  padding: 0.55rem 0.85rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #555;
+  background: #fff;
+  border-top: 1px solid #e6e6e6;
+}
+.dark .tr-v86-status {
+  color: #9a9a9a;
+  background: #151515;
+  border-top-color: #2a2a2a;
+}
+.tr-v86-status-ok { color: #0a7a2f; }
+.dark .tr-v86-status-ok { color: #38ef7d; }
+.tr-v86-status-err { color: #c0392b; }
+.dark .tr-v86-status-err { color: #ff6b6b; }
+.tr-v86-status-hint { color: #b8860b; font-style: italic; }
+.dark .tr-v86-status-hint { color: #f5d76e; }
+.tr-v86-status-muted { color: #888; }
+
+/* Labs index: completion decoration (filled in client-side by LabProgress). */
+.tr-lab-check {
+  display: inline-block;
+  text-align: center;
+}
+.tr-track.track-complete {
+  border-color: #38ef7d;
+  box-shadow: 0 0 0 1px rgba(56, 239, 125, 0.3);
+}
+/* The blog gives every list a ▶ disclosure marker; the lab lists supply their
+   own status markers (✓ / ○), so suppress the default one on this page. */
+#labs-root ol,
+#labs-root ul {
+  list-style: none;
+  padding-left: 0;
+}

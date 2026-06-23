@@ -1,0 +1,15 @@
+{
+  "id": "ssh-tunnel-local-forward-real",
+  "title": "Real lab: forward a port through SSH",
+  "mode": "v86",
+  "image": "alpine",
+  "instruction": "This is a real Alpine Linux box running in your browser, with OpenSSH. A service answers ONLY on 127.0.0.1:8000 (run `curl 127.0.0.1:8000` to see it). sshd is running and `ssh root@127.0.0.1` works passwordless. Your task: open an SSH local port forward so that your local port 9000 reaches that service through SSH, then click Verify. Background the tunnel (-f) so you keep your prompt.",
+  "verify": {
+    "command": "echo ---; curl -s --max-time 4 http://127.0.0.1:9000; echo ---",
+    "wait_ms": 5000,
+    "expect_all": ["TUNNEL_TARGET_OK"],
+    "success": "Solved! Local port 9000 reached the firewalled service through your SSH tunnel, that's `ssh -L LOCAL:HOST:PORT` in action.",
+    "fail": "Port 9000 isn't reaching the service yet. Open the forward in the background, then Verify."
+  },
+  "hint": "ssh -fN -L 9000:127.0.0.1:8000 root@127.0.0.1     (-f = background, -N = no remote command). Check it with: curl 127.0.0.1:9000"
+}

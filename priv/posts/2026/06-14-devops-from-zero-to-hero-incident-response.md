@@ -847,6 +847,13 @@ templates as code managed through GitOps, and advanced alerting strategies.
 
 <br />
 
+##### **Try it yourself**
+You're on call and a release just broke production. Triage it and roll back, in the terminal below.
+
+<div id="ch-k8s-incident" phx-hook="Challenge" phx-update="ignore" data-challenge="k8s-incident-triage" data-mode="scripted"></div>
+
+<br />
+
 ##### **Closing notes**
 Incident response is not just about tools and processes. It is about people. It is about making sure
 the person who gets paged at 3am has what they need to solve the problem: clear alerts, good runbooks,

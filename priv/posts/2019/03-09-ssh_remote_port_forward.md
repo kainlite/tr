@@ -34,6 +34,13 @@ I extracted a portion of the meaning of parameter from the man page, but in a nu
 ```
 <br />
 
+##### **Try it yourself**
+Expose a service that's stuck behind NAT through a public box, using a remote forward.
+
+<div id="ch-ssh-remote" phx-hook="Challenge" phx-update="ignore" data-challenge="ssh-remote-forward" data-mode="scripted"></div>
+
+<br />
+
 ##### **Server configuration**
 There are two configuration parameters that can change the behaviour of remote and local forwarded ports, those parameters are `GatewayPorts` and `AllowTcpForwarding`.
 <br />

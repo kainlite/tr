@@ -184,6 +184,13 @@ bind -n Home send-key C-a
 ```
 <br />
 
+### **Try it yourself**
+Practice the session lifecycle that makes tmux indispensable: new, detach, list, attach.
+
+<div id="ch-tmux" phx-hook="Challenge" phx-update="ignore" data-challenge="tmux-basics" data-mode="scripted"></div>
+
+<br />
+
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 

@@ -546,6 +546,13 @@ A few things to keep in mind:
 
 <br />
 
+##### **Try it yourself**
+Run the Terraform loop, init, plan, apply, destroy, in the guided terminal below.
+
+<div id="ch-terraform" phx-hook="Challenge" phx-update="ignore" data-challenge="terraform-basics" data-mode="scripted"></div>
+
+<br />
+
 ##### **Closing notes**
 Infrastructure as Code changes how you think about infrastructure. Instead of fragile, manually
 configured environments, you get reproducible, version-controlled definitions that anyone on the team

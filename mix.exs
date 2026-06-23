@@ -113,8 +113,13 @@ defmodule Tr.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind default", "esbuild default"],
-      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"],
+      "assets.build": ["tailwind default", "esbuild default", "esbuild v86"],
+      "assets.deploy": [
+        "tailwind default --minify",
+        "esbuild default --minify",
+        "esbuild v86 --minify",
+        "phx.digest"
+      ],
       test: ["esbuild default", "ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end

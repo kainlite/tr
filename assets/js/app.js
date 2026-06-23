@@ -24,8 +24,72 @@ import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
 import * as CookieConsent from "../vendor/cookieconsent.esm";
 import hljs from "../vendor/highlight.min.js";
+import { mountChallenge } from "./challenges/index.js";
 
 let Hooks = {};
+
+// Mounts an interactive challenge widget inside a post. The placeholder lives in
+// the post markdown as:
+//   <div id="..." phx-hook="Challenge" phx-update="ignore"
+//        data-challenge="<id>" data-mode="scripted"></div>
+// phx-update="ignore" keeps LiveView from patching the widget's DOM.
+Hooks.Challenge = {
+  mounted() {
+    mountChallenge(this.el);
+  },
+};
+
+// Labs index: reads per-challenge completion from localStorage (the same keys
+// the challenge runners write) and decorates the page with checkmarks, per-track
+// progress, and an overall counter. Purely client-side, no server round-trip.
+Hooks.LabProgress = {
+  mounted() {
+    this.run();
+    this._onFocus = () => this.run();
+    window.addEventListener("focus", this._onFocus);
+  },
+  destroyed() {
+    window.removeEventListener("focus", this._onFocus);
+  },
+  solved(id) {
+    try {
+      return !!(JSON.parse(localStorage.getItem("tr:challenge:" + id)) || {}).solved;
+    } catch (_e) {
+      return false;
+    }
+  },
+  run() {
+    this.el.querySelectorAll("[data-lab-id]").forEach((a) => {
+      const ok = this.solved(a.getAttribute("data-lab-id"));
+      a.classList.toggle("lab-done", ok);
+      const c = a.querySelector("[data-lab-check]");
+      if (c) c.textContent = ok ? "✓" : "○";
+    });
+    this.el.querySelectorAll("[data-track]").forEach((t) => {
+      const labs = t.querySelectorAll("[data-lab-id]");
+      const done = [...labs].filter((a) => this.solved(a.getAttribute("data-lab-id"))).length;
+      const cnt = t.querySelector("[data-track-count]");
+      if (cnt) cnt.textContent = `${done} / ${labs.length}`;
+      const bar = t.querySelector("[data-track-bar]");
+      if (bar) bar.style.width = labs.length ? Math.round((done / labs.length) * 100) + "%" : "0%";
+      t.classList.toggle("track-complete", labs.length > 0 && done === labs.length);
+    });
+    const ids = new Set();
+    this.el.querySelectorAll("[data-lab-id]").forEach((a) => ids.add(a.getAttribute("data-lab-id")));
+    let done = 0;
+    ids.forEach((id) => {
+      if (this.solved(id)) done++;
+    });
+    const total = ids.size;
+    const doneEl = this.el.querySelector("[data-labs-done]");
+    const totalEl = this.el.querySelector("[data-labs-total]");
+    const barEl = this.el.querySelector("[data-labs-bar]");
+    if (doneEl) doneEl.textContent = done;
+    if (totalEl) totalEl.textContent = total;
+    if (barEl) barEl.style.width = total ? Math.round((done / total) * 100) + "%" : "0%";
+  },
+};
+
 Hooks.Scroll = {
   mounted() {
     this.el.addEventListener("click", () => {

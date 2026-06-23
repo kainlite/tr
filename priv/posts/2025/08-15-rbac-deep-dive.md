@@ -743,6 +743,13 @@ curl -k -H "Authorization: Bearer $TOKEN" \
 
 <br />
 
+### **Try it yourself**
+Prove the denial, grant least-privilege access with a Role + RoleBinding, then prove it works, in the terminal below.
+
+<div id="ch-k8s-rbac" phx-hook="Challenge" phx-update="ignore" data-challenge="k8s-rbac" data-mode="scripted"></div>
+
+<br />
+
 ### Errata
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 

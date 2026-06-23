@@ -1,0 +1,12 @@
+{
+  "id": "git-reflog-recovery",
+  "title": "Challenge: recover a lost commit with reflog",
+  "mode": "scripted",
+  "prompt": "you@laptop:~/project (main)$ ",
+  "intro": "Disaster: you ran `git reset --hard HEAD~1` and your last commit, the one with your important work, seems gone. `git log` doesn't show it. Don't panic: Git almost never truly deletes anything. Get it back.",
+  "steps": [
+    { "instruction": "Look at the reference log, Git's record of every place HEAD has been, to find the lost commit.", "match": ["^git\\s+reflog"], "success": "d4e5f6a HEAD@{0}: reset: moving to HEAD~1\n9a8b7c6 HEAD@{1}: commit: important work   <-- there it is\n3c2b1a0 HEAD@{2}: commit: earlier work", "fail": "There's a command that shows every position HEAD has had, even 'lost' ones.", "hint": "git reflog" },
+    { "instruction": "The lost commit is 9a8b7c6. Move your branch back to it with a hard reset.", "match": ["^git\\s+reset\\s+--hard\\s+9a8b7c6"], "success": "HEAD is now at 9a8b7c6 important work, recovered!", "fail": "Hard-reset your branch onto the recovered commit hash 9a8b7c6.", "hint": "git reset --hard 9a8b7c6" }
+  ],
+  "done": "Solved! `git reflog` is your safety net, as long as a commit ever existed, you can almost always bring it back. (If you only wanted that one commit on top of your current work, `git cherry-pick 9a8b7c6` would do it.)"
+}
