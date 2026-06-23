@@ -118,6 +118,8 @@ defmodule TrWeb.Router do
 
       live "/blog/search", SearchLive, :index
 
+      live "/labs", LabsLive, :index
+
       live "/blog/", BlogLive, :index
       live "/blog/:id", PostLive, :show
     end
@@ -140,6 +142,8 @@ defmodule TrWeb.Router do
       live "/", BlogLive, :index
 
       live "/blog/search", SearchLive, :index
+
+      live "/labs", LabsLive, :index
 
       live "/blog/", BlogLive, :index
       live "/blog/:id", PostLive, :show

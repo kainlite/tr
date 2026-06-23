@@ -95,6 +95,19 @@ defmodule TrWeb.PostLive do
             {TrWeb.PostComponent.render_tag_card(%{tag: tag})}
           <% end %>
         </div>
+        <% post_labs = Tr.Labs.labs_in_post(@post.id) %>
+        <a
+          :if={post_labs != []}
+          href={"#" <> hd(post_labs).div_id}
+          class="inline-flex items-center gap-1.5 mt-3 px-2.5 py-1 rounded font-mono text-xs text-accent-light dark:text-accent border border-accent-light/40 dark:border-accent/40 hover:bg-accent-light/10 dark:hover:bg-accent/10 no-underline transition-colors"
+        >
+          <.icon name="hero-beaker" class="w-4 h-4" />
+          <span>
+            {length(post_labs)} {if length(post_labs) > 1,
+              do: gettext("interactive labs"),
+              else: gettext("interactive lab")} ↓
+          </span>
+        </a>
       </div>
       
     <!-- Reactions -->

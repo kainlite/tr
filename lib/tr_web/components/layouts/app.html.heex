@@ -61,6 +61,13 @@
           <span>{gettext("Tags")}</span>
         </.link>
         <.link
+          navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/labs"}
+          class="flex items-center gap-3 px-3 py-2 font-mono text-sm text-terminal-500 dark:text-terminal-400 hover:text-accent-light dark:hover:text-accent hover:bg-terminal-200 dark:hover:bg-terminal-700 no-underline transition-colors"
+        >
+          <.icon name="hero-beaker" class="w-5 h-5" />
+          <span>{gettext("Labs")}</span>
+        </.link>
+        <.link
           navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/about"}
           class="flex items-center gap-3 px-3 py-2 font-mono text-sm text-terminal-500 dark:text-terminal-400 hover:text-accent-light dark:hover:text-accent hover:bg-terminal-200 dark:hover:bg-terminal-700 no-underline transition-colors"
         >
