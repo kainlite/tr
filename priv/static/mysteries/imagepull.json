@@ -1,0 +1,59 @@
+{
+  "id": "imagepull",
+  "title": "Debugging mystery: the pod that can't pull its image",
+  "intro": "A fresh deploy and the new pod never starts, it's stuck on ImagePullBackOff. The image built fine in CI. Find out why the cluster can't get it.",
+  "start": "start",
+  "nodes": {
+    "start": {
+      "situation": "$ kubectl get pods\nNAME              READY   STATUS             RESTARTS   AGE\napi-9f8c7-1       0/1     ImagePullBackOff   0          2m\n\nIt can't pull the image. First move?",
+      "choices": [
+        { "label": "kubectl describe pod api-9f8c7-1  (read the Events)", "goto": "describe" },
+        { "label": "kubectl delete pod api-9f8c7-1  (recreate it)", "goto": "delete" },
+        { "label": "Check if the node itself is broken", "goto": "node" }
+      ]
+    },
+    "delete": {
+      "situation": "$ kubectl delete pod api-9f8c7-1\n\nThe Deployment recreates it... straight back to ImagePullBackOff. The problem isn't this pod instance, it's the image reference the Deployment hands every pod. Recreating changes nothing.",
+      "outcome": "deadend",
+      "text": "ImagePullBackOff is about the image spec, not a flaky pod. Every replacement pod gets the same image and the same failure. Read the error instead of restarting.",
+      "back": "start"
+    },
+    "node": {
+      "situation": "$ kubectl get pods -A -o wide | grep <same-node>\n... other pods on this node are Running and pulled their images fine\n\nThe node is healthy, other pods on it pull images without trouble. It's not a broken node or a dead registry, it's specific to THIS image.",
+      "outcome": "deadend",
+      "text": "Other pods pulling fine on the same node rules out a broken node or unreachable registry. The problem is specific to this image reference.",
+      "back": "start"
+    },
+    "describe": {
+      "situation": "$ kubectl describe pod api-9f8c7-1\n...\nEvents:\n  Warning  Failed  Failed to pull image \"mycorp/api:1.5.0\":\n           rpc error: ... manifest unknown: manifest unknown\n\nThe error is 'manifest unknown' for mycorp/api:1.5.0. That's a specific message, not a permission or rate-limit error. What does it tell you?",
+      "choices": [
+        { "label": "It's a registry auth problem (imagePullSecret)", "goto": "auth" },
+        { "label": "It's Docker Hub rate limiting", "goto": "ratelimit" },
+        { "label": "That tag doesn't exist in the registry", "goto": "tag" }
+      ]
+    },
+    "auth": {
+      "situation": "$ kubectl get pods | grep mycorp\n... other pods running mycorp/* images from the same private registry are Running\n\nOther images from the same private registry pull fine, so the imagePullSecret works. And 'manifest unknown' means the registry was reached and the repo was found, it just doesn't have that tag. Auth failures look different ('unauthorized' / 401).",
+      "outcome": "deadend",
+      "text": "Auth failures return 'unauthorized'/401, not 'manifest unknown'. Reaching the repo and getting 'manifest unknown' means authentication already succeeded, the tag is the issue.",
+      "back": "describe"
+    },
+    "ratelimit": {
+      "situation": "This is a private registry (mycorp/...), not Docker Hub, and rate limiting returns 'toomanyrequests' / HTTP 429, not 'manifest unknown'. The wording of the error is the clue, and it isn't a rate limit.",
+      "outcome": "deadend",
+      "text": "Rate limiting shows 'toomanyrequests' (429). 'manifest unknown' means the registry answered and the specific tag wasn't found. Read the exact registry error.",
+      "back": "describe"
+    },
+    "tag": {
+      "situation": "$ # check what CI actually pushed\nCI pushed: mycorp/api:1.5.0-rc1   (and :latest)\nDeployment references: mycorp/api:1.5.0\n\nThere's the mismatch: CI built and pushed 1.5.0-rc1, but the deploy manifest asks for 1.5.0, a tag that was never pushed. The registry has the repo but not that tag, hence 'manifest unknown'. How do you fix it?",
+      "choices": [
+        { "label": "Point the Deployment at the tag CI actually pushed (or push 1.5.0)", "goto": "fix" }
+      ]
+    },
+    "fix": {
+      "situation": "You align the Deployment's image tag with what CI actually published (or have CI push the 1.5.0 tag the manifest expects). The pull succeeds and the pod goes Running. To stop the class of bug, you make the pipeline pass the exact pushed tag (or digest) into the manifest instead of hand-editing it.",
+      "outcome": "solved",
+      "text": "Solved! 'manifest unknown' on ImagePullBackOff means the registry and repo were reached but that TAG doesn't exist, distinct from auth ('unauthorized') and rate limits ('toomanyrequests'). Here the deploy referenced a tag CI never pushed. Read the exact registry error, and pin/propagate the real pushed tag or digest so the manifest can't drift from what was built."
+    }
+  }
+}

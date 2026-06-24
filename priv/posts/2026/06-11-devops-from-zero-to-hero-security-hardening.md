@@ -979,6 +979,13 @@ A few things to notice:
 
 <br />
 
+##### **Debugging mystery: the certificate that expired in production**
+TLS is "set it and forget it" right up until it isn't. Work this one like an on-call engineer: the site is throwing certificate warnings, and the interesting part is why nobody saw it coming.
+
+<div id="myst-tls-expired" phx-hook="Mystery" phx-update="ignore" data-mystery="tls-expired"></div>
+
+<br />
+
 ##### **Closing notes**
 Security is not a project with a finish date. It is a practice, like testing or code review. The
 goal is not to make your system impenetrable (nothing is), but to make it hard enough that attackers

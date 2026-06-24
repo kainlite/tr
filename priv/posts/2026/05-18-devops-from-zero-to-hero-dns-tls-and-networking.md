@@ -885,6 +885,13 @@ Before we wrap up, here are some security practices to keep in mind:
 
 <br />
 
+##### **Debugging mystery: DNS that flaps**
+DNS resolves... most of the time. Intermittent name-resolution failures are among the nastiest bugs to chase. Track this one down step by step.
+
+<div id="myst-dns-flapping" phx-hook="Mystery" phx-update="ignore" data-mystery="dns-flapping"></div>
+
+<br />
+
 ##### **Closing notes**
 Your application is now reachable at a real domain over HTTPS. We covered a lot of ground in this
 article: DNS fundamentals and record types, Route53 hosted zones and routing policies, TLS

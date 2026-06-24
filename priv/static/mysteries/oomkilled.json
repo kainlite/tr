@@ -1,0 +1,66 @@
+{
+  "id": "oomkilled",
+  "title": "Debugging mystery: the pod that keeps getting killed",
+  "intro": "A pod restarts every few minutes. No code changed, no bad deploy, it just dies and comes back. Find out why, one decision at a time.",
+  "start": "start",
+  "nodes": {
+    "start": {
+      "situation": "$ kubectl get pods\nNAME                 READY   STATUS    RESTARTS      AGE\nworker-5c8d9-7xk2p   1/1     Running   8 (2m ago)    41m\n\nIt's Running right now, but 8 restarts in 41 minutes. It keeps dying and recovering. Where do you look first?",
+      "choices": [
+        { "label": "kubectl describe pod worker-5c8d9-7xk2p", "goto": "describe" },
+        { "label": "kubectl logs worker-5c8d9-7xk2p", "goto": "logs" },
+        { "label": "kubectl top pod worker-5c8d9-7xk2p", "goto": "top" }
+      ]
+    },
+    "logs": {
+      "situation": "$ kubectl logs worker-5c8d9-7xk2p\n... processing batch 41 ...\n... processing batch 42 ...\n\nThe logs just stop mid-work. No error, no stack trace. The process didn't throw an exception, something killed it from the outside.",
+      "choices": [
+        { "label": "kubectl logs worker-5c8d9-7xk2p --previous", "goto": "previous" },
+        { "label": "kubectl describe pod worker-5c8d9-7xk2p", "goto": "describe" }
+      ]
+    },
+    "previous": {
+      "situation": "$ kubectl logs worker-5c8d9-7xk2p --previous\n... processing batch 89 ...\n... processing batch 90 ...\n(log ends abruptly)\n\nSame story in the previous container: working, then cut off mid-batch. No application error. The kill came from the kubelet/kernel, not the app.",
+      "choices": [
+        { "label": "kubectl describe pod worker-5c8d9-7xk2p", "goto": "describe" }
+      ]
+    },
+    "top": {
+      "situation": "$ kubectl top pod worker-5c8d9-7xk2p\nNAME                 CPU(cores)   MEMORY(bytes)\nworker-5c8d9-7xk2p   120m         498Mi\n\nMemory is at 498Mi and climbing. A clue, but you don't know the limit yet. Confirm what's actually terminating the container.",
+      "choices": [
+        { "label": "kubectl describe pod worker-5c8d9-7xk2p", "goto": "describe" }
+      ]
+    },
+    "describe": {
+      "situation": "$ kubectl describe pod worker-5c8d9-7xk2p\n...\nLast State:     Terminated\n  Reason:       OOMKilled\n  Exit Code:    137\nLimits:\n  memory:  512Mi\nRequests:\n  memory:  256Mi\n\nThere it is: OOMKilled, exit code 137. The container hit its 512Mi memory limit and the kernel killed it. Why does it keep happening?",
+      "choices": [
+        { "label": "The node is out of memory", "goto": "node" },
+        { "label": "The limit is too low for its real usage (or it leaks)", "goto": "limit" },
+        { "label": "A liveness probe is killing the pod", "goto": "probe" }
+      ]
+    },
+    "node": {
+      "situation": "$ kubectl top nodes\nNAME     CPU%   MEMORY%\nnode-1   38%    61%\n\nThe node has plenty of memory free (61% used). This wasn't node pressure, the container hit its OWN cgroup limit (512Mi), not the node's. Exit 137 + 'OOMKilled' on the container is a per-container limit.",
+      "outcome": "deadend",
+      "text": "Node-level OOM evicts pods and shows up as an eviction, not a per-container OOMKilled with exit 137. This container died because it exceeded its own memory limit.",
+      "back": "describe"
+    },
+    "probe": {
+      "situation": "$ kubectl describe pod worker-5c8d9-7xk2p | grep -A2 Liveness\nLiveness:  http-get http://:8080/healthz delay=10s period=10s\nEvents:    (no 'Liveness probe failed' or 'Killing' events)\n\nNo liveness failures in the events. A probe kill would log 'Killing container ... liveness probe failed', not 'OOMKilled' with exit 137. The Reason field already told you the truth.",
+      "outcome": "deadend",
+      "text": "A failed liveness probe shows up as a 'Liveness probe failed' / 'Killing' event, not OOMKilled. Trust the Reason field: it said OOMKilled.",
+      "back": "describe"
+    },
+    "limit": {
+      "situation": "You graph memory over time: it climbs from ~200Mi to 512Mi, gets OOMKilled, restarts at 200Mi, and climbs again. A sawtooth. Two possibilities: a genuine leak, or the limit is just too low for the workload. How do you tell them apart?",
+      "choices": [
+        { "label": "Raise the limit and watch: does it plateau, or climb forever?", "goto": "fix" }
+      ]
+    },
+    "fix": {
+      "situation": "You bump the limit to 1Gi and watch. Memory climbs to ~640Mi while processing a large batch, then plateaus and holds steady. It was never leaking, the workload genuinely needs ~640Mi and 512Mi was too tight. You set requests=512Mi, limits=768Mi and the restarts stop.",
+      "outcome": "solved",
+      "text": "Solved! Exit code 137 + Reason OOMKilled means the container exceeded its cgroup memory limit, not the app crashing and not the node. Raising the limit showed memory plateaus, so it was an undersized limit, not a leak. (If it had climbed forever, that's a leak to fix in code, not by raising the limit.) Right-size requests and limits to real usage."
+    }
+  }
+}

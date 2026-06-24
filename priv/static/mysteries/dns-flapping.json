@@ -1,0 +1,52 @@
+{
+  "id": "dns-flapping",
+  "title": "Debugging mystery: DNS that works, then doesn't, then works",
+  "intro": "Services in the cluster intermittently fail to resolve each other. Retry and it works. It's maddening, and it's hurting reliability. Track it down.",
+  "start": "start",
+  "nodes": {
+    "start": {
+      "situation": "$ kubectl exec client -- sh -c 'for i in $(seq 6); do nslookup api >/dev/null 2>&1 && echo ok || echo FAIL; done'\nok\nok\nFAIL\nok\nFAIL\nok\n\nResolution fails about a third of the time, at random. Where do you start?",
+      "choices": [
+        { "label": "kubectl get pods -n kube-system -l k8s-app=kube-dns", "goto": "coredns" },
+        { "label": "Add a DNS retry to the app and move on", "goto": "retry" },
+        { "label": "kubectl exec client -- cat /etc/resolv.conf", "goto": "resolv" }
+      ]
+    },
+    "retry": {
+      "situation": "You wrap DNS lookups in a retry. The FAILs become slower-but-eventually-ok. The dashboard 'improves', but you've masked a real, cluster-wide fault that also adds latency to every lookup and will resurface the moment load rises.",
+      "outcome": "deadend",
+      "text": "Retries hide the symptom and add latency. Random failure across the whole cluster is infrastructure, find and fix the resolver, don't paper over it in every app.",
+      "back": "start"
+    },
+    "resolv": {
+      "situation": "$ kubectl exec client -- cat /etc/resolv.conf\nnameserver 10.96.0.10\nsearch default.svc.cluster.local svc.cluster.local cluster.local\noptions ndots:5\n\nndots:5 makes short names try several search domains, which adds query volume, but that causes consistent slowness, not random hard failures. resolv.conf points at the cluster DNS Service (10.96.0.10). Look at the resolver itself.",
+      "choices": [
+        { "label": "kubectl get pods -n kube-system -l k8s-app=kube-dns", "goto": "coredns" }
+      ]
+    },
+    "coredns": {
+      "situation": "$ kubectl get pods -n kube-system -l k8s-app=kube-dns\nNAME                  READY   STATUS             RESTARTS\ncoredns-5d78-aaaaa    1/1     Running            0\ncoredns-5d78-bbbbb    0/1     CrashLoopBackOff   7\n\nTwo CoreDNS replicas: one healthy, one in CrashLoopBackOff. As it flaps in and out of the Service endpoints, a share of queries land on the dead one and fail, the rest succeed. That's your random ~half failure. Why is that replica crashing?",
+      "choices": [
+        { "label": "kubectl logs -n kube-system coredns-5d78-bbbbb --previous", "goto": "logs" },
+        { "label": "It's a network partition between nodes", "goto": "partition" }
+      ]
+    },
+    "partition": {
+      "situation": "$ kubectl get nodes\nNAME     STATUS   ROLES\nnode-1   Ready    <none>\nnode-2   Ready    <none>\n\nAll nodes are Ready and other cross-node traffic is fine. This isn't a partition, it's one specific CoreDNS replica that won't stay up and keeps flapping in and out of the Service's endpoints. Find out why it crashes.",
+      "outcome": "deadend",
+      "text": "A network partition breaks far more than DNS and shows NotReady nodes. The clue is specific: one CoreDNS replica crash-looping, so a share of queries hit a dead target during each crash window.",
+      "back": "coredns"
+    },
+    "logs": {
+      "situation": "$ kubectl logs -n kube-system coredns-5d78-bbbbb --previous\n[FATAL] plugin/loop: Loop ... detected for zone \".\"\n\nThere it is: CoreDNS detected a forwarding loop and refuses to start. Its upstream (forward . /etc/resolv.conf) resolves back to a server that points back at CoreDNS, an infinite loop. That replica landed on a node whose host resolv.conf creates the loop. Fix it?",
+      "choices": [
+        { "label": "Point CoreDNS upstream at a real resolver (not the loop), then restart it", "goto": "fix" }
+      ]
+    },
+    "fix": {
+      "situation": "You change the Corefile to forward to a real upstream (the node's actual DNS or a public resolver) instead of a resolv.conf that loops back, and restart the replica. Both CoreDNS pods go 1/1 Ready, the Service has two healthy backends, and resolution succeeds every time.",
+      "outcome": "solved",
+      "text": "Solved! Random, intermittent DNS failure across the whole cluster pointed at the resolver, not the apps. One of two CoreDNS replicas was CrashLoopBackOff (a forwarding loop), so a share of queries hit a dead backend while the other replica answered fine, hence the flapping. The method: when failure is partial and random, look at the load-balanced infrastructure behind it (how many backends, are they all healthy), not at the callers."
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "id": "pool-exhaustion",
+  "title": "Debugging mystery: the app that falls over under load",
+  "intro": "Traffic ramps up and the api starts throwing 500s and timing out. Drop the load and it recovers. The database looks calm. Find the real bottleneck.",
+  "start": "start",
+  "nodes": {
+    "start": {
+      "situation": "$ kubectl logs deploy/api | tail -3\nError: timeout exceeded while acquiring a connection from the pool\nError: timeout exceeded while acquiring a connection from the pool\n\nThe app can't get a database connection from its pool under load. What do you check?",
+      "choices": [
+        { "label": "Query the DB for active connections", "goto": "activity" },
+        { "label": "Scale the api up to more replicas", "goto": "scale" },
+        { "label": "Check the database's CPU", "goto": "cpu" }
+      ]
+    },
+    "scale": {
+      "situation": "$ kubectl scale deploy/api --replicas=10\n\nIt gets WORSE. Each new replica opens its own pool of DB connections, so 10 replicas means far more connections fighting over the same database limit. You added demand to the exact resource that's exhausted.",
+      "outcome": "deadend",
+      "text": "More app replicas means more connection pools means more pressure on the database's connection limit. When the bottleneck is connections, scaling the app the wrong way makes it worse.",
+      "back": "start"
+    },
+    "cpu": {
+      "situation": "$ # database CPU graph\nDB CPU: ~22%, steady\n\nThe database is barely working, 22% CPU. It's not compute-bound; queries aren't slow because the DB is busy. The app simply can't get a connection to run them. This is a connection problem, not a throughput problem.",
+      "outcome": "deadend",
+      "text": "Low DB CPU rules out 'slow queries / overloaded database'. The app is blocked acquiring connections, not waiting on query execution. Look at the connections.",
+      "back": "start"
+    },
+    "activity": {
+      "situation": "$ psql -c \"SELECT state, count(*) FROM pg_stat_activity GROUP BY state\"\n      state        | count\n-------------------+-------\n active            |     4\n idle in transaction|    94\n\nmax_connections is 100, and 94 of them are stuck 'idle in transaction'. The connections aren't busy running queries, they're holding open transactions and doing nothing. Two theories: the pool is too small, or something leaks transactions.",
+      "choices": [
+        { "label": "Raise max_connections / the pool size", "goto": "raise" },
+        { "label": "Find why connections sit 'idle in transaction'", "goto": "trace" }
+      ]
+    },
+    "raise": {
+      "situation": "You bump max_connections to 300. It buys a few minutes, then they fill again, now 290 'idle in transaction'. And each Postgres connection costs memory; push it far enough and the DB itself OOMs. You've treated the symptom.",
+      "outcome": "deadend",
+      "text": "If connections leak (pile up 'idle in transaction'), a bigger limit just fills more slowly and risks OOMing the database. Raising limits doesn't fix a leak.",
+      "back": "activity"
+    },
+    "trace": {
+      "situation": "You trace one 'idle in transaction' connection to a code path:\n\nBEGIN;\nUPDATE orders SET status='paid' WHERE id=$1;\nawait chargeCard(order)   // external API call, ~3s\nCOMMIT;\n\nThe code opens a transaction, then makes a slow external API call WHILE holding it open, then commits. Under load these stack up and pin every connection. How do you fix it?",
+      "choices": [
+        { "label": "Do the external call OUTSIDE the transaction; keep the txn short", "goto": "fix" }
+      ]
+    },
+    "fix": {
+      "situation": "You restructure it: charge the card first (or after), and keep the database transaction tiny, just the UPDATE and COMMIT, with no slow network call in between. Add `idle_in_transaction_session_timeout` as a safety net. Connections are released in milliseconds again and the pool stops draining.",
+      "outcome": "solved",
+      "text": "Solved! 'timeout acquiring a connection' with low DB CPU and many connections 'idle in transaction' is a transaction leak: the app holds DB transactions open across slow work (an external API call), so connections never return to the pool. The fix is in the code, keep transactions short and don't do network I/O inside them. Bigger pools and more replicas only delay the same wall."
+    }
+  }
+}

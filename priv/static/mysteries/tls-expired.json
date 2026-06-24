@@ -1,0 +1,52 @@
+{
+  "id": "tls-expired",
+  "title": "Debugging mystery: the certificate that expired in production",
+  "intro": "Users suddenly get scary 'your connection is not private' warnings. The site was fine yesterday. Find out what broke, and why nobody saw it coming.",
+  "start": "start",
+  "nodes": {
+    "start": {
+      "situation": "$ curl -I https://api.example.com\ncurl: (60) SSL certificate problem: certificate has expired\n\nThe TLS certificate is expired. First move?",
+      "choices": [
+        { "label": "openssl s_client to read the cert's actual dates", "goto": "openssl" },
+        { "label": "Restart the ingress controller", "goto": "restart" },
+        { "label": "Check DNS for the domain", "goto": "dns" }
+      ]
+    },
+    "restart": {
+      "situation": "$ kubectl rollout restart deploy/ingress-nginx -n ingress\n\nThe ingress restarts and serves... the same expired certificate. Restarting doesn't mint a new cert, it just reloads the one that's already there, which is expired.",
+      "outcome": "deadend",
+      "text": "Restarting reloads the existing certificate, it doesn't renew it. An expired cert has to be re-issued, not rebooted.",
+      "back": "start"
+    },
+    "dns": {
+      "situation": "$ dig +short api.example.com\n203.0.113.10\n\nDNS resolves fine to the right IP, and the error was a TLS handshake problem (certificate expired), which happens after the connection is established. This isn't a name-resolution issue.",
+      "outcome": "deadend",
+      "text": "A TLS 'certificate has expired' error happens during the handshake, after DNS already resolved and the TCP connection opened. The name side is fine.",
+      "back": "start"
+    },
+    "openssl": {
+      "situation": "$ echo | openssl s_client -connect api.example.com:443 2>/dev/null | openssl x509 -noout -dates\nnotBefore=Jan 15 00:00:00 2026 GMT\nnotAfter=Apr 15 00:00:00 2026 GMT\n\nIssued in January, expired three days ago. These are 90-day Let's Encrypt certs that are supposed to auto-renew. So the real question is: why didn't renewal happen?",
+      "choices": [
+        { "label": "kubectl describe certificate api-tls  (cert-manager)", "goto": "certmanager" },
+        { "label": "It must be a manually-managed cert someone forgot", "goto": "manual" }
+      ]
+    },
+    "manual": {
+      "situation": "$ kubectl get certificate api-tls\nNAME      READY   SECRET        AGE\napi-tls   False   api-tls-cert  89d\n\nIt's not manual, there's a cert-manager Certificate object, and it's been trying to manage this for 89 days. READY is False. cert-manager has been failing to renew it.",
+      "outcome": "deadend",
+      "text": "There IS automation (a cert-manager Certificate). The cert didn't expire because nobody renewed it by hand, it expired because the automated renewal was failing. Find out why.",
+      "back": "openssl"
+    },
+    "certmanager": {
+      "situation": "$ kubectl describe certificate api-tls\n...\nStatus:\n  Conditions:\n    Ready: False\nEvents:\n  Warning  Failed  Failed to renew: order failed: HTTP-01 challenge failed:\n           GET http://api.example.com/.well-known/acme-challenge/xyz -> 404\n\ncert-manager has been trying to renew for weeks, but the ACME HTTP-01 challenge gets a 404. The challenge path isn't reaching cert-manager's solver. What changed?",
+      "choices": [
+        { "label": "An ingress rule now routes /.well-known/* to the app, not the ACME solver", "goto": "fix" }
+      ]
+    },
+    "fix": {
+      "situation": "Right: a recent ingress change added a catch-all rule that sends every path (including /.well-known/acme-challenge/*) to the app, which 404s it. cert-manager's solver never gets the challenge, so renewal fails silently every cycle until the cert finally expires.\n\nYou exclude the ACME challenge path from the catch-all (or use DNS-01 instead). cert-manager completes the order, a fresh cert is issued, and READY goes True.",
+      "outcome": "solved",
+      "text": "Solved! The cert didn't 'just expire', automated renewal had been failing for weeks because an ingress rule swallowed the ACME HTTP-01 challenge path (404). The expiry was the last visible symptom of a long-broken renewal. The lesson: alert on renewal HEALTH and days-to-expiry (say, < 21 days), not on the cert already being expired, by then it's an outage."
+    }
+  }
+}

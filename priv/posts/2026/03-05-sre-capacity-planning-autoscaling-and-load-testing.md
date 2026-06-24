@@ -589,8 +589,8 @@ export default function () {
   const pages = [
     '/blog',
     '/blog/sre-slis-slos-and-automations-that-actually-help',
-    '/blog/debugging-distroless-containers-when-your-container-has-no-shell',
-    '/blog/kubernetes-rbac-deep-dive-understanding-authorization-with-kubectl-and-curl',
+    '/blog/debugging-kubernetes',
+    '/blog/rbac-deep-dive',
   ];
 
   const page = pages[Math.floor(Math.random() * pages.length)];
@@ -802,6 +802,13 @@ Here is the complete capacity management setup:
 
 This gives you a system that handles traffic spikes automatically, right-sizes resources based on actual usage,
 and gives you confidence that your SLOs will hold under load.
+
+<br />
+
+##### **Debugging mystery: connections drop only under load**
+You've load-tested the app, but the real test is debugging it when load exposes something the app can't see. A fraction of new connections drop under load, with CPU to spare. Find what's quietly dropping packets.
+
+<div id="myst-conntrack-full" phx-hook="Mystery" phx-update="ignore" data-mystery="conntrack-full"></div>
 
 <br />
 
@@ -1267,7 +1274,7 @@ export default function () {
   const pages = [
     '/blog',
     '/blog/sre-slis-slos-and-automations-that-actually-help',
-    '/blog/debugging-distroless-containers-when-your-container-has-no-shell',
+    '/blog/debugging-kubernetes',
   ];
 
   const page = pages[Math.floor(Math.random() * pages.length)];

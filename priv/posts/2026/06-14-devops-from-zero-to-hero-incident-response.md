@@ -854,6 +854,13 @@ You're on call and a release just broke production. Triage it and roll back, in 
 
 <br />
 
+##### **Debugging mystery: the disk is full at 3 a.m.**
+An incident classic: the root disk is 100% full, but `du` swears it is nearly empty. Work it the way you would on call, read the evidence, resist the urge to flail, and find where the space actually went.
+
+<div id="myst-disk-full" phx-hook="Mystery" phx-update="ignore" data-mystery="disk-full"></div>
+
+<br />
+
 ##### **Closing notes**
 Incident response is not just about tools and processes. It is about people. It is about making sure
 the person who gets paged at 3am has what they need to solve the problem: clear alerts, good runbooks,

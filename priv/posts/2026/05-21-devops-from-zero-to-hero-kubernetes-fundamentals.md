@@ -944,6 +944,13 @@ Deploy, scale, and expose your first workload with kubectl in the guided termina
 
 <br />
 
+##### **Debugging mystery: think like an on-call engineer**
+You now know pods, deployments, and resource limits. Here is where that knowledge gets used at 3 a.m.: a pod keeps restarting for no obvious reason. Diagnose why Kubernetes keeps killing it, one decision at a time.
+
+<div id="myst-oomkilled" phx-hook="Mystery" phx-update="ignore" data-mystery="oomkilled"></div>
+
+<br />
+
 ##### **Closing notes**
 Kubernetes has a reputation for being complex, and it is true that the ecosystem is massive. But the
 core concepts are straightforward. You have Pods that run containers, Deployments that manage Pods,

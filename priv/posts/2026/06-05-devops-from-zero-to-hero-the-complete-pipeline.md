@@ -973,6 +973,13 @@ Hope you found this useful and enjoyed reading it, until next time!
 
 <br />
 
+##### **Debugging mystery: intermittent 503s after a deploy**
+Your shiny new pipeline shipped cleanly, the rollout went green... and now some requests return 503. Not all, just some. Diagnose it before you reach for rollback.
+
+<div id="myst-intermittent-503" phx-hook="Mystery" phx-update="ignore" data-mystery="intermittent-503"></div>
+
+<br />
+
 ##### **Errata**
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 

@@ -1,0 +1,52 @@
+{
+  "id": "intermittent-503",
+  "title": "Debugging mystery: intermittent 503s after a deploy",
+  "intro": "You rolled out a new version. It's up, but roughly 1 in 5 requests returns 503. Not all of them, just some. Find the cause before you reach for rollback.",
+  "start": "start",
+  "nodes": {
+    "start": {
+      "situation": "$ for i in $(seq 5); do curl -s -o /dev/null -w \"%{http_code}\\n\" https://api.example.com/health; done\n200\n503\n200\n200\n503\n\nSome requests succeed, some 503. Intermittent, right after a deploy. First check?",
+      "choices": [
+        { "label": "kubectl get pods -l app=api", "goto": "pods" },
+        { "label": "Roll back immediately, debug later", "goto": "rollback" },
+        { "label": "Check the ingress / load balancer logs", "goto": "ingress" }
+      ]
+    },
+    "rollback": {
+      "situation": "$ kubectl rollout undo deployment/api\n\nRolling back is a fine instinct when you're bleeding money, but you still don't know WHY. If the new pods are simply not Ready yet, you may have reverted a perfectly good release over a config issue that will bite you again on the next deploy.",
+      "outcome": "deadend",
+      "text": "Rollback is a valid mitigation, but partial (not total) failure right after a deploy smells like 'some pods aren't ready', not 'the release is broken'. Look before you leap.",
+      "back": "start"
+    },
+    "ingress": {
+      "situation": "The ingress logs show 503s with 'no healthy upstream' for some requests. The ingress is doing its job: it returns 503 when it has no Ready backend to route to. So the real question is, why are only SOME backends Ready?",
+      "choices": [
+        { "label": "kubectl get pods -l app=api", "goto": "pods" }
+      ]
+    },
+    "pods": {
+      "situation": "$ kubectl get pods -l app=api\nNAME          READY   STATUS    RESTARTS   AGE\napi-old-9     1/1     Running   0          2h\napi-new-2     0/1     Running   0          3m\napi-new-3     0/1     Running   0          3m\n\nThe new pods are Running but 0/1 Ready, with RESTARTS=0. The Service only routes to Ready pods, the rollout is stuck waiting for the new ones. Why won't they become Ready?",
+      "choices": [
+        { "label": "kubectl describe pod api-new-2  (check the readiness probe)", "goto": "describe" },
+        { "label": "The app is crashing on startup", "goto": "crash" }
+      ]
+    },
+    "crash": {
+      "situation": "$ kubectl logs api-new-2\nListening on :8080\nReady to serve requests.\n\nThe app started fine and even says it's ready, no crash, RESTARTS=0. So the app thinks it's healthy but Kubernetes marks it 0/1. That's a readiness PROBE disagreement, not an app crash.",
+      "outcome": "deadend",
+      "text": "RESTARTS=0 and a clean log means the app is up. 0/1 Ready with a healthy app means the readiness probe is failing, the probe and the app disagree about 'ready'.",
+      "back": "pods"
+    },
+    "describe": {
+      "situation": "$ kubectl describe pod api-new-2 | grep -A3 Readiness\nReadiness:  http-get http://:8080/ready delay=2s period=5s\nEvents:\n  Warning  Unhealthy  Readiness probe failed: HTTP probe failed with statuscode: 404\n\nThe probe hits /ready and gets a 404, but the app is up on :8080. The new version renamed (or moved) its health endpoint; the probe still points at the old path. So why do some requests still get 200?",
+      "choices": [
+        { "label": "api-old-9 is a leftover old-version pod that still answers /ready", "goto": "fix" }
+      ]
+    },
+    "fix": {
+      "situation": "Exactly: api-old-9 is an old-version pod still serving /ready (so it's Ready and takes traffic), while every new pod 404s on the renamed endpoint and never becomes Ready. The rollout is stuck; with only one Ready backend, the ingress sometimes has nothing to route to and returns 503.\n\nPoint the readiness probe at the new endpoint (or revert the rename), and all the new pods go Ready.",
+      "outcome": "solved",
+      "text": "Solved! Intermittent 503s right after a deploy, with pods Running but 0/1 Ready and RESTARTS=0, point at a readiness probe failure, not a crash and not a bad release. Here the new version renamed its health endpoint while the probe still pointed at the old path (404), so new pods never became Ready and the ingress ran out of backends for some requests. Keep readiness probes in sync with the app, and remember a stuck rollout is doing its job by refusing to send traffic to pods that aren't ready."
+    }
+  }
+}

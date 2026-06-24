@@ -1,0 +1,39 @@
+{
+  "id": "tf-state-lock",
+  "title": "Debugging mystery: terraform won't apply, the state is locked",
+  "intro": "You go to ship an infra change and terraform refuses to even start: the state is locked. Resolve it without nuking production. Some of the tempting options here can destroy real infrastructure.",
+  "start": "start",
+  "nodes": {
+    "start": {
+      "situation": "$ terraform apply\nError: Error acquiring the state lock\n\nLock Info:\n  ID:        a1b2c3d4-...\n  Who:       ci-runner@build-7f3\n  Created:   2026-06-22 14:05 (26 minutes ago)\n  Operation: OperationTypeApply\n\nSomething holds the lock. What do you do?",
+      "choices": [
+        { "label": "Check whether that CI job is still running", "goto": "checkci" },
+        { "label": "terraform force-unlock a1b2c3d4-... right now", "goto": "forceunlock" },
+        { "label": "Delete the state file and start fresh", "goto": "deletestate" }
+      ]
+    },
+    "deletestate": {
+      "situation": "$ aws s3 rm s3://acme-tfstate/prod/terraform.tfstate\n\nStop. That state file is terraform's only record of every real resource it manages. Delete it and terraform forgets your VPC, your databases, your cluster exist, then tries to CREATE them all again on the next apply, on top of the ones already running. This is how you cause an outage and duplicate infra.",
+      "outcome": "deadend",
+      "text": "Never delete state to clear a lock. State is the map between your code and real cloud resources; losing it orphans everything and terraform will try to recreate it all. The lock is a feature, not the problem.",
+      "back": "start"
+    },
+    "forceunlock": {
+      "situation": "Risky. The lock exists precisely to stop two applies from writing state at the same time. If that ci-runner job IS still running and you force-unlock and apply, you can get two concurrent writers and corrupt the state. force-unlock is safe only AFTER you've confirmed nobody is actually applying. You haven't checked yet.",
+      "outcome": "deadend",
+      "text": "force-unlock is the right tool but the wrong order. First confirm the lock is stale (no apply actually running). Forcing it blind risks two writers corrupting state.",
+      "back": "start"
+    },
+    "checkci": {
+      "situation": "$ # open the CI dashboard for build-7f3\nbuild-7f3: status CANCELLED at 14:06 (25 min ago)\n\nThe CI job that started the apply was cancelled a minute after it grabbed the lock. It died mid-run and never released it, the lock backend (DynamoDB / S3) still holds a stale entry. No apply is actually running right now.",
+      "choices": [
+        { "label": "Now that it's confirmed stale, terraform force-unlock a1b2c3d4-...", "goto": "fix" }
+      ]
+    },
+    "fix": {
+      "situation": "$ terraform force-unlock a1b2c3d4-...\nTerraform state has been successfully unlocked!\n$ terraform apply\nAcquiring state lock. This may take a few moments...\nPlan: 1 to add, 0 to change, 0 to destroy.\n\nThe stale lock is gone, apply proceeds normally. You also add a CI step that runs force-unlock only on confirmed-stale locks, and you make sure jobs release the lock on cancellation.",
+      "outcome": "solved",
+      "text": "Solved! 'Error acquiring the state lock' means another process holds (or held) the lock. A cancelled CI job left a stale lock behind. The safe path: read the lock info (who/when), confirm that holder is really gone, THEN force-unlock. Never delete state to fix a lock, and never force-unlock blind, the lock is what keeps two applies from corrupting your state."
+    }
+  }
+}

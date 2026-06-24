@@ -553,6 +553,13 @@ Run the Terraform loop, init, plan, apply, destroy, in the guided terminal below
 
 <br />
 
+##### **Debugging mystery: terraform won't apply, the state is locked**
+State is the most dangerous thing in a Terraform setup to mishandle. Here's a locked-state incident where some of the "obvious" fixes will happily destroy production. Pick carefully.
+
+<div id="myst-tf-state-lock" phx-hook="Mystery" phx-update="ignore" data-mystery="tf-state-lock"></div>
+
+<br />
+
 ##### **Closing notes**
 Infrastructure as Code changes how you think about infrastructure. Instead of fragile, manually
 configured environments, you get reproducible, version-controlled definitions that anyone on the team

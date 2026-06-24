@@ -1,0 +1,52 @@
+{
+  "id": "conntrack-full",
+  "title": "Debugging mystery: connections drop only under load",
+  "intro": "Under a load test, a small fraction of NEW connections randomly time out, while existing ones are fine. CPU and memory look healthy. Find what's silently dropping packets.",
+  "start": "start",
+  "nodes": {
+    "start": {
+      "situation": "Load test at 8k req/s: ~2% of new connections hang and time out. Already-established connections are unaffected. No errors in the app logs. Where do you look?",
+      "choices": [
+        { "label": "Check the kernel ring buffer: dmesg", "goto": "dmesg" },
+        { "label": "Add more pod replicas to handle the load", "goto": "replicas" },
+        { "label": "Check CPU on the nodes", "goto": "cpu" }
+      ]
+    },
+    "replicas": {
+      "situation": "$ kubectl scale deploy/api --replicas=20\n\nNo better, arguably worse. The drops aren't about app capacity, they're happening in the kernel below the app, and packing more pods onto the same nodes only pushes more connections through the same kernel tables.",
+      "outcome": "deadend",
+      "text": "The app never sees these connections, they're dropped before they arrive. More replicas adds connection load to the very node-level resource that's saturated.",
+      "back": "start"
+    },
+    "cpu": {
+      "situation": "$ # node metrics\nCPU: 45%, memory: 50%, plenty of headroom\n\nNodes are comfortable. This isn't 'too slow to keep up', packets are being dropped, not processed slowly. A drop with spare CPU points at a kernel limit, not compute.",
+      "outcome": "deadend",
+      "text": "Healthy CPU/memory rules out overload. Random NEW-connection drops with resources to spare smell like a kernel networking limit, not throughput.",
+      "back": "start"
+    },
+    "dmesg": {
+      "situation": "$ dmesg | tail\n[ ... ] nf_conntrack: table full, dropping packet\n[ ... ] nf_conntrack: table full, dropping packet\n\nThere it is: the kernel's connection-tracking table is full, so it drops new connections' packets. Confirm and decide what to do.",
+      "choices": [
+        { "label": "cat nf_conntrack_count vs nf_conntrack_max, then investigate the churn", "goto": "count" },
+        { "label": "Just raise nf_conntrack_max and move on", "goto": "raiseonly" }
+      ]
+    },
+    "raiseonly": {
+      "situation": "$ sysctl -w net.netfilter.nf_conntrack_max=1048576\n\nThe drops stop... for a while. Then the bigger table fills too. Each tracked connection also costs kernel memory, push it high enough and you trade packet drops for memory pressure. You raised the ceiling without asking why the table fills so fast.",
+      "outcome": "deadend",
+      "text": "Raising nf_conntrack_max is valid headroom, but if connection churn is unbounded it just delays the same wall and costs memory. Find WHY the table fills.",
+      "back": "dmesg"
+    },
+    "count": {
+      "situation": "$ cat /proc/sys/net/netfilter/nf_conntrack_count\n262144\n$ cat /proc/sys/net/netfilter/nf_conntrack_max\n262144\n$ conntrack -L | awk '{print $4}' | sort | uniq -c | sort -rn | head\n  241003 TIME_WAIT\n\nMaxed out, and almost everything is in TIME_WAIT. Huge numbers of short-lived connections are being opened and closed, each leaving a TIME_WAIT entry that lingers and fills the table. Something is not reusing connections.",
+      "choices": [
+        { "label": "Find the client opening a new connection per request (no keep-alive)", "goto": "fix" }
+      ]
+    },
+    "fix": {
+      "situation": "You trace it to a service-to-service client configured without HTTP keep-alive: it opens a fresh TCP connection for every single request to a high-RPS internal API, then closes it, leaving a TIME_WAIT each time. At 8k req/s that's a flood of conntrack entries.\n\nYou enable connection reuse (keep-alive / a pooled HTTP client) so connections are reused instead of churned, and raise nf_conntrack_max for headroom. conntrack_count drops to a few thousand and the timeouts vanish.",
+      "outcome": "solved",
+      "text": "Solved! 'nf_conntrack: table full' under load is connection CHURN, here a client with no keep-alive opening (and TIME_WAIT-ing) a new connection per request. The kernel tracks every connection; flood it and it drops new ones. The real fix is connection reuse (keep-alive / pooling); raising nf_conntrack_max is headroom, not a cure."
+    }
+  }
+}

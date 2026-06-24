@@ -1,0 +1,66 @@
+{
+  "id": "crashloop",
+  "title": "Debugging mystery: the pod that won't stay up",
+  "intro": "3 p.m. You just shipped a release and the api pod is stuck in CrashLoopBackOff. Production is degraded and the channel is getting loud. Work the problem: at each step, pick your next move.",
+  "start": "start",
+  "nodes": {
+    "start": {
+      "situation": "$ kubectl get pods\nNAME                READY   STATUS             RESTARTS   AGE\napi-7d9f8c-abc12    0/1     CrashLoopBackOff   6          4m\n\nThe pod keeps starting and dying. What do you do first?",
+      "choices": [
+        { "label": "kubectl logs api-7d9f8c-abc12 --previous", "goto": "logs" },
+        { "label": "kubectl describe pod api-7d9f8c-abc12", "goto": "describe" },
+        { "label": "kubectl delete pod api-7d9f8c-abc12  (just restart it)", "goto": "delete" }
+      ]
+    },
+    "delete": {
+      "situation": "$ kubectl delete pod api-7d9f8c-abc12\npod \"api-7d9f8c-abc12\" deleted\n\nThe Deployment recreates it. 30 seconds later: CrashLoopBackOff again. You changed nothing and burned two minutes.",
+      "outcome": "deadend",
+      "text": "Deleting a crashing pod just restarts the same broken thing. Diagnose before you act.",
+      "back": "start"
+    },
+    "describe": {
+      "situation": "$ kubectl describe pod api-7d9f8c-abc12\n...\nState:          Waiting\n  Reason:       CrashLoopBackOff\nLast State:     Terminated\n  Reason:       Error\n  Exit Code:    1\nEvents:\n  Warning  BackOff   Back-off restarting failed container\n\nExit code 1: the container started, ran, then exited with an error. describe tells you THAT it failed, not WHY. Where next?",
+      "choices": [
+        { "label": "kubectl logs api-7d9f8c-abc12 --previous", "goto": "logs" },
+        { "label": "Suspect the image tag is wrong", "goto": "image" }
+      ]
+    },
+    "image": {
+      "situation": "$ kubectl get deploy api -o jsonpath='{.spec.template.spec.containers[0].image}'\nmycorp/api:1.4.2\n\nThe image pulled fine and the container actually started (it ran, then exited 1). An image/pull problem would show ImagePullBackOff or ErrImagePull, not a clean start-then-die.",
+      "outcome": "deadend",
+      "text": "Exit code 1 after the container starts is a RUNTIME failure, not an image problem. The application logs hold the answer.",
+      "back": "describe"
+    },
+    "logs": {
+      "situation": "$ kubectl logs api-7d9f8c-abc12 --previous\nStarting api v1.4.2...\nError: getaddrinfo ENOTFOUND db-prod\n    at Connection.connect (/app/db.js:14:11)\n\nThe app dies on startup trying to reach the host 'db-prod'. What's the cause?",
+      "choices": [
+        { "label": "The database is down", "goto": "dbdown" },
+        { "label": "A NetworkPolicy is blocking the connection", "goto": "netpol" },
+        { "label": "The DB hostname doesn't resolve (wrong Service name?)", "goto": "hostname" }
+      ]
+    },
+    "dbdown": {
+      "situation": "$ kubectl get pods -n data | grep db\ndb-prod-0   1/1   Running   0   20d\n\nThe database is up and has been for 20 days. And the error was ENOTFOUND (name resolution), not 'connection refused' or a timeout.",
+      "outcome": "deadend",
+      "text": "ENOTFOUND means DNS could not resolve the name at all. A down database would give 'connection refused' or a timeout, after the name resolved. Read the error precisely.",
+      "back": "logs"
+    },
+    "netpol": {
+      "situation": "$ kubectl get networkpolicy\nNo resources found in this namespace.\n\nThere are no NetworkPolicies, so nothing is blocking traffic. And a blocked connection fails AFTER DNS resolves, with a timeout or refusal, not ENOTFOUND.",
+      "outcome": "deadend",
+      "text": "ENOTFOUND happens before any packet is sent, at the DNS step. NetworkPolicies affect connections that already resolved. The clue points at the name, not the path.",
+      "back": "logs"
+    },
+    "hostname": {
+      "situation": "$ kubectl get svc\nNAME   TYPE        CLUSTER-IP    PORT(S)\ndb     ClusterIP   10.96.12.7    5432/TCP\n\nThe Service that fronts the database is named 'db', but the app is trying to reach 'db-prod'. That name has no Service, so cluster DNS returns ENOTFOUND. How do you confirm where 'db-prod' comes from?",
+      "choices": [
+        { "label": "Check the app's DB_HOST env value on the Deployment", "goto": "fix" }
+      ]
+    },
+    "fix": {
+      "situation": "$ kubectl get deploy api -o jsonpath='{..env}' | tr ',' '\\n' | grep -i db_host\n{\"name\":\"DB_HOST\",\"value\":\"db-prod\"}\n\nConfirmed: DB_HOST=db-prod, but the Service is 'db'. Point it at 'db' (or rename the Service), roll the Deployment, and the pod goes 1/1 Running.",
+      "outcome": "solved",
+      "text": "Solved! The release shipped a config that pointed at a hostname ('db-prod') no Service exposed, so DNS returned ENOTFOUND and the app crashed on startup, over and over. The method that got you here: read the exact error (ENOTFOUND = DNS), trust the logs over hunches, and verify config against what actually exists in the cluster."
+    }
+  }
+}

@@ -804,6 +804,13 @@ article, that is a great next step.
 
 <br />
 
+##### **Debugging mystery: the pod that can't pull its image**
+GitOps deployed exactly what the manifest said, and the pod still won't start: ImagePullBackOff. The image built fine in CI. Track down why the cluster can't get it.
+
+<div id="myst-imagepull" phx-hook="Mystery" phx-update="ignore" data-mystery="imagepull"></div>
+
+<br />
+
 ##### **Closing notes**
 GitOps with ArgoCD gives you a deployment workflow that is declarative, versioned, automated, and
 auditable. Instead of running commands against your cluster and hoping everyone follows the same

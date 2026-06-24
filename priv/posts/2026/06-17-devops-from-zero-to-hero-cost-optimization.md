@@ -936,9 +936,9 @@ you there.
 > * **Article 14: [GitOps with ArgoCD](/blog/devops-from-zero-to-hero-gitops-with-argocd)** - We implemented GitOps so that git became the single source of truth for our deployments. Push to git and ArgoCD handles the rest.
 > * **Article 15: [Observability in Kubernetes](/blog/devops-from-zero-to-hero-observability)** - We set up Prometheus, Grafana, and structured logging. We learned about the three pillars: logs, metrics, and traces.
 > * **Article 16: [CI/CD, The Complete Pipeline](/blog/devops-from-zero-to-hero-the-complete-pipeline)** - We stitched everything together into a complete pipeline from pull request to production, with staging gates and manual approvals.
-> * **Article 17: Security and Compliance** - We covered container image scanning, RBAC policies, network policies, and how to bake security into every stage of the pipeline.
-> * **Article 18: Disaster Recovery and High Availability** - We learned multi-AZ deployments, backup strategies, RTO/RPO targets, and how to plan for the worst so your systems stay up.
-> * **Article 19: Advanced Deployment Strategies** - We explored canary deployments, blue/green deployments, feature flags, and progressive delivery patterns for zero-downtime releases.
+> * **Article 17: [Database Migrations and Zero-Downtime Deployments](/blog/devops-from-zero-to-hero-database-migrations)** - We learned why database changes are the riskiest part of a deploy, safe migration patterns with Prisma, and how to ship zero-downtime rolling updates in Kubernetes with health checks and rollbacks.
+> * **Article 18: [Security Hardening](/blog/devops-from-zero-to-hero-security-hardening)** - We hardened the whole pipeline with shift-left scanning (SAST and dependencies), container image scanning with Trivy, OIDC authentication, Kubernetes RBAC, network policies, and Pod Security Standards.
+> * **Article 19: [Incident Response and On-Call](/blog/devops-from-zero-to-hero-incident-response)** - We covered severity levels, on-call rotations, alerting and runbooks, blameless postmortems, and how to build an on-call culture that does not burn people out.
 > * **Article 20: Cost Optimization and What Comes Next (this article)** - We learned how to understand, monitor, and optimize cloud costs, then wrapped up the entire series.
 
 <br />
@@ -2032,9 +2032,9 @@ van a llevar.
 > * **Articulo 14: [GitOps con ArgoCD](/blog/devops-from-zero-to-hero-gitops-with-argocd)** - Implementamos GitOps para que git se convirtiera en la unica fuente de verdad para nuestros deploys. Push a git y ArgoCD se encarga del resto.
 > * **Articulo 15: [Observabilidad en Kubernetes](/blog/devops-from-zero-to-hero-observability)** - Configuramos Prometheus, Grafana y logging estructurado. Aprendimos sobre los tres pilares: logs, metricas y trazas.
 > * **Articulo 16: [CI/CD, El Pipeline Completo](/blog/devops-from-zero-to-hero-the-complete-pipeline)** - Unimos todo en un pipeline completo desde pull request hasta produccion, con gates de staging y aprobaciones manuales.
-> * **Articulo 17: Seguridad y Compliance** - Cubrimos escaneo de imagenes de containers, politicas RBAC, network policies, y como integrar seguridad en cada etapa del pipeline.
-> * **Articulo 18: Disaster Recovery y Alta Disponibilidad** - Aprendimos deploys multi-AZ, estrategias de backup, objetivos de RTO/RPO, y como planificar para lo peor para que tus sistemas sigan funcionando.
-> * **Articulo 19: Estrategias de Deploy Avanzadas** - Exploramos deploys canary, deploys blue/green, feature flags, y patrones de entrega progresiva para releases sin downtime.
+> * **Articulo 17: [Migraciones de Base de Datos y Deployments Sin Downtime](/blog/devops-from-zero-to-hero-database-migrations)** - Aprendimos por que los cambios en la base de datos son la parte mas riesgosa de un deploy, patrones de migracion seguros con Prisma, y como hacer rolling updates sin downtime en Kubernetes con health checks y rollbacks.
+> * **Articulo 18: [Seguridad y Hardening](/blog/devops-from-zero-to-hero-security-hardening)** - Endurecimos todo el pipeline con escaneo shift-left (SAST y dependencias), escaneo de imagenes con Trivy, autenticacion OIDC, RBAC de Kubernetes, network policies y Pod Security Standards.
+> * **Articulo 19: [Respuesta a Incidentes y On-Call](/blog/devops-from-zero-to-hero-incident-response)** - Cubrimos niveles de severidad, rotaciones de on-call, alertas y runbooks, postmortems sin culpa, y como construir una cultura de on-call que no queme a la gente.
 > * **Articulo 20: Optimizacion de Costos y Lo Que Viene Despues (este articulo)** - Aprendimos como entender, monitorear y optimizar costos cloud, y cerramos la serie completa.
 
 <br />

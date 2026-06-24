@@ -1133,6 +1133,13 @@ Hope you found this useful and enjoyed reading it, until next time!
 
 <br />
 
+##### **Debugging mystery: the app that falls over under load**
+You've learned to ship schema changes safely. Now the operational flip side: the app starts throwing 500s under load while the database sits nearly idle. Find the real bottleneck (it's about connections, not queries).
+
+<div id="myst-pool-exhaustion" phx-hook="Mystery" phx-update="ignore" data-mystery="pool-exhaustion"></div>
+
+<br />
+
 ##### **Errata**
 If you spot any error or have any suggestion, please send me a message so it gets fixed.
 

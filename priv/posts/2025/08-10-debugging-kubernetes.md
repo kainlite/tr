@@ -373,6 +373,13 @@ A distroless pod with no shell is misbehaving. Get inside it anyway with an ephe
 
 <br />
 
+##### **Debugging mystery: think like an on-call engineer**
+Knowing the commands is half the job. The other half is the method: reading the exact error, trusting the evidence over hunches, and not flailing. A pod is stuck in CrashLoopBackOff. Diagnose it, one decision at a time. Pick wrong and you'll learn why it was wrong.
+
+<div id="myst-crashloop" phx-hook="Mystery" phx-update="ignore" data-mystery="crashloop"></div>
+
+<br />
+
 ##### **Conclusion**
 Debugging distroless containers doesn't have to be a nightmare. With `kubectl debug` and the `/proc/1/root` technique, you can investigate issues in even the most minimal containers. The key is understanding that you're not trying to add tools to the distroless container - you're bringing your own toolbox and accessing the container's filesystem from the outside.
 

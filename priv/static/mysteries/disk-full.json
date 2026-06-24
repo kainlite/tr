@@ -1,0 +1,52 @@
+{
+  "id": "disk-full",
+  "title": "Debugging mystery: the disk is full but nothing is using it",
+  "intro": "Alerts firing: the server's root disk is 100% full. You start deleting things, but `du` says there is barely anything there. Where did the space go?",
+  "start": "start",
+  "nodes": {
+    "start": {
+      "situation": "$ df -h /\nFilesystem      Size  Used Avail Use% Mounted on\n/dev/sda1        40G   40G     0  100% /\n\nCompletely full. First move?",
+      "choices": [
+        { "label": "du -sh /* to find the big directories", "goto": "du" },
+        { "label": "Delete /var/log/*.log to free space", "goto": "deletelogs" },
+        { "label": "df -i to check inodes", "goto": "inodes" }
+      ]
+    },
+    "deletelogs": {
+      "situation": "$ rm -f /var/log/*.log\n$ df -h /\nFilesystem      Size  Used Avail Use% Mounted on\n/dev/sda1        40G   40G     0  100% /\n\nYou deleted the logs but df STILL shows 100%. The space did not come back. That is the whole mystery in one symptom: a file can be deleted yet still hold its space.",
+      "outcome": "deadend",
+      "text": "Deleting a file only frees space when no process still has it open. The space not returning is the key clue, stop deleting blindly and find who is holding it.",
+      "back": "start"
+    },
+    "inodes": {
+      "situation": "$ df -i /\nFilesystem     Inodes  IUsed  IFree IUse% Mounted on\n/dev/sda1      2.5M    310K   2.2M   13% /\n\nInodes are fine (13%), so this is not 'millions of tiny files' exhausting inodes. It is genuinely bytes. Back to finding where the bytes went.",
+      "outcome": "deadend",
+      "text": "Inode exhaustion (lots of tiny files) shows ~100% IUse with space still free. Here inodes are fine, so real bytes are being held somewhere.",
+      "back": "start"
+    },
+    "du": {
+      "situation": "$ du -sh /* 2>/dev/null | sort -h | tail -4\n1.2G  /usr\n2.1G  /var\n3.0G  /home\n\nAdd it up and du sees maybe 8G, but df says 40G is used. ~32G is unaccounted for. du counts files in the tree; df counts allocated blocks. The gap means space is held by something du cannot see.",
+      "choices": [
+        { "label": "A separate filesystem is mounted over a directory full of files", "goto": "mount" },
+        { "label": "A deleted file is still held open by a running process", "goto": "lsof" }
+      ]
+    },
+    "mount": {
+      "situation": "$ findmnt -R / | wc -l\n3\n$ mount | grep sda1\n/dev/sda1 on / type ext4 (rw,relatime)\n\nNothing is mounted over a directory of files, the tree du walked is the whole filesystem. The hidden space is not buried under a mountpoint. Something holds bytes that no directory entry points to anymore.",
+      "outcome": "deadend",
+      "text": "Files hidden under a mountpoint are a real cause of df/du gaps, but there is no such mount here. When df far exceeds du and it is not a mount, suspect deleted-but-open files.",
+      "back": "du"
+    },
+    "lsof": {
+      "situation": "$ lsof -nP | grep '(deleted)'\njava   2914  app   3w  REG  8,1  34359738368  131074  /var/log/app/debug.log (deleted)\n\nFound it: PID 2914 holds a ~32G log file open that is already '(deleted)'. The directory entry is gone (so du cannot see it), but the process keeps the file descriptor open, so the kernel keeps the bytes. How do you reclaim the space?",
+      "choices": [
+        { "label": "Truncate the open fd, or restart the process holding it", "goto": "fix" }
+      ]
+    },
+    "fix": {
+      "situation": "You truncate the open descriptor without killing the app:\n\n$ : > /proc/2914/fd/3\n$ df -h /\nFilesystem      Size  Used Avail Use% Mounted on\n/dev/sda1        40G   8.1G   32G   21% /\n\n32G freed instantly. Then you fix the real cause: log rotation deleted the file while the process kept writing to the same open fd. Switch to copytruncate (or make the app reopen its log on rotation) so it never recurs.",
+      "outcome": "solved",
+      "text": "Solved! df counts allocated blocks; du counts files reachable in the tree. When df is far bigger than du, the space is held by a file with no name left, a process keeping an open fd to a deleted file. `lsof | grep deleted` finds it; truncating that fd (or restarting the process) frees it. Root cause: log rotation that deletes instead of copytruncate while the writer holds the old fd."
+    }
+  }
+}
