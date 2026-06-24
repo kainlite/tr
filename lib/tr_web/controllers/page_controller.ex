@@ -3,7 +3,49 @@ defmodule TrWeb.PageController do
 
   alias Tr.Blog
 
-  plug :put_layout, false when action in [:rss_feed, :xml_sitemap, :json_sitemap, :llms_txt]
+  plug :put_layout,
+       false when action in [:rss_feed, :xml_sitemap, :json_sitemap, :llms_txt, :lab_badge]
+
+  # Embeddable "completed track" SVG badge (shields.io style) for READMEs/sites.
+  def lab_badge(conn, %{"slug" => slug}) do
+    slug = String.replace_suffix(slug, ".svg", "")
+    track = Enum.find(Tr.Labs.tracks(), &(&1.slug == slug))
+
+    right = if track, do: "#{track.title} ✓", else: "unknown track"
+    color = if track, do: "#2ea043", else: "#9f9f9f"
+
+    conn
+    |> put_resp_content_type("image/svg+xml")
+    |> put_resp_header("cache-control", "public, max-age=3600")
+    |> send_resp(200, badge_svg("SegFault Labs", right, color))
+  end
+
+  defp badge_svg(left, right, color) do
+    lw = round(String.length(left) * 6.7) + 16
+    rw = round(String.length(right) * 6.7) + 16
+    w = lw + rw
+
+    e = fn s ->
+      s
+      |> String.replace("&", "&amp;")
+      |> String.replace("<", "&lt;")
+      |> String.replace(">", "&gt;")
+    end
+
+    """
+    <svg xmlns="http://www.w3.org/2000/svg" width="#{w}" height="20" role="img" aria-label="#{e.(left)}: #{e.(right)}">
+      <clipPath id="r"><rect width="#{w}" height="20" rx="3"/></clipPath>
+      <g clip-path="url(#r)">
+        <rect width="#{lw}" height="20" fill="#333"/>
+        <rect x="#{lw}" width="#{rw}" height="20" fill="#{color}"/>
+      </g>
+      <g fill="#fff" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11" text-anchor="middle">
+        <text x="#{div(lw, 2)}" y="14">#{e.(left)}</text>
+        <text x="#{lw + div(rw, 2)}" y="14">#{e.(right)}</text>
+      </g>
+    </svg>
+    """
+  end
 
   def xml_sitemap(conn, _params) do
     en_posts = Blog.posts("en")

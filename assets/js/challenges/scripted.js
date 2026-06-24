@@ -5,6 +5,8 @@
 // output and advance. No real execution, ideal for "learn the command" tutorials.
 // Real execution is handled by the (heavier) v86 runner.
 
+import { recordSolve } from "./activity.js";
+
 const STORAGE_PREFIX = "tr:challenge:";
 
 function asRegexList(match) {
@@ -217,6 +219,7 @@ export class ScriptedRunner {
         this.print(this.def.done || "Solved!", "ok");
         this.solved = true;
         this.save();
+        recordSolve(this.def.id);
         this.markSolved();
       } else {
         this.printInstruction();

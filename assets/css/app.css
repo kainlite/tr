@@ -1174,6 +1174,7 @@
 .tr-v86-screen {
   background: #0c0c0c;
   min-height: 6rem;
+  position: relative;
 }
 .tr-v86-screen .xterm {
   padding: 0.45rem 0.55rem;
@@ -1219,6 +1220,52 @@
 .dark .tr-v86-status-hint { color: #f5d76e; }
 .tr-v86-status-muted { color: #888; }
 
+/* Click-to-interact overlay: while booting it shows a spinner + progress; once
+   ready it invites a click. The VM only captures keyboard/scroll when active,
+   so the page stays usable until the user opts in (and clicking out releases). */
+.tr-v86-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.5rem;
+  text-align: center;
+  cursor: default;
+  color: #d7d7d7;
+  font-size: 0.85rem;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  background: rgba(12, 12, 12, 0.82);
+}
+.tr-v86-overlay-ready {
+  cursor: pointer;
+  color: #38ef7d;
+  background: rgba(12, 12, 12, 0.4);
+}
+.tr-v86-spinner {
+  flex: 0 0 auto;
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #38ef7d;
+  border-radius: 50%;
+  animation: tr-v86-spin 0.8s linear infinite;
+}
+.tr-v86-overlay-ready .tr-v86-spinner {
+  display: none;
+}
+@keyframes tr-v86-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* active = the terminal is capturing input; a green ring makes that obvious. */
+.tr-v86.tr-v86-active .tr-v86-screen {
+  box-shadow: inset 0 0 0 2px #38ef7d;
+}
+
 /* Labs index: completion decoration (filled in client-side by LabProgress). */
 .tr-lab-check {
   display: inline-block;
@@ -1234,4 +1281,464 @@
 #labs-root ul {
   list-style: none;
   padding-left: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   Blog reading UX: progress rail, heading anchors, table of contents, callouts
+--------------------------------------------------------------------------- */
+.tr-progress-rail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 60;
+  background: transparent;
+  pointer-events: none;
+}
+.tr-progress-rail span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #11998e, #38ef7d);
+}
+
+/* heading anchor links (revealed on heading hover, sit after the heading text;
+   not in the left margin, which the post container's overflow-x-hidden clips) */
+.tr-anchor {
+  margin-left: 0.4em;
+  opacity: 0;
+  text-decoration: none;
+  color: #38ef7d;
+  font-weight: 400;
+}
+h2:hover > .tr-anchor,
+h3:hover > .tr-anchor,
+h4:hover > .tr-anchor,
+h5:hover > .tr-anchor,
+h6:hover > .tr-anchor {
+  opacity: 1;
+}
+.tr-anchor:hover {
+  text-decoration: none;
+}
+@media (max-width: 640px) {
+  .tr-anchor {
+    display: none;
+  }
+}
+
+/* table of contents */
+.tr-toc {
+  margin: 1rem 0 1.5rem;
+  border: 1px solid #d4d4d4;
+  border-radius: 6px;
+  background: #fafafa;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+.dark .tr-toc {
+  border-color: #2a2a2a;
+  background: #141414;
+}
+.tr-toc-summary {
+  cursor: pointer;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #444;
+  user-select: none;
+}
+.dark .tr-toc-summary {
+  color: #cfcfcf;
+}
+.tr-toc-summary::marker {
+  color: #38ef7d;
+}
+.tr-toc-list {
+  list-style: none !important;
+  margin: 0;
+  padding: 0 0.9rem 0.7rem;
+}
+.tr-toc-item {
+  margin: 0.15rem 0;
+}
+.tr-toc-i1 {
+  padding-left: 1rem;
+}
+.tr-toc-i2 {
+  padding-left: 2rem;
+}
+.tr-toc-i3 {
+  padding-left: 3rem;
+}
+.tr-toc-link {
+  display: inline-block;
+  font-size: 0.82rem;
+  color: #555;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  padding-left: 0.5rem;
+}
+.dark .tr-toc-link {
+  color: #9a9a9a;
+}
+.tr-toc-link:hover {
+  color: #0a7a2f;
+}
+.dark .tr-toc-link:hover {
+  color: #38ef7d;
+}
+.tr-toc-active {
+  color: #0a7a2f !important;
+  border-left-color: #38ef7d;
+  font-weight: 600;
+}
+.dark .tr-toc-active {
+  color: #38ef7d !important;
+}
+
+/* callouts / admonitions (authored as GitHub-style `> [!WARNING]` blockquotes) */
+.tr-callout {
+  margin: 1.2rem 0;
+  padding: 0.6rem 1rem;
+  border-left: 4px solid #888;
+  border-radius: 4px;
+  background: rgba(120, 120, 120, 0.08);
+}
+.tr-callout-title {
+  margin: 0 0 0.3rem;
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.tr-callout-body > :last-child {
+  margin-bottom: 0;
+}
+.tr-callout-note {
+  border-left-color: #539bf5;
+  background: rgba(83, 155, 245, 0.08);
+}
+.tr-callout-note .tr-callout-title {
+  color: #539bf5;
+}
+.tr-callout-tip {
+  border-left-color: #57ab5a;
+  background: rgba(87, 171, 90, 0.08);
+}
+.tr-callout-tip .tr-callout-title {
+  color: #57ab5a;
+}
+.tr-callout-important {
+  border-left-color: #986ee2;
+  background: rgba(152, 110, 226, 0.08);
+}
+.tr-callout-important .tr-callout-title {
+  color: #986ee2;
+}
+.tr-callout-warning {
+  border-left-color: #c69026;
+  background: rgba(198, 144, 38, 0.1);
+}
+.tr-callout-warning .tr-callout-title {
+  color: #c69026;
+}
+.tr-callout-caution,
+.tr-callout-danger {
+  border-left-color: #e5534b;
+  background: rgba(229, 83, 75, 0.1);
+}
+.tr-callout-caution .tr-callout-title,
+.tr-callout-danger .tr-callout-title {
+  color: #e5534b;
+}
+
+/* Mermaid diagrams (rendered client-side from ```mermaid blocks) */
+.tr-mermaid-pending {
+  display: none;
+}
+.tr-mermaid {
+  margin: 1.4rem 0;
+  text-align: center;
+  overflow-x: auto;
+}
+.tr-mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Cmd/Ctrl-K command palette */
+.tr-palette {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+.tr-palette[hidden] {
+  display: none;
+}
+.tr-palette-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+.tr-palette-box {
+  position: relative;
+  margin-top: 12vh;
+  width: min(92vw, 600px);
+  background: #ffffff;
+  border: 1px solid #cfcfcf;
+  border-radius: 10px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+.dark .tr-palette-box {
+  background: #141414;
+  border-color: #2a2a2a;
+}
+.tr-palette-input,
+.tr-palette-input:focus {
+  width: 100%;
+  border: none !important;
+  border-bottom: 1px solid #e2e2e2 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-ring-offset-shadow: 0 0 #0000;
+  background: transparent;
+  padding: 0.9rem 1rem;
+  font-size: 0.95rem;
+  color: #1c1c1c;
+  font-family: inherit;
+}
+.dark .tr-palette-input,
+.dark .tr-palette-input:focus {
+  color: #eee;
+  border-bottom-color: #2a2a2a !important;
+}
+.tr-palette-input::placeholder {
+  color: #999;
+}
+.tr-palette-list {
+  list-style: none !important;
+  margin: 0;
+  padding: 0.4rem;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+.tr-palette-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.86rem;
+  color: #333;
+}
+.dark .tr-palette-item {
+  color: #cfcfcf;
+}
+.tr-palette-icon {
+  flex: 0 0 1.2rem;
+  text-align: center;
+  opacity: 0.7;
+}
+.tr-palette-label {
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tr-palette-tag {
+  flex: 0 0 auto;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #999;
+}
+.tr-palette-active {
+  background: #eafaf0;
+  color: #0a7a2f;
+}
+.dark .tr-palette-active {
+  background: rgba(56, 239, 125, 0.12);
+  color: #38ef7d;
+}
+
+/* Lab streak + activity heatmap (/labs) */
+.tr-streak {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid #d4d4d4;
+  border-radius: 8px;
+}
+.dark .tr-streak {
+  border-color: #2a2a2a;
+}
+.tr-streak-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+.tr-streak-sep {
+  opacity: 0.4;
+}
+.tr-heatmap {
+  overflow-x: auto;
+}
+.tr-hm-grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(7, 1fr);
+  gap: 3px;
+  width: max-content;
+}
+.tr-hm-cell {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  background: #e4e4e4;
+}
+.dark .tr-hm-cell {
+  background: #232323;
+}
+.tr-hm-1 {
+  background: #9be9a8;
+}
+.tr-hm-2 {
+  background: #40c463;
+}
+.tr-hm-3 {
+  background: #216e39;
+}
+.dark .tr-hm-1 {
+  background: #0e4429;
+}
+.dark .tr-hm-2 {
+  background: #26a641;
+}
+.dark .tr-hm-3 {
+  background: #39d353;
+}
+
+/* Track rewards (certificate + embeddable badge) on /labs */
+.tr-track-rewards {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+  padding-top: 0.7rem;
+  border-top: 1px dashed #d4d4d4;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+.tr-track-rewards[hidden] {
+  display: none;
+}
+.dark .tr-track-rewards {
+  border-top-color: #2a2a2a;
+}
+.tr-reward-done {
+  margin-right: auto;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #0a7a2f;
+}
+.dark .tr-reward-done {
+  color: #38ef7d;
+}
+.tr-reward-btn {
+  font-size: 0.74rem;
+  padding: 0.25rem 0.7rem;
+  border: 1px solid #c9c9c9;
+  border-radius: 5px;
+  background: #fff;
+  color: #444;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.tr-reward-btn:hover {
+  border-color: #0a7a2f;
+  color: #0a7a2f;
+}
+.dark .tr-reward-btn {
+  background: #111;
+  border-color: #2f2f2f;
+  color: #cfcfcf;
+}
+.dark .tr-reward-btn:hover {
+  border-color: #38ef7d;
+  color: #38ef7d;
+}
+
+/* Debugging mystery (choose-your-own-adventure troubleshooting) */
+.tr-mystery-body {
+  background: #0c0c0c;
+  padding: 0.85rem;
+}
+.tr-mystery-situation {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: #e6e6e6;
+}
+.tr-mystery-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+}
+.tr-mystery-choice {
+  text-align: left;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.85rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid #2f2f2f;
+  border-radius: 6px;
+  background: #151515;
+  color: #d7d7d7;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.tr-mystery-choice::before {
+  content: "→ ";
+  color: #38ef7d;
+}
+.tr-mystery-choice:hover {
+  border-color: #38ef7d;
+  color: #38ef7d;
+  background: #1a1a1a;
+}
+.tr-mystery-outcome {
+  margin-top: 0.9rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 6px;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+.tr-mystery-solved {
+  background: rgba(56, 239, 125, 0.1);
+  border-left: 3px solid #38ef7d;
+  color: #46e08a;
+}
+.tr-mystery-deadend {
+  background: rgba(255, 107, 107, 0.08);
+  border-left: 3px solid #ff6b6b;
+  color: #ff9a9a;
+}
+.tr-mystery-back {
+  display: block;
+  margin-top: 0.7rem;
 }

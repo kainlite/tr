@@ -11,6 +11,7 @@
 // "Start", not on page load.
 
 import { Terminal } from "../../vendor/xterm/xterm.mjs";
+import { recordSolve } from "./activity.js";
 
 // Where the heavy v86 assets (kernel, wasm, BIOSes, alpine 9p rootfs) live.
 // They are NOT in the Docker image; in prod they are served from jsDelivr (the
@@ -89,6 +90,23 @@ function escapeHtml(s) {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+}
+
+// v86 9p filesystem JSON: a tree of [name, size, mtime, mode, uid, gid, ref]
+// where ref is a child array (dir), a "<8hex>.bin" content file, or a symlink
+// target. Collect the unique content files so we can pre-warm them in parallel.
+const BASE_FILE_RE = /^[0-9a-f]{8}\.bin$/;
+function collectBaseFiles(fs) {
+  const out = new Set();
+  const walk = (nodes) => {
+    for (const n of nodes) {
+      const ref = n[6];
+      if (Array.isArray(ref)) walk(ref);
+      else if (typeof ref === "string" && BASE_FILE_RE.test(ref)) out.add(ref);
+    }
+  };
+  walk((fs && fs.fsroot) || []);
+  return Array.from(out);
 }
 
 class V86Runner {
@@ -188,7 +206,51 @@ class V86Runner {
     });
     this.term.open(this.screenEl);
 
+    // Click-to-interact overlay. The VM only captures keyboard + scroll once the
+    // user clicks into it; clicking anywhere outside releases it again, so the
+    // page's own scrolling and shortcuts keep working without a reload.
+    this.overlay = document.createElement("div");
+    this.overlay.className = "tr-v86-overlay";
+    this.overlay.innerHTML =
+      '<span class="tr-v86-spinner"></span>' +
+      '<span class="tr-v86-ovtext" data-role="ovtext">Booting Linux…</span>';
+    this.screenEl.appendChild(this.overlay);
+    this.ovTextEl = this.overlay.querySelector('[data-role="ovtext"]');
+    this.overlay.addEventListener("mousedown", (e) => {
+      if (this.ready) {
+        e.preventDefault();
+        this.activate();
+      }
+    });
+    this._onDocDown = (e) => {
+      if (this.active && !this.el.contains(e.target)) this.deactivate();
+    };
+    document.addEventListener("mousedown", this._onDocDown, true);
+
+    // While inactive, the wheel must scroll the PAGE, not the terminal buffer.
+    // xterm captures wheel on its viewport, so we intercept in the capture phase
+    // and drive the page scroll ourselves; once active, xterm scrolls as usual.
+    this.screenEl.addEventListener(
+      "wheel",
+      (e) => {
+        if (this.active) return;
+        e.preventDefault();
+        e.stopPropagation();
+        let dy = e.deltaY;
+        if (e.deltaMode === 1) dy *= 16;
+        else if (e.deltaMode === 2) dy *= window.innerHeight;
+        window.scrollBy(0, dy);
+      },
+      { passive: false, capture: true },
+    );
+
     const p = this.profile;
+    // Warm the 9p filesystem cache in parallel with boot, so v86's on-demand,
+    // one-file-at-a-time reads hit the browser cache instead of the network.
+    if (p.options && p.options.filesystem && p.options.filesystem.basefs) {
+      this.prefetchFilesystem(p.options.filesystem.basefs, p.options.filesystem.baseurl);
+    }
+
     this.emulator = new window.V86({
       wasm_path: `${V86_BASE}/v86.wasm`,
       memory_size: p.memory * 1024 * 1024,
@@ -246,7 +308,12 @@ class V86Runner {
     this.rebootBtn.disabled = false;
     if (!this.solved) this.badgeEl.textContent = "ready";
     this.barEl.style.width = this.solved ? "100%" : "55%";
-    this.term.focus();
+    // Switch the overlay to "click to interact": don't auto-grab the keyboard,
+    // so the page stays scrollable until the user opts into the terminal.
+    if (this.overlay) {
+      this.overlay.classList.add("tr-v86-overlay-ready");
+      this.setOverlayText("▶ Click to use the terminal");
+    }
     // Optional per-challenge scenario seeding (create files to fix, data to
     // search, etc). Runs once in the shell after the box is ready.
     if (this.def.setup && !this.setupRan) {
@@ -257,14 +324,80 @@ class V86Runner {
     }
   }
 
+  setOverlayText(text) {
+    if (this.ovTextEl) this.ovTextEl.textContent = text;
+  }
+
+  activate() {
+    if (!this.term) return;
+    this.active = true;
+    this.el.classList.add("tr-v86-active");
+    if (this.overlay) this.overlay.style.display = "none";
+    this.term.focus();
+  }
+
+  deactivate() {
+    this.active = false;
+    this.el.classList.remove("tr-v86-active");
+    if (this.overlay) this.overlay.style.display = "";
+    if (this.term) this.term.blur();
+  }
+
+  // Fetch all 9p content files in parallel to warm the browser HTTP cache, so
+  // the guest's sequential on-demand reads are served locally. Best-effort: any
+  // failure just falls back to v86 fetching that file on demand.
+  async prefetchFilesystem(fsUrl, baseUrl) {
+    let names;
+    try {
+      names = collectBaseFiles(await fetch(fsUrl).then((r) => r.json()));
+    } catch (_e) {
+      return;
+    }
+    const total = names.length;
+    let done = 0;
+    let idx = 0;
+    const worker = async () => {
+      while (idx < total && !this.prefetchAbort) {
+        const name = names[idx++];
+        try {
+          await fetch(baseUrl + name).then((r) => r.arrayBuffer());
+        } catch (_e) {
+          /* ignore: v86 will retry this file on demand */
+        }
+        done += 1;
+        if (!this.ready) {
+          this.setOverlayText(
+            `Booting Linux… (cached ${done.toLocaleString()} / ${total.toLocaleString()} files)`,
+          );
+        }
+      }
+    };
+    await Promise.all(Array.from({ length: 24 }, () => worker()));
+  }
+
+  // Pull out just the check command's real output. The serial stream also
+  // contains the shell's echo of the command we sent, and that echo includes
+  // the expected token literally (e.g. `echo PERM_OK`), which would otherwise
+  // always match. We bracket the real output with unique markers and read only
+  // between the markers' *output* occurrence (the last OPEN), not the echo.
+  extractVerifyOutput(raw, open, close) {
+    const o = raw.lastIndexOf(open);
+    if (o === -1) return raw;
+    const tail = raw.slice(o + open.length);
+    const c = tail.indexOf(close);
+    return c === -1 ? tail : tail.slice(0, c);
+  }
+
   async verify() {
     const v = this.def.verify;
     if (!v || !this.emulator) return;
     this.setStatus("Running the check inside the VM…", "muted");
     const start = this.capture.length;
-    this.emulator.serial0_send(v.command + "\n");
+    const OPEN = "TRVo8x7q";
+    const CLOSE = "TRVc8x7q";
+    this.emulator.serial0_send(`printf '\\n${OPEN}\\n'; ${v.command}; printf '${CLOSE}\\n'\n`);
     await new Promise((r) => setTimeout(r, v.wait_ms || 1500));
-    const out = this.capture.slice(start);
+    const out = this.extractVerifyOutput(this.capture.slice(start), OPEN, CLOSE);
 
     const patterns = (v.expect_all || [v.expect]).filter(Boolean).map((s) => new RegExp(s, "i"));
     const passed = patterns.length > 0 && patterns.every((re) => re.test(out));
@@ -272,6 +405,7 @@ class V86Runner {
     if (passed) {
       this.solved = true;
       this.saveSolved();
+      recordSolve(this.def.id);
       this.badgeEl.textContent = "solved ✓";
       this.badgeEl.classList.add("tr-term-steps-ok");
       this.el.classList.add("tr-solved");
@@ -286,9 +420,16 @@ class V86Runner {
     if (!this.emulator) return;
     this.ready = false;
     this.capture = "";
+    this.setupSent = false;
+    this.setupRan = false;
     this.verifyBtn.disabled = true;
     this.rebootBtn.disabled = true;
     if (this.term) this.term.reset();
+    this.deactivate();
+    if (this.overlay) {
+      this.overlay.classList.remove("tr-v86-overlay-ready");
+      this.setOverlayText("Booting Linux…");
+    }
     this.setStatus("Rebooting…", "muted");
     try {
       this.emulator.restart();

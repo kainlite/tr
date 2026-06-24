@@ -58,6 +58,17 @@ defmodule TrWeb.LabsLive do
         </div>
       </div>
 
+      <div class="tr-streak" data-streak hidden>
+        <div class="tr-streak-stats font-mono text-sm text-zinc-700 dark:text-zinc-200">
+          <span class="tr-streak-flame">🔥 <b data-streak-current>0</b> {gettext("day streak")}</span>
+          <span class="tr-streak-sep">·</span>
+          <span>{gettext("longest")} <b data-streak-longest>0</b></span>
+          <span class="tr-streak-sep">·</span>
+          <span><b data-streak-total>0</b> {gettext("solved")}</span>
+        </div>
+        <div class="tr-heatmap" data-heatmap aria-hidden="true"></div>
+      </div>
+
       <div class="space-y-4">
         <h2 class="font-mono text-lg font-bold text-zinc-900 dark:text-zinc-100">
           {gettext("Tracks")}
@@ -104,6 +115,21 @@ defmodule TrWeb.LabsLive do
                 </.link>
               </li>
             </ol>
+            <div class="tr-track-rewards" data-track-rewards hidden>
+              <span class="tr-reward-done">✓ {gettext("Track complete!")}</span>
+              <button type="button" class="tr-reward-btn" data-cert data-track-title={track.title}>
+                🎓 {gettext("Certificate")}
+              </button>
+              <button
+                type="button"
+                class="tr-reward-btn"
+                data-copy-badge
+                data-track-slug={track.slug}
+                data-track-title={track.title}
+              >
+                🔗 {gettext("Copy badge")}
+              </button>
+            </div>
           </section>
         </div>
       </div>

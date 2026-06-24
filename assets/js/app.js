@@ -25,6 +25,10 @@ import topbar from "../vendor/topbar";
 import * as CookieConsent from "../vendor/cookieconsent.esm";
 import hljs from "../vendor/highlight.min.js";
 import { mountChallenge } from "./challenges/index.js";
+import { mountMystery } from "./mystery.js";
+import { renderMermaid, mountAsciinema } from "./markdown.js";
+import { initPalette } from "./palette.js";
+import { initLabRewards } from "./labs-rewards.js";
 
 let Hooks = {};
 
@@ -36,6 +40,12 @@ let Hooks = {};
 Hooks.Challenge = {
   mounted() {
     mountChallenge(this.el);
+  },
+};
+
+Hooks.Mystery = {
+  mounted() {
+    mountMystery(this.el);
   },
 };
 
@@ -72,7 +82,10 @@ Hooks.LabProgress = {
       if (cnt) cnt.textContent = `${done} / ${labs.length}`;
       const bar = t.querySelector("[data-track-bar]");
       if (bar) bar.style.width = labs.length ? Math.round((done / labs.length) * 100) + "%" : "0%";
-      t.classList.toggle("track-complete", labs.length > 0 && done === labs.length);
+      const complete = labs.length > 0 && done === labs.length;
+      t.classList.toggle("track-complete", complete);
+      const rewards = t.querySelector("[data-track-rewards]");
+      if (rewards) rewards.hidden = !complete;
     });
     const ids = new Set();
     this.el.querySelectorAll("[data-lab-id]").forEach((a) => ids.add(a.getAttribute("data-lab-id")));
@@ -87,6 +100,88 @@ Hooks.LabProgress = {
     if (doneEl) doneEl.textContent = done;
     if (totalEl) totalEl.textContent = total;
     if (barEl) barEl.style.width = total ? Math.round((done / total) * 100) + "%" : "0%";
+
+    this.renderActivity();
+  },
+  fmt(d) {
+    const p = (n) => String(n).padStart(2, "0");
+    return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate());
+  },
+  // current streak: consecutive active days ending today/yesterday, with one
+  // "freeze" so a single missed day does not reset it.
+  streak(dates) {
+    const dayMs = 86400000;
+    let cursor = new Date();
+    cursor.setHours(0, 0, 0, 0);
+    if (!dates.has(this.fmt(cursor))) cursor = new Date(cursor.getTime() - dayMs);
+    let s = 0;
+    let frozen = false;
+    while (true) {
+      if (dates.has(this.fmt(cursor))) {
+        s++;
+        cursor = new Date(cursor.getTime() - dayMs);
+      } else if (!frozen && s > 0) {
+        frozen = true;
+        cursor = new Date(cursor.getTime() - dayMs);
+      } else {
+        break;
+      }
+    }
+    return s;
+  },
+  longestStreak(dates) {
+    const sorted = [...dates].sort();
+    if (!sorted.length) return 0;
+    const dayMs = 86400000;
+    let best = 1;
+    let run = 1;
+    for (let i = 1; i < sorted.length; i++) {
+      const gap = Math.round((new Date(sorted[i]) - new Date(sorted[i - 1])) / dayMs);
+      run = gap === 1 ? run + 1 : 1;
+      if (run > best) best = run;
+    }
+    return best;
+  },
+  renderActivity() {
+    const wrap = this.el.querySelector("[data-streak]");
+    if (!wrap) return;
+    let log = {};
+    try {
+      log = JSON.parse(localStorage.getItem("tr:lab-activity") || "{}");
+    } catch (_e) {
+      /* none */
+    }
+    const dates = new Set(Object.keys(log));
+    const total = Object.values(log).reduce((a, b) => a + b, 0);
+    if (total === 0) {
+      wrap.hidden = true;
+      return;
+    }
+    wrap.hidden = false;
+    const set = (sel, v) => {
+      const e = wrap.querySelector(sel);
+      if (e) e.textContent = v;
+    };
+    set("[data-streak-current]", this.streak(dates));
+    set("[data-streak-longest]", this.longestStreak(dates));
+    set("[data-streak-total]", total);
+
+    const hm = wrap.querySelector("[data-heatmap]");
+    if (!hm) return;
+    const weeks = 18;
+    const dayMs = 86400000;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const start = new Date(today.getTime() - (weeks * 7 - 1) * dayMs);
+    start.setDate(start.getDate() - start.getDay());
+    const cells = [];
+    for (let d = new Date(start); d <= today; d = new Date(d.getTime() + dayMs)) {
+      const key = this.fmt(d);
+      const n = log[key] || 0;
+      const lvl = n === 0 ? 0 : n === 1 ? 1 : n <= 3 ? 2 : 3;
+      cells.push(`<span class="tr-hm-cell tr-hm-${lvl}" title="${key}: ${n}"></span>`);
+    }
+    hm.innerHTML = `<div class="tr-hm-grid">${cells.join("")}</div>`;
   },
 };
 
@@ -95,6 +190,55 @@ Hooks.Scroll = {
     this.el.addEventListener("click", () => {
       document.getElementById("comment_form").scrollIntoView();
     });
+  },
+};
+
+// Reading-progress rail + TOC scroll-spy for blog posts. Fills the top rail as
+// you scroll the article and highlights the current section in the "On this
+// page" TOC via an IntersectionObserver on the (enhanced) headings.
+Hooks.ReadingProgress = {
+  mounted() {
+    this.bar = document.querySelector(".tr-progress-rail [data-role='bar']");
+    this.headings = Array.from(this.el.querySelectorAll("h2,h3,h4,h5,h6")).filter((h) =>
+      h.querySelector(".tr-anchor"),
+    );
+    this.tocLinks = Array.from(document.querySelectorAll(".tr-toc-link"));
+    this._onScroll = () => this.update();
+    window.addEventListener("scroll", this._onScroll, { passive: true });
+    window.addEventListener("resize", this._onScroll, { passive: true });
+    this.setupSpy();
+    this.update();
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this._onScroll);
+    window.removeEventListener("resize", this._onScroll);
+    if (this.observer) this.observer.disconnect();
+  },
+  update() {
+    if (!this.bar) return;
+    const rect = this.el.getBoundingClientRect();
+    const total = rect.height - window.innerHeight;
+    const pct = total > 0 ? Math.min(100, Math.max(0, (-rect.top / total) * 100)) : 0;
+    this.bar.style.width = pct + "%";
+  },
+  setupSpy() {
+    if (!this.headings.length || !this.tocLinks.length) return;
+    const byId = {};
+    this.tocLinks.forEach((a) => {
+      byId[a.getAttribute("data-toc-id")] = a;
+    });
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          this.tocLinks.forEach((a) => a.classList.remove("tr-toc-active"));
+          const a = byId[e.target.id];
+          if (a) a.classList.add("tr-toc-active");
+        });
+      },
+      { rootMargin: "0px 0px -75% 0px", threshold: 0 },
+    );
+    this.headings.forEach((h) => this.observer.observe(h));
   },
 };
 
@@ -201,10 +345,18 @@ window.addEventListener("phx:page-loading-start", (_info) => topbar.show(300));
 window.addEventListener("phx:page-loading-stop", (_info) => {
   topbar.hide();
   hljs.highlightAll();
+  renderMermaid();
+  mountAsciinema();
 });
 
 // connect if there are any LiveViews on the page
 liveSocket.connect();
+
+// Cmd/Ctrl-K command palette
+initPalette();
+
+// Per-track certificate + badge rewards on the /labs page
+initLabRewards();
 
 liveSocket.disableDebug();
 // expose liveSocket on window for web console debug logs and latency simulation:

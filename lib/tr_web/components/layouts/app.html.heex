@@ -161,4 +161,11 @@
       {@inner_content}
     </div>
   </main>
+  <% palette_locale = Gettext.get_locale(TrWeb.Gettext) %>
+  <% palette_posts =
+    for p <- Tr.Blog.posts(palette_locale),
+        do: %{t: p.title, u: "/#{palette_locale}/blog/#{p.id}"} %>
+  <script type="application/json" id="tr-post-index">
+    <%= raw(Jason.encode!(palette_posts, escape: :html_safe)) %>
+  </script>
 </div>

@@ -32,6 +32,7 @@ defmodule TrWeb.Router do
     get "/blog/tags/:tag", PageController, :by_tag
     get "/privacy", PageController, :privacy
     get "/about", PageController, :about
+    get "/labs/badge/:slug", PageController, :lab_badge
   end
 
   scope "/:locale", TrWeb do
