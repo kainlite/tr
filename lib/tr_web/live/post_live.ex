@@ -45,6 +45,7 @@ defmodule TrWeb.PostLive do
       |> assign(:og_type, "article")
       |> assign(:og_tags, post.tags)
       |> assign(:og_date_published, Date.to_iso8601(post.date))
+      |> assign(:og_date_modified, if(post.updated, do: to_string(post.updated)))
       |> assign(:og_hreflang_en, TrWeb.Endpoint.url() <> "/en/blog/#{post.id}")
       |> assign(:og_hreflang_es, TrWeb.Endpoint.url() <> "/es/blog/#{post.id}")
       |> assign(:reading_time, Blog.reading_time(post))
@@ -81,14 +82,18 @@ defmodule TrWeb.PostLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="max-w-4xl mx-auto overflow-x-hidden">
+    <div class="tr-progress-rail" aria-hidden="true"><span data-role="bar"></span></div>
+    <div id="post-article" phx-hook="ReadingProgress" class="max-w-4xl mx-auto overflow-x-hidden">
       <!-- Post header -->
       <div class="mb-6">
         <h1 class="text-2xl sm:text-3xl font-bold font-mono text-zinc-900 dark:text-zinc-100">
           {@post.title}
         </h1>
         <div class="font-mono text-sm text-terminal-400 mt-2">
-          {@post.date} | {@post.author} | {@reading_time} {gettext("min read")}
+          {@post.date} | {@post.author} | {@reading_time} {gettext("min read")}<span :if={
+            @post.updated
+          }>
+            | {gettext("updated")} {@post.updated}</span>
         </div>
         <div class="flex flex-wrap gap-2 mt-3">
           <%= for tag <- @post.tags do %>
@@ -189,6 +194,16 @@ defmodule TrWeb.PostLive do
         <code class="hidden">
         </code>
       </pre>
+      
+    <!-- Table of contents -->
+      <details :if={@post.toc != []} class="tr-toc">
+        <summary class="tr-toc-summary">{gettext("On this page")}</summary>
+        <ol class="tr-toc-list">
+          <li :for={h <- @post.toc} class={"tr-toc-item tr-toc-i#{h.indent}"}>
+            <a href={"#" <> h.id} data-toc-id={h.id} class="tr-toc-link">{h.text}</a>
+          </li>
+        </ol>
+      </details>
       
     <!-- Post body -->
       <%= cond do %>

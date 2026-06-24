@@ -45,7 +45,7 @@
 
     <%= if assigns[:og_url] do %>
       <script type="application/ld+json">
-        <%= raw(Jason.encode!(%{
+        <%= raw(Jason.encode!(Map.reject(%{
           "@context" => "https://schema.org",
           "@type" => "TechArticle",
           "headline" => og_title,
@@ -53,9 +53,10 @@
           "image" => og_image,
           "url" => assigns[:og_url],
           "datePublished" => assigns[:og_date_published],
+          "dateModified" => assigns[:og_date_modified] || assigns[:og_date_published],
           "author" => %{"@type" => "Person", "name" => "Gabriel Garrido"},
           "publisher" => %{"@type" => "Organization", "name" => "SegFault"}
-        })) %>
+        }, fn {_k, v} -> is_nil(v) end))) %>
       </script>
     <% end %>
 

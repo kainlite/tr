@@ -44,6 +44,14 @@ defmodule Tr.Blog do
     highlighters: [],
     parser: MultiParser
 
+  # Post-process every rendered post: add heading anchors + a table of contents
+  # and turn `> [!WARNING]` blockquotes into callouts. Done here (not in
+  # Post.build) so the compile-time dependency on Tr.Blog.Enhance is explicit.
+  @posts Enum.map(@posts, fn post ->
+           {body, toc} = Tr.Blog.Enhance.process(post.body)
+           %{post | body: body, toc: toc}
+         end)
+
   # All posts marked as published, sorted by date desc, split by locale.
   # Date filtering happens at runtime so future-dated posts auto-release.
   @published_posts @posts |> Enum.filter(&(&1.published == true))

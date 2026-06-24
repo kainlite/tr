@@ -28,7 +28,9 @@ defmodule Tr.Blog.Post do
     :image,
     :sponsored,
     :video,
-    :encrypted_content
+    :encrypted_content,
+    :updated,
+    toc: []
   ]
 
   def build(filename, attrs, body) do
