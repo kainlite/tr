@@ -67,15 +67,18 @@ defmodule Tr.Labs do
       slug: "git",
       title: "Learn Git",
       icon: "🌳",
-      desc: "The everyday workflow, and how to rescue work you thought you had lost.",
-      labs: ~w(git-basics git-reflog-recovery)
+      desc:
+        "The everyday workflow and how to rescue work you thought you had lost, as quick command drills and then for real on a Linux box.",
+      labs: ~w(git-basics git-workflow-real git-reflog-recovery git-reflog-real)
     },
     %{
       slug: "docker",
       title: "Learn Docker",
       icon: "🐳",
-      desc: "Run, inspect, and manage containers from the command line.",
-      labs: ~w(docker-basics)
+      desc:
+        "Run containers, manage images, build from a Dockerfile, persist data with volumes, and wire up Compose and networking.",
+      labs:
+        ~w(docker-basics container-chroot container-namespaces docker-images dockerfile-build docker-volumes docker-compose docker-networking)
     },
     %{
       slug: "kubernetes",
@@ -91,7 +94,8 @@ defmodule Tr.Labs do
       icon: "🚀",
       desc:
         "A cross-tool path for beginners: version control, containers, infrastructure as code, Kubernetes, and handling incidents.",
-      labs: ~w(git-basics docker-basics terraform-basics k8s-fundamentals k8s-incident-triage)
+      labs:
+        ~w(git-basics git-workflow-real docker-basics terraform-basics k8s-fundamentals k8s-incident-triage)
     }
   ]
 

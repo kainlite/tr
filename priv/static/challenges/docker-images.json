@@ -1,0 +1,15 @@
+{
+  "id": "docker-images",
+  "title": "Challenge: manage images (pull, tag, inspect, clean up)",
+  "mode": "scripted",
+  "prompt": "you@host:~$ ",
+  "intro": "An image is the blueprint a container is started from. Pull one, see what you have, give it a friendlier name, peek at its layers, and remove it. (Commands are checked, not executed, so practice freely.)",
+  "steps": [
+    { "instruction": "Pull the small 'alpine:3.20' image from Docker Hub.", "match": ["^docker\\s+(pull|image\\s+pull)\\s+\\S*alpine"], "success": "3.20: Pulling from library/alpine\n2d1f4bdf: Pull complete\nDigest: sha256:1d34ff...\nStatus: Downloaded newer image for alpine:3.20", "fail": "Use docker pull <image>:<tag>.", "hint": "docker pull alpine:3.20" },
+    { "instruction": "List the images stored locally.", "match": ["^docker\\s+(images|image\\s+ls)"], "success": "REPOSITORY   TAG    IMAGE ID       SIZE\nalpine       3.20   1d34ff8a1b2c   7.8MB", "fail": "Show the local images.", "hint": "docker images" },
+    { "instruction": "Give it a friendlier name: tag alpine:3.20 as 'myapp:1.0'.", "match": ["^docker\\s+tag\\s+\\S*alpine\\S*\\s+\\S*myapp"], "success": "(no output) myapp:1.0 now points at the SAME image id as alpine:3.20", "fail": "docker tag <source> <target>, e.g. alpine:3.20 -> myapp:1.0", "hint": "docker tag alpine:3.20 myapp:1.0" },
+    { "instruction": "Inspect how the image was built, layer by layer.", "match": ["^docker\\s+(history|image\\s+history)\\s+\\S*myapp"], "success": "IMAGE          CREATED       CREATED BY                          SIZE\n1d34ff8a1b2c   2 weeks ago   /bin/sh -c #(nop) CMD [\"/bin/sh\"]    0B\n<missing>      2 weeks ago   /bin/sh -c #(nop) ADD file:... in /  7.8MB", "fail": "Use docker history <image> to see its layers.", "hint": "docker history myapp:1.0" },
+    { "instruction": "Remove the 'myapp:1.0' tag to clean up.", "match": ["^docker\\s+(rmi|image\\s+rm)\\s+\\S*myapp"], "success": "Untagged: myapp:1.0\n(the underlying alpine:3.20 image stays, it is still referenced)", "fail": "Remove the image tag with docker rmi <image>.", "hint": "docker rmi myapp:1.0" }
+  ],
+  "done": "Solved! pull -> images -> tag -> history -> rmi. A tag is just a label pointing at an image id; removing a tag only deletes the image data when nothing else references it."
+}

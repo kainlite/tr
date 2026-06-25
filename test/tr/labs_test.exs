@@ -31,6 +31,59 @@ defmodule Tr.LabsTest do
     end
   end
 
+  test "docker track resolves all eight labs in learning order" do
+    docker = Enum.find(Labs.tracks(), &(&1.slug == "docker"))
+    assert docker, "the docker track should be present"
+
+    assert Enum.map(docker.labs, & &1.id) == [
+             "docker-basics",
+             "container-chroot",
+             "container-namespaces",
+             "docker-images",
+             "dockerfile-build",
+             "docker-volumes",
+             "docker-compose",
+             "docker-networking"
+           ]
+  end
+
+  test "the container-internals labs are real-VM (v86) labs in the docker-course chapter" do
+    for id <- ~w(container-chroot container-namespaces) do
+      lab = Labs.lab(id)
+      assert lab, "#{id} should be registered (needs both metadata and a post embed)"
+      assert lab.mode == "v86"
+      assert lab.div_id == "ch-#{id}"
+    end
+  end
+
+  test "the git track pairs scripted drills with real-VM labs" do
+    git = Enum.find(Labs.tracks(), &(&1.slug == "git"))
+    assert git, "the git track should be present"
+
+    assert Enum.map(git.labs, & &1.id) == [
+             "git-basics",
+             "git-workflow-real",
+             "git-reflog-recovery",
+             "git-reflog-real"
+           ]
+
+    for id <- ~w(git-workflow-real git-reflog-real) do
+      lab = Labs.lab(id)
+      assert lab, "#{id} should be registered (needs both metadata and a post embed)"
+      assert lab.mode == "v86"
+    end
+  end
+
+  test "each new docker lab is a scripted lab embedded under its ch- div" do
+    for id <- ~w(docker-images dockerfile-build docker-volumes docker-compose docker-networking) do
+      lab = Labs.lab(id)
+      assert lab, "#{id} should be registered (needs both metadata and a post embed)"
+      assert lab.mode == "scripted"
+      assert is_binary(lab.post_id)
+      assert lab.div_id == "ch-#{id}"
+    end
+  end
+
   test "labs_in_post returns the labs embedded in a known post" do
     ids = "my_local_environment" |> Labs.labs_in_post() |> Enum.map(& &1.id)
     assert "linux-permissions" in ids

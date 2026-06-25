@@ -529,6 +529,12 @@ You "lost" a commit with a hard reset. Recover it using the reflog in the termin
 
 <br />
 
+Now lose and recover a commit for real, on an actual Linux box in your browser:
+
+<div id="ch-git-reflog-real" phx-hook="Challenge" phx-update="ignore" data-challenge="git-reflog-real" data-mode="v86"></div>
+
+<br />
+
 ##### **Conclusion**
 Git's reflog is your safety net, and cherry-pick is your precision tool. Together, they make Git much less scary. Remember:
 

@@ -46,6 +46,19 @@ deploy it in any project. Having a strong foundation will help you understand an
 
 <br>
 
+#### **Try it yourself**
+Run a whole multi-container app with Compose, up, ps, logs, exec, down, in the guided terminal below.
+
+<div id="ch-docker-compose" phx-hook="Challenge" phx-update="ignore" data-challenge="docker-compose" data-mode="scripted"></div>
+
+<br>
+
+Then wire containers together on a user-defined network and reach them by name:
+
+<div id="ch-docker-networking" phx-hook="Challenge" phx-update="ignore" data-challenge="docker-networking" data-mode="scripted"></div>
+
+<br>
+
 Follow me on [LinkedIn](https://www.linkedin.com/in/gabrielgarrido/) and watch the video for free
 
 <br>

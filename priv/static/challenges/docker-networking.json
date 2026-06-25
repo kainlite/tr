@@ -1,0 +1,15 @@
+{
+  "id": "docker-networking",
+  "title": "Challenge: connect containers on a user-defined network",
+  "mode": "scripted",
+  "prompt": "you@host:~$ ",
+  "intro": "On Docker's default bridge, containers can only reach each other by IP. Create your own network and they get automatic DNS by name. Wire up two containers and prove it. (Commands are checked, not executed.)",
+  "steps": [
+    { "instruction": "Create a user-defined bridge network named 'appnet'.", "match": ["^docker\\s+network\\s+create", "appnet"], "success": "f3a9c1b2d3e4...\na new bridge network 'appnet' is ready", "fail": "docker network create <name>", "hint": "docker network create appnet" },
+    { "instruction": "List the networks to see it alongside the defaults.", "match": ["^docker\\s+network\\s+ls"], "success": "NETWORK ID     NAME      DRIVER    SCOPE\n1a2b3c4d5e6f   appnet    bridge    local\n7g8h9i0j1k2l   bridge    bridge    local\n3m4n5o6p7q8r   host      host      local", "fail": "docker network ls", "hint": "docker network ls" },
+    { "instruction": "Run a detached 'db' container (use redis) attached to 'appnet'.", "match": ["^docker\\s+run", "(--name\\s+db|--name=db)", "--network(=|\\s+)appnet"], "success": "9f8e7d6c5b4a...\ndb is up and joined to appnet", "fail": "docker run -d --name db --network appnet redis", "hint": "docker run -d --name db --network appnet redis" },
+    { "instruction": "From another container on 'appnet', reach 'db' by NAME (not by IP).", "match": ["^docker\\s+run", "--network(=|\\s+)appnet", "\\bdb\\b"], "success": "PING db (172.18.0.2): 56 data bytes\n64 bytes from 172.18.0.2: seq=0 ttl=64 time=0.071 ms\nthe name 'db' resolved automatically, no IP needed", "fail": "docker run --rm --network appnet <image> ping -c1 db  (reach it by container name)", "hint": "docker run --rm --network appnet alpine ping -c1 db" },
+    { "instruction": "Inspect 'appnet' to see which containers are attached.", "match": ["^docker\\s+network\\s+inspect\\s+appnet"], "success": "[{ \"Name\": \"appnet\", \"Containers\": { \"9f8e...\": { \"Name\": \"db\", \"IPv4Address\": \"172.18.0.2/16\" } } }]", "fail": "docker network inspect <name>", "hint": "docker network inspect appnet" }
+  ],
+  "done": "Solved! A user-defined network runs an embedded DNS server, so containers reach each other by name (db, web) instead of brittle IPs. That's the foundation Compose builds on for you automatically."
+}

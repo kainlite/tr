@@ -1,0 +1,16 @@
+{
+  "id": "container-namespaces",
+  "title": "Real lab: build a container with namespaces",
+  "mode": "v86",
+  "image": "alpine",
+  "instruction": "Real Linux box, picking up where chroot left off. A container also isolates PROCESSES and the HOSTNAME using Linux namespaces. The host is currently named 'host-box'. Launch a shell in fresh pid + uts namespaces and, inside it, rename the host to 'contained' and save proof. Run this one line: unshare --pid --uts --fork --mount-proc sh -c 'hostname contained; { hostname; echo pid=$$; } > /root/proof.txt'  . Inside that namespace your shell is PID 1 and the hostname is 'contained', yet the real host stays 'host-box'. A 'Segmentation fault' may print as the namespace exits, it is a harmless quirk of this tiny emulated kernel and your proof is already saved. Then click Verify.",
+  "setup": "hostname host-box 2>/dev/null; rm -f /root/proof.txt; echo '(scenario ready: the host hostname is host-box)'",
+  "verify": {
+    "command": "if [ \"$(sed -n 1p /root/proof.txt 2>/dev/null)\" = contained ] && grep -qx 'pid=1' /root/proof.txt && [ \"$(hostname)\" = host-box ]; then echo NS_OK; else echo NS_NO; fi",
+    "wait_ms": 1500,
+    "expect_all": ["NS_OK"],
+    "success": "Solved! unshare put your shell in fresh PID and UTS namespaces: inside it was PID 1 with its own hostname ('contained'), while the real host kept its own ('host-box'). Filesystem (chroot) + process + hostname isolation, that, plus cgroups for resource limits, IS a container. Docker just automates all of it for you.",
+    "fail": "Not yet. Run the unshare command from the instruction. /root/proof.txt must show 'contained' on line 1 and 'pid=1' on line 2 (you were PID 1 inside), and the host's own hostname must still read 'host-box'."
+  },
+  "hint": "unshare --pid --uts --fork --mount-proc sh -c 'hostname contained; { hostname; echo pid=$$; } > /root/proof.txt'"
+}

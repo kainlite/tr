@@ -1,0 +1,15 @@
+{
+  "id": "docker-volumes",
+  "title": "Challenge: persist data with volumes and bind mounts",
+  "mode": "scripted",
+  "prompt": "you@host:~$ ",
+  "intro": "A container's writable layer dies with the container. Volumes and bind mounts keep data alive. Create a volume, mount it, map a host folder, and see where the bytes really live. (Commands are checked, not executed.)",
+  "steps": [
+    { "instruction": "Create a named volume called 'appdata'.", "match": ["^docker\\s+volume\\s+create\\s+appdata"], "success": "appdata", "fail": "docker volume create <name>", "hint": "docker volume create appdata" },
+    { "instruction": "List the volumes to confirm it exists.", "match": ["^docker\\s+volume\\s+ls"], "success": "DRIVER    VOLUME NAME\nlocal     appdata", "fail": "List the volumes.", "hint": "docker volume ls" },
+    { "instruction": "Run a detached container named 'keeper' that mounts 'appdata' at /data.", "match": ["^docker\\s+run", "-v\\s+appdata:/", "(--name\\s+keeper|--name=keeper)"], "success": "8a1b2c3d4e5f...\nanything written under /data now survives the container being removed", "fail": "docker run -d --name keeper -v appdata:/data <image>", "hint": "docker run -d --name keeper -v appdata:/data alpine sleep 1d" },
+    { "instruction": "Now a bind mount: run a container mapping a host path (e.g. your current directory) into the container.", "match": ["^docker\\s+run", "-v\\s+\"?(/|\\.|\\$)[^\\s:]*:"], "success": "total 8\n-rw-r--r--    1 root     root           42 Jun 24 10:00 README.md\nyour host files, live, inside the container", "fail": "Bind-mount a host path: docker run --rm -v \"$(pwd)\":/src <image> ls /src", "hint": "docker run --rm -v \"$(pwd)\":/src alpine ls /src" },
+    { "instruction": "Inspect the 'appdata' volume to see where Docker stores it on the host.", "match": ["^docker\\s+volume\\s+inspect\\s+appdata"], "success": "[\n  {\n    \"Name\": \"appdata\",\n    \"Driver\": \"local\",\n    \"Mountpoint\": \"/var/lib/docker/volumes/appdata/_data\"\n  }\n]", "fail": "docker volume inspect <name>", "hint": "docker volume inspect appdata" }
+  ],
+  "done": "Solved! A named volume (-v appdata:/data) is managed by Docker and survives container removal; a bind mount (-v /host/path:/dir) maps a real host folder straight in. Volumes for app data, bind mounts for code and config."
+}

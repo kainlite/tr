@@ -46,6 +46,13 @@ deploy it in any project. Having a strong foundation will help you understand an
 
 <br>
 
+#### **Try it yourself**
+Keep data alive past a container's lifetime, named volumes, bind mounts, and inspecting where the bytes really live, in the guided terminal below.
+
+<div id="ch-docker-volumes" phx-hook="Challenge" phx-update="ignore" data-challenge="docker-volumes" data-mode="scripted"></div>
+
+<br>
+
 Follow me on [LinkedIn](https://www.linkedin.com/in/gabrielgarrido/) and watch the video for free
 
 <br>

@@ -1,0 +1,16 @@
+{
+  "id": "git-workflow-real",
+  "title": "Real lab: a full git workflow on a real box",
+  "mode": "v86",
+  "image": "alpine",
+  "instruction": "Real Linux box with the real git, no simulation. You are in /root/proj, which holds an untracked file app.txt. Run a complete workflow: (1) git init, (2) git add app.txt, (3) git commit -m 'initial', (4) git switch -c feature (create and switch to a branch), (5) change app.txt and git commit -am 'feature work', (6) git switch main, then (7) git merge feature. Once the feature branch is merged into main, click Verify.",
+  "setup": "rm -rf /root/proj; mkdir -p /root/proj; cd /root/proj; git config --global user.email lab@example.com; git config --global user.name 'Lab User'; git config --global init.defaultBranch main; echo 'line 1' > app.txt; echo '(scenario ready: an untracked project is in /root/proj, and you are already in it)'",
+  "verify": {
+    "command": "cd /root/proj 2>/dev/null; if git rev-parse --verify feature >/dev/null 2>&1 && git merge-base --is-ancestor feature main 2>/dev/null && [ \"$(git rev-list --count main 2>/dev/null)\" -ge 2 ]; then echo GIT_OK; else echo GIT_NO; fi",
+    "wait_ms": 1500,
+    "expect_all": ["GIT_OK"],
+    "success": "Solved! init -> add -> commit -> branch -> commit -> merge is the everyday git loop, and you just ran it for real: the 'feature' branch's history is now reachable from main. Branches are cheap pointers to commits; merging simply moves main forward to include them.",
+    "fail": "Not yet. Make sure you committed on main, created and committed on a 'feature' branch, then switched back to main and merged feature into it. Inspect with: git log --oneline --all --graph"
+  },
+  "hint": "git init; git add app.txt; git commit -m initial; git switch -c feature; echo more >> app.txt; git commit -am 'feature work'; git switch main; git merge feature"
+}

@@ -1,0 +1,15 @@
+{
+  "id": "dockerfile-build",
+  "title": "Challenge: build your own image from a Dockerfile",
+  "mode": "scripted",
+  "prompt": "you@host:~$ ",
+  "intro": "A Dockerfile is already in this directory. Build it into an image, run it to test, then tag and push it to a registry, the everyday build-and-ship loop. (Commands are checked, not executed.)",
+  "steps": [
+    { "instruction": "Build the Dockerfile in the current directory, tagging the image 'myapp:1.0'. Don't forget the build-context argument.", "match": ["^docker\\s+(build|image\\s+build)", "-t\\s+\\S*myapp:1\\.0", "\\s\\.\\/?(\\s|$)"], "success": "[+] Building 2.3s (8/8) FINISHED\n => [1/3] FROM docker.io/library/alpine:3.20\n => [2/3] COPY app /app\n => [3/3] RUN chmod +x /app\n => exporting to image\n => => naming to docker.io/library/myapp:1.0", "fail": "docker build -t <name>:<tag> <context>. The context is usually '.' (the current directory).", "hint": "docker build -t myapp:1.0 ." },
+    { "instruction": "Confirm the image was created.", "match": ["^docker\\s+(images|image\\s+ls)"], "success": "REPOSITORY   TAG    IMAGE ID       SIZE\nmyapp        1.0    9b2c1a4d5e6f   8.1MB", "fail": "List the images.", "hint": "docker images" },
+    { "instruction": "Run a throwaway container from your new image to test it (--rm cleans it up on exit).", "match": ["^docker\\s+run", "--rm", "\\S*myapp:1\\.0"], "success": "Hello from myapp! Running inside your freshly built image.", "fail": "docker run --rm <image>. The --rm flag removes the container when it exits.", "hint": "docker run --rm myapp:1.0" },
+    { "instruction": "Tag the image for a registry: registry.example.com/team/myapp:1.0.", "match": ["^docker\\s+tag\\s+\\S*myapp:1\\.0\\s+\\S*registry\\.example\\.com/\\S*myapp"], "success": "(no output) the registry tag now points at the same local image", "fail": "docker tag <local> <registry-host>/<repo>:<tag>", "hint": "docker tag myapp:1.0 registry.example.com/team/myapp:1.0" },
+    { "instruction": "Push it to the registry so others (and your cluster) can pull it.", "match": ["^docker\\s+push\\s+\\S*registry\\.example\\.com/\\S*myapp"], "success": "The push refers to repository [registry.example.com/team/myapp]\n1.0: digest: sha256:7f3a9c... size: 1365\nPushed", "fail": "docker push <registry-host>/<repo>:<tag>", "hint": "docker push registry.example.com/team/myapp:1.0" }
+  ],
+  "done": "Solved! build -> run -> tag -> push is the image lifecycle. The build context (that trailing '.') is what Docker sends to the daemon; tagging with a registry host is what lets you push and share it."
+}

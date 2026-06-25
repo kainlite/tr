@@ -1,0 +1,16 @@
+{
+  "id": "container-chroot",
+  "title": "Real lab: build a chroot jail (filesystem isolation)",
+  "mode": "v86",
+  "image": "alpine",
+  "instruction": "Real Linux box. The first thing a container does is isolate the filesystem. A tiny rootfs (just busybox + libc) is already prepared at /jail. chroot into it and look around: run `chroot /jail /bin/sh`, then `ls /` inside, you'll see ONLY bin and lib; the host's /etc, /root and /home are gone. To record proof, from INSIDE the jail run `ls / > /proof` (that writes /jail/proof back on the host). Type `exit` to leave the jail, then click Verify.",
+  "setup": "mkdir -p /jail/bin /jail/lib; cp /bin/busybox /jail/bin/; cp /lib/ld-musl-*.so.1 /jail/lib/ 2>/dev/null; cp /lib/libc.musl-*.so.1 /jail/lib/ 2>/dev/null; for a in sh ls cat echo pwd id; do ln -sf busybox /jail/bin/$a; done; echo TOP-SECRET > /root/host-only.txt; echo '(scenario ready: a tiny rootfs is at /jail; the host holds /root/host-only.txt)'",
+  "verify": {
+    "command": "if grep -q '^bin$' /jail/proof 2>/dev/null && grep -q '^lib$' /jail/proof && ! grep -qE '^(etc|root|home|usr|sys|dev|proc)$' /jail/proof; then echo JAIL_OK; else echo JAIL_NO; fi",
+    "wait_ms": 1500,
+    "expect_all": ["JAIL_OK"],
+    "success": "Solved! chroot pins a process to a new root directory, so it can only see what lives under /jail, the host's filesystem is invisible to it. That's the first pillar of a container: filesystem isolation. Real containers layer an overlay filesystem and namespaces on top of exactly this.",
+    "fail": "Not yet. From INSIDE the jail (chroot /jail /bin/sh) run `ls / > /proof`, then exit. /jail/proof should list only the jail's own root (bin, lib), not host directories like etc or root."
+  },
+  "hint": "chroot /jail /bin/sh      # inside the jail, run:  ls / > /proof      # then leave with:  exit"
+}

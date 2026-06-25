@@ -1,0 +1,15 @@
+{
+  "id": "docker-compose",
+  "title": "Challenge: run a multi-container app with Compose",
+  "mode": "scripted",
+  "prompt": "you@host:~$ ",
+  "intro": "A compose.yaml in this folder defines a 'web' and a 'db' service. Bring the whole stack up, inspect it, read logs, step inside, and tear it down, one file, one command. (Commands are checked, not executed. Both 'docker compose' and 'docker-compose' are accepted.)",
+  "steps": [
+    { "instruction": "Start the whole stack in the background (detached).", "match": ["^docker(\\s+compose|-compose)\\s+up", "(-d|--detach)"], "success": "[+] Running 3/3\n Network app_default   Created\n Container app-db-1     Started\n Container app-web-1    Started", "fail": "docker compose up -d brings everything up detached.", "hint": "docker compose up -d" },
+    { "instruction": "List the stack's containers and their state.", "match": ["^docker(\\s+compose|-compose)\\s+ps"], "success": "NAME         SERVICE   STATUS         PORTS\napp-db-1     db        running        5432/tcp\napp-web-1    web       running        0.0.0.0:8080->80/tcp", "fail": "docker compose ps shows the stack's containers.", "hint": "docker compose ps" },
+    { "instruction": "Read the logs of just the 'web' service.", "match": ["^docker(\\s+compose|-compose)\\s+logs", "web"], "success": "app-web-1  | listening on :80\napp-web-1  | connected to db:5432", "fail": "docker compose logs <service>", "hint": "docker compose logs web" },
+    { "instruction": "Open a shell inside the running 'web' service.", "match": ["^docker(\\s+compose|-compose)\\s+exec", "web", "(sh|bash)"], "success": "/ #\nyou're inside app-web-1; the host 'db' resolves to the other service automatically", "fail": "docker compose exec <service> sh", "hint": "docker compose exec web sh" },
+    { "instruction": "Tear the whole stack down (containers + network).", "match": ["^docker(\\s+compose|-compose)\\s+down"], "success": "[+] Running 3/3\n Container app-web-1   Removed\n Container app-db-1    Removed\n Network app_default   Removed", "fail": "docker compose down removes everything the stack created.", "hint": "docker compose down" }
+  ],
+  "done": "Solved! up -> ps -> logs -> exec -> down. Compose turns a multi-container app into one declarative file: services share a network and reach each other by service name (web talks to 'db' directly)."
+}

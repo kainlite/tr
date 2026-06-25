@@ -1,0 +1,16 @@
+{
+  "id": "git-reflog-real",
+  "title": "Real lab: rescue a lost commit with reflog",
+  "mode": "v86",
+  "image": "alpine",
+  "instruction": "Real Linux box, real git. In /root/repo you committed 'IMPORTANT WORK' into work.txt, then a careless `git reset --hard HEAD~1` threw that commit away, work.txt is back to just 'base'. But git does not delete reachable commits right away: the reflog still remembers everywhere HEAD has been. Run `git reflog` to find the lost commit's sha, then bring your branch back to it with `git reset --hard <sha>`. When work.txt holds IMPORTANT WORK again, click Verify.",
+  "setup": "rm -rf /root/repo; mkdir -p /root/repo; cd /root/repo; git config --global user.email lab@example.com; git config --global user.name 'Lab User'; git config --global init.defaultBranch main; git init -q; printf 'base\\n' > work.txt; git add work.txt; git commit -qm base; printf 'IMPORTANT WORK\\n' >> work.txt; git commit -qam 'important work'; git reset --hard HEAD~1 >/dev/null 2>&1; cd /root/repo; echo '(scenario ready: in /root/repo the important commit was thrown away by git reset --hard; it lives only in the reflog now)'",
+  "verify": {
+    "command": "cd /root/repo 2>/dev/null; if grep -q 'IMPORTANT WORK' work.txt 2>/dev/null; then echo REFLOG_OK; else echo REFLOG_NO; fi",
+    "wait_ms": 1500,
+    "expect_all": ["REFLOG_OK"],
+    "success": "Solved! `git reset --hard` only moved the branch pointer, it did NOT delete the commit. The reflog kept a reference to it, so `git reset --hard <sha>` (or git cherry-pick) brought it straight back. Unreferenced commits survive until git gc runs, the reflog is your safety net.",
+    "fail": "Not yet. work.txt should contain 'IMPORTANT WORK' again. Use `git reflog` to find the sha of the 'important work' commit, then `git reset --hard <sha>`."
+  },
+  "hint": "git reflog        # find the sha of the 'important work' commit, then:  git reset --hard <sha>"
+}

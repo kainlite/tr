@@ -46,6 +46,19 @@ deploy it in any project. Having a strong foundation will help you understand an
 
 <br>
 
+#### **Try it yourself**
+Practice the image lifecycle, pull, list, tag, inspect the layers, and clean up, in the guided terminal below.
+
+<div id="ch-docker-images" phx-hook="Challenge" phx-update="ignore" data-challenge="docker-images" data-mode="scripted"></div>
+
+<br>
+
+Then build and ship your own image straight from a Dockerfile:
+
+<div id="ch-dockerfile-build" phx-hook="Challenge" phx-update="ignore" data-challenge="dockerfile-build" data-mode="scripted"></div>
+
+<br>
+
 Follow me on [LinkedIn](https://www.linkedin.com/in/gabrielgarrido/) and watch the video for free
 
 <br>

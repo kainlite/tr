@@ -56,6 +56,19 @@ Drive the Docker daily-driver loop, run, ps, exec, stop, rm, in the guided termi
 
 <br>
 
+#### **What is a container, really?**
+A container is not magic, it is a few Linux primitives working together. These two labs run on a REAL Linux kernel (compiled to WebAssembly) right in your browser. First, isolate the filesystem with `chroot`:
+
+<div id="ch-container-chroot" phx-hook="Challenge" phx-update="ignore" data-challenge="container-chroot" data-mode="v86"></div>
+
+<br>
+
+Then add process and hostname isolation with namespaces, and you have built a container by hand, exactly what Docker automates for you:
+
+<div id="ch-container-namespaces" phx-hook="Challenge" phx-update="ignore" data-challenge="container-namespaces" data-mode="v86"></div>
+
+<br>
+
 Follow me on [LinkedIn](https://www.linkedin.com/in/gabrielgarrido/) and watch the video for free
 
 <br>
