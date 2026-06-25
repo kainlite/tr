@@ -58,16 +58,22 @@ it. With GitOps, the controller detects the drift and fixes it.
 
 <br />
 
-```bash
-# Push-based CI/CD (traditional):
-# Developer → Git push → CI builds → CI runs kubectl apply → Cluster
-#                                     (CI needs cluster credentials)
-#                                     (drift goes undetected)
-#
-# Pull-based GitOps:
-# Developer → Git push → Controller detects change → Controller applies → Cluster
-#                         (controller lives in cluster, watches Git continuously)
-#                         (drift is detected and corrected automatically)
+```mermaid
+flowchart LR
+    subgraph push["Push-based CI/CD (traditional)"]
+        direction LR
+        D1["Developer"] -->|git push| G1["Git"]
+        G1 --> CI["CI builds"]
+        CI -->|kubectl apply<br/>needs cluster creds| C1["Cluster"]
+        C1 -.->|drift undetected| C1
+    end
+    subgraph pull["Pull-based GitOps"]
+        direction LR
+        D2["Developer"] -->|git push| G2["Git"]
+        Ctrl["ArgoCD controller<br/>(lives in cluster)"] -->|watches continuously| G2
+        Ctrl -->|applies & self-heals| C2["Cluster"]
+        C2 -.->|drift detected & corrected| Ctrl
+    end
 ```
 
 <br />
@@ -86,15 +92,20 @@ well-defined architecture.
 
 <br />
 
-```bash
-# ArgoCD reconciliation loop (runs every 3 minutes by default):
-# 1. Application Controller reads the Application CRD
-# 2. Asks Repo Server to fetch and render manifests from Git
-# 3. Controller compares rendered manifests with live cluster state
-# 4. If they differ:
-#    - With auto-sync: Controller applies the changes
-#    - Without auto-sync: Controller marks the app as OutOfSync
-# 5. Controller updates Application status, loop repeats
+```mermaid
+flowchart TD
+    CRD["Application CRD"] --> Ctrl["Application Controller<br/>(reconcile loop, every 3 min)"]
+    Ctrl <-->|fetch & render manifests| Repo["Repository Server"]
+    Repo <-->|clone| Git["Git repo"]
+    Ctrl -->|compare desired vs live| Q{"Differ?"}
+    Q -->|auto-sync| Sync["Apply changes (Synced)"]
+    Q -->|no auto-sync| OOS["Mark OutOfSync"]
+    Q -->|no| Done["Do nothing"]
+    Sync --> Live["Cluster live state"]
+    Ctrl --> Status["Update Application status"]
+    Status -.->|loop repeats| Ctrl
+    API["API Server (UI/CLI/RBAC)"] --- Ctrl
+    Redis["Redis (cache)"] --- Ctrl
 ```
 
 <br />
@@ -901,16 +912,22 @@ manualmente, tu CI no se entera. Con GitOps, el controlador detecta el desfase y
 
 <br />
 
-```bash
-# CI/CD basado en push (tradicional):
-# Desarrollador → Git push → CI construye → CI ejecuta kubectl apply → Cluster
-#                                            (CI necesita credenciales del cluster)
-#                                            (el desfase no se detecta)
-#
-# GitOps basado en pull:
-# Desarrollador → Git push → Controlador detecta cambio → Controlador aplica → Cluster
-#                             (el controlador vive en el cluster, observa Git continuamente)
-#                             (el desfase se detecta y corrige automáticamente)
+```mermaid
+flowchart LR
+    subgraph push["CI/CD basado en push (tradicional)"]
+        direction LR
+        D1["Desarrollador"] -->|git push| G1["Git"]
+        G1 --> CI["CI construye"]
+        CI -->|kubectl apply<br/>necesita credenciales| C1["Cluster"]
+        C1 -.->|desfase no detectado| C1
+    end
+    subgraph pull["GitOps basado en pull"]
+        direction LR
+        D2["Desarrollador"] -->|git push| G2["Git"]
+        Ctrl["Controlador ArgoCD<br/>(vive en el cluster)"] -->|observa continuamente| G2
+        Ctrl -->|aplica y se auto-repara| C2["Cluster"]
+        C2 -.->|desfase detectado y corregido| Ctrl
+    end
 ```
 
 <br />
@@ -929,15 +946,20 @@ arquitectura bien definida.
 
 <br />
 
-```bash
-# Loop de reconciliación de ArgoCD (corre cada 3 minutos por defecto):
-# 1. El Application Controller lee el CRD Application
-# 2. Le pide al Repo Server que obtenga y renderice manifiestos desde Git
-# 3. El Controller compara los manifiestos renderizados con el estado vivo del cluster
-# 4. Si difieren:
-#    - Con auto-sync: el Controller aplica los cambios
-#    - Sin auto-sync: el Controller marca la app como OutOfSync
-# 5. El Controller actualiza el estado del Application, el loop se repite
+```mermaid
+flowchart TD
+    CRD["CRD Application"] --> Ctrl["Application Controller<br/>(loop de reconciliación, cada 3 min)"]
+    Ctrl <-->|obtiene y renderiza manifiestos| Repo["Repository Server"]
+    Repo <-->|clona| Git["Repo Git"]
+    Ctrl -->|compara deseado vs vivo| Q{"¿Difieren?"}
+    Q -->|auto-sync| Sync["Aplica cambios (Synced)"]
+    Q -->|sin auto-sync| OOS["Marca OutOfSync"]
+    Q -->|no| Done["No hace nada"]
+    Sync --> Live["Estado vivo del cluster"]
+    Ctrl --> Status["Actualiza estado del Application"]
+    Status -.->|el loop se repite| Ctrl
+    API["API Server (UI/CLI/RBAC)"] --- Ctrl
+    Redis["Redis (caché)"] --- Ctrl
 ```
 
 <br />

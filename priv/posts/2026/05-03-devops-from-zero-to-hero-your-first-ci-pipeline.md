@@ -83,22 +83,15 @@ Here is the hierarchy visualized:
 
 <br />
 
-```
-Workflow (.github/workflows/ci.yml)
-  ├── Event: push to main, pull_request
-  ├── Job: lint
-  │     ├── Step: Checkout code
-  │     ├── Step: Setup Node.js
-  │     └── Step: Run ESLint
-  ├── Job: test
-  │     ├── Step: Checkout code
-  │     ├── Step: Setup Node.js
-  │     ├── Step: Install dependencies
-  │     └── Step: Run Vitest
-  └── Job: build
-        ├── Step: Checkout code
-        ├── Step: Setup Docker Buildx
-        └── Step: Build and push image
+```mermaid
+flowchart TD
+    Event["Event: push to main, pull_request"] --> WF["Workflow<br/>.github/workflows/ci.yml"]
+    WF --> Lint["Job: lint"]
+    WF --> Test["Job: test"]
+    WF --> Build["Job: build"]
+    Lint --> L1["Step: Checkout code"] --> L2["Step: Setup Node.js"] --> L3["Step: Run ESLint"]
+    Test --> T1["Step: Checkout code"] --> T2["Step: Setup Node.js"] --> T3["Step: Install dependencies"] --> T4["Step: Run Vitest"]
+    Build --> B1["Step: Checkout code"] --> B2["Step: Setup Docker Buildx"] --> B3["Step: Build and push image"]
 ```
 
 <br />
@@ -917,22 +910,15 @@ Aca esta la jerarquia visualizada:
 
 <br />
 
-```
-Workflow (.github/workflows/ci.yml)
-  ├── Evento: push a main, pull_request
-  ├── Job: lint
-  │     ├── Step: Checkout codigo
-  │     ├── Step: Setup Node.js
-  │     └── Step: Correr ESLint
-  ├── Job: test
-  │     ├── Step: Checkout codigo
-  │     ├── Step: Setup Node.js
-  │     ├── Step: Instalar dependencias
-  │     └── Step: Correr Vitest
-  └── Job: build
-        ├── Step: Checkout codigo
-        ├── Step: Setup Docker Buildx
-        └── Step: Build y push imagen
+```mermaid
+flowchart TD
+    Event["Evento: push a main, pull_request"] --> WF["Workflow<br/>.github/workflows/ci.yml"]
+    WF --> Lint["Job: lint"]
+    WF --> Test["Job: test"]
+    WF --> Build["Job: build"]
+    Lint --> L1["Step: Checkout codigo"] --> L2["Step: Setup Node.js"] --> L3["Step: Correr ESLint"]
+    Test --> T1["Step: Checkout codigo"] --> T2["Step: Setup Node.js"] --> T3["Step: Instalar dependencias"] --> T4["Step: Correr Vitest"]
+    Build --> B1["Step: Checkout codigo"] --> B2["Step: Setup Docker Buildx"] --> B3["Step: Build y push imagen"]
 ```
 
 <br />

@@ -204,31 +204,26 @@ Gateway; private subnets route it through the NAT Gateway. Here is a typical pro
 
 <br />
 
-```plaintext
-                        Region: us-east-1
- ┌──────────────────────────────────────────────────────────┐
- │                    VPC: 10.0.0.0/16                      │
- │                                                          │
- │  ┌─────────────────────┐    ┌─────────────────────┐      │
- │  │   AZ: us-east-1a    │    │   AZ: us-east-1b    │      │
- │  │                     │    │                     │      │
- │  │ ┌─────────────────┐ │    │ ┌─────────────────┐ │      │
- │  │ │ Public Subnet   │ │    │ │ Public Subnet   │ │      │
- │  │ │ 10.0.1.0/24     │ │    │ │ 10.0.2.0/24     │ │      │
- │  │ │ [Load Balancer] │ │    │ │ [NAT Gateway]   │ │      │
- │  │ └─────────────────┘ │    │ └─────────────────┘ │      │
- │  │ ┌─────────────────┐ │    │ ┌─────────────────┐ │      │
- │  │ │ Private Subnet  │ │    │ │ Private Subnet  │ │      │
- │  │ │ 10.0.3.0/24     │ │    │ │ 10.0.4.0/24     │ │      │
- │  │ │ [App Server]    │ │    │ │ [App Server]    │ │      │
- │  │ │ [Database]      │ │    │ │ [Database]      │ │      │
- │  │ └─────────────────┘ │    │ └─────────────────┘ │      │
- │  └─────────────────────┘    └─────────────────────┘      │
- │                                                          │
- │                    [Internet Gateway]                     │
- └──────────────────────────────────────────────────────────┘
-                            │
-                        Internet
+```mermaid
+flowchart TB
+  subgraph VPC["VPC: 10.0.0.0/16 (Region us-east-1)"]
+    subgraph AZa["AZ: us-east-1a"]
+      PubA["Public Subnet 10.0.1.0/24<br/>Load Balancer"]
+      PrivA["Private Subnet 10.0.3.0/24<br/>App Server + Database"]
+    end
+    subgraph AZb["AZ: us-east-1b"]
+      PubB["Public Subnet 10.0.2.0/24<br/>NAT Gateway"]
+      PrivB["Private Subnet 10.0.4.0/24<br/>App Server + Database"]
+    end
+    IGW["Internet Gateway"]
+  end
+  Internet(("Internet"))
+
+  PrivA -->|"0.0.0.0/0"| PubB
+  PrivB -->|"0.0.0.0/0"| PubB
+  PubB -->|NAT| IGW
+  PubA -->|"0.0.0.0/0"| IGW
+  IGW <--> Internet
 ```
 
 <br />
@@ -607,31 +602,26 @@ Internet Gateway; las privadas al NAT Gateway. VPC tipica de produccion:
 
 <br />
 
-```plaintext
-                        Region: us-east-1
- ┌──────────────────────────────────────────────────────────┐
- │                    VPC: 10.0.0.0/16                      │
- │                                                          │
- │  ┌─────────────────────┐    ┌─────────────────────┐      │
- │  │   AZ: us-east-1a    │    │   AZ: us-east-1b    │      │
- │  │                     │    │                     │      │
- │  │ ┌─────────────────┐ │    │ ┌─────────────────┐ │      │
- │  │ │ Subnet Publica  │ │    │ │ Subnet Publica  │ │      │
- │  │ │ 10.0.1.0/24     │ │    │ │ 10.0.2.0/24     │ │      │
- │  │ │ [Load Balancer] │ │    │ │ [NAT Gateway]   │ │      │
- │  │ └─────────────────┘ │    │ └─────────────────┘ │      │
- │  │ ┌─────────────────┐ │    │ ┌─────────────────┐ │      │
- │  │ │ Subnet Privada  │ │    │ │ Subnet Privada  │ │      │
- │  │ │ 10.0.3.0/24     │ │    │ │ 10.0.4.0/24     │ │      │
- │  │ │ [App Server]    │ │    │ │ [App Server]    │ │      │
- │  │ │ [Database]      │ │    │ │ [Database]      │ │      │
- │  │ └─────────────────┘ │    │ └─────────────────┘ │      │
- │  └─────────────────────┘    └─────────────────────┘      │
- │                                                          │
- │                    [Internet Gateway]                     │
- └──────────────────────────────────────────────────────────┘
-                            │
-                        Internet
+```mermaid
+flowchart TB
+  subgraph VPC["VPC: 10.0.0.0/16 (Region us-east-1)"]
+    subgraph AZa["AZ: us-east-1a"]
+      PubA["Subnet Publica 10.0.1.0/24<br/>Load Balancer"]
+      PrivA["Subnet Privada 10.0.3.0/24<br/>App Server + Database"]
+    end
+    subgraph AZb["AZ: us-east-1b"]
+      PubB["Subnet Publica 10.0.2.0/24<br/>NAT Gateway"]
+      PrivB["Subnet Privada 10.0.4.0/24<br/>App Server + Database"]
+    end
+    IGW["Internet Gateway"]
+  end
+  Internet(("Internet"))
+
+  PrivA -->|"0.0.0.0/0"| PubB
+  PrivB -->|"0.0.0.0/0"| PubB
+  PubB -->|NAT| IGW
+  PubA -->|"0.0.0.0/0"| IGW
+  IGW <--> Internet
 ```
 
 <br />

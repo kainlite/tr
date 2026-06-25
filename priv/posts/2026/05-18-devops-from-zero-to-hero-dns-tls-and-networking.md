@@ -220,20 +220,17 @@ any application data is exchanged:
 
 <br />
 
-```plaintext
-Client                              Server
-  |                                    |
-  |--- ClientHello (supported ciphers) -->|
-  |                                    |
-  |<-- ServerHello + Certificate -------|
-  |                                    |
-  |--- Key exchange material ---------->|
-  |                                    |
-  |<-- Key exchange material -----------|
-  |                                    |
-  |   (Both sides derive session key)  |
-  |                                    |
-  |<== Encrypted application data ====>|
+```mermaid
+sequenceDiagram
+  participant Client
+  participant Server
+  Client->>Server: ClientHello (supported ciphers)
+  Server->>Client: ServerHello + Certificate
+  Client->>Server: Key exchange material
+  Server->>Client: Key exchange material
+  Note over Client,Server: Both sides derive session key
+  Client->>Server: Encrypted application data
+  Server->>Client: Encrypted application data
 ```
 
 <br />
@@ -294,22 +291,19 @@ application reachable over HTTPS at a real domain:
 
 <br />
 
-```plaintext
-User's browser
-     |
-     | (DNS query: api.yourdomain.com)
-     v
-Route53 hosted zone
-     |
-     | (Alias record -> ALB)
-     v
-Application Load Balancer
-     |
-     |--- Port 443 (HTTPS) -> Forward to target group (with ACM certificate)
-     |--- Port 80  (HTTP)  -> Redirect to HTTPS
-     |
-     v
-ECS Fargate tasks (your API containers)
+```mermaid
+flowchart TD
+  Browser["User's browser"]
+  R53["Route53 hosted zone"]
+  ALB["Application Load Balancer"]
+  TG["Target group (with ACM certificate)"]
+  ECS["ECS Fargate tasks (your API containers)"]
+
+  Browser -->|"DNS query: api.yourdomain.com"| R53
+  R53 -->|"Alias record -> ALB"| ALB
+  ALB -->|"Port 443 (HTTPS) forward"| TG
+  ALB -->|"Port 80 (HTTP) redirect to HTTPS"| ALB
+  TG --> ECS
 ```
 
 <br />
@@ -1151,20 +1145,17 @@ de que se intercambie cualquier dato de aplicacion:
 
 <br />
 
-```plaintext
-Cliente                              Servidor
-  |                                    |
-  |--- ClientHello (cifrados soportados) -->|
-  |                                    |
-  |<-- ServerHello + Certificado -------|
-  |                                    |
-  |--- Material de intercambio de claves -->|
-  |                                    |
-  |<-- Material de intercambio de claves ---|
-  |                                    |
-  |   (Ambos lados derivan clave de sesion) |
-  |                                    |
-  |<== Datos de aplicacion cifrados ===>|
+```mermaid
+sequenceDiagram
+  participant Cliente
+  participant Servidor
+  Cliente->>Servidor: ClientHello (cifrados soportados)
+  Servidor->>Cliente: ServerHello + Certificado
+  Cliente->>Servidor: Material de intercambio de claves
+  Servidor->>Cliente: Material de intercambio de claves
+  Note over Cliente,Servidor: Ambos lados derivan clave de sesion
+  Cliente->>Servidor: Datos de aplicacion cifrados
+  Servidor->>Cliente: Datos de aplicacion cifrados
 ```
 
 <br />
@@ -1225,22 +1216,19 @@ aplicacion accesible por HTTPS en un dominio real:
 
 <br />
 
-```plaintext
-Navegador del usuario
-     |
-     | (Consulta DNS: api.tudominio.com)
-     v
-Hosted zone de Route53
-     |
-     | (Registro Alias -> ALB)
-     v
-Application Load Balancer
-     |
-     |--- Puerto 443 (HTTPS) -> Forward al target group (con certificado ACM)
-     |--- Puerto 80  (HTTP)  -> Redirect a HTTPS
-     |
-     v
-Tareas ECS Fargate (tus containers de la API)
+```mermaid
+flowchart TD
+  Browser["Navegador del usuario"]
+  R53["Hosted zone de Route53"]
+  ALB["Application Load Balancer"]
+  TG["Target group (con certificado ACM)"]
+  ECS["Tareas ECS Fargate (tus containers de la API)"]
+
+  Browser -->|"Consulta DNS: api.tudominio.com"| R53
+  R53 -->|"Registro Alias -> ALB"| ALB
+  ALB -->|"Puerto 443 (HTTPS) forward"| TG
+  ALB -->|"Puerto 80 (HTTP) redirect a HTTPS"| ALB
+  TG --> ECS
 ```
 
 <br />

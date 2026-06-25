@@ -44,10 +44,21 @@ Everyone commits to a single branch (`main`). Feature branches are short-lived, 
 
 <br />
 
-```plaintext
-main ─────●─────●─────●─────●─────●─────●─────
-            \       /   \     /
-feature-a    ●───●     feature-b
+```mermaid
+gitGraph
+    commit
+    branch feature-a
+    checkout feature-a
+    commit
+    commit
+    checkout main
+    merge feature-a
+    branch feature-b
+    checkout feature-b
+    commit
+    checkout main
+    merge feature-b
+    commit
 ```
 
 <br />
@@ -68,12 +79,26 @@ Uses multiple long-lived branches: `main`, `develop`, `feature/*`, `release/*`, 
 
 <br />
 
-```plaintext
-main     ─────●───────────────────●──────────────
-               \                 /
-develop   ──●───●───●───●───●───●───●───●────────
-              \   /       \       /
-feature-a      ●──●        release/1.0
+```mermaid
+gitGraph
+    commit
+    branch develop
+    checkout develop
+    commit
+    branch feature-a
+    checkout feature-a
+    commit
+    commit
+    checkout develop
+    merge feature-a
+    branch "release/1.0"
+    checkout "release/1.0"
+    commit
+    checkout main
+    merge "release/1.0" tag: "1.0"
+    checkout develop
+    merge "release/1.0"
+    commit
 ```
 
 <br />
@@ -337,6 +362,12 @@ Run the core Git workflow, init, add, commit, branch, merge, in the terminal bel
 
 <br />
 
+Now do it for real, on an actual Linux box running in your browser (real git, real repository):
+
+<div id="ch-git-workflow-real" phx-hook="Challenge" phx-update="ignore" data-challenge="git-workflow-real" data-mode="v86"></div>
+
+<br />
+
 ##### **Closing notes**
 Version control is the backbone of how teams collaborate and how code reaches production safely. Getting your Git workflow right early saves enormous amounts of pain down the road.
 
@@ -404,10 +435,21 @@ Todos commitean a un solo branch (`main`). Los feature branches son de vida cort
 
 <br />
 
-```plaintext
-main ─────●─────●─────●─────●─────●─────●─────
-            \       /   \     /
-feature-a    ●───●     feature-b
+```mermaid
+gitGraph
+    commit
+    branch feature-a
+    checkout feature-a
+    commit
+    commit
+    checkout main
+    merge feature-a
+    branch feature-b
+    checkout feature-b
+    commit
+    checkout main
+    merge feature-b
+    commit
 ```
 
 <br />
@@ -428,12 +470,26 @@ Usa multiples branches de vida larga: `main`, `develop`, `feature/*`, `release/*
 
 <br />
 
-```plaintext
-main     ─────●───────────────────●──────────────
-               \                 /
-develop   ──●───●───●───●───●───●───●───●────────
-              \   /       \       /
-feature-a      ●──●        release/1.0
+```mermaid
+gitGraph
+    commit
+    branch develop
+    checkout develop
+    commit
+    branch feature-a
+    checkout feature-a
+    commit
+    commit
+    checkout develop
+    merge feature-a
+    branch "release/1.0"
+    checkout "release/1.0"
+    commit
+    checkout main
+    merge "release/1.0" tag: "1.0"
+    checkout develop
+    merge "release/1.0"
+    commit
 ```
 
 <br />

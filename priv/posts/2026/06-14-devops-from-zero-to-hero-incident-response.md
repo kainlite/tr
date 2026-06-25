@@ -69,13 +69,10 @@ helps you stay organized when things are stressful.
 
 <br />
 
-```plaintext
-  Detect ──> Respond ──> Mitigate ──> Resolve ──> Learn
-    │           │            │            │           │
-    │           │            │            │           │
-  Alerts     Page the     Stop the     Fix the     Run a
-  fire       on-call      bleeding     root        postmortem
-             engineer                  cause
+```mermaid
+flowchart LR
+  D["Detect<br/>alerts fire"] --> R["Respond<br/>page the on-call"] --> M["Mitigate<br/>stop the bleeding"] --> S["Resolve<br/>fix the root cause"] --> L["Learn<br/>run a postmortem"]
+  L -.->|prevention improves detection| D
 ```
 
 <br />
@@ -229,27 +226,13 @@ All three tools follow the same basic flow:
 
 <br />
 
-```plaintext
-Prometheus Alert
-    │
-    ▼
-Alertmanager ──> Webhook ──> PagerDuty / OpsGenie / Grafana OnCall
-                                │
-                                ▼
-                          On-call schedule
-                                │
-                                ▼
-                         Page the on-call engineer
-                         (phone, SMS, push, Slack)
-                                │
-                    ┌───────────┴───────────┐
-                    │                       │
-              Acknowledged            Not acknowledged
-              within SLA              within escalation window
-                    │                       │
-                    ▼                       ▼
-              Engineer works          Page secondary /
-              the incident           escalate to manager
+```mermaid
+flowchart TD
+  A[Prometheus Alert] --> AM[Alertmanager] --> W[Webhook] --> PD["PagerDuty / OpsGenie / Grafana OnCall"]
+  PD --> SCH[On-call schedule] --> PAGE["Page the on-call engineer<br/>(phone, SMS, push, Slack)"]
+  PAGE --> Q{"Acknowledged<br/>within SLA?"}
+  Q -->|yes| WORK[Engineer works the incident]
+  Q -->|no| ESC["Page secondary /<br/>escalate to manager"]
 ```
 
 <br />
@@ -973,13 +956,10 @@ te ayuda a mantenerte organizado cuando las cosas estan estresantes.
 
 <br />
 
-```plaintext
-  Detectar ──> Responder ──> Mitigar ──> Resolver ──> Aprender
-     │             │            │            │            │
-     │             │            │            │            │
-  Las alertas   Avisar al    Parar la    Arreglar     Hacer un
-  se disparan   on-call      hemorragia  la causa     postmortem
-                                         raiz
+```mermaid
+flowchart LR
+  D["Detectar<br/>se disparan alertas"] --> R["Responder<br/>avisar al on-call"] --> M["Mitigar<br/>parar la hemorragia"] --> S["Resolver<br/>arreglar la causa raíz"] --> L["Aprender<br/>hacer un postmortem"]
+  L -.->|la prevención mejora la detección| D
 ```
 
 <br />
@@ -1137,28 +1117,13 @@ Las tres herramientas siguen el mismo flujo basico:
 
 <br />
 
-```plaintext
-Alerta de Prometheus
-    │
-    ▼
-Alertmanager ──> Webhook ──> PagerDuty / OpsGenie / Grafana OnCall
-                                │
-                                ▼
-                          Calendario de on-call
-                                │
-                                ▼
-                         Avisar al ingeniero de on-call
-                         (telefono, SMS, push, Slack)
-                                │
-                    ┌───────────┴───────────┐
-                    │                       │
-              Reconocida              No reconocida
-              dentro del SLA          dentro de la ventana de escalacion
-                    │                       │
-                    ▼                       ▼
-              El ingeniero            Avisar al secundario /
-              trabaja el              escalar al manager
-              incidente
+```mermaid
+flowchart TD
+  A[Alerta de Prometheus] --> AM[Alertmanager] --> W[Webhook] --> PD["PagerDuty / OpsGenie / Grafana OnCall"]
+  PD --> SCH[Calendario de on-call] --> PAGE["Avisar al ingeniero de on-call<br/>(teléfono, SMS, push, Slack)"]
+  PAGE --> Q{"¿Reconocida<br/>dentro del SLA?"}
+  Q -->|sí| WORK[El ingeniero trabaja el incidente]
+  Q -->|no| ESC["Avisar al secundario /<br/>escalar al manager"]
 ```
 
 <br />

@@ -356,6 +356,29 @@ We don't actually need to do this, but this way it's easy to make sure that a po
 
 <br />
 ##### Our actual logic (this made me chuckle so much bootstrap just to get here, but imagine having to do all that by yourself)
+At a high level, here is what the reconcile loop does:
+
+```mermaid
+flowchart TD
+    R["Reconcile(req)"] --> Get["Get Prefetch CR"]
+    Get --> Found{"CR found?"}
+    Found -->|no| Stop["Return, do not requeue"]
+    Found -->|yes| Labels{"FilterByLabels set?"}
+    Labels -->|no| Skip["Skip (empty labels)"]
+    Labels -->|yes| D
+    subgraph PFsub["PrefetchImages"]
+        direction TB
+        D["List deployments (filtered by labels)"] --> I["Collect images with tags"]
+        I --> N["List node names"]
+        N --> Loop["For each node x image:<br/>create one-shot Pod (node affinity)"]
+        Loop --> St["Update Prefetch status"]
+    end
+    Skip --> Clean["DeleteCompletedPods (cleanup Succeeded)"]
+    St --> Clean
+    Clean --> Requeue["Requeue after RetryAfter (default 300s)"]
+    Requeue --> R
+```
+
 This is where things actually happen, first we get our Spec updated:
 ```go
 /*
@@ -1173,6 +1196,29 @@ No necesitamos hacer esto realmente, pero de esta manera es fácil asegurarse de
 <br />
 
 ##### Nuestra lógica real (esto me hizo reír, tanto bootstrap solo para llegar aquí, pero imagina tener que hacer todo eso por ti mismo)
+A grandes rasgos, esto es lo que hace el loop de reconciliación:
+
+```mermaid
+flowchart TD
+    R["Reconcile(req)"] --> Get["Obtener el CR Prefetch"]
+    Get --> Found{"¿CR encontrado?"}
+    Found -->|no| Stop["Retorna, no reencola"]
+    Found -->|sí| Labels{"¿FilterByLabels definido?"}
+    Labels -->|no| Skip["Omite (labels vacíos)"]
+    Labels -->|sí| D
+    subgraph PFsub["PrefetchImages"]
+        direction TB
+        D["Lista deployments (filtrados por labels)"] --> I["Junta imágenes con tags"]
+        I --> N["Lista nombres de nodos"]
+        N --> Loop["Por cada nodo x imagen:<br/>crea Pod de un solo uso (node affinity)"]
+        Loop --> St["Actualiza estado del Prefetch"]
+    end
+    Skip --> Clean["DeleteCompletedPods (limpia los Succeeded)"]
+    St --> Clean
+    Clean --> Requeue["Reencola tras RetryAfter (por defecto 300s)"]
+    Requeue --> R
+```
+
 Aquí es donde realmente sucede todo, primero actualizamos nuestro Spec:
 ```go
 /*

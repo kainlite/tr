@@ -50,17 +50,11 @@ wrong. Traces tell you where in the system it went wrong. You need all three.
 
 <br />
 
-```bash
-# The observability flow during an incident:
-#
-# 1. METRICS: Alert fires: "p99 latency > 300ms for 5 minutes"
-#    └─ You know WHAT is wrong
-#
-# 2. TRACES: Find slow traces: "90% of slow requests go through payment-service → db"
-#    └─ You know WHERE it is wrong
-#
-# 3. LOGS: Check payment-service logs: "ERROR: connection pool exhausted, waited 5s for connection"
-#    └─ You know WHY it is wrong
+```mermaid
+flowchart TD
+    M["Metrics (WHAT)<br/>Alert: p99 latency > 300ms for 5 min"] --> T["Traces (WHERE)<br/>90% of slow requests go through payment-service to db"]
+    T --> L["Logs (WHY)<br/>ERROR: connection pool exhausted, waited 5s"]
+    L --> R["Root cause identified"]
 ```
 
 <br />
@@ -172,6 +166,23 @@ end
 ##### **The OpenTelemetry Collector**
 You do not want your application sending telemetry directly to backends. The OpenTelemetry Collector sits
 between your apps and your backends, handling batching, retry, filtering, and routing.
+
+<br />
+
+```mermaid
+flowchart LR
+    App["App SDK"] -->|OTLP| Recv
+    subgraph Collector["OpenTelemetry Collector"]
+        Recv["Receivers<br/>(OTLP gRPC/HTTP)"] --> Proc["Processors<br/>(batch, filter, attributes)"]
+        Proc --> Exp["Exporters<br/>(fan-out)"]
+    end
+    Exp --> Tempo["Tempo (traces)"]
+    Exp --> Prom["Prometheus (metrics)"]
+    Exp --> Loki["Loki (logs)"]
+    Tempo --> Grafana
+    Prom --> Grafana
+    Loki --> Grafana
+```
 
 <br />
 
@@ -837,17 +848,11 @@ salió mal. Las trazas te dicen en qué parte del sistema salió mal. Necesitás
 
 <br />
 
-```bash
-# El flujo de observabilidad durante un incidente:
-#
-# 1. MÉTRICAS: Alerta salta: "latencia p99 > 300ms por 5 minutos"
-#    └─ Sabés QUÉ anda mal
-#
-# 2. TRAZAS: Encontrás trazas lentas: "90% de las requests lentas pasan por payment-service → db"
-#    └─ Sabés DÓNDE anda mal
-#
-# 3. LOGS: Revisás logs de payment-service: "ERROR: pool de conexiones agotado, esperó 5s por conexión"
-#    └─ Sabés POR QUÉ anda mal
+```mermaid
+flowchart TD
+    M["Métricas (QUÉ)<br/>Alerta: latencia p99 > 300ms por 5 min"] --> T["Trazas (DÓNDE)<br/>90% de las requests lentas pasan por payment-service a db"]
+    T --> L["Logs (POR QUÉ)<br/>ERROR: pool de conexiones agotado, esperó 5s"]
+    L --> R["Causa raíz identificada"]
 ```
 
 <br />
@@ -960,6 +965,23 @@ end
 ##### **El Collector de OpenTelemetry**
 No querés que tu aplicación envíe telemetría directamente a los backends. El Collector de OpenTelemetry se
 sienta entre tus apps y tus backends, manejando batching, reintentos, filtrado y ruteo.
+
+<br />
+
+```mermaid
+flowchart LR
+    App["App SDK"] -->|OTLP| Recv
+    subgraph Collector["Collector de OpenTelemetry"]
+        Recv["Receivers<br/>(OTLP gRPC/HTTP)"] --> Proc["Processors<br/>(batch, filtrado, atributos)"]
+        Proc --> Exp["Exporters<br/>(fan-out)"]
+    end
+    Exp --> Tempo["Tempo (trazas)"]
+    Exp --> Prom["Prometheus (métricas)"]
+    Exp --> Loki["Loki (logs)"]
+    Tempo --> Grafana
+    Prom --> Grafana
+    Loki --> Grafana
+```
 
 <br />
 

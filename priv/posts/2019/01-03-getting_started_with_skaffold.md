@@ -286,6 +286,17 @@ echobot-6fcd78658c-njvpx   0/1       Terminating         0          9m
 Skaffold also has another nice option that it's called _dev_ it watches the folder for changes and re-deploys the app so you can focus on code.
 <br />
 
+```mermaid
+flowchart LR
+    Change["Edit code (file change detected)"] --> Build["Build image"]
+    Build --> Tag["Tag image"]
+    Tag --> Deploy["Deploy to cluster"]
+    Deploy --> Logs["Stream logs"]
+    Logs --> Change
+```
+
+<br />
+
 Let's clean up and call it a day:
 ```bash
 $ skaffold delete
@@ -468,6 +479,17 @@ echobot-6fcd78658c-njvpx   0/1       Terminating         0          9m
 Skaffold también tiene otra opción interesante llamada _dev_; observa la carpeta en busca de cambios y re-despliega la aplicación para que puedas enfocarte en el código.
 <br />
 
+```mermaid
+flowchart LR
+    Change["Editás código (detecta cambio de archivo)"] --> Build["Construye la imagen"]
+    Build --> Tag["Etiqueta la imagen"]
+    Tag --> Deploy["Despliega al cluster"]
+    Deploy --> Logs["Transmite logs"]
+    Logs --> Change
+```
+
+<br />
+
 Limpiemos y terminemos por hoy:
 
 ```bash
@@ -637,6 +659,17 @@ echobot-6fcd78658c-njvpx   0/1       Terminating         0          9m
 ```
 
 Skaffold también tiene otra opción interesante llamada _dev_; observa la carpeta en busca de cambios y re-despliega la aplicación para que puedas enfocarte en el código.
+<br />
+
+```mermaid
+flowchart LR
+    Change["Editás código (detecta cambio de archivo)"] --> Build["Construye la imagen"]
+    Build --> Tag["Etiqueta la imagen"]
+    Tag --> Deploy["Despliega al cluster"]
+    Deploy --> Logs["Transmite logs"]
+    Logs --> Change
+```
+
 <br />
 
 Limpiemos y terminemos por hoy:

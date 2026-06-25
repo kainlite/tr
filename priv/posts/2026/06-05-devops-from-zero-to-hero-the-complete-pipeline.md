@@ -60,19 +60,21 @@ Our pipeline will have seven stages, organized into three phases:
 
 <br />
 
-```plaintext
-Phase 1: Validate (on every PR and push to main)
-  ├── Lint       -> ESLint, Prettier, type checking
-  └── Test       -> Unit tests, integration tests, coverage
-
-Phase 2: Build and Deploy to Staging (on push to main only)
-  ├── Build      -> Docker image build and push to registry
-  ├── Deploy     -> Deploy to staging namespace via ArgoCD
-  └── Smoke Test -> Health check and API tests against staging
-
-Phase 3: Promote to Production (manual approval)
-  ├── Approve    -> Manual approval gate via GitHub Environments
-  └── Deploy     -> Deploy to production namespace
+```mermaid
+flowchart TD
+    subgraph P1["Phase 1: Validate (every PR and push to main)"]
+        Lint["Lint<br/>ESLint, Prettier, type checking"]
+        Test["Test<br/>unit, integration, coverage"]
+    end
+    subgraph P2["Phase 2: Build and Deploy to Staging (push to main only)"]
+        Build["Build<br/>Docker image and push to registry"] --> Deploy["Deploy to staging via ArgoCD"]
+        Deploy --> Smoke["Smoke Test<br/>health check and API tests"]
+    end
+    subgraph P3["Phase 3: Promote to Production (manual)"]
+        Approve["Approve<br/>manual gate via GitHub Environments"] --> Prod["Deploy to production namespace"]
+    end
+    P1 --> P2
+    P2 --> P3
 ```
 
 <br />
@@ -1052,19 +1054,21 @@ Nuestro pipeline va a tener siete etapas, organizadas en tres fases:
 
 <br />
 
-```plaintext
-Fase 1: Validar (en cada PR y push a main)
-  ├── Lint       -> ESLint, Prettier, type checking
-  └── Test       -> Tests unitarios, de integracion, coverage
-
-Fase 2: Build y Deploy a Staging (solo en push a main)
-  ├── Build      -> Build de imagen Docker y push al registry
-  ├── Deploy     -> Deploy al namespace de staging via ArgoCD
-  └── Smoke Test -> Health check y tests de API contra staging
-
-Fase 3: Promover a Produccion (aprobacion manual)
-  ├── Aprobar    -> Gate de aprobacion manual via GitHub Environments
-  └── Deploy     -> Deploy al namespace de produccion
+```mermaid
+flowchart TD
+    subgraph P1["Fase 1: Validar (en cada PR y push a main)"]
+        Lint["Lint<br/>ESLint, Prettier, type checking"]
+        Test["Test<br/>unitarios, de integracion, coverage"]
+    end
+    subgraph P2["Fase 2: Build y Deploy a Staging (solo en push a main)"]
+        Build["Build<br/>imagen Docker y push al registry"] --> Deploy["Deploy a staging via ArgoCD"]
+        Deploy --> Smoke["Smoke Test<br/>health check y tests de API"]
+    end
+    subgraph P3["Fase 3: Promover a Produccion (manual)"]
+        Approve["Aprobar<br/>gate manual via GitHub Environments"] --> Prod["Deploy al namespace de produccion"]
+    end
+    P1 --> P2
+    P2 --> P3
 ```
 
 <br />

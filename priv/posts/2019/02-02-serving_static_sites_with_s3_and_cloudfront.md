@@ -88,6 +88,18 @@ So far so good, We have our S3 bucket ready.
 <br />
 
 ##### **CloudFront**
+Here is how a request flows once everything is wired together:
+
+```mermaid
+flowchart LR
+    Browser["Browser"] --> R53["Route 53 (DNS)"]
+    R53 --> Edge["CloudFront edge location"]
+    Edge --> Cache{"Cache hit?"}
+    Cache -->|hit| Serve["Served from edge cache"]
+    Cache -->|miss| Origin["S3 origin bucket<br/>(access via OAI only)"]
+    Origin --> Edge
+```
+
 We will use this file to create our CF distribution (save it as distconfig.json or generate it with `aws cloudfront create-distribution --generate-cli-skeleton > /tmp/distconfig.json` and then replace the values: Id, DomainName, TargetOriginId, and the cname in Aliases.Items):
 ```json
 {
@@ -435,6 +447,18 @@ Hasta ahora todo bien. Tenemos nuestro bucket S3 listo.
 <br />
 
 ##### **CloudFront**
+Así fluye una request una vez que está todo conectado:
+
+```mermaid
+flowchart LR
+    Browser["Navegador"] --> R53["Route 53 (DNS)"]
+    R53 --> Edge["Edge de CloudFront"]
+    Edge --> Cache{"¿Cache hit?"}
+    Cache -->|hit| Serve["Servido desde la caché del edge"]
+    Cache -->|miss| Origin["Bucket de origen S3<br/>(acceso solo vía OAI)"]
+    Origin --> Edge
+```
+
 Vamos a usar este archivo para crear nuestra distribución de CloudFront (guardalo como distconfig.json o generalo con `aws cloudfront create-distribution --generate-cli-skeleton > /tmp/distconfig.json` y luego reemplazá los valores: Id, DomainName, TargetOriginId y el cname en Aliases.Items):
 ```json
 {

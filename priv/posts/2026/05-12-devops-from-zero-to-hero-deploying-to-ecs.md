@@ -60,12 +60,18 @@ Here is how these pieces fit together:
 
 <br />
 
-```plaintext
-ECS Cluster
-  └── Service (maintains desired count of tasks)
-        ├── Task 1 (running container based on task definition v3)
-        ├── Task 2 (running container based on task definition v3)
-        └── Task 3 (running container based on task definition v3)
+```mermaid
+flowchart TD
+  Cluster["ECS Cluster"]
+  Service["Service (maintains desired count of tasks)"]
+  T1["Task 1 (running container based on task definition v3)"]
+  T2["Task 2 (running container based on task definition v3)"]
+  T3["Task 3 (running container based on task definition v3)"]
+
+  Cluster --> Service
+  Service --> T1
+  Service --> T2
+  Service --> T3
 ```
 
 <br />
@@ -1153,12 +1159,18 @@ Asi es como encajan estas piezas:
 
 <br />
 
-```plaintext
-ECS Cluster
-  └── Service (mantiene la cantidad deseada de tasks)
-        ├── Task 1 (container corriendo basado en task definition v3)
-        ├── Task 2 (container corriendo basado en task definition v3)
-        └── Task 3 (container corriendo basado en task definition v3)
+```mermaid
+flowchart TD
+  Cluster["ECS Cluster"]
+  Service["Service (mantiene la cantidad deseada de tasks)"]
+  T1["Task 1 (container corriendo basado en task definition v3)"]
+  T2["Task 2 (container corriendo basado en task definition v3)"]
+  T3["Task 3 (container corriendo basado en task definition v3)"]
+
+  Cluster --> Service
+  Service --> T1
+  Service --> T2
+  Service --> T3
 ```
 
 <br />

@@ -76,32 +76,33 @@ A Kubernetes cluster has two types of components: the control plane (the brain) 
 
 <br />
 
-```plaintext
-+-----------------------------------------------------------+
-|                     Kubernetes Cluster                     |
-|                                                           |
-|  +-----------------------------------------------------+  |
-|  |                   Control Plane                      |  |
-|  |                                                     |  |
-|  |  +--------------+  +-------+  +-----------+         |  |
-|  |  |  API Server  |  | etcd  |  | Scheduler |         |  |
-|  |  +--------------+  +-------+  +-----------+         |  |
-|  |  +--------------------+                             |  |
-|  |  | Controller Manager |                             |  |
-|  |  +--------------------+                             |  |
-|  +-----------------------------------------------------+  |
-|                                                           |
-|  +------------------------+  +------------------------+   |
-|  |     Worker Node 1      |  |     Worker Node 2      |   |
-|  |                        |  |                        |   |
-|  |  +--------+ +-------+ |  |  +--------+ +-------+  |   |
-|  |  | kubelet| | proxy | |  |  | kubelet| | proxy |  |   |
-|  |  +--------+ +-------+ |  |  +--------+ +-------+  |   |
-|  |  +------+ +------+    |  |  +------+ +------+     |   |
-|  |  | Pod  | | Pod  |    |  |  | Pod  | | Pod  |     |   |
-|  |  +------+ +------+    |  |  +------+ +------+     |   |
-|  +------------------------+  +------------------------+   |
-+-----------------------------------------------------------+
+```mermaid
+flowchart TB
+  subgraph Cluster["Kubernetes Cluster"]
+    subgraph CP["Control Plane"]
+      API["API Server"]
+      ETCD[("etcd")]
+      SCHED["Scheduler"]
+      CM["Controller Manager"]
+      API --- ETCD
+      API --- SCHED
+      API --- CM
+    end
+    subgraph W1["Worker Node 1"]
+      K1["kubelet"]
+      P1["kube-proxy"]
+      Pods1["Pods"]
+      K1 --- Pods1
+    end
+    subgraph W2["Worker Node 2"]
+      K2["kubelet"]
+      P2["kube-proxy"]
+      Pods2["Pods"]
+      K2 --- Pods2
+    end
+  end
+  API <--> K1
+  API <--> K2
 ```
 
 <br />
@@ -1069,32 +1070,33 @@ worker (el musculo). Asi encajan:
 
 <br />
 
-```plaintext
-+-----------------------------------------------------------+
-|                     Cluster Kubernetes                     |
-|                                                           |
-|  +-----------------------------------------------------+  |
-|  |                  Plano de Control                    |  |
-|  |                                                     |  |
-|  |  +--------------+  +-------+  +-----------+         |  |
-|  |  |  API Server  |  | etcd  |  | Scheduler |         |  |
-|  |  +--------------+  +-------+  +-----------+         |  |
-|  |  +--------------------+                             |  |
-|  |  | Controller Manager |                             |  |
-|  |  +--------------------+                             |  |
-|  +-----------------------------------------------------+  |
-|                                                           |
-|  +------------------------+  +------------------------+   |
-|  |     Nodo Worker 1      |  |     Nodo Worker 2      |   |
-|  |                        |  |                        |   |
-|  |  +--------+ +-------+ |  |  +--------+ +-------+  |   |
-|  |  | kubelet| | proxy | |  |  | kubelet| | proxy |  |   |
-|  |  +--------+ +-------+ |  |  +--------+ +-------+  |   |
-|  |  +------+ +------+    |  |  +------+ +------+     |   |
-|  |  | Pod  | | Pod  |    |  |  | Pod  | | Pod  |     |   |
-|  |  +------+ +------+    |  |  +------+ +------+     |   |
-|  +------------------------+  +------------------------+   |
-+-----------------------------------------------------------+
+```mermaid
+flowchart TB
+  subgraph Cluster["Cluster Kubernetes"]
+    subgraph CP["Plano de Control"]
+      API["API Server"]
+      ETCD[("etcd")]
+      SCHED["Scheduler"]
+      CM["Controller Manager"]
+      API --- ETCD
+      API --- SCHED
+      API --- CM
+    end
+    subgraph W1["Nodo Worker 1"]
+      K1["kubelet"]
+      P1["kube-proxy"]
+      Pods1["Pods"]
+      K1 --- Pods1
+    end
+    subgraph W2["Nodo Worker 2"]
+      K2["kubelet"]
+      P2["kube-proxy"]
+      Pods2["Pods"]
+      K2 --- Pods2
+    end
+  end
+  API <--> K1
+  API <--> K2
 ```
 
 <br />

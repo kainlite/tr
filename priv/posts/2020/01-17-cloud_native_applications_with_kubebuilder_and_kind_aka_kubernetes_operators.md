@@ -94,6 +94,17 @@ Right until here we only have some boilerplate and basic or empty project with d
 <br />
 
 ##### Add our code to the mix
+The reconcile loop drives the resource through a small state machine based on `Status.Phase`:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Pending: no phase set
+    Pending --> Running: start forwarding
+    Running --> Running: create one-shot Pod (wait for status change)
+    Running --> Failed: Pod terminated (PodFailed / PodSucceeded)
+    Failed --> [*]: terminal, requeue stops
+```
+
 First we will add it to `api/v1beta1/map_types.go`, which will add our fields to our type.
 ```go
 /*
@@ -591,6 +602,17 @@ Hasta acá solo tenemos algo de código base y un proyecto básico o vacío con 
 <br />
 
 ##### Empecemos...
+El loop de reconciliación lleva al recurso por una pequeña máquina de estados según `Status.Phase`:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Pending: sin fase asignada
+    Pending --> Running: empieza el forwarding
+    Running --> Running: crea Pod de un solo uso (espera cambio de estado)
+    Running --> Failed: Pod terminado (PodFailed / PodSucceeded)
+    Failed --> [*]: terminal, deja de reencolar
+```
+
 Primero agregamos los tipos `api/v1beta1/map_types.go`.
 ```go
 /*

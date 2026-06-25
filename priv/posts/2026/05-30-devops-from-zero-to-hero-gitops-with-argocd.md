@@ -445,26 +445,16 @@ cycle:
 
 <br />
 
-```plaintext
-Reconciliation loop (every 3 minutes):
-
-  Git repository          ArgoCD                  Kubernetes cluster
-  ┌──────────────┐    ┌───────────────┐        ┌──────────────────┐
-  │ YAML files   │───>│ Repo Server   │        │ Live resources   │
-  │ (desired     │    │ (renders      │        │ (actual state)   │
-  │  state)      │    │  manifests)   │        │                  │
-  └──────────────┘    └───────┬───────┘        └────────┬─────────┘
-                              │                         │
-                              v                         │
-                      ┌───────────────┐                 │
-                      │ App Controller │<────────────────┘
-                      │ (compares     │
-                      │  desired vs   │
-                      │  actual)      │
-                      └───────┬───────┘
-                              │
-                      OutOfSync? ──> Sync (apply changes)
-                      Synced?   ──> Do nothing
+```mermaid
+flowchart LR
+    Git["Git repository<br/>(desired state)"] --> Repo["Repo Server<br/>(renders manifests)"]
+    Cluster["Kubernetes cluster<br/>(live resources)"] --> Ctrl
+    Repo --> Ctrl["App Controller<br/>(compares desired vs actual)"]
+    Ctrl --> Q{"Drift?"}
+    Q -->|OutOfSync| Sync["Sync<br/>(apply changes)"]
+    Q -->|Synced| Noop["Do nothing"]
+    Sync --> Cluster
+    Ctrl -. "reconcile every 3 min" .-> Git
 ```
 
 <br />
@@ -1294,26 +1284,16 @@ cada ciclo:
 
 <br />
 
-```plaintext
-Loop de reconciliacion (cada 3 minutos):
-
-  Repositorio Git       ArgoCD                  Cluster Kubernetes
-  ┌──────────────┐    ┌───────────────┐        ┌──────────────────┐
-  │ Archivos     │───>│ Repo Server   │        │ Recursos vivos   │
-  │ YAML (estado │    │ (renderiza    │        │ (estado actual)  │
-  │ deseado)     │    │  manifiestos) │        │                  │
-  └──────────────┘    └───────┬───────┘        └────────┬─────────┘
-                              │                         │
-                              v                         │
-                      ┌───────────────┐                 │
-                      │ App Controller │<────────────────┘
-                      │ (compara      │
-                      │  deseado vs   │
-                      │  actual)      │
-                      └───────┬───────┘
-                              │
-                      OutOfSync? ──> Sync (aplicar cambios)
-                      Synced?   ──> No hacer nada
+```mermaid
+flowchart LR
+    Git["Repositorio Git<br/>(estado deseado)"] --> Repo["Repo Server<br/>(renderiza manifiestos)"]
+    Cluster["Cluster Kubernetes<br/>(recursos vivos)"] --> Ctrl
+    Repo --> Ctrl["App Controller<br/>(compara deseado vs actual)"]
+    Ctrl --> Q{"Hay drift?"}
+    Q -->|OutOfSync| Sync["Sync<br/>(aplicar cambios)"]
+    Q -->|Synced| Noop["No hacer nada"]
+    Sync --> Cluster
+    Ctrl -. "reconcilia cada 3 min" .-> Git
 ```
 
 <br />

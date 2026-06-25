@@ -95,6 +95,17 @@ but it won't do anything interesting, but it covers a lot of ground and mades ou
 <br />
 
 ##### Add our code to the mix
+The reconcile loop drives the resource through a small state machine based on `Status.Phase`:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Pending: no phase set
+    Pending --> Running: create the Pod, start forwarding
+    Running --> Running: Pod still running (requeue)
+    Running --> Failed: Pod terminated (PodFailed / PodSucceeded)
+    Failed --> [*]: terminal, reconcile stops
+```
+
 First we will add it to `api/v1alpha1/mapport_types.go`, which will add our fields to our type.
 ```go
 /*
@@ -707,6 +718,17 @@ de que exista una herramienta como esta.
 <br />
 
 ##### Empecemos...
+El loop de reconciliación lleva al recurso por una pequeña máquina de estados según `Status.Phase`:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Pending: sin fase asignada
+    Pending --> Running: crear el Pod, iniciar el forwarding
+    Running --> Running: el Pod sigue corriendo (requeue)
+    Running --> Failed: el Pod terminó (PodFailed / PodSucceeded)
+    Failed --> [*]: estado terminal, la reconciliación para
+```
+
 Primero agregamos los tipos `api/v1alpha1/mapport_types.go`.
 ```go
 /*

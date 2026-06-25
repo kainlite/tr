@@ -88,6 +88,18 @@ A circuit breaker has three states:
 
 <br />
 
+```mermaid
+stateDiagram-v2
+    [*] --> Closed
+    Closed --> Open: 5 consecutive failures
+    Open --> HalfOpen: reset timeout (30s) elapsed
+    HalfOpen --> Closed: test request succeeds
+    HalfOpen --> Open: test request fails
+    Closed --> Closed: success (reset failure count)
+```
+
+<br />
+
 Here is a practical implementation in Elixir using a GenServer:
 
 ```yaml
@@ -1669,6 +1681,18 @@ Un circuit breaker tiene tres estados:
 > * **Cerrado**: Todo normal. Las requests fluyen hacia la dependencia. El breaker monitorea tasas de error.
 > * **Abierto**: La dependencia está fallando. Las requests se rechazan inmediatamente sin llamar a la dependencia. Se inicia un timer.
 > * **Semi-abierto**: El timer expiró. Se envía un número limitado de requests de prueba. Si tienen éxito, el breaker se cierra. Si fallan, el breaker se abre de nuevo.
+
+<br />
+
+```mermaid
+stateDiagram-v2
+    [*] --> Cerrado
+    Cerrado --> Abierto: 5 fallas consecutivas
+    Abierto --> SemiAbierto: timeout de reset (30s) cumplido
+    SemiAbierto --> Cerrado: request de prueba exitosa
+    SemiAbierto --> Abierto: request de prueba falla
+    Cerrado --> Cerrado: éxito (resetea contador de fallas)
+```
 
 <br />
 
