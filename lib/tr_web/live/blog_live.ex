@@ -33,8 +33,8 @@ defmodule TrWeb.BlogLive do
           SegFault - {gettext("DevOps, Linux, Containers, Kubernetes, and cloud technologies.")}
         </p>
       </div>
-      
-    <!-- Featured post -->
+
+      <!-- Featured post -->
       <%= if @featured_post do %>
         <div
           id={@featured_post.id}
@@ -59,15 +59,15 @@ defmodule TrWeb.BlogLive do
           </p>
         </div>
       <% end %>
-      
-    <!-- Post list -->
+
+      <!-- Post list -->
       <div class="space-y-0">
         <%= for post <- Enum.drop(@posts, 1) do %>
           {PostComponent.render_post_card(%{post: post})}
         <% end %>
       </div>
-      
-    <!-- Support section -->
+
+      <!-- Support section -->
       <div class="border-t border-terminal-300 dark:border-terminal-600 pt-4 font-mono text-sm text-terminal-400">
         <span class="text-accent-light dark:text-accent">$</span>
         <span class="ml-2">{gettext("Support this blog")}:</span>

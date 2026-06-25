@@ -89,8 +89,8 @@ defmodule TrWeb.DashboardLive do
         <span class="text-accent-light dark:text-accent">$</span>
         <span class="text-terminal-400 ml-2">sre-dashboard --stats</span>
       </div>
-      
-    <!-- System Stats -->
+
+      <!-- System Stats -->
       <div>
         <h3 class="font-mono text-sm text-accent-light dark:text-accent mb-3">## System</h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -100,8 +100,8 @@ defmodule TrWeb.DashboardLive do
           <.stat_card label="Unannounced" value={length(@unannounced_posts)} />
         </div>
       </div>
-      
-    <!-- Content Stats -->
+
+      <!-- Content Stats -->
       <div>
         <h3 class="font-mono text-sm text-accent-light dark:text-accent mb-3">## Content</h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -111,8 +111,8 @@ defmodule TrWeb.DashboardLive do
           <.stat_card label="Avg Read Time" value={"#{@avg_reading_time} min"} />
         </div>
       </div>
-      
-    <!-- Engagement Stats -->
+
+      <!-- Engagement Stats -->
       <div>
         <h3 class="font-mono text-sm text-accent-light dark:text-accent mb-3">## Engagement</h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -122,8 +122,8 @@ defmodule TrWeb.DashboardLive do
           <.stat_card label="Total Comments" value={Tr.Post.get_comments_count()} />
         </div>
       </div>
-      
-    <!-- Active Rooms -->
+
+      <!-- Active Rooms -->
       <div class="border border-terminal-300 dark:border-terminal-600 p-4">
         <h3 class="font-mono text-sm text-accent-light dark:text-accent mb-3">## Active Rooms</h3>
         <%= if @user_stats.per_room == %{} do %>
@@ -145,8 +145,8 @@ defmodule TrWeb.DashboardLive do
           </div>
         <% end %>
       </div>
-      
-    <!-- Top Posts -->
+
+      <!-- Top Posts -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="border border-terminal-300 dark:border-terminal-600 p-4">
           <h3 class="font-mono text-sm text-accent-light dark:text-accent mb-3">## Most Reacted</h3>
@@ -192,8 +192,8 @@ defmodule TrWeb.DashboardLive do
           <% end %>
         </div>
       </div>
-      
-    <!-- Comment Moderation -->
+
+      <!-- Comment Moderation -->
       <div class="border border-terminal-300 dark:border-terminal-600 p-4">
         <h3 class="font-mono text-sm text-accent-light dark:text-accent mb-3">## Moderation</h3>
         <div class="flex gap-4 mb-4 font-mono text-sm">
@@ -245,8 +245,8 @@ defmodule TrWeb.DashboardLive do
           </:col>
         </.table>
       </div>
-      
-    <!-- Recent Users -->
+
+      <!-- Recent Users -->
       <div class="border border-terminal-300 dark:border-terminal-600 p-4">
         <h3 class="font-mono text-sm text-accent-light dark:text-accent mb-3">## Recent Users</h3>
         <.table id="users" rows={@users}>
@@ -270,8 +270,8 @@ defmodule TrWeb.DashboardLive do
           </:col>
         </.table>
       </div>
-      
-    <!-- Cross-Posting -->
+
+      <!-- Cross-Posting -->
       <div class="border border-terminal-300 dark:border-terminal-600 p-4">
         <h3 class="font-mono text-sm text-accent-light dark:text-accent mb-3">## Cross-Posting</h3>
         <%= unless @linkedin_configured do %>

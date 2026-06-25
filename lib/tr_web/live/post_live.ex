@@ -90,10 +90,10 @@ defmodule TrWeb.PostLive do
           {@post.title}
         </h1>
         <div class="font-mono text-sm text-terminal-400 mt-2">
-          {@post.date} | {@post.author} | {@reading_time} {gettext("min read")}<span :if={
-            @post.updated
-          }>
-            | {gettext("updated")} {@post.updated}</span>
+          {@post.date} | {@post.author} | {@reading_time} {gettext("min read")}
+          <span :if={@post.updated}>
+            | {gettext("updated")} {@post.updated}
+          </span>
         </div>
         <div class="flex flex-wrap gap-2 mt-3">
           <%= for tag <- @post.tags do %>
@@ -114,8 +114,8 @@ defmodule TrWeb.PostLive do
           </span>
         </a>
       </div>
-      
-    <!-- Reactions -->
+
+      <!-- Reactions -->
       <div class="flex items-center gap-4 font-mono text-sm mb-4 border-b border-terminal-300 dark:border-terminal-600 pb-4">
         <.link
           phx-click="react"
@@ -151,8 +151,8 @@ defmodule TrWeb.PostLive do
           <span>{Map.get(@reactions, "hand-thumb-up", 0)}</span>
         </.link>
       </div>
-      
-    <!-- Share -->
+
+      <!-- Share -->
       <div class="flex items-center gap-3 mb-6 text-terminal-400">
         <span class="font-mono text-xs">{gettext("Share")}:</span>
         <a
@@ -194,8 +194,8 @@ defmodule TrWeb.PostLive do
         <code class="hidden">
         </code>
       </pre>
-      
-    <!-- Table of contents -->
+
+      <!-- Table of contents -->
       <details :if={@post.toc != []} class="tr-toc lg:hidden">
         <summary class="tr-toc-summary">{gettext("On this page")}</summary>
         <ol class="tr-toc-list">
@@ -204,8 +204,8 @@ defmodule TrWeb.PostLive do
           </li>
         </ol>
       </details>
-      
-    <!-- Post body -->
+
+      <!-- Post body -->
       <%= cond do %>
         <% @post.sponsored && @current_user && Tr.SponsorsCache.sponsor?(@current_user.github_username) -> %>
           {raw(@post.body)}
@@ -219,8 +219,7 @@ defmodule TrWeb.PostLive do
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
-            >
-            </iframe>
+            ></iframe>
           </p>
           <br />
           {@post.id
@@ -250,8 +249,8 @@ defmodule TrWeb.PostLive do
         <% true -> %>
           {render_sponsors_banner(assigns)}
       <% end %>
-      
-    <!-- Comments section -->
+
+      <!-- Comments section -->
       <div class="border-t border-terminal-300 dark:border-terminal-600 pt-6 mt-6">
         <div class="flex items-center justify-between mb-4">
           <h3 class="font-mono text-lg text-accent-light dark:text-accent">
@@ -305,13 +304,13 @@ defmodule TrWeb.PostLive do
           </p>
         <% end %>
       </div>
-      
-    <!-- Post footer -->
+
+      <!-- Post footer -->
       <div class="font-mono text-sm text-terminal-400 text-center mt-6 border-t border-terminal-300 dark:border-terminal-600 pt-4">
         {@post.date} | {@post.author}
       </div>
-      
-    <!-- Related posts -->
+
+      <!-- Related posts -->
       <%= if @related_posts != [] do %>
         <div class="mt-6 border-t border-terminal-300 dark:border-terminal-600 pt-4">
           <h3 class="font-mono text-sm text-accent-light dark:text-accent mb-3">
@@ -606,8 +605,7 @@ defmodule TrWeb.PostLive do
             height="225"
             style="border: 0; width: 100%; max-width: 600px;"
             class="mx-auto justify-center items-center"
-          >
-          </iframe>
+          ></iframe>
         </div>
         <a
           href="https://buymeacoffee.com/kainlite"

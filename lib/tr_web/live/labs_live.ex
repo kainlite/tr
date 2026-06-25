@@ -107,8 +107,7 @@ defmodule TrWeb.LabsLive do
                   <span
                     data-lab-check
                     class="tr-lab-check w-4 shrink-0 text-accent-light dark:text-accent"
-                  >
-                  </span>
+                  ></span>
                   <span class="text-terminal-400 shrink-0">{i}.</span>
                   <span class="group-hover:underline">{lab.title}</span>
                   <span class="ml-auto shrink-0 text-[10px] uppercase tracking-wide text-terminal-400">

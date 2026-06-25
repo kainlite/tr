@@ -8,16 +8,16 @@
   >
     <.icon name="hero-bars-3" class="w-6 h-6 text-terminal-500 dark:text-terminal-300" />
   </button>
-  
-<!-- Mobile overlay -->
+
+  <!-- Mobile overlay -->
   <div
     id="sidebar-overlay"
     phx-click={JS.toggle(to: "#sidebar-overlay") |> JS.toggle(to: "#sidebar")}
     class="fixed inset-0 bg-black/50 z-30 lg:hidden hidden"
   >
   </div>
-  
-<!-- Sidebar -->
+
+  <!-- Sidebar -->
   <aside
     id="sidebar"
     class="fixed left-0 top-0 z-40 h-screen w-56 flex-col justify-between
@@ -36,8 +36,8 @@
           </div>
         </.link>
       </div>
-      
-<!-- Navigation -->
+
+      <!-- Navigation -->
       <nav class="p-3 space-y-1">
         <.link
           navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog"}
@@ -125,8 +125,8 @@
           </a>
         </div>
       </nav>
-      
-<!-- Toggles -->
+
+      <!-- Toggles -->
       <div class="p-3 border-t border-terminal-300 dark:border-terminal-600 space-y-1">
         <.link
           phx-click={JS.dispatch("toogle-darkmode")}
@@ -155,8 +155,8 @@
         </.link>
       </div>
     </div>
-    
-<!-- Auth section at bottom -->
+
+    <!-- Auth section at bottom -->
     <div class="p-3 border-t border-terminal-300 dark:border-terminal-600">
       <%= if Map.get(assigns, :current_user) do %>
         <.link
@@ -192,8 +192,8 @@
       <% end %>
     </div>
   </aside>
-  
-<!-- Main content -->
+
+  <!-- Main content -->
   <main class="flex-1 min-w-0 lg:ml-56 min-h-screen px-4 sm:px-6 lg:px-8 pt-16 lg:pt-6 pb-6">
     <div class="mx-auto max-w-screen-xl">
       <.flash_group flash={@flash} />
