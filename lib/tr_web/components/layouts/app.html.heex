@@ -46,13 +46,23 @@
           <.icon name="hero-list-bullet" class="w-5 h-5" />
           <span>{gettext("Blog")}</span>
         </.link>
-        <.link
-          navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/search"}
-          class="flex items-center gap-3 px-3 py-2 font-mono text-sm text-terminal-500 dark:text-terminal-400 hover:text-accent-light dark:hover:text-accent hover:bg-terminal-200 dark:hover:bg-terminal-700 no-underline transition-colors"
+        <button
+          type="button"
+          data-open-palette
+          aria-keyshortcuts="Meta+K Control+K"
+          class="w-full flex items-center gap-3 px-3 py-2 h-auto bg-transparent border-0 font-mono text-sm font-normal normal-case tracking-normal leading-normal text-terminal-500 dark:text-terminal-400 hover:text-accent-light dark:hover:text-accent hover:bg-terminal-200 dark:hover:bg-terminal-700 cursor-pointer transition-colors"
         >
           <.icon name="hero-magnifying-glass" class="w-5 h-5" />
           <span>{gettext("Search")}</span>
-        </.link>
+          <kbd
+            id="palette-kbd-hint"
+            phx-update="ignore"
+            data-palette-kbd
+            class="ml-auto font-mono text-[10px] leading-none px-1.5 py-1 rounded border border-terminal-300 dark:border-terminal-600 text-terminal-400"
+          >
+            ⌘K
+          </kbd>
+        </button>
         <.link
           navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/blog/tags"}
           class="flex items-center gap-3 px-3 py-2 font-mono text-sm text-terminal-500 dark:text-terminal-400 hover:text-accent-light dark:hover:text-accent hover:bg-terminal-200 dark:hover:bg-terminal-700 no-underline transition-colors"
@@ -67,6 +77,17 @@
           <.icon name="hero-beaker" class="w-5 h-5" />
           <span>{gettext("Labs")}</span>
         </.link>
+        <%!-- Contextual sub-nav: when on the Labs page, list the tracks (deep-link + scroll). --%>
+        <div :if={assigns[:section] == :labs} class="mb-1">
+          <a
+            :for={t <- assigns[:tracks] || []}
+            href={"/#{Gettext.get_locale(TrWeb.Gettext)}/labs#track-#{t.slug}"}
+            class="flex items-center gap-2 pl-9 pr-3 py-1.5 font-mono text-xs text-terminal-500 dark:text-terminal-400 hover:text-accent-light dark:hover:text-accent hover:bg-terminal-200 dark:hover:bg-terminal-700 no-underline transition-colors"
+          >
+            <span class="shrink-0">{t.icon}</span>
+            <span class="truncate">{t.title}</span>
+          </a>
+        </div>
         <.link
           navigate={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/about"}
           class="flex items-center gap-3 px-3 py-2 font-mono text-sm text-terminal-500 dark:text-terminal-400 hover:text-accent-light dark:hover:text-accent hover:bg-terminal-200 dark:hover:bg-terminal-700 no-underline transition-colors"
@@ -85,6 +106,24 @@
             <span>{gettext("Dashboard")}</span>
           </.link>
         <% end %>
+        <%!-- Contextual sub-nav: on a blog post, mirror its "On this page" TOC (desktop). --%>
+        <div
+          :if={assigns[:post] && assigns[:post].toc not in [nil, []]}
+          class="hidden lg:block mt-2 pt-2 border-t border-terminal-300 dark:border-terminal-600"
+        >
+          <div class="px-3 py-1 font-mono text-[11px] uppercase tracking-wide text-terminal-400">
+            {gettext("On this page")}
+          </div>
+          <a
+            :for={h <- assigns[:post].toc}
+            href={"#" <> h.id}
+            data-toc-id={h.id}
+            style={"padding-left: #{0.75 + h.indent * 0.7}rem"}
+            class="tr-side-toc-link block pr-3 py-1 font-mono text-xs leading-snug text-terminal-500 dark:text-terminal-400 hover:text-accent-light dark:hover:text-accent no-underline transition-colors"
+          >
+            {h.text}
+          </a>
+        </div>
       </nav>
       
 <!-- Toggles -->
@@ -167,5 +206,11 @@
         do: %{t: p.title, u: "/#{palette_locale}/blog/#{p.id}"} %>
   <script type="application/json" id="tr-post-index">
     <%= raw(Jason.encode!(palette_posts, escape: :html_safe)) %>
+  </script>
+  <% palette_tracks =
+    for t <- Tr.Labs.tracks(),
+        do: %{t: t.title, u: "/#{palette_locale}/labs#track-#{t.slug}", icon: t.icon} %>
+  <script type="application/json" id="tr-labs-index">
+    <%= raw(Jason.encode!(palette_tracks, escape: :html_safe)) %>
   </script>
 </div>

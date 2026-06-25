@@ -202,7 +202,7 @@ Hooks.ReadingProgress = {
     this.headings = Array.from(this.el.querySelectorAll("h2,h3,h4,h5,h6")).filter((h) =>
       h.querySelector(".tr-anchor"),
     );
-    this.tocLinks = Array.from(document.querySelectorAll(".tr-toc-link"));
+    this.tocLinks = Array.from(document.querySelectorAll("[data-toc-id]"));
     this._onScroll = () => this.update();
     window.addEventListener("scroll", this._onScroll, { passive: true });
     window.addEventListener("resize", this._onScroll, { passive: true });
@@ -223,17 +223,19 @@ Hooks.ReadingProgress = {
   },
   setupSpy() {
     if (!this.headings.length || !this.tocLinks.length) return;
+    // One heading id can map to several links (the in-article TOC plus the
+    // sidebar "On this page"); highlight them all.
     const byId = {};
     this.tocLinks.forEach((a) => {
-      byId[a.getAttribute("data-toc-id")] = a;
+      const id = a.getAttribute("data-toc-id");
+      (byId[id] = byId[id] || []).push(a);
     });
     this.observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
           if (!e.isIntersecting) return;
           this.tocLinks.forEach((a) => a.classList.remove("tr-toc-active"));
-          const a = byId[e.target.id];
-          if (a) a.classList.add("tr-toc-active");
+          (byId[e.target.id] || []).forEach((a) => a.classList.add("tr-toc-active"));
         });
       },
       { rootMargin: "0px 0px -75% 0px", threshold: 0 },
@@ -391,7 +393,7 @@ function initDarkMode() {
   }
 }
 
-window.addEventListener("toogle-darkmode", (e) => {
+window.addEventListener("toogle-darkmode", () => {
   if (darkExpected()) {
     localStorage.theme = "light";
     document.documentElement.style.setProperty("color-scheme", "light");

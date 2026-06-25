@@ -1396,6 +1396,11 @@ h6:hover > .tr-anchor {
 .dark .tr-toc-active {
   color: #38ef7d !important;
 }
+/* sidebar "On this page" active row gets a subtle wash to stand out */
+.tr-side-toc-link.tr-toc-active {
+  background: rgba(56, 239, 125, 0.1);
+  border-radius: 4px;
+}
 
 /* callouts / admonitions (authored as GitHub-style `> [!WARNING]` blockquotes) */
 .tr-callout {

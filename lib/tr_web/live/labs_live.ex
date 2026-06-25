@@ -18,6 +18,7 @@ defmodule TrWeb.LabsLive do
       |> assign(:tracks, Labs.tracks())
       |> assign(:by_post, Labs.by_post())
       |> assign(:count, Labs.count())
+      |> assign(:section, :labs)
     }
   end
 
@@ -76,8 +77,9 @@ defmodule TrWeb.LabsLive do
         <div class="grid gap-4 sm:grid-cols-2">
           <section
             :for={track <- @tracks}
+            id={"track-#{track.slug}"}
             data-track={track.slug}
-            class="tr-track border border-terminal-300 dark:border-terminal-600 rounded-lg p-4"
+            class="tr-track scroll-mt-24 border border-terminal-300 dark:border-terminal-600 rounded-lg p-4"
           >
             <div class="flex items-center gap-2">
               <span class="text-xl">{track.icon}</span>

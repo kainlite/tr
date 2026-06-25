@@ -196,7 +196,7 @@ defmodule TrWeb.PostLive do
       </pre>
       
     <!-- Table of contents -->
-      <details :if={@post.toc != []} class="tr-toc">
+      <details :if={@post.toc != []} class="tr-toc lg:hidden">
         <summary class="tr-toc-summary">{gettext("On this page")}</summary>
         <ol class="tr-toc-list">
           <li :for={h <- @post.toc} class={"tr-toc-item tr-toc-i#{h.indent}"}>

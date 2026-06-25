@@ -6,12 +6,18 @@ export function initPalette() {
   const locale = (location.pathname.match(/^\/(en|es)(?:\/|$)/) || [])[1] || "en";
   const other = locale === "en" ? "es" : "en";
 
-  const actions = [
+  const pages = [
     { label: "Blog", kind: "nav", url: `/${locale}/blog`, icon: "≡" },
     { label: "Search posts", kind: "nav", url: `/${locale}/blog/search`, icon: "⌕" },
     { label: "Tags", kind: "nav", url: `/${locale}/blog/tags`, icon: "#" },
     { label: "Labs", kind: "nav", url: `/${locale}/labs`, icon: "🧪" },
+  ];
+  const morePages = [
     { label: "About", kind: "nav", url: `/${locale}/about`, icon: "@" },
+    { label: "Privacy", kind: "nav", url: `/${locale}/privacy`, icon: "§" },
+    { label: "RSS feed", kind: "nav", url: `/${locale}/index.xml`, icon: "»" },
+  ];
+  const toggles = [
     { label: "Toggle light / dark theme", kind: "theme", icon: "◐" },
     {
       label: other === "es" ? "Switch to Spanish (ES)" : "Switch to English (EN)",
@@ -19,6 +25,24 @@ export function initPalette() {
       icon: "🌐",
     },
   ];
+
+  // Learning tracks, injected by the layout, deep-link into /labs.
+  let labs = [];
+  try {
+    const el = document.getElementById("tr-labs-index");
+    if (el) {
+      labs = JSON.parse(el.textContent).map((t) => ({
+        label: t.t,
+        kind: "lab",
+        url: t.u,
+        icon: t.icon || "🧪",
+      }));
+    }
+  } catch (_e) {
+    /* no labs index; the rest of the palette still works */
+  }
+
+  const actions = [...pages, ...labs, ...morePages, ...toggles];
 
   let posts = [];
   try {
@@ -42,7 +66,7 @@ export function initPalette() {
     <div class="tr-palette-backdrop" data-role="backdrop"></div>
     <div class="tr-palette-box" role="dialog" aria-label="Command palette">
       <input class="tr-palette-input" data-role="input" type="text"
-             placeholder="Jump to a page or search posts…"
+             placeholder="Jump to a page, lab, or post…"
              autocomplete="off" autocapitalize="off" spellcheck="false" />
       <ul class="tr-palette-list" data-role="list"></ul>
     </div>`;
@@ -62,10 +86,10 @@ export function initPalette() {
     results = [...acts, ...ps];
     sel = 0;
     list.innerHTML = results
-      .map(
-        (r, i) =>
-          `<li class="tr-palette-item" data-i="${i}"><span class="tr-palette-icon"></span><span class="tr-palette-label"></span><span class="tr-palette-tag">${r.kind === "post" ? "post" : ""}</span></li>`,
-      )
+      .map((r, i) => {
+        const tag = r.kind === "post" ? "post" : r.kind === "lab" ? "lab" : "";
+        return `<li class="tr-palette-item" data-i="${i}"><span class="tr-palette-icon"></span><span class="tr-palette-label"></span><span class="tr-palette-tag">${tag}</span></li>`;
+      })
       .join("");
     [...list.children].forEach((li, i) => {
       li.querySelector(".tr-palette-icon").textContent = results[i].icon;
@@ -140,4 +164,24 @@ export function initPalette() {
     },
     true,
   );
+
+  // Let any element opt into opening the palette (e.g. the sidebar "Search"
+  // entry). Delegated on document so it works on both LiveView and dead pages,
+  // and survives live navigation without re-binding.
+  document.addEventListener("click", (e) => {
+    if (e.target.closest("[data-open-palette]")) {
+      e.preventDefault();
+      if (!open) openPalette();
+    }
+  });
+
+  // Reflect the platform's modifier key in any palette shortcut hint.
+  const plat =
+    (navigator.userAgentData && navigator.userAgentData.platform) ||
+    navigator.userAgent ||
+    "";
+  const isMac = /Mac|iPhone|iPad|iPod/.test(plat);
+  document.querySelectorAll("[data-palette-kbd]").forEach((el) => {
+    el.textContent = isMac ? "⌘K" : "Ctrl K";
+  });
 }
