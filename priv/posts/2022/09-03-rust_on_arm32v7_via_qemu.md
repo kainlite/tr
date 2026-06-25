@@ -12,7 +12,7 @@
 }
 ---
 
-![rust](/images/rust.webp"){:class="mx-auto"}
+![rust](/images/rust.webp){:class="mx-auto"}
 
 #### **Introduction**
 
@@ -521,7 +521,7 @@ and the [sources here](https://github.com/kainlite/blog)
 }
 ---
 
-![rust](/images/rust.webp"){:class="mx-auto"}
+![rust](/images/rust.webp){:class="mx-auto"}
 
 #### **Introducción**
 

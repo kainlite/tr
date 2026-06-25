@@ -11,7 +11,7 @@
 }
 ---
 
-![terminal](/images/terminal.webp"){:class="mx-auto"}
+![terminal](/images/terminal.webp){:class="mx-auto"}
 
 ### Introduction
 This article is about my current configuration, but I'm going to talk only about the terminal and my text editor because those will work in any linux distribution, I'm currently using **Arch Linux** and **AwesomeWM** (I used Gnome Shell previously, and Gnome 2 before that), you can find my [dotfiles here](https://github.com/kainlite/dotfiles) with all my configurations.
@@ -97,9 +97,9 @@ Also, you can check the source code and changes in the [generated code](https://
 }
 ---
 
-![terminal](/images/terminal.webp"){:class="mx-auto"}
+![terminal](/images/terminal.webp){:class="mx-auto"}
 
-![terminal](/images/terminal.webp"){:class="mx-auto"}
+![terminal](/images/terminal.webp){:class="mx-auto"}
 
 ### **Introducción**
 Este artículo trata sobre mi configuración actual, pero solo voy a hablar sobre el terminal y mi editor de texto porque funcionarán en cualquier distribución de Linux. Actualmente estoy usando **Arch Linux** y **AwesomeWM** (anteriormente usaba Gnome Shell y antes de eso Gnome 2). Puedes encontrar mis [dotfiles aquí](https://github.com/kainlite/dotfiles) con todas mis configuraciones.

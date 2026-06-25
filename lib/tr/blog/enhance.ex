@@ -10,6 +10,9 @@ defmodule Tr.Blog.Enhance do
   """
 
   @heading_re ~r{<(h[2-6])([^>]*)>(.*?)</h[2-6]>}s
+  # Kramdown-style attribute lists (e.g. `![alt](img){:class="mx-auto"}`) that
+  # Earmark leaves as literal text after the <img>. Fold them onto the tag.
+  @img_attr_re ~r/<img([^>]*?)\s*\/?>\s*\{:\s*([^}]*?)\}/
   @callout_re ~r{<blockquote>\s*<p>\s*\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION|DANGER)\]\s*\n?(.*?)</blockquote>}is
   @callout_titles %{
     "note" => "Note",
@@ -45,6 +48,7 @@ defmodule Tr.Blog.Enhance do
         String.replace(acc, w, n, global: false)
       end)
       |> callouts()
+      |> image_attrs()
 
     levels = Enum.map(entries, & &1.level)
     min_level = if levels == [], do: 2, else: Enum.min(levels)
@@ -58,6 +62,19 @@ defmodule Tr.Blog.Enhance do
   end
 
   def process(html), do: {html, []}
+
+  defp image_attrs(body) do
+    Regex.replace(@img_attr_re, body, fn _full, attrs, attrlist ->
+      # Earmark escaped the quotes in the literal `{:class="..."}` text.
+      cleaned =
+        attrlist
+        |> String.trim()
+        |> String.replace("&quot;", "\"")
+        |> String.replace("&#39;", "'")
+
+      ~s(<img #{cleaned} #{String.trim(attrs)} />)
+    end)
+  end
 
   defp callouts(body) do
     Regex.replace(@callout_re, body, fn _full, type, inner ->

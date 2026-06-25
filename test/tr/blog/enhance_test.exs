@@ -49,6 +49,27 @@ defmodule Tr.Blog.EnhanceTest do
     refute body =~ "tr-callout"
   end
 
+  test "folds kramdown image attribute lists onto the img tag" do
+    # mirrors Earmark output: the literal {:...} text has escaped quotes
+    html = ~s(<p><img src="/images/x.webp" alt="x" />{:class=&quot;mx-auto&quot;}</p>)
+    {body, _toc} = Enhance.process(html)
+
+    assert body =~ ~s(<img class="mx-auto" src="/images/x.webp" alt="x" />)
+    refute body =~ "{:class"
+    refute body =~ "&quot;"
+  end
+
+  test "keeps extra attributes (e.g. style) from the image attribute list" do
+    html =
+      ~s(<img src="/i/a.webp" alt="a">{:class=&quot;mx-auto&quot; style=&quot;max-height: 450px;&quot;})
+
+    {body, _toc} = Enhance.process(html)
+
+    assert body =~ ~s(class="mx-auto")
+    assert body =~ ~s(style="max-height: 450px;")
+    refute body =~ "{:"
+  end
+
   test "no headings yields an empty toc and unchanged body" do
     assert {"<p>plain</p>", []} = Enhance.process("<p>plain</p>")
   end
