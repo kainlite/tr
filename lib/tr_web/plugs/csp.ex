@@ -27,12 +27,14 @@ defmodule TrWeb.Plugs.CSP do
        "blob:",
        "https://cdn.jsdelivr.net",
        "https://cdnjs.buymeacoffee.com",
-       "https://buymeacoffee.com"
+       "https://buymeacoffee.com",
+       # Cloudflare Web Analytics beacon injected at the edge
+       "https://static.cloudflareinsights.com"
      ]},
     {"style-src", ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"]},
     {"img-src", ["'self'", "data:", "https:"]},
     {"font-src", ["'self'", "data:", "https://cdn.jsdelivr.net"]},
-    {"connect-src", ["'self'", "https://cdn.jsdelivr.net"]},
+    {"connect-src", ["'self'", "https://cdn.jsdelivr.net", "https://cloudflareinsights.com"]},
     {"frame-src",
      [
        "'self'",
