@@ -341,13 +341,8 @@ defmodule TrWeb.PostLive do
     if is_nil(socket.assigns.current_user) do
       {:noreply, socket |> put_flash(:error, gettext("You need to be logged in to react."))}
     else
-      params =
-        Map.merge(
-          %{
-            "user_id" => socket.assigns.current_user.id
-          },
-          params
-        )
+      # Client params first so the server-set user_id wins and cannot be spoofed.
+      params = Map.merge(params, %{"user_id" => socket.assigns.current_user.id})
 
       case Tr.Post.reaction_exists?(slug, value, socket.assigns.current_user.id) do
         true ->
@@ -383,13 +378,10 @@ defmodule TrWeb.PostLive do
   def handle_event("save", %{"comment" => comment_params}, socket) do
     current_user = socket.assigns.current_user
 
-    params =
-      Map.merge(
-        %{
-          "user_id" => current_user.id
-        },
-        comment_params
-      )
+    # Server-set values must win over client input: merging client params first
+    # means user_id (and the removal of :approved from the changeset cast) cannot
+    # be spoofed to post as another user or self-approve past moderation.
+    params = Map.merge(comment_params, %{"user_id" => current_user.id})
 
     if is_nil(current_user.confirmed_at) do
       {:noreply, socket |> put_flash(:error, gettext("You need to validate your account"))}

@@ -1,5 +1,12 @@
 import Config
 
+# Local-only Cloak vault key (NOT a production secret). Production must supply
+# CLOAK_KEY via the environment; Tr.Vault fails closed if it is unset.
+System.put_env(
+  "CLOAK_KEY",
+  System.get_env("CLOAK_KEY") || "oKm5YrZmbh8kS34n3fXLiAHLbDFEmC+H+z8TEseGQFs="
+)
+
 # Configure your database
 config :tr, Tr.Repo,
   username: "postgres",

@@ -18,8 +18,8 @@ defmodule TrWeb.UserLoginLiveTest do
 
       assert html =~ "Continue with Google"
       assert html =~ "Continue with GitHub"
-      assert html =~ "accounts.google.com"
-      assert html =~ "github.com/login/oauth"
+      assert html =~ ~s(href="/auth/google")
+      assert html =~ ~s(href="/auth/github")
     end
 
     test "redirects if already logged in", %{conn: conn} do

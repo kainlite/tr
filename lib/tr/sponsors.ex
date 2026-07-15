@@ -63,7 +63,7 @@ defmodule Tr.Sponsors do
              %{},
              url: "https://api.github.com/graphql",
              headers: [authorization: "Bearer #{token}"],
-             connection_opts: [recv_timeout: 15_000, hackney: [:insecure, pool: :github_pool]]
+             connection_opts: [recv_timeout: 15_000, hackney: [pool: :github_pool]]
            ) do
         {:ok, body} ->
           body.body

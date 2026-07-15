@@ -21,6 +21,11 @@ config :tr, TrWeb.Endpoint,
   pubsub_server: Tr.PubSub,
   live_view: [signing_salt: "XF0oI1yw"]
 
+# Mark session/remember-me cookies as Secure only where the site is served over
+# HTTPS. Overridden to true in prod (which also sets force_ssl); dev/test serve
+# over plain HTTP so it stays false there.
+config :tr, secure_cookies: false
+
 config :tr, TrWeb.Endpoint,
   render_errors: [
     view: TrWeb.ErrorView,

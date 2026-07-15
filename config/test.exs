@@ -1,5 +1,13 @@
 import Config
 
+# Local-only Cloak vault key (NOT a production secret). This is the key the
+# encrypted-post test fixtures were encrypted with; Tr.Vault fails closed in
+# production, which supplies CLOAK_KEY via the environment.
+System.put_env(
+  "CLOAK_KEY",
+  System.get_env("CLOAK_KEY") || "oKm5YrZmbh8kS34n3fXLiAHLbDFEmC+H+z8TEseGQFs="
+)
+
 # Only in tests, remove the complexity from the password hashing algorithm
 config :bcrypt_elixir, :log_rounds, 1
 

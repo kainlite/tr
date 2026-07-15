@@ -16,6 +16,9 @@ config :tr, TrWeb.Endpoint,
     host: nil
   ]
 
+# Production is served over HTTPS (force_ssl), so cookies can be Secure-only.
+config :tr, secure_cookies: true
+
 # Configures Swoosh API Client
 config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: Tr.Finch
 

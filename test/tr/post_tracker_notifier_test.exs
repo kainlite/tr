@@ -120,5 +120,25 @@ defmodule Tr.PostTracker.NotifierTest do
 
       assert mail.subject =~ url
     end
+
+    test "escapes HTML in comment notification body and url", %{user: user} do
+      evil_body = "<script>alert('xss')</script>"
+      evil_url = "/blog/x\"><script>alert(1)</script>"
+
+      {:ok, mail} = Notifier.deliver_new_comment_notification(user, evil_body, evil_url)
+
+      refute mail.html_body =~ "<script>alert('xss')</script>"
+      refute mail.html_body =~ "\"><script>alert(1)</script>"
+      assert mail.html_body =~ "&lt;script&gt;"
+    end
+
+    test "escapes HTML in reply notification body", %{user: user} do
+      evil_body = "<img src=x onerror=\"alert(1)\">"
+
+      {:ok, mail} = Notifier.deliver_new_reply_notification(user, evil_body, "/blog/some-post")
+
+      refute mail.html_body =~ "<img src=x onerror=\"alert(1)\">"
+      assert mail.html_body =~ "&lt;img"
+    end
   end
 end

@@ -77,3 +77,6 @@ refs
 scratch/
 priv/static/v86/
 notes/
+
+# Python virtualenv for local security tooling (semgrep)
+.venv/

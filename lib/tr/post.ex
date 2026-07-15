@@ -327,7 +327,9 @@ defmodule Tr.Post do
   """
   def approve_comment(%Comment{} = comment) do
     Spans.trace("post.approve_comment", %{"comment.id" => comment.id}, fn ->
-      update_comment(comment, %{approved: true})
+      comment
+      |> Ecto.Changeset.change(approved: true)
+      |> Repo.update()
     end)
   end
 

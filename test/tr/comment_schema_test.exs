@@ -40,6 +40,20 @@ defmodule Tr.CommentSchemaTest do
       assert comment.approved == false
     end
 
+    test "ignores approved so it cannot be mass-assigned" do
+      changeset =
+        Comment.changeset(%Comment{}, %{
+          slug: "test-slug",
+          body: "test body",
+          user_id: 1,
+          approved: true
+        })
+
+      assert changeset.valid?
+      assert is_nil(Ecto.Changeset.get_change(changeset, :approved))
+      refute Ecto.Changeset.apply_changes(changeset).approved
+    end
+
     test "rejects empty body" do
       changeset =
         Comment.changeset(%Comment{}, %{slug: "test-slug", body: nil, user_id: 1})

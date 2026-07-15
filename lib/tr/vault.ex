@@ -17,9 +17,11 @@ defmodule Tr.Vault do
     {:ok, config}
   end
 
+  # Fail closed: raise at boot if the key is missing rather than silently falling
+  # back to a hardcoded key. Dev/test supply CLOAK_KEY via config before boot.
   defp decode_env!(var) do
     var
-    |> System.get_env("oKm5YrZmbh8kS34n3fXLiAHLbDFEmC+H+z8TEseGQFs=")
+    |> System.fetch_env!()
     |> Base.decode64!()
   end
 end

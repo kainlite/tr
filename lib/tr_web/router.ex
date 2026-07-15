@@ -10,6 +10,7 @@ defmodule TrWeb.Router do
     plug :put_root_layout, {TrWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug TrWeb.Plugs.CSP
     plug :fetch_current_user
     plug TrWeb.Plugs.Locale, "en"
   end
@@ -25,6 +26,8 @@ defmodule TrWeb.Router do
   scope "/", TrWeb do
     pipe_through :browser
 
+    get "/auth/google", GoogleAuthController, :request
+    get "/auth/github", GithubAuthController, :request
     get "/auth/google/callback", GoogleAuthController, :index
     get "/auth/github/callback", GithubAuthController, :index
 

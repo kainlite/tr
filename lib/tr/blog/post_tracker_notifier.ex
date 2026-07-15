@@ -6,6 +6,14 @@ defmodule Tr.PostTracker.Notifier do
 
   alias Tr.Mailer
 
+  # HTML-escapes untrusted values (comment bodies, URLs built from client-supplied
+  # slugs) before they are interpolated into the email HTML.
+  defp esc(value) do
+    value
+    |> Phoenix.HTML.html_escape()
+    |> Phoenix.HTML.safe_to_string()
+  end
+
   # Delivers the email using the application mailer.
   defp deliver(recipient, subject, body) do
     email =
@@ -55,7 +63,7 @@ defmodule Tr.PostTracker.Notifier do
         <table cellpadding="0" cellspacing="0" border="0">
           <tr>
             <td align="left" style="padding: 15px 0;">
-              <a href="#{url}" style="background-color: #dc3545; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">Read Full Article</a>
+              <a href="#{esc(url)}" style="background-color: #dc3545; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">Read Full Article</a>
             </td>
           </tr>
         </table>
@@ -94,15 +102,15 @@ defmodule Tr.PostTracker.Notifier do
         <p>Hello #{user.email},</p>
         
         <p>A new comment was just added to a post you are following:</p>
-        
+
         <div style="background-color: #f7f7f7; border-left: 3px solid #dc3545; padding: 15px; margin: 20px 0;">
-          #{Earmark.as_html!(body)}
+          #{esc(body)}
         </div>
         
         <table cellpadding="0" cellspacing="0" border="0">
           <tr>
             <td align="left" style="padding: 15px 0;">
-              <a href="#{url}" style="background-color: #dc3545; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">Read comment</a>
+              <a href="#{esc(url)}" style="background-color: #dc3545; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">Read comment</a>
             </td>
           </tr>
         </table>
@@ -141,15 +149,15 @@ defmodule Tr.PostTracker.Notifier do
         <p>Hello #{user.email},</p>
         
         <p>A new reply was just added to a comment you are following:</p>
-        
+
         <div style="background-color: #f7f7f7; border-left: 3px solid #dc3545; padding: 15px; margin: 20px 0;">
-          #{Earmark.as_html!(body)}
+          #{esc(body)}
         </div>
         
         <table cellpadding="0" cellspacing="0" border="0">
           <tr>
             <td align="left" style="padding: 15px 0;">
-              <a href="#{url}" style="background-color: #dc3545; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">Read comment</a>
+              <a href="#{esc(url)}" style="background-color: #dc3545; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">Read comment</a>
             </td>
           </tr>
         </table>

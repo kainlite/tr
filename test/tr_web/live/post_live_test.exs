@@ -113,6 +113,38 @@ defmodule TrWeb.PostLiveTest do
 
       assert lv |> element(".float-right span.font-semibold", "1")
     end
+
+    test "cannot spoof user_id or self-approve a comment", %{conn: conn, user: user} do
+      other = confirmed_user_fixture()
+      slug = "upgrading-k3s-with-system-upgrade-controller"
+      {:ok, lv, _html} = live(conn, ~p"/blog/#{slug}")
+
+      # Simulate a crafted socket event bypassing the form fields.
+      render_hook(lv, "save", %{
+        "comment" => %{
+          "body" => "mass-assignment attempt",
+          "slug" => slug,
+          "user_id" => other.id,
+          "approved" => true
+        }
+      })
+
+      [comment] = Tr.Post.get_comments_for_post(slug)
+      assert comment.body == "mass-assignment attempt"
+      assert comment.user_id == user.id
+      refute comment.user_id == other.id
+      refute comment.approved
+    end
+
+    test "cannot spoof user_id on a reaction", %{conn: conn, user: user} do
+      slug = "upgrading-k3s-with-system-upgrade-controller"
+      {:ok, lv, _html} = live(conn, ~p"/blog/#{slug}")
+
+      render_hook(lv, "react", %{"value" => "heart", "slug" => slug, "user_id" => 999_999})
+
+      assert Tr.Post.reaction_exists?(slug, "heart", user.id)
+      refute Tr.Post.reaction_exists?(slug, "heart", 999_999)
+    end
   end
 
   describe "SEO and engagement" do

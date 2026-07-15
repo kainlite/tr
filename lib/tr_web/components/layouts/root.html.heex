@@ -56,7 +56,7 @@
           "dateModified" => assigns[:og_date_modified] || assigns[:og_date_published],
           "author" => %{"@type" => "Person", "name" => "Gabriel Garrido"},
           "publisher" => %{"@type" => "Organization", "name" => "SegFault"}
-        }, fn {_k, v} -> is_nil(v) end))) %>
+        }, fn {_k, v} -> is_nil(v) end), escape: :html_safe)) %>
       </script>
     <% end %>
 

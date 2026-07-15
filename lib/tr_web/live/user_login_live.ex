@@ -51,8 +51,8 @@ defmodule TrWeb.UserLoginLive do
     socket =
       socket
       |> assign(form: form)
-      |> assign(:oauth_google_url, ElixirAuthGoogle.generate_oauth_url(TrWeb.Endpoint.url()))
-      |> assign(:oauth_github_url, ElixirAuthGithub.login_url(%{scopes: ["user:email"]}))
+      |> assign(:oauth_google_url, ~p"/auth/google")
+      |> assign(:oauth_github_url, ~p"/auth/github")
 
     {:ok, socket, temporary_assigns: [form: form]}
   end

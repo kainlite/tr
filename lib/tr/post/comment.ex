@@ -19,7 +19,7 @@ defmodule Tr.Post.Comment do
   @doc false
   def changeset(comment, attrs) do
     comment
-    |> cast(attrs, [:slug, :body, :user_id, :parent_comment_id, :approved])
+    |> cast(attrs, [:slug, :body, :user_id, :parent_comment_id])
     |> validate_required([:slug, :body, :user_id])
   end
 end

@@ -19,7 +19,8 @@ defmodule TrWeb.Endpoint do
     store: :cookie,
     key: "_tr_key",
     signing_salt: "GAR9Iql2",
-    same_site: "Lax"
+    same_site: "Lax",
+    secure: Application.compile_env(:tr, :secure_cookies, false)
   ]
 
   socket "/live", Phoenix.LiveView.Socket,
