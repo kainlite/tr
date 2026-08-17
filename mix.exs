@@ -68,7 +68,7 @@ defmodule Tr.MixProject do
       {:earmark, "~> 1.4.27"},
       {:yamerl, "~> 0.10.0"},
       {:html_sanitize_ex, "~> 1.5.0"},
-      {:nimble_publisher, "~> 2.0.0"},
+      {:nimble_publisher, "~> 2.1.0"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:libcluster, "~> 3.3"},
       {:remote_ip, "~> 1.1"},
