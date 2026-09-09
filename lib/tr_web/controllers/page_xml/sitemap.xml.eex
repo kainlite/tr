@@ -23,6 +23,13 @@
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
+  <url>
+    <loc>https://segfault.pw/en/contact</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://segfault.pw/en/contact" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://segfault.pw/es/contact" />
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
   <%= for post <- @en_posts do %>
   <url>
     <loc><%= url(~p"/en/blog/#{post.id}") %></loc>

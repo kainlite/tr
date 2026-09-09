@@ -101,6 +101,26 @@ defmodule TrWeb.Router do
     end
   end
 
+  # The contact form rate limits by client address. RemoteIp resolves that on
+  # the HTTP request, so it is handed to the LiveView through the session
+  # rather than re-derived from websocket connect info (Cloudflare's header is
+  # not an x- header and would not be exposed there).
+  live_session :contact,
+    on_mount: [{TrWeb.Hooks.AllowEctoSandbox, :default}, {TrWeb.UserAuth, :mount_current_user}],
+    session: {TrWeb.ContactLive, :session, []} do
+    scope "/", TrWeb do
+      pipe_through :browser
+
+      live "/contact", ContactLive, :index
+    end
+
+    scope "/:locale", TrWeb do
+      pipe_through :browser
+
+      live "/contact", ContactLive, :index
+    end
+  end
+
   live_session :default,
     on_mount: [{TrWeb.Hooks.AllowEctoSandbox, :default}, {TrWeb.UserAuth, :mount_current_user}] do
     # scope "/", TrWeb, host: ["local.redbeard.team", "redbeard.team"] do

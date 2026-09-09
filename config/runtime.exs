@@ -125,6 +125,10 @@ if config_env() == :prod do
     adapter: Swoosh.Adapters.Brevo,
     api_key: System.get_env("BREVO_API_KEY")
 
+  # Recipient of contact form submissions. Kept out of the repository on purpose;
+  # when unset the form renders but every submission fails with a generic error.
+  config :tr, contact_email: System.get_env("CONTACT_EMAIL")
+
   # Cross-posting configuration (optional — gracefully degrades if not set)
   # LinkedIn: LINKEDIN_ACCESS_TOKEN, LINKEDIN_PERSON_URN
   # Substack: SUBSTACK_SUBDOMAIN, SUBSTACK_SESSION_COOKIE

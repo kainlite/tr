@@ -22,12 +22,12 @@ msgstr ""
 msgid "close"
 msgstr ""
 
-#: lib/tr_web/live/user_settings_live.ex:190
+#: lib/tr_web/live/user_settings_live.ex:197
 #, elixir-autogen, elixir-format
 msgid "A link to confirm your email change has been sent to the new address."
 msgstr ""
 
-#: lib/tr_web/live/user_settings_live.ex:243
+#: lib/tr_web/live/user_settings_live.ex:250
 #, elixir-autogen, elixir-format
 msgid "Accept emails changed successfully."
 msgstr ""
@@ -37,37 +37,27 @@ msgstr ""
 msgid "Account created successfully!"
 msgstr ""
 
-#: lib/tr_web/live/dashboard_live.ex:85
-#, elixir-autogen, elixir-format
-msgid "Admin Dashboard"
-msgstr ""
-
-#: lib/tr_web/live/dashboard_live.ex:191
-#, elixir-autogen, elixir-format
-msgid "All comments"
-msgstr ""
-
-#: lib/tr_web/live/user_registration_live.ex:13
+#: lib/tr_web/live/user_registration_live.ex:14
 #, elixir-autogen, elixir-format
 msgid "Already registered?"
 msgstr ""
 
-#: lib/tr_web/live/user_settings_live.ex:99
+#: lib/tr_web/live/user_settings_live.ex:105
 #, elixir-autogen, elixir-format
 msgid "Change Accept Emails"
 msgstr ""
 
-#: lib/tr_web/live/user_settings_live.ex:46
+#: lib/tr_web/live/user_settings_live.ex:52
 #, elixir-autogen, elixir-format
 msgid "Change Email"
 msgstr ""
 
-#: lib/tr_web/live/user_settings_live.ex:81
+#: lib/tr_web/live/user_settings_live.ex:87
 #, elixir-autogen, elixir-format
 msgid "Change Password"
 msgstr ""
 
-#: lib/tr_web/live/user_settings_live.ex:24
+#: lib/tr_web/live/user_settings_live.ex:30
 #, elixir-autogen, elixir-format
 msgid "Change display name"
 msgstr ""
@@ -77,12 +67,12 @@ msgstr ""
 msgid "Comment hidden, awaiting moderation..."
 msgstr ""
 
-#: lib/tr_web/live/post_live.ex:488
+#: lib/tr_web/live/post_live.ex:413
 #, elixir-autogen, elixir-format
 msgid "Comment saved successfully."
 msgstr ""
 
-#: lib/tr_web/live/post_live.ex:319
+#: lib/tr_web/live/post_live.ex:257
 #, elixir-autogen, elixir-format
 msgid "Comments"
 msgstr ""
@@ -107,44 +97,44 @@ msgstr ""
 msgid "Confirming..."
 msgstr ""
 
-#: lib/tr_web/components/layouts/app.html.heex:91
+#: lib/tr_web/components/layouts/app.html.heex:106
 #, elixir-autogen, elixir-format
 msgid "Dashboard"
 msgstr ""
 
-#: lib/tr_web/live/user_settings_live.ex:19
+#: lib/tr_web/live/user_settings_live.ex:25
 #, elixir-autogen, elixir-format
 msgid "Display Name"
 msgstr ""
 
-#: lib/tr_web/live/user_settings_live.ex:164
+#: lib/tr_web/live/user_settings_live.ex:171
 #, elixir-autogen, elixir-format
 msgid "Display name changed successfully."
 msgstr ""
 
-#: lib/tr_web/live/user_login_live.ex:10
+#: lib/tr_web/live/user_login_live.ex:11
 #, elixir-autogen, elixir-format
 msgid "Don't have an account?"
 msgstr ""
 
-#: lib/tr_web/live/user_settings_live.ex:114
+#: lib/tr_web/live/user_settings_live.ex:121
 #, elixir-autogen, elixir-format
 msgid "Email change link is invalid or it has expired."
 msgstr ""
 
-#: lib/tr_web/live/user_settings_live.ex:111
+#: lib/tr_web/live/user_settings_live.ex:118
 #, elixir-autogen, elixir-format
 msgid "Email changed successfully."
 msgstr ""
 
-#: lib/tr_web/controllers/github_auth_controller.ex:16
-#: lib/tr_web/controllers/google_auth_controller.ex:17
+#: lib/tr_web/controllers/github_auth_controller.ex:47
+#: lib/tr_web/controllers/google_auth_controller.ex:47
 #, elixir-autogen, elixir-format
 msgid "Email not verified"
 msgstr ""
 
 #: lib/tr_web/live/user_forgot_password_live.ex:10
-#: lib/tr_web/live/user_login_live.ex:25
+#: lib/tr_web/live/user_login_live.ex:34
 #, elixir-autogen, elixir-format
 msgid "Forgot your password?"
 msgstr ""
@@ -160,12 +150,11 @@ msgid "Invalid email or password"
 msgstr ""
 
 #: lib/tr_web/controllers/error_html/404.html.heex:2
-#: lib/tr_web/controllers/error_html/500.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "It seems we cannot find the page you are looking for, but please check out the following tags and latest\n  articles..."
 msgstr ""
 
-#: lib/tr_web/components/layouts/app.html.heex:143
+#: lib/tr_web/components/layouts/app.html.heex:183
 #: lib/tr_web/live/user_confirmation_live.ex:22
 #: lib/tr_web/live/user_forgot_password_live.ex:24
 #: lib/tr_web/live/user_reset_password_live.ex:37
@@ -173,7 +162,7 @@ msgstr ""
 msgid "Log in"
 msgstr ""
 
-#: lib/tr_web/components/layouts/app.html.heex:121
+#: lib/tr_web/components/layouts/app.html.heex:175
 #, elixir-autogen, elixir-format
 msgid "Log out"
 msgstr ""
@@ -183,8 +172,8 @@ msgstr ""
 msgid "Logged out successfully."
 msgstr ""
 
-#: lib/tr_web/components/comment.ex:56
-#: lib/tr_web/live/user_registration_live.ex:34
+#: lib/tr_web/components/comment.ex:57
+#: lib/tr_web/live/user_registration_live.ex:40
 #: lib/tr_web/live/user_reset_password_live.ex:18
 #, elixir-autogen, elixir-format
 msgid "Oops, something went wrong! Please check the errors below."
@@ -200,7 +189,7 @@ msgstr ""
 msgid "Password updated successfully!"
 msgstr ""
 
-#: lib/tr_web/live/post_live.ex:373
+#: lib/tr_web/live/post_live.ex:303
 #, elixir-autogen, elixir-format
 msgid "Please sign in to be able to write comments."
 msgstr ""
@@ -210,12 +199,7 @@ msgstr ""
 msgid "Please verify your account"
 msgstr ""
 
-#: lib/tr_web/components/post.ex:93
-#, elixir-autogen, elixir-format
-msgid "Read more..."
-msgstr ""
-
-#: lib/tr_web/components/layouts/app.html.heex:163
+#: lib/tr_web/components/layouts/app.html.heex:190
 #: lib/tr_web/live/user_confirmation_live.ex:21
 #: lib/tr_web/live/user_forgot_password_live.ex:23
 #: lib/tr_web/live/user_reset_password_live.ex:36
@@ -223,7 +207,7 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-#: lib/tr_web/live/user_registration_live.ex:11
+#: lib/tr_web/live/user_registration_live.ex:12
 #, elixir-autogen, elixir-format
 msgid "Register for an account"
 msgstr ""
@@ -238,7 +222,7 @@ msgstr ""
 msgid "Reset password link is invalid or it has expired."
 msgstr ""
 
-#: lib/tr_web/components/comment.ex:69
+#: lib/tr_web/components/comment.ex:68
 #, elixir-autogen, elixir-format
 msgid "Saving..."
 msgstr ""
@@ -248,57 +232,40 @@ msgstr ""
 msgid "Send password reset instructions"
 msgstr ""
 
-#: lib/tr_web/live/user_login_live.ex:30
-#: lib/tr_web/live/user_registration_live.ex:18
+#: lib/tr_web/live/user_login_live.ex:39
+#: lib/tr_web/live/user_registration_live.ex:19
 #, elixir-autogen, elixir-format
 msgid "Sign in"
 msgstr ""
 
-#: lib/tr_web/live/user_login_live.ex:8
+#: lib/tr_web/live/user_login_live.ex:9
 #, elixir-autogen, elixir-format
 msgid "Sign in to account"
 msgstr ""
 
-#: lib/tr_web/live/blog_live.ex:146
-#: lib/tr_web/live/post_live.ex:286
-#, elixir-autogen, elixir-format
-msgid "Sign in with GitHub"
-msgstr ""
-
-#: lib/tr_web/live/blog_live.ex:170
-#: lib/tr_web/live/post_live.ex:310
-#, elixir-autogen, elixir-format
-msgid "Sign in with Google"
-msgstr ""
-
-#: lib/tr_web/live/user_login_live.ex:12
+#: lib/tr_web/live/user_login_live.ex:16
 #, elixir-autogen, elixir-format
 msgid "Sign up"
 msgstr ""
 
-#: lib/tr_web/live/post_live.ex:433
+#: lib/tr_web/live/post_live.ex:359
 #, elixir-autogen, elixir-format
 msgid "There is been an error removing your reaction."
 msgstr ""
 
-#: lib/tr_web/live/post_live.ex:495
+#: lib/tr_web/live/post_live.ex:420
 #, elixir-autogen, elixir-format
 msgid "There is been an error saving your comment."
 msgstr ""
 
-#: lib/tr_web/live/post_live.ex:445
+#: lib/tr_web/live/post_live.ex:371
 #, elixir-autogen, elixir-format
 msgid "There is been an error saving your reaction."
 msgstr ""
 
-#: lib/tr_web/live/search_live.ex:20
+#: lib/tr_web/live/search_live.ex:29
 #, elixir-autogen, elixir-format
 msgid "Try full terms like: linux, kubernetes, elixir..."
-msgstr ""
-
-#: lib/tr_web/live/dashboard_live.ex:198
-#, elixir-autogen, elixir-format
-msgid "Unapproved comments"
 msgstr ""
 
 #: lib/tr_web/live/user_confirmation_live.ex:55
@@ -316,45 +283,45 @@ msgstr ""
 msgid "Welcome back!"
 msgstr ""
 
-#: lib/tr_web/live/post_live.ex:411
+#: lib/tr_web/live/post_live.ex:342
 #, elixir-autogen, elixir-format
 msgid "You need to be logged in to react."
 msgstr ""
 
-#: lib/tr_web/live/post_live.ex:498
+#: lib/tr_web/live/post_live.ex:387
 #, elixir-autogen, elixir-format
 msgid "You need to validate your account"
 msgstr ""
 
-#: lib/tr_web/live/user_login_live.ex:14
+#: lib/tr_web/live/user_login_live.ex:18
 #, elixir-autogen, elixir-format
 msgid "for an account now."
 msgstr ""
 
-#: lib/tr_web/live/post_live.ex:239
-#: lib/tr_web/live/post_live.ex:251
+#: lib/tr_web/live/post_live.ex:235
+#: lib/tr_web/live/post_live.ex:245
 #, elixir-autogen, elixir-format
 msgid "sponsor's page."
 msgstr ""
 
-#: lib/tr_web/live/user_registration_live.ex:20
+#: lib/tr_web/live/user_registration_live.ex:21
 #, elixir-autogen, elixir-format
 msgid "to your account now."
 msgstr ""
 
-#: lib/tr_web/live/user_settings_live.ex:9
+#: lib/tr_web/live/user_settings_live.ex:11
 #, elixir-autogen, elixir-format
 msgid "Account Settings"
 msgstr ""
 
-#: lib/tr_web/live/user_settings_live.ex:10
+#: lib/tr_web/live/user_settings_live.ex:12
 #, elixir-autogen, elixir-format
 msgid "Manage your account email address and password settings"
 msgstr ""
 
-#: lib/tr_web/live/post_live.ex:237
-#: lib/tr_web/live/post_live.ex:249
-#, elixir-autogen, elixir-format, fuzzy
+#: lib/tr_web/live/post_live.ex:233
+#: lib/tr_web/live/post_live.ex:243
+#, elixir-autogen, elixir-format
 msgid "To see the full page, please visit the"
 msgstr ""
 
@@ -373,65 +340,48 @@ msgstr ""
 msgid "We'll send a password reset link to your inbox"
 msgstr ""
 
-#: lib/tr_web/live/user_login_live.ex:23
+#: lib/tr_web/live/user_login_live.ex:32
 #, elixir-autogen, elixir-format
 msgid "Keep me logged in"
 msgstr ""
 
-#: lib/tr_web/live/user_login_live.ex:19
+#: lib/tr_web/live/contact_live.ex:132
+#: lib/tr_web/live/user_login_live.ex:28
 #, elixir-autogen, elixir-format
 msgid "Email"
 msgstr ""
 
-#: lib/tr_web/live/user_login_live.ex:20
+#: lib/tr_web/live/user_login_live.ex:29
 #, elixir-autogen, elixir-format
 msgid "Password"
 msgstr ""
 
-#: lib/tr_web/live/user_login_live.ex:29
+#: lib/tr_web/live/user_login_live.ex:38
 #, elixir-autogen, elixir-format
 msgid "Signing in..."
 msgstr ""
 
-#: lib/tr_web/controllers/page_controller.ex:43
+#: lib/tr_web/controllers/page_controller.ex:94
 #, elixir-autogen, elixir-format
 msgid "Learn about DevOps, Linux, Containers, Kubernetes, CI/CD, AWS, Terraform | SegFault"
 msgstr ""
 
-#: lib/tr_web/controllers/page_controller.ex:49
+#: lib/tr_web/controllers/page_controller.ex:100
 #, elixir-autogen, elixir-format
 msgid "Learn about DevOps, Linux, Containers, Kubernetes, CI/CD, AWS, Terraform, Docker, and more."
 msgstr ""
 
-#: lib/tr_web/live/dashboard_live.ex:106
-#, elixir-autogen, elixir-format
-msgid "Active Rooms"
-msgstr ""
-
-#: lib/tr_web/live/blog_live.ex:119
-#: lib/tr_web/live/post_live.ex:201
-#: lib/tr_web/live/post_live.ex:699
+#: lib/tr_web/live/post_live.ex:618
 #, elixir-autogen, elixir-format
 msgid "Buy Me a Coffee"
 msgstr ""
 
-#: lib/tr_web/live/blog_live.ex:36
-#, elixir-autogen, elixir-format
-msgid "DevOps, Linux, Containers, Kubernetes, and cloud technologies. Tutorials, insights, and experiments."
-msgstr ""
-
-#: lib/tr_web/live/post_live.ex:264
-#, elixir-autogen, elixir-format
-msgid "Enjoyed this post?"
-msgstr ""
-
-#: lib/tr_web/live/blog_live.ex:90
-#: lib/tr_web/live/post_live.ex:668
+#: lib/tr_web/live/post_live.ex:589
 #, elixir-autogen, elixir-format
 msgid "If you find this content useful, consider supporting the blog."
 msgstr ""
 
-#: lib/tr_web/live/blog_live.ex:59
+#: lib/tr_web/live/blog_live.ex:44
 #, elixir-autogen, elixir-format
 msgid "Latest post"
 msgstr ""
@@ -451,38 +401,231 @@ msgstr ""
 msgid "Learn about Devops, Linux, Kubernetes,\n    AWS, Terraform, Docker, and more. Explore insights,\n    tutorials, and experiments."
 msgstr ""
 
-#: lib/tr_web/live/post_live.ex:267
-#, elixir-autogen, elixir-format
-msgid "Register to comment, react, and get email notifications for new posts."
-msgstr ""
-
-#: lib/tr_web/live/post_live.ex:383
+#: lib/tr_web/live/post_live.ex:317
 #, elixir-autogen, elixir-format
 msgid "Related Posts"
 msgstr ""
 
-#: lib/tr_web/live/post_live.ex:147
-#, elixir-autogen, elixir-format
-msgid "Share:"
-msgstr ""
-
-#: lib/tr_web/live/blog_live.ex:127
-#, elixir-autogen, elixir-format
-msgid "Sign in to comment, react, and get notifications for new posts."
-msgstr ""
-
-#: lib/tr_web/live/blog_live.ex:87
-#: lib/tr_web/live/post_live.ex:666
+#: lib/tr_web/live/blog_live.ex:73
+#: lib/tr_web/live/post_live.ex:586
 #, elixir-autogen, elixir-format
 msgid "Support this blog"
 msgstr ""
 
-#: lib/tr_web/controllers/error_html/root.html.heex:8
-#, elixir-autogen, elixir-format, fuzzy
-msgid "Welcome to SegFault blog! This page is dedicated to documenting and exploring various\n               technologies. Our blog is hosted on a k3s cluster in OCI, powered by Elixir and Phoenix. Dive in to\n               discover insights, tutorials, and experiments across the tech landscape."
-msgstr ""
-
-#: lib/tr_web/live/post_live.ex:94
+#: lib/tr_web/live/blog_live.ex:55
+#: lib/tr_web/live/post_live.ex:93
 #, elixir-autogen, elixir-format
 msgid "min read"
+msgstr ""
+
+#: lib/tr_web/components/layouts/app.html.heex:96
+#, elixir-autogen, elixir-format
+msgid "About"
+msgstr ""
+
+#: lib/tr_web/controllers/github_auth_controller.ex:57
+#: lib/tr_web/controllers/google_auth_controller.ex:57
+#, elixir-autogen, elixir-format
+msgid "Authentication failed, please try again"
+msgstr ""
+
+#: lib/tr_web/components/layouts/app.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Blog"
+msgstr ""
+
+#: lib/tr_web/live/labs_live.ex:122
+#, elixir-autogen, elixir-format
+msgid "Certificate"
+msgstr ""
+
+#: lib/tr_web/components/oauth.ex:60
+#, elixir-autogen, elixir-format
+msgid "Continue with GitHub"
+msgstr ""
+
+#: lib/tr_web/components/oauth.ex:41
+#, elixir-autogen, elixir-format
+msgid "Continue with Google"
+msgstr ""
+
+#: lib/tr_web/components/layouts/app.html.heex:154
+#, elixir-autogen, elixir-format
+msgid "Cookies"
+msgstr ""
+
+#: lib/tr_web/live/labs_live.ex:131
+#, elixir-autogen, elixir-format
+msgid "Copy badge"
+msgstr ""
+
+#: lib/tr_web/live/blog_live.ex:33
+#, elixir-autogen, elixir-format
+msgid "DevOps, Linux, Containers, Kubernetes, and cloud technologies."
+msgstr ""
+
+#: lib/tr_web/live/contact_live.ex:116
+#, elixir-autogen, elixir-format
+msgid "Get in touch"
+msgstr ""
+
+#: lib/tr_web/live/labs_live.ex:41
+#, elixir-autogen, elixir-format
+msgid "Hands-on challenges you finish right here in your browser. No signup, no servers: scripted command drills plus real Linux boxes compiled to WebAssembly. Pick a track, or jump straight into any lab."
+msgstr ""
+
+#: lib/tr_web/live/labs_live.ex:38
+#, elixir-autogen, elixir-format
+msgid "Interactive Labs"
+msgstr ""
+
+#: lib/tr_web/components/layouts/app.html.heex:78
+#, elixir-autogen, elixir-format
+msgid "Labs"
+msgstr ""
+
+#: lib/tr_web/live/contact_live.ex:136
+#, elixir-autogen, elixir-format
+msgid "Message"
+msgstr ""
+
+#: lib/tr_web/live/contact_live.ex:131
+#, elixir-autogen, elixir-format
+msgid "Name"
+msgstr ""
+
+#: lib/tr_web/components/layouts/app.html.heex:115
+#: lib/tr_web/live/post_live.ex:200
+#, elixir-autogen, elixir-format
+msgid "On this page"
+msgstr ""
+
+#: lib/tr_web/live/post_live.ex:260
+#, elixir-autogen, elixir-format
+msgid "Online"
+msgstr ""
+
+#: lib/tr_web/live/labs_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "Posts with labs"
+msgstr ""
+
+#: lib/tr_web/live/contact_live.ex:118
+#, elixir-autogen, elixir-format
+msgid "Questions, corrections, or just want to say hi? Fill in the form and it lands in my inbox. I answer every real message, usually within a few days."
+msgstr ""
+
+#: lib/tr_web/components/layouts/app.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Search"
+msgstr ""
+
+#: lib/tr_web/live/contact_live.ex:154
+#, elixir-autogen, elixir-format
+msgid "Send message"
+msgstr ""
+
+#: lib/tr_web/live/contact_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "Sending..."
+msgstr ""
+
+#: lib/tr_web/live/post_live.ex:157
+#, elixir-autogen, elixir-format
+msgid "Share"
+msgstr ""
+
+#: lib/tr_web/components/layouts/app.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "Tags"
+msgstr ""
+
+#: lib/tr_web/live/contact_live.ex:81
+#, elixir-autogen, elixir-format
+msgid "Thank you! Your message has been sent."
+msgstr ""
+
+#: lib/tr_web/components/layouts/app.html.heex:137
+#, elixir-autogen, elixir-format
+msgid "Theme"
+msgstr ""
+
+#: lib/tr_web/live/contact_live.ex:51
+#, elixir-autogen, elixir-format
+msgid "Too many messages from your network, please try again in an hour."
+msgstr ""
+
+#: lib/tr_web/live/labs_live.ex:120
+#, elixir-autogen, elixir-format
+msgid "Track complete!"
+msgstr ""
+
+#: lib/tr_web/live/labs_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "Tracks"
+msgstr ""
+
+#: lib/tr_web/live/contact_live.ex:160
+#, elixir-autogen, elixir-format
+msgid "You can also find me on"
+msgstr ""
+
+#: lib/tr_web/live/contact_live.ex:74
+#, elixir-autogen, elixir-format
+msgid "Your message could not be sent right now, please try again later."
+msgstr ""
+
+#: lib/tr_web/live/contact_live.ex:174
+#, elixir-autogen, elixir-format
+msgid "and"
+msgstr ""
+
+#: lib/tr_web/live/labs_live.ex:64
+#, elixir-autogen, elixir-format
+msgid "day streak"
+msgstr ""
+
+#: lib/tr_web/live/post_live.ex:113
+#, elixir-autogen, elixir-format
+msgid "interactive lab"
+msgstr ""
+
+#: lib/tr_web/live/post_live.ex:112
+#, elixir-autogen, elixir-format
+msgid "interactive labs"
+msgstr ""
+
+#: lib/tr_web/live/labs_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "lab"
+msgstr ""
+
+#: lib/tr_web/live/labs_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "labs"
+msgstr ""
+
+#: lib/tr_web/live/labs_live.ex:66
+#, elixir-autogen, elixir-format
+msgid "longest"
+msgstr ""
+
+#: lib/tr_web/components/oauth.ex:66
+#, elixir-autogen, elixir-format
+msgid "or"
+msgstr ""
+
+#: lib/tr_web/live/labs_live.ex:47
+#, elixir-autogen, elixir-format
+msgid "progress"
+msgstr ""
+
+#: lib/tr_web/live/labs_live.ex:68
+#, elixir-autogen, elixir-format
+msgid "solved"
+msgstr ""
+
+#: lib/tr_web/live/post_live.ex:95
+#, elixir-autogen, elixir-format
+msgid "updated"
 msgstr ""

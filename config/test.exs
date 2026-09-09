@@ -34,6 +34,10 @@ config :tr, TrWeb.Endpoint,
 # In test we don't send emails.
 config :tr, Tr.Mailer, adapter: Swoosh.Adapters.Test
 
+# LiveView tests submit right after mount; the bot timing heuristic is
+# exercised explicitly by overriding this in the contact form tests.
+config :tr, contact_min_fill_ms: 0
+
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
 

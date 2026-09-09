@@ -28,6 +28,8 @@ defmodule Tr.Application do
       {Finch, name: Tr.Finch},
       # Task supervisor
       {Task.Supervisor, name: Tr.TaskSupervisor},
+      # Per-node request counters (contact form abuse control)
+      Tr.RateLimiter,
       # Start the Presence app 
       TrWeb.Presence,
       # Start haystack

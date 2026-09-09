@@ -96,12 +96,12 @@
     <section>
       <h2 class="text-xl font-bold text-zinc-900 dark:text-white mb-3">Contact</h2>
       <p class="text-zinc-600 dark:text-zinc-300 leading-relaxed">
-        You can reach me at
+        You can reach me through the
         <a
-          href="mailto:gabriel@segfault.pw"
+          href={~p"/#{Gettext.get_locale(TrWeb.Gettext)}/contact"}
           class="text-accent-light dark:text-accent hover:text-accent-dim dark:hover:text-accent-muted"
         >
-          gabriel@segfault.pw
+          contact form
         </a>
         or find me on <a
           href="https://github.com/kainlite"

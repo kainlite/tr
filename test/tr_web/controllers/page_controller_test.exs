@@ -19,6 +19,7 @@ defmodule TrWeb.PageControllerTest do
       assert body =~ "sitemaps.org/schemas/sitemap/0.9"
       assert body =~ "/en/blog/new-blog"
       assert body =~ "hreflang"
+      assert body =~ "<loc>https://segfault.pw/en/contact</loc>"
     end
 
     test "accesses the RSS feed in format xml", %{conn: conn} do
@@ -79,6 +80,32 @@ defmodule TrWeb.PageControllerTest do
 
       assert response(conn, 200) =~ "Gabriel Garrido"
       assert response(conn, 200) =~ "About the blog"
+    end
+
+    test "about page points to the contact form instead of exposing an email address", %{
+      conn: conn
+    } do
+      body = conn |> get(~p"/about") |> response(200)
+
+      assert body =~ ~s(href="/en/contact")
+      refute body =~ "mailto:"
+      refute body =~ "@segfault.pw"
+    end
+
+    test "privacy page points to the contact form instead of exposing an email address", %{
+      conn: conn
+    } do
+      body = conn |> get(~p"/privacy") |> response(200)
+
+      assert body =~ ~s(href="/en/contact")
+      refute body =~ "mailto:"
+      refute body =~ "@segfault.pw"
+      refute body =~ "@techsquad.rocks"
+    end
+
+    test "localized about and privacy pages link to the localized contact form", %{conn: conn} do
+      assert conn |> get(~p"/es/about") |> response(200) =~ ~s(href="/es/contact")
+      assert conn |> get(~p"/es/privacy") |> response(200) =~ ~s(href="/es/contact")
     end
   end
 

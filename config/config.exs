@@ -26,6 +26,16 @@ config :tr, TrWeb.Endpoint,
 # over plain HTTP so it stays false there.
 config :tr, secure_cookies: false
 
+# Where contact form submissions are delivered. Production overrides this from
+# the CONTACT_EMAIL environment variable in runtime.exs.
+config :tr, contact_email: "contact@example.com"
+
+# Contact form abuse controls: submissions faster than this after page load are
+# treated as bots, and the limiter caps messages per client address and overall
+# per hour and node.
+config :tr, contact_min_fill_ms: 3_000
+config :tr, contact_rate_limit: [per_ip: 3, global: 30]
+
 config :tr, TrWeb.Endpoint,
   render_errors: [
     view: TrWeb.ErrorView,

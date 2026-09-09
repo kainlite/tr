@@ -460,7 +460,7 @@ CookieConsent.run({
             {
               title: "Mas informacion",
               description:
-                'Por cualquier consulta relacionada al sitio o las cookies, por favor contactarnos aqui <a class="cc__link" href="mailto:gabriel@segfault.pw">gabriel@segfault.pw</a>.',
+                'Por cualquier consulta relacionada al sitio o las cookies, por favor escribinos a traves del <a class="cc__link" href="/es/contact">formulario de contacto</a>.',
             },
           ],
         },
@@ -489,7 +489,7 @@ CookieConsent.run({
             {
               title: "More information",
               description:
-                'For any query in relation to my policy on cookies and your choices, please <a class="cc__link" href="mailto:gabriel@segfault.pw">gabriel@segfault.pw</a>.',
+                'For any query in relation to my policy on cookies and your choices, please reach out through the <a class="cc__link" href="/en/contact">contact form</a>.',
             },
           ],
         },
