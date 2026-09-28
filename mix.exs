@@ -78,7 +78,7 @@ defmodule Tr.MixProject do
       {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false},
       {:wallaby, "~> 0.30", runtime: false, only: :test},
       {:ollama, "~> 0.9.0"},
-      {:mimic, "~> 2.3.0", only: :test},
+      {:mimic, "~> 2.4.2", only: :test},
       {:bandit, "~> 1.0"},
       {:haystack, "~> 0.1.0"},
       {:quantum, "~> 3.5"},
